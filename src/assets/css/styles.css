@@ -129,11 +129,12 @@ a:focus {
   box-shadow: 3px 3px 6px #00000033;
   border-radius: 0px 50px 50px 0px;
   opacity: 1;
+  transition:all 0.3s;
   color: #fff;
 }
 
-#sidebar .active {
-
+#sidebar.active {
+  margin-left: -253px;
 }
 
 #sidebar .sidebar-header {
