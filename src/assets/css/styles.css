@@ -138,7 +138,9 @@ a:focus {
 }
 
 #sidebar .sidebar-header {
-  padding: 32px;
+  padding-top: 32px;
+  padding-left: 32px;
+  padding-right: 32px;
 }
 
 #sidebar ul.components {
@@ -151,7 +153,9 @@ a:focus {
 }
 
 #sidebar ul li a {
-  padding: 10px;
+  padding-left: 32px;
+  padding-top: 20.5px;
+  padding-bottom: 20.5px;
   font-size: 19px;
   font: normal normal bold 20px/26px FS Elliot Pro;
   display: block;
@@ -167,6 +171,7 @@ a:focus {
   padding: 0;
   list-style: none;
 }
+
 
 #sidebar ul li.active > a,
 a[aria-expanded="true"] {
@@ -211,7 +216,7 @@ ul ul a {
 
 .text-title-menu {
   margin-left: 32px;
-  width: 155px;
+  margin-bottom: 32px;
   height: 44px;
   text-align: left;
   font: normal normal normal 21px/23px FS Elliot Pro;
