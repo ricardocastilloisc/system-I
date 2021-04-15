@@ -103,6 +103,18 @@ a:focus {
   transition: all 0.3s;
 }
 
+.logo-navbar {
+  width: 161px;
+  height: 46px;
+  background: url("../imgs/logo.png") no-repeat;
+  opacity: 1;
+  background-size: auto;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
 .wrapper {
   display: flex;
   text-decoration: none;
@@ -124,60 +136,29 @@ a:focus {
 #sidebar .active {
   margin-left: -253px;
 }
-.logo-navbar {
-  width: 161px;
-  height: 46px;
-  background: url("../imgs/logo.png") no-repeat;
-  opacity: 1;
-  background-size: auto;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-}
-
 
 #sidebar .sidebar-header {
   padding: 32px;
 }
 
-#sidebar ul.components{
+#sidebar ul.components {
   padding: 20px;
 }
 
-#sidebar ul p{
-}
-
-#sidebar ul li a{
+#sidebar ul p {
+  color: #ffffff;
   padding: 10px;
-  font: normal normal bold  FS Elliot Pro;
-  font-size: 19px;
-  display: block;
 }
 
-#sidebar ul li a:hover{
-  background: #FFFFFF 0% 0% no-repeat padding-box;
+#sidebar ul li a {
+  padding: 10px;
+  font-size: 19px;
+  font: normal normal bold 20px/26px FS Elliot Pro;
+}
+
+#sidebar ul li a:hover {
+  background: #ffffff 0% 0% no-repeat padding-box;
   opacity: 0.2;
 }
 
-#sider ul li.active>a, a[aria-expanded="true"]
-{
-  color: #FFFFFF;
-}
 
-a[data-toggle="collapse"]{
-  position: relative;
-}
-
-.dropdown-toggle::after{
-  display: block;
-  position: absolute;
-  top:50%;
-  right:20%;
-  transform: translateX(-50%);
-}
-
-ul ul a{
-  font: normal normal bold  FS Elliot Pro;
-  font-size: 19px;
-}
