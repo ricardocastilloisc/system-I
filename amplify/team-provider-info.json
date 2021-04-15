@@ -1,0 +1,23 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-frontsia-dev-162303-authRole",
+            "UnauthRoleArn": "arn:aws:iam::335672086802:role/amplify-frontsia-dev-162303-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::335672086802:role/amplify-frontsia-dev-162303-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "amplify-frontsia-dev-162303-deployment",
+            "UnauthRoleName": "amplify-frontsia-dev-162303-unauthRole",
+            "StackName": "amplify-frontsia-dev-162303",
+            "StackId": "arn:aws:cloudformation:us-east-1:335672086802:stack/amplify-frontsia-dev-162303/c4eb0ed0-9e30-11eb-b38c-124a026c8667",
+            "AmplifyAppId": "d23mbxjbgl0msz"
+        },
+        "categories": {
+            "hosting": {
+                "amplifyhosting": {
+                    "appId": "d23mbxjbgl0msz",
+                    "type": "manual"
+                }
+            }
+        }
+    }
+}
