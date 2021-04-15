@@ -142,7 +142,7 @@ a:focus {
 }
 
 #sidebar ul.components {
-  padding: 20px;
+  padding: 32px 0;
 }
 
 #sidebar ul p {
@@ -154,11 +154,45 @@ a:focus {
   padding: 10px;
   font-size: 19px;
   font: normal normal bold 20px/26px FS Elliot Pro;
+  display: block;
 }
 
-#sidebar ul li a:hover {
-  background: #ffffff 0% 0% no-repeat padding-box;
+#sidebar ul li a:hover{
+
   opacity: 0.2;
 }
+
+#sidebar ul li.active>a,
+a[aria-expanded="true"]{
+  color: #fff;
+}
+
+a[data-toggle="collapse"]{
+  position: relative;
+}
+
+.dropdwon-toggle::after{
+  display: block;
+  position: absolute;
+  top:50%;
+  right:20%;
+  transform: translateY(-50%);
+}
+
+ul ul a{
+  color:#fff;
+  font-size:19px;
+  font: normal normal bold FS Elliot Pro;
+}
+
+
+#content{
+  width:100%;
+  padding:20px;
+  min-width: 100vh;
+  transition:all 0.3;
+}
+
+
 
 
