@@ -32,7 +32,7 @@ body {
 }
 
 .card-pre-login {
-  background: #ffffff 0% 0% no-repeat padding-box;
+  background: #ffffff;
   box-shadow: 4px 4px 10px #00000029;
   border-radius: 30px;
   opacity: 1;
@@ -57,7 +57,7 @@ body {
 
 .button-login {
   height: 48px;
-  background: #0091da 0% 0% no-repeat padding-box;
+  background: #0091da;
   border-radius: 24px;
   opacity: 1;
 }
@@ -125,8 +125,7 @@ a:focus {
   min-width: 253px;
   max-width: 253px;
   height: 100vh;
-  background: transparent linear-gradient(17deg, #0091da 0%, #00c4d9 100%) 0% 0%
-    no-repeat padding-box;
+  background:linear-gradient(17deg, #0091da 0%, #00c4d9 100%);
   box-shadow: 3px 3px 6px #00000033;
   border-radius: 0px 50px 50px 0px;
   opacity: 1;
@@ -158,7 +157,7 @@ a:focus {
 }
 
 #sidebar ul li a:hover{
-
+  background: #FFFFFF;
   opacity: 0.2;
 }
 
