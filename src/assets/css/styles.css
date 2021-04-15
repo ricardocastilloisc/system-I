@@ -125,11 +125,11 @@ a:focus {
   min-width: 253px;
   max-width: 253px;
   height: 100vh;
-  background:linear-gradient(17deg, #0091da 0%, #00c4d9 100%);
+  background: linear-gradient(17deg, #0091da 0%, #00c4d9 100%);
   box-shadow: 3px 3px 6px #00000033;
   border-radius: 0px 50px 50px 0px;
   opacity: 1;
-  transition:all 0.3s;
+  transition: all 0.3s;
   color: #fff;
 }
 
@@ -157,60 +157,65 @@ a:focus {
   display: block;
 }
 
-#sidebar ul li a:hover{
-  background: #FFFFFF;
-  color:red !important;
+#sidebar ul li a:hover {
+  background: #ffffff;
+  color: red !important;
   opacity: 0.2;
 }
 
-#sidebar ul ul{
+#sidebar ul ul {
   padding: 0;
-  list-style:none
+  list-style: none;
 }
 
-#sidebar ul li.active>a,
-a[aria-expanded="true"]{
+#sidebar ul li.active > a,
+a[aria-expanded="true"] {
   color: #fff;
 }
 
-a[data-toggle="collapse"]{
+a[data-toggle="collapse"] {
   position: relative;
 }
 
-.dropdwon-toggle::after{
+.dropdwon-toggle::after {
   display: block;
   position: absolute;
-  top:50%;
-  right:20%;
+  top: 50%;
+  right: 20%;
   transform: translateY(-50%);
 }
 
-ul ul a{
-
-  color:#fff;
-  font-size:19px;
+ul ul a {
+  color: #fff;
+  font-size: 19px;
   font: normal normal bold FS Elliot Pro;
 }
 
-
-#content{
-  width:100%;
+#content {
+  width: 100%;
   min-width: 100vh;
-  transition:all 0.3;
+  transition: all 0.3;
 }
 
-@media (max-width:768px){
-  #sidebar{
+@media (max-width: 768px) {
+  #sidebar {
     margin-left: -253px;
   }
-  #sidebar.active{
-    margin-left:0;
+  #sidebar.active {
+    margin-left: 0;
   }
-  #sidebarCollapse span{
+  #sidebarCollapse span {
     display: none;
   }
 }
 
-
-
-
+.text-title-menu {
+  margin-left: 32px;
+  width: 155px;
+  height: 44px;
+  text-align: left;
+  font: normal normal normal 21px/23px FS Elliot Pro;
+  letter-spacing: 0px;
+  color: #ffffff;
+  opacity: 1;
+}
