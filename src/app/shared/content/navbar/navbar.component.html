@@ -1,96 +1,96 @@
-
 <div class="wrapper">
-<nav id="sidebar">
-  <div class="sidebar-header">
-    <div class="logo-navbar"></div>
-  </div>
-  <ul class="lisst-unstyled components">
-    <p class="text-title-menu">Sistema Integral Automtizado</p>
-    <li>
-      <a href="#">Inicio</a>
-    </li>
-    <li class="active">
-      <a
-      href="#administracion"
-        class="dropdown-toggle"
-        data-toggle="collapse"
-        data-target="#administracion"
-        aria-expanded="false"
-      >
-        Administración
-      </a>
-      <ul class="collapse lisst-unstyled" id="administracion">
-        <li>
-          <a href="#">Catálogos</a>
-        </li>
-        <li>
-          <a href="#">Usuarios</a>
-        </li>
-      </ul>
-    </li>
-    <li class="active">
-      <a
-      href="#auditoria"
-        class="dropdown-toggle"
-        data-toggle="collapse"
-        data-target="#auditoria"
-        aria-expanded="false"
-      >
-        Auditoria
-      </a>
-      <ul class="collapse lisst-unstyled" id="auditoria">
-        <li>
-          <a href="#">Archivos</a>
-        </li>
-        <li>
-          <a href="#">Catálogos</a>
-        </li>
-        <li>
-          <a href="#">Procesos</a>
-        </li>
-        <li>
-          <a href="#">Usarios</a>
-        </li>
-      </ul>
-    </li>
-    <li class="active">
-      <a
-      href="#procesos"
-        class="dropdown-toggle"
-        data-toggle="collapse"
-        data-target="#procesos"
-        aria-expanded="false"
-      >
-        Procesos
-      </a>
-      <ul class="collapse lisst-unstyled" id="procesos">
-        <li>
-          <a href="#">Diurnios</a>
-        </li>
-        <li>
-          <a href="#">Nocturnos</a>
-        </li>
-      </ul>
-    </li>
-
-  </ul>
-</nav>
-
-<div id="content">
-  <nav style="margin-top:34px;" class="navbar navbar-expand-lg navbar-light bg-light navbar-fixed-top navbar-slide-nav">
-
-    <div class="container-fluid">
-
-      <button (click)="toggle()" type="button" id="siderCollapse" class="btn btn-light">
-
-        <span class="navbar-toggler-icon"></span>
-
-      </button>
-
+  <nav id="sidebar">
+    <div class="sidebar-header">
+      <div class="logo-navbar"></div>
     </div>
+    <ul class="lisst-unstyled components">
+      <p class="text-title-menu">Sistema Integral Automtizado</p>
+      <li>
+        <a href="#">Inicio</a>
+      </li>
+      <li class="active">
+        <a
+          href="#administracion"
+          class="dropdown-toggle"
+          data-toggle="collapse"
+          data-target="#administracion"
+          aria-expanded="false"
+        >
+          Administración
+        </a>
+        <ul class="collapse lisst-unstyled" id="administracion">
+          <li>
+            <a href="#">Catálogos</a>
+          </li>
+          <li>
+            <a href="#">Usuarios</a>
+          </li>
+        </ul>
+      </li>
+      <li class="active">
+        <a
+          href="#auditoria"
+          class="dropdown-toggle"
+          data-toggle="collapse"
+          data-target="#auditoria"
+          aria-expanded="false"
+        >
+          Auditoria
+        </a>
+        <ul class="collapse lisst-unstyled" id="auditoria">
+          <li>
+            <a href="#">Archivos</a>
+          </li>
+          <li>
+            <a href="#">Catálogos</a>
+          </li>
+          <li>
+            <a href="#">Procesos</a>
+          </li>
+          <li>
+            <a href="#">Usarios</a>
+          </li>
+        </ul>
+      </li>
+      <li class="active">
+        <a
+          href="#procesos"
+          class="dropdown-toggle"
+          data-toggle="collapse"
+          data-target="#procesos"
+          aria-expanded="false"
+        >
+          Procesos
+        </a>
+        <ul class="collapse lisst-unstyled" id="procesos">
+          <li>
+            <a href="#">Diurnios</a>
+          </li>
+          <li>
+            <a href="#">Nocturnos</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
   </nav>
 
-  <router-outlet></router-outlet>
+  <div id="content">
+    <nav
+      style="margin-top: 34px"
+      class="navbar navbar-expand-lg navbar-light bg-light navbar-fixed-top navbar-slide-nav"
+    >
+      <div class="container-fluid">
+        <button
+          (click)="toggle()"
+          type="button"
+          id="siderCollapse"
+          class="btn btn-light"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
+    </nav>
 
-</div>
+    <router-outlet></router-outlet>
+  </div>
 </div>
