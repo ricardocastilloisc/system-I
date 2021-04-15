@@ -1,0 +1,52 @@
+
+<div class="wrapper">
+<nav id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo-navbar"></div>
+  </div>
+  <ul class="lisst-unstyled components">
+    <p>The providers</p>
+
+    <li class="active">
+      <a
+      href="#homeSubmenu"
+        class="dropdown-toggle"
+        data-toggle="collapse"
+        data-target="#homeSubmenu"
+        aria-expanded="false"
+      >
+        Home
+      </a>
+      <ul class="collapse lisst-unstyled" id="homeSubmenu">
+        <li>
+          <a href="#">Home 1</a>
+        </li>
+        <li>
+          <a href="#">Home 2</a>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <a href="#">About</a>
+    </li>
+  </ul>
+</nav>
+
+<div id="content" style="width: 100%">
+  <nav style="margin-top:34px;" class="navbar navbar-expand-lg navbar-light bg-light navbar-fixed-top navbar-slide-nav">
+
+    <div class="container-fluid">
+
+      <button type="button" id="siderCollapse" class="btn btn-light">
+
+        <span class="navbar-toggler-icon"></span>
+
+      </button>
+
+    </div>
+  </nav>
+
+  <router-outlet></router-outlet>
+
+</div>
+</div>
