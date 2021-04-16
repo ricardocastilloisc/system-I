@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard.component';
+import { ProcesosComponent } from './procesos/procesos.component';
 
 const routes: Routes = [
   {
@@ -11,9 +12,13 @@ const routes: Routes = [
         path: '',
         loadChildren: () =>
           import('./home/home.module').then((m) => m.HomeModule),
-      },
+      },{
+        path: 'procesos',
+        loadChildren: () =>
+          import('./procesos/procesos.module').then((m) => m.ProcesosModule),
+      }
     ],
-  },
+  }
 ];
 
 @NgModule({
