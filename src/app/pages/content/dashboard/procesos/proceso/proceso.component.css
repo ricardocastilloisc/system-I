@@ -1,0 +1,78 @@
+.container-progeso {
+    margin-top: 50px;
+}
+ 
+.step-proceso{
+    background: #7C69C3;
+    width: 200px;
+    border-radius: 50px;
+    height: 63px;
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    font:  16px FS Elliot Pro;
+    color: white;
+    z-index: 1;
+}
+
+.step-proceso-disabled{
+    margin-left: -25px;
+    background: #D6D6D6;
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+    width: 200px;
+    height: 63px;
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    font: 16px FS Elliot Pro;
+    color: white;
+}
+
+.container-referencias-log{
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.container-referencias-log  a {
+    font: 20px FS Elliot Pro;
+}
+.container-referencias-log  a:hover {
+    color: #7C69C3;
+    text-decoration: underline ;
+}
+
+.title-log-table{
+    font: bold 18px FS Elliot Pro;
+ 
+}
+table.listado-log{
+    color: white;
+    width: 100%;
+    margin: 25px 0;
+    border-spacing: 0 6px;
+    text-align: center;
+}
+
+table.listado-log  th{
+    margin-left: 20px;
+    background-color: #464E7E ;
+    font: bold 18px FS Elliot Pro;
+    height: 40px;
+    height: 40px;
+    font: bold 18px FS Elliot Pro;
+    table-layout:fixed;
+}
+table.listado-log  td{
+
+    margin-left: 20px;
+    background-color: #FFFFFF ;
+    color: #707070;
+    font: 15px FS Elliot Pro;
+    height: 40px;
+    margin: 6px 0px;
+}
+
+table.listado-log td.wideRow, table th.wideRow{
+    width: 300px;
+    }
