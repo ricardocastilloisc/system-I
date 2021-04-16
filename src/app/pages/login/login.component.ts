@@ -15,6 +15,9 @@ export class LoginComponent implements OnInit {
 
 
   login = () => {
-        this.router.navigate(['/dashboard']);
+    window.location.assign(
+      'https://auth-335672086802-us-east-1.auth.us-east-1.amazoncognito.com/login?response_type=token&client_id=jll4ul3pmr6rb37i0fmtmctf&redirect_uri=http://localhost:4200/dashboard'
+    );
+        /*this.router.navigate(['/dashboard']);*/
   }
 }
