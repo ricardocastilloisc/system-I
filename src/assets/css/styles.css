@@ -153,11 +153,10 @@ a:focus {
 }
 
 #sidebar ul li a {
-  padding-left: 32px;
-  padding-top: 20.5px;
-  padding-bottom: 20.5px;
-  font-size: 19px;
-  font: normal normal bold 20px/26px FS Elliot Pro;
+  padding-left: 42px;
+  padding-top: 15.5px;
+  padding-bottom: 15.5px;
+  font: normal normal bold 18px FS Elliot Pro;
   display: block;
 }
 
@@ -223,4 +222,12 @@ ul ul a {
   letter-spacing: 0px;
   color: #ffffff;
   opacity: 1;
+}
+
+
+.footer-meunu {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  display: flex;
 }
