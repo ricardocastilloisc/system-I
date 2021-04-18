@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ɵɵtrustConstantResourceUrl } from '@angular/core';
+import { Component, OnInit,  } from '@angular/core';
 
 
 @Component({
@@ -6,11 +6,8 @@ import { AfterViewInit, Component, OnInit, ɵɵtrustConstantResourceUrl } from '
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent implements OnInit {
-
+export class DashboardComponent implements OnInit{
   constructor() { }
   ngOnInit(): void {
   }
-
-
 }
