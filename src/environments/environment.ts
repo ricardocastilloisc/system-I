@@ -27,7 +27,7 @@ export const environment = {
 
         redirectSignIn: 'localhost:4200/dashboard',
 
-        redirectSignOut: 'localhost:4200/dashboard',
+        redirectSignOut: 'localhost:4200',
 
         responseType: 'token', // or token
       },

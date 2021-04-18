@@ -9,6 +9,7 @@ import { AppState } from '../ReduxStore/app.reducers';
 import * as authActions from '../ReduxStore/actions/usuario.actions';
 import { User } from '../model/user';
 import { Usuario } from '../model/usuario.model';
+import { Router } from '@angular/router';
 
 Amplify.configure(environment.amplifyConfig);
 
@@ -16,7 +17,7 @@ Amplify.configure(environment.amplifyConfig);
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private store: Store<AppState>) {}
+  constructor(private store: Store<AppState>, private router: Router) {}
 
   initAuthData = () => {
     Auth.currentAuthenticatedUser()
@@ -54,4 +55,14 @@ export class AuthService {
         .catch(() => resolve(null));
     });
   };
+
+  signOut = () => {
+    localStorage.clear();
+    this.cleanStates();
+    this.router.navigate(['/']);
+  };
+
+  cleanStates = () => {
+    this.store.dispatch(authActions.unSetUser());
+  }
 }
