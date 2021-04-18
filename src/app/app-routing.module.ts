@@ -1,21 +1,26 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './pages/login/login.component';
-import { ProcesosComponent } from './pages/content/dashboard/procesos/procesos.component';
+import { AuthGuard } from './Guards/auth.guard';
+import { GuestGuard } from './Guards/guest.guard';
 
 const routes: Routes = [
-  { path: '', component:LoginComponent},
-  { path: 'dashboard', loadChildren: () => import('./pages/content/dashboard/dashboard.module').then(m => m.DashboardModule) },
-  { path: 'procesos', component:ProcesosComponent},
+  { path: '', component: LoginComponent, canActivate: [GuestGuard] },
+  {
+    path: 'dashboard',
+    loadChildren: () =>
+      import('./pages/content/dashboard/dashboard.module').then(
+        (m) => m.DashboardModule
+      ),
+    canLoad: [AuthGuard],
+  },
   { path: '**', redirectTo: '' },
 ];
 
-
 // ng generate module dashboard --route dashboard --module app.module
-
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

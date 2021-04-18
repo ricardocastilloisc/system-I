@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 /* import AmplifyUIAngularModule  */
 import { AmplifyUIAngularModule } from '@aws-amplify/ui-angular';
 import Amplify from 'aws-amplify';
+import { AmplifyService } from 'aws-amplify-angular';
 import awsconfig from '../aws-exports';
 
 /* Configure Amplify resources */
@@ -25,7 +26,9 @@ import { LoginComponent } from './pages/login/login.component';
     /* configure app with AmplifyUIAngularModule */
     AmplifyUIAngularModule
   ],
-  providers: [],
+  providers: [
+    AmplifyService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
