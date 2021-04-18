@@ -1,4 +1,4 @@
-import { Component, OnInit,  } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 
 
 @Component({
@@ -6,8 +6,12 @@ import { Component, OnInit,  } from '@angular/core';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent implements OnInit{
+export class DashboardComponent implements OnInit, AfterViewInit{
   constructor() { }
+
+  ngAfterViewInit(): void {
+    window.history.replaceState(null, null, window.location.pathname);
+  }
   ngOnInit(): void {
   }
 }
