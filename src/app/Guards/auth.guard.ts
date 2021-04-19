@@ -1,5 +1,6 @@
 import { Injectable} from '@angular/core';
 import {
+  ActivatedRoute,
   CanLoad,
   Router
 } from '@angular/router';
@@ -19,8 +20,8 @@ export class AuthGuard implements  CanLoad {
 
   canLoad(): Observable<boolean> {
     return this.authService.isAuth().pipe(
-      tap((estado) => {
-        if (!estado) {
+      tap((user:any) => {
+        if (!user) {
           this._router.navigate(['/login']);
         }
       }),
