@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
   urlExternalLogin:
-    'https://auth-335672086802-us-east-1.auth.us-east-1.amazoncognito.com/login?response_type=token&client_id=jll4ul3pmr6rb37i0fmtmctf&redirect_uri=http://localhost:4200/dashboard',
+    'https://auth-335672086802-us-east-1.auth.us-east-1.amazoncognito.com/login?response_type=token&client_id=jll4ul3pmr6rb37i0fmtmctf&redirect_uri=https://dev.d23mbxjbgl0msz.amplifyapp.com/',
   amplifyConfig: {
     Auth: {
       // REQUIRED - Amazon Cognito Region
