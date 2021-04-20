@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-procesos',
@@ -12,6 +11,5 @@ export class ProcesosComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
 
 }

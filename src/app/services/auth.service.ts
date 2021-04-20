@@ -59,7 +59,7 @@ export class AuthService {
   signOut = () => {
     localStorage.clear();
     this.cleanStates();
-    this.router.navigate(['/']);
+    this.router.navigate(['/login']);
   };
 
   cleanStates = () => {

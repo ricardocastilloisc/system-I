@@ -1,0 +1,94 @@
+<div class="container-fluid">
+  <div
+    class="flex-row-reverse justify-content-center"
+    style="height: 100vh; width: 100%"
+  >
+  <div class="row justify-content-center container-selector-proceso">
+
+    <div class=" d-flex col-md-4 col-xs-4 col-sm-4 col-lg-4 mr-4 col-4 align-items-center selector-proceso" style="height: 45px;">
+
+      <button id="left-button">Diurnos</button>
+      <button id="right-button">Nocturnos</button>
+
+    </div>
+
+
+  </div>
+
+  <div class="row justify-content-center ">
+    <div class="d-flex col-md-12 col-sm-12 col-xs-12 col-lg-6 .col-xl-12 justify-content-center">
+      <div class="card align-items-center " style="background: none; border: none;">
+
+        <div class="card-calendario">
+          <div>Selecciona una fecha</div>
+          <div><input type="date" placeholder="Selecciona una fecha"></div>
+          <div>
+            <select name="cars" id="cars" value="Estado">
+              <option disabled selected>Estado</option>
+              <option value="iniciado">En proceso</option>
+              <option value="detenido">Detenido</option>
+
+            </select>
+        </div>
+          <div><button>Buscar</button></div>
+        </div>
+
+      </div>
+    </div>
+    <div class="d-flex col-md-12 col-sm-12 col-xs-12 col-lg-6 .col-xl-12 justify-content-center">
+
+      <div class="card align-items-center " style="background: none; border: none;">
+        <div class="card-lista-proceso">
+          <table class="listado-proceso">
+              <tr>
+                <th>Proceso</th>
+                <th>Acción</th>
+              </tr>
+              <tr>
+                <td>MO</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>MD</td>
+                <td><span class="material-icons-outlined" (click)="consultar()">search</span></td>
+              </tr>
+              <tr>
+                <td>AIMS y Excedentes</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>CRD</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>Caja fondos</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>PFN</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>AIMS y Excedentes</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>CRD</td>
+                <td></td>
+              </tr>
+
+            </table>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+
+
+  </div>
+
+
+</div>
+

@@ -5,16 +5,16 @@ import { AuthGuard } from './Guards/auth.guard';
 import { GuestGuard } from './Guards/guest.guard';
 
 const routes: Routes = [
-  { path: '', component: LoginComponent, canActivate: [GuestGuard] },
+  { path: 'login', component: LoginComponent, canActivate: [GuestGuard] },
   {
-    path: 'dashboard',
+    path: '',
     loadChildren: () =>
       import('./pages/content/dashboard/dashboard.module').then(
         (m) => m.DashboardModule
       ),
     canLoad: [AuthGuard],
   },
-  { path: '**', redirectTo: '' },
+  { path: '**', redirectTo: 'login' },
 ];
 
 // ng generate module dashboard --route dashboard --module app.module

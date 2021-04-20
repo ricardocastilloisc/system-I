@@ -15,7 +15,7 @@ export class GuestGuard implements CanActivate {
     return Auth.currentAuthenticatedUser()
       .then((result: CognitoUser) => {
         if (result.getSignInUserSession().isValid()) {
-          this._router.navigate(['/dashboard']);
+          this._router.navigate(['/']);
           return false;
         } else {
           return true;

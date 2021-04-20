@@ -27,7 +27,7 @@ export class GuardRolesGuard implements CanActivate {
             }
           });
           if (!flagRoute) {
-            this._router.navigate(['/dashboard']);
+            this._router.navigate(['/']);
             return false;
           } else {
             return true;

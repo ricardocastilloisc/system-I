@@ -14,15 +14,31 @@ const routes: Routes = [
         path: '',
         loadChildren: () =>
           import('./home/home.module').then((m) => m.HomeModule),
-      },{
-        path: 'procesos',
+      },
+      {
+        path: 'procesos/:tipo',
         loadChildren: () =>
           import('./procesos/procesos.module').then((m) => m.ProcesosModule),
-          canActivate: [GuardRolesGuard],
-          data: { roles: [ERole.Administrador]} ///aqui se ponen los roles autorizados
-      }
+        canActivate: [GuardRolesGuard],
+        data: {
+          roles: [ERole.Administrador, ERole.Ejecutor, ERole.Soporte],
+        }, ///aqui se ponen los roles autorizados
+      },
+      {
+        path: 'administracion',
+        loadChildren: () =>
+          import('./administracion/administracion.module').then(
+            (m) => m.AdministracionModule
+          ),
+        data: { roles: [ERole.Administrador, ERole.Ejecutor, ERole.Soporte] },
+      },
+      {
+        path: 'auditoria',
+        loadChildren: () => import('./auditoria/auditoria.module').then(m => m.AuditoriaModule)
+      },
     ],
-  }
+  },
+
 ];
 
 @NgModule({
