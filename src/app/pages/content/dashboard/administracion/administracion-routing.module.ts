@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdministracionComponent } from './administracion.component';
+import { GuardRolesGuard } from '../../../../Guards/guard-roles.guard';
+import { ERole } from '../../../../validators/roles';
 
 const routes: Routes = [
   {
@@ -11,6 +13,8 @@ const routes: Routes = [
         path: 'catalogos',
         loadChildren: () =>
           import('./catalogos/catalogos.module').then((m) => m.CatalogosModule),
+          canActivate: [GuardRolesGuard],
+          data: { roles: [ERole.Administrador, ERole.Ejecutor] },
       },
       {
         path: 'usuarios',

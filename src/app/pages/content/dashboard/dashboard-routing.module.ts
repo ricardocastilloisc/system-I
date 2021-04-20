@@ -30,6 +30,7 @@ const routes: Routes = [
           import('./administracion/administracion.module').then(
             (m) => m.AdministracionModule
           ),
+          canActivate: [GuardRolesGuard],
         data: { roles: [ERole.Administrador, ERole.Ejecutor, ERole.Soporte] },
       },
       {
