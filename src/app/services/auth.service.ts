@@ -26,7 +26,7 @@ export class AuthService {
           const user = Usuario.fromAmplify(
             new User(result)
           );
-          if(!this.getLocalStorage())localStorage.setItem('access',(await Auth.currentSession()).getAccessToken().getJwtToken().toString());
+          if(!this.getToken())localStorage.setItem('access',(await Auth.currentSession()).getAccessToken().getJwtToken().toString());
           this.store.dispatch(authActions.setUser({ user }));
         } else {
           this.store.dispatch(authActions.unSetUser());
@@ -68,7 +68,7 @@ export class AuthService {
   }
 
 
-  getLocalStorage = ():String => {
+  getToken = ():String => {
     return localStorage.getItem('access');
   }
 }
