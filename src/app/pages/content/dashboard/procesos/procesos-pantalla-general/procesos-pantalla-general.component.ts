@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { APIService, CreateCATGENDIASFERIADOSInput } from '../../../../../API.service';
+import { fromPromise } from 'rxjs/observable/fromPromise';
 
 @Component({
   selector: 'app-procesos-pantalla-general',
@@ -22,7 +23,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit {
   }
 
   consultar(){
-    this.router.navigate(['/proceso']);
+    this.router.navigate(['/'+window.location.pathname+'/proceso']);
   }
 
   public onCreate(restaurant: CreateCATGENDIASFERIADOSInput) {
@@ -34,7 +35,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit {
       console.log('error creating restaurant...', e);
     });
   }
-  
+
   async consultarCatalogo(){
     console.log("Entre a la funcion")
     this.api.ListCATGENDIASFERIADOS().then(event => {
