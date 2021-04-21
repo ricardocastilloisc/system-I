@@ -10,7 +10,7 @@
     <ul class="lisst-unstyled components">
       <p class="text-title-menu">Sistema Integral Automtizado</p>
       <li>
-        <a routerLinkActive="active" routerLink="/">Inicio</a>
+        <a routerLinkActive="active" routerLink="/"><img src="../assets/imgs/inicio.svg" class="alineadoTextoImagenCentro">Inicio</a>
       </li>
       <li class="active">
         <a
@@ -20,6 +20,7 @@
           data-target="#administracion"
           aria-expanded="false"
         >
+        <img src="../assets/imgs/administracion.svg" class="alineadoTextoImagenCentro">
           Administración
         </a>
         <ul class="collapse lisst-unstyled" id="administracion">
@@ -44,7 +45,7 @@
           aria-expanded="false"
           routerLink="/auditoria/"
         >
-          Auditoria
+        <img src="../assets/imgs/auditoria.svg" class="alineadoTextoImagenCentro">Auditoria
         </a>
         <ul class="collapse lisst-unstyled" id="auditoria">
           <li>
@@ -77,7 +78,7 @@
           data-target="#procesos"
           aria-expanded="false"
         >
-          Procesos
+        <img src="../assets/imgs/procesos.svg" class="alineadoTextoImagenCentro">Procesos
         </a>
         <ul class="collapse lisst-unstyled" id="procesos">
           <li>
@@ -93,7 +94,7 @@
         </ul>
       </li>
       <li>
-        <a (click)="signOut()">Cerrar sesión</a>
+        <a (click)="signOut()"><img src="../assets/imgs/cerrar-sesion.svg" class="alineadoTextoImagenCentro">Cerrar sesión</a>
       </li>
     </ul>
   </nav>

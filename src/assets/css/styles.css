@@ -231,3 +231,10 @@ ul ul a {
   bottom: 0;
   display: flex;
 }
+
+
+img.alineadoTextoImagenCentro{
+  vertical-align: middle;
+  float: left;
+  margin-right: 10px;
+}
