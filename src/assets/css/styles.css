@@ -197,7 +197,7 @@ ul ul a {
 
 #content {
   width: 100%;
-  min-width: 100vh;
+  min-width: 50vh;
   transition: all 0.3;
 }
 
