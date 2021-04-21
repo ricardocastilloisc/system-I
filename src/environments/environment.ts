@@ -7,55 +7,22 @@ export const environment = {
   /*urlExternalLogin:
     'https://auth-335672086802-us-east-1.auth.us-east-1.amazoncognito.com/login?response_type=token&client_id=jll4ul3pmr6rb37i0fmtmctf&redirect_uri=https://dev.d23mbxjbgl0msz.amplifyapp.com/',
   */
-    urlExternalLogin:
-     'https://auth-335672086802-us-east-1.auth.us-east-1.amazoncognito.com/login?response_type=token&client_id=jll4ul3pmr6rb37i0fmtmctf&redirect_uri=http://localhost:4200/dashboard',
+  urlExternalLogin:
+    'https://auth-335672086802-us-east-1.auth.us-east-1.amazoncognito.com/oauth2/authorize?redirect_uri=http://localhost:4200/dashboard&response_type=token&client_id=jll4ul3pmr6rb37i0fmtmctf&identity_provider=Okta&scope=phone%20email%20openid%20profile&state=aYnW5M8HLLjqDNFngU8Zut5Y5piMOrwC&code_challenge=nfmOGFZT1-rvebusaLLXJzVRvLPdChqT8OahbWfcRK&code_challenge_method=S256',
+  
   amplifyConfig: {
     Auth: {
-      // REQUIRED - Amazon Cognito Region
-      region: 'us-east-1',
-
-      // OPTIONAL - Amazon Cognito User Pool ID
-      userPoolId: 'us-east-1_mRG6EmrII',
-
-      // OPTIONAL - Amazon Cognito Web Client ID (26-char alphanumeric string)
-      userPoolWebClientId: 'jll4ul3pmr6rb37i0fmtmctf',
-
-      // OPTIONAL - Enforce user authentication prior to accessing AWS resources or not
-      // mandatorySignIn: false,
-
+      region: "us-east-1",
+      userPoolId: "us-east-1_mRG6EmrII",
+      userPoolWebClientId: "jll4ul3pmr6rb37i0fmtmctf",
       oauth: {
-        domain: 'auth-335672086802-us-east-1.auth.us-east-1.amazoncognito.com',
-
-        scope: ['phone', 'email', 'openid', 'profile'],
-
-        redirectSignIn: 'localhost:4200/dashboard',
-
-        redirectSignOut: 'localhost:4200',
-
-        responseType: 'token', // or token
+        domain: "auth-335672086802-us-east-1.auth.us-east-1.amazoncognito.com",
+        scope: ["phone", "email", "openid", "profile"],
+        redirectSignIn: "localhost:4200/dashboard",
+        redirectSignOut: "localhost:4200",
+        responseType: "token"
       },
-
-      /*// OPTIONAL - Configuration for cookie storage
-      // Note: if the secure flag is set to true, then the cookie transmission requires a secure protocol
-      cookieStorage: {
-        // REQUIRED - Cookie domain (only required if cookieStorage is provided)
-        domain: '.yourdomain.com',
-        // OPTIONAL - Cookie path
-        path: '/',
-        // OPTIONAL - Cookie expiration in days
-        expires: 365,
-        // OPTIONAL - Cookie secure flag
-        // Either true or false, indicating if the cookie transmission requires a secure protocol (https).
-        secure: true
-      },
-
-      // OPTIONAL - customized storage object
-      storage: new MyStorage(),
-
-      // OPTIONAL - Manually set the authentication flow type. Default is 'USER_SRP_AUTH'
-      authenticationFlowType: 'USER_PASSWORD_AUTH'*/
     },
-
     API: {
       endpoints: [
         {
