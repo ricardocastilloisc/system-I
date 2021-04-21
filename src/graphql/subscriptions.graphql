@@ -1,0 +1,46 @@
+# this is an auto generated file. This will be overwritten
+subscription OnCreateTodo {
+  onCreateTodo {
+    id
+    name
+    description
+    createdAt
+    updatedAt
+  }
+}
+subscription OnUpdateTodo {
+  onUpdateTodo {
+    id
+    name
+    description
+    createdAt
+    updatedAt
+  }
+}
+subscription OnDeleteTodo {
+  onDeleteTodo {
+    id
+    name
+    description
+    createdAt
+    updatedAt
+  }
+}
+subscription OnCreateCATGENDIASFERIADOS($FECHA_FERIADO: String, $ID: Int) {
+  onCreateCATGENDIASFERIADOS(FECHA_FERIADO: $FECHA_FERIADO, ID: $ID) {
+    FECHA_FERIADO
+    ID
+  }
+}
+subscription OnUpdateCATGENDIASFERIADOS($FECHA_FERIADO: String, $ID: Int) {
+  onUpdateCATGENDIASFERIADOS(FECHA_FERIADO: $FECHA_FERIADO, ID: $ID) {
+    FECHA_FERIADO
+    ID
+  }
+}
+subscription OnDeleteCATGENDIASFERIADOS($FECHA_FERIADO: String, $ID: Int) {
+  onDeleteCATGENDIASFERIADOS(FECHA_FERIADO: $FECHA_FERIADO, ID: $ID) {
+    FECHA_FERIADO
+    ID
+  }
+}
