@@ -73,7 +73,7 @@ export class AuthService {
   }
 
   signIn = async() => {
-    await Auth.federatedSignIn({customProvider: "Okta"});
+    await Auth.federatedSignIn({customProvider: "SAML"});
   }
 
 
