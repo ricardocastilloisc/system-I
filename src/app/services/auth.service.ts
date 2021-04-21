@@ -24,8 +24,9 @@ export class AuthService {
       .then(async (result: CognitoUser) => {
         if (result.getSignInUserSession().isValid()) {
           const user = Usuario.fromAmplify(
-            new User(await Auth.currentAuthenticatedUser())
+            new User(result)
           );
+          if(!this.getToken())localStorage.setItem('access',(await Auth.currentSession()).getAccessToken().getJwtToken().toString());
           this.store.dispatch(authActions.setUser({ user }));
         } else {
           this.store.dispatch(authActions.unSetUser());
@@ -65,4 +66,13 @@ export class AuthService {
   cleanStates = () => {
     this.store.dispatch(authActions.unSetUser());
   }
+
+  getToken = ():String => {
+    return localStorage.getItem('access');
+  }
+
+  signIn = async() => {
+    await Auth.federatedSignIn({customProvider: "Okta"});
+  }
+
 }
