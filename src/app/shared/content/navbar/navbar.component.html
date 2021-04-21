@@ -1,5 +1,9 @@
 <div class="wrapper">
-  <nav id="sidebar" class="d-flex flex-column">
+  <nav
+    id="sidebar"
+    class="d-flex flex-column"
+    *ngIf="DataUser$ | async as DataUser"
+  >
     <div class="sidebar-header">
       <div class="logo-navbar"></div>
     </div>
@@ -19,12 +23,12 @@
           Administración
         </a>
         <ul class="collapse lisst-unstyled" id="administracion">
-          <li>
+          <li *ngIf="rolesValids(DataUser, [Administrador, Ejecutor])">
             <a routerLinkActive="active" routerLink="/administracion/catalogos"
               >Catálogos</a
             >
           </li>
-          <li>
+          <li *ngIf="rolesValids(DataUser, [Soporte])">
             <a routerLinkActive="active" routerLink="/administracion/usuarios"
               >Usuarios</a
             >
@@ -44,16 +48,24 @@
         </a>
         <ul class="collapse lisst-unstyled" id="auditoria">
           <li>
-            <a routerLinkActive="active" routerLink="/auditoria/archivos">Archivos</a>
+            <a routerLinkActive="active" routerLink="/auditoria/archivos"
+              >Archivos</a
+            >
           </li>
           <li>
-            <a routerLinkActive="active" routerLink="/auditoria/catalogos">Catálogos</a>
+            <a routerLinkActive="active" routerLink="/auditoria/catalogos"
+              >Catálogos</a
+            >
           </li>
           <li>
-            <a routerLinkActive="active" routerLink="/auditoria/procesos"  >Procesos</a>
+            <a routerLinkActive="active" routerLink="/auditoria/procesos"
+              >Procesos</a
+            >
           </li>
           <li>
-            <a routerLinkActive="active" routerLink="/auditoria/usuarios">Usuarios</a>
+            <a routerLinkActive="active" routerLink="/auditoria/usuarios"
+              >Usuarios</a
+            >
           </li>
         </ul>
       </li>
@@ -69,10 +81,14 @@
         </a>
         <ul class="collapse lisst-unstyled" id="procesos">
           <li>
-            <a routerLinkActive="active" routerLink="/procesos/diurnos">Diurnos</a>
+            <a routerLinkActive="active" routerLink="/procesos/diurnos"
+              >Diurnos</a
+            >
           </li>
           <li>
-            <a routerLinkActive="active" routerLink="/procesos/nocturnos">Nocturnos</a>
+            <a routerLinkActive="active" routerLink="/procesos/nocturnos"
+              >Nocturnos</a
+            >
           </li>
         </ul>
       </li>

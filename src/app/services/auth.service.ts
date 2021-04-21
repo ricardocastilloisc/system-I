@@ -11,6 +11,7 @@ import { User } from '../model/user';
 import { Usuario } from '../model/usuario.model';
 import { Router } from '@angular/router';
 
+
 Amplify.configure(environment.amplifyConfig);
 
 @Injectable({
@@ -73,6 +74,17 @@ export class AuthService {
 
   signIn = async() => {
     await Auth.federatedSignIn({customProvider: "Okta"});
+  }
+
+
+  rolesValids = (User:Usuario, roles:any[]):boolean => {
+    let flagValidate = false;
+    User.groups.forEach((element) => {
+      if (roles.includes(element)) {
+        flagValidate = true;
+      }
+    });
+    return flagValidate;
   }
 
 }
