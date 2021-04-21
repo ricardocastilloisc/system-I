@@ -11,14 +11,19 @@ import { APIService, CreateCATGENDIASFERIADOSInput } from '../../../../../API.se
 export class ProcesosPantallaGeneralComponent implements OnInit {
 
   public createForm: FormGroup;
-  constructor(private router: Router, private api: APIService, private fb: FormBuilder) {}
+  constructor(private router: Router, private api: APIService, private fb: FormBuilder) { }
 
   diasFeriados: Array<CreateCATGENDIASFERIADOSInput>;
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.createForm = this.fb.group({
+      'ID': ['', Validators.required],
+      'FECHA_FERIADO': ['', Validators.required]
+    });
+  }
 
-  consultar = () => {
-    this.router.navigate(['/' + window.location.pathname + '/proceso']);
-  };
+  consultar(){
+    this.router.navigate(['/proceso']);
+  }
 
   public onCreate(restaurant: CreateCATGENDIASFERIADOSInput) {
     this.api.CreateCATGENDIASFERIADOS(restaurant).then(event => {
@@ -29,8 +34,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit {
       console.log('error creating restaurant...', e);
     });
   }
-
-
+  
   async consultarCatalogo(){
     console.log("Entre a la funcion")
     this.api.ListCATGENDIASFERIADOS().then(event => {
