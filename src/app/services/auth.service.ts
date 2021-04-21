@@ -67,8 +67,12 @@ export class AuthService {
     this.store.dispatch(authActions.unSetUser());
   }
 
-
   getToken = ():String => {
     return localStorage.getItem('access');
   }
+
+  signIn = async() => {
+    await Auth.federatedSignIn({customProvider: "Okta"});
+  }
+
 }
