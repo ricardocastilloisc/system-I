@@ -23,7 +23,7 @@ export class ProcesosComponent implements OnInit {
   }
 
   consultar(){
-    this.router.navigate(['/proceso']);
+    this.router.navigate(['/'+window.location.pathname+'/proceso']);
   }
 
   public onCreate(restaurant: CreateCATGENDIASFERIADOSInput) {

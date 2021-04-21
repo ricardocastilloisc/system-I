@@ -231,3 +231,28 @@ ul ul a {
   bottom: 0;
   display: flex;
 }
+
+.detalle-icon{
+  background: transparent url('../icons/Icono\ -\ \ detalles.svg') 0% 0% no-repeat padding-box;
+  width: 30px;
+  height: 30px;
+  opacity: 1;
+  margin: 0 15px;
+  
+}
+
+.play-icon{
+  background: transparent url('../icons/Icono\ -\ \ iniciar.svg') 0% 0% no-repeat padding-box;
+  width: 30px;
+  height: 30px;
+  opacity: 1;
+  margin: 0 15px;
+}
+
+.stop-icon{
+  background: transparent url('../icons/Icono\ -\ \ detener.svg') 0% 0% no-repeat padding-box;
+  width: 30px;
+  height: 30px;
+  opacity: 1;
+  margin: 0 15px;
+}
