@@ -163,17 +163,17 @@ a:focus {
 }
 
 #sidebar ul li a:hover {
-  background:#66CDE8;
+  background: #66cde8;
 }
 
 #sidebar ul ul {
   padding: 0;
   list-style: none;
-  background: #33B9E1;
+  background: #33b9e1;
 }
 
-#sidebar ul ul a{
-  color: ffffff
+#sidebar ul ul a {
+  color: ffffff;
 }
 
 #sidebar ul li.active > a,
@@ -239,4 +239,12 @@ img.alineadoTextoImagenCentro {
   vertical-align: middle;
   float: left;
   margin-right: 10px;
+}
+
+.alineadoTextoDerecha {
+  text-align: right;
+  margin-top: 15px;
+  margin-right: 10px;
+  line-height: 5px;
+  color: #00C4D9;
 }

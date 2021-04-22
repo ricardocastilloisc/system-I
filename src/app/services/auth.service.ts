@@ -18,17 +18,17 @@ Amplify.configure(environment.amplifyConfig);
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private store: Store<AppState>, private router: Router) {}
+  constructor(private store: Store<AppState>, private router: Router) { }
 
   initAuthData = () => {
     Auth.currentAuthenticatedUser()
       .then(async (result: CognitoUser) => {
         if (result.getSignInUserSession().isValid()) {
           console.log(JSON.stringify(result));
-          const user = Usuario.fromAmplify(            
+          const user = Usuario.fromAmplify(
             new User(result)
           );
-          if(!this.getToken())localStorage.setItem('access',(await Auth.currentSession()).getAccessToken().getJwtToken().toString());
+          if (!this.getToken()) localStorage.setItem('access', (await Auth.currentSession()).getAccessToken().getJwtToken().toString());
           this.store.dispatch(authActions.setUser({ user }));
         } else {
           this.store.dispatch(authActions.unSetUser());
@@ -69,16 +69,16 @@ export class AuthService {
     this.store.dispatch(authActions.unSetUser());
   }
 
-  getToken = ():String => {
+  getToken = (): String => {
     return localStorage.getItem('access');
   }
 
-  signIn = async() => {
-    await Auth.federatedSignIn({customProvider: "SAML"});
+  signIn = async () => {
+    await Auth.federatedSignIn({ customProvider: "SAML" });
   }
 
 
-  rolesValids = (User:Usuario, roles:any[]):boolean => {
+  rolesValids = (User: Usuario, roles: any[]): boolean => {
     let flagValidate = false;
     User.groups.forEach((element) => {
       if (roles.includes(element)) {
