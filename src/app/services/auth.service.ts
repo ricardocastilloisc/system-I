@@ -24,7 +24,7 @@ export class AuthService {
     Auth.currentAuthenticatedUser()
       .then(async (result: CognitoUser) => {
         if (result.getSignInUserSession().isValid()) {
-          console.log(JSON.stringify(result));
+          //(JSON.stringify(result));
           const user = Usuario.fromAmplify(
             new User(result)
           );
