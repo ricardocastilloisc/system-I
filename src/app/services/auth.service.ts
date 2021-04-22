@@ -24,7 +24,8 @@ export class AuthService {
     Auth.currentAuthenticatedUser()
       .then(async (result: CognitoUser) => {
         if (result.getSignInUserSession().isValid()) {
-          const user = Usuario.fromAmplify(
+          console.log(JSON.stringify(result));
+          const user = Usuario.fromAmplify(            
             new User(result)
           );
           if(!this.getToken())localStorage.setItem('access',(await Auth.currentSession()).getAccessToken().getJwtToken().toString());
