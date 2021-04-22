@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-
+import Auth from '@aws-amplify/auth';
 
 @Component({
   selector: 'app-dashboard',

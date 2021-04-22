@@ -1,8 +1,8 @@
-<div class="wrapper">
+<div class="wrapper" *ngIf="DataUser$ | async as DataUser">
   <nav
     id="sidebar"
     class="d-flex flex-column"
-    *ngIf="DataUser$ | async as DataUser"
+    
   >
     <div class="sidebar-header">
       <div class="logo-navbar"></div>
@@ -162,7 +162,7 @@
           id="siderCollapse"
           class="btn btn-light"
         >
-          <span class="navbar-toggler-icon"></span>
+          <span class="navbar-toggler-icon"></span>{{DataUser.email}}
         </button>
       </div>
     </nav>
