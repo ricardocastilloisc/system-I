@@ -49,7 +49,7 @@ export class NavbarComponent implements OnInit {
     if (window.innerWidth < 769) {
       if ($('#sidebar').hasClass('active')) {
         $('#content').css('margin-left', '253px');
-        $('#headernav').css('width', '85%');
+        $('#headernav').css('width', '80%');
       } else {
         $('#content').css('margin-left', '0px');
         $('#headernav').css('width', '100%');
@@ -60,7 +60,7 @@ export class NavbarComponent implements OnInit {
         $('#headernav').css('width', '100%');
       } else {
         $('#content').css('margin-left', '253px');
-        $('#headernav').css('width', '85%');
+        $('#headernav').css('width', '80%');
       }
     }
   };
