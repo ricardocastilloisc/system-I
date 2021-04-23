@@ -38,5 +38,14 @@ export class NavbarComponent implements OnInit {
 
   toggle = () => {
     $('#sidebar').toggleClass('active');
+
+    /*
+
+    $("#content").css("background", "red");
+
+    if($("#sidebar").hasClass("active")){
+      console.log('hey hola mundo');
+    }*/
+
   };
 }
