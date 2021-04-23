@@ -1,5 +1,128 @@
-<div *ngIf="DataUser$ | async as DataUser">
-  <pre>
-    {{ DataUser | json }}
-  </pre>
-</div>
+<section id="optionshome">
+  <div class="container-fluid">
+    <div class="d-flex" style="height: 75vh; width: 100%">
+
+
+      <div class="row contentCards">
+        <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+          <div class="card">
+            <div
+              class="aling-items-center text-center headerCardsMenu"
+              style="background-color: #0a8299"
+            >
+              <img
+                src="assets/imgs/icons/inicio/administracion.svg"
+                class="rounded-circle ImgsMenuHome"
+              />
+              <div
+                class="d-flex flex-column align-items-center justify-content-center heightTitleCardsMenu"
+              >
+                Administración
+              </div>
+            </div>
+
+            <div class="card-body">
+              <div
+                class="d-flex flex-column align-items-center justify-content-center"
+              >
+                <div>
+                  <div
+                    class="elementsMenus d-flex flex-column justify-content-center"
+                  >
+                  <div>      <a routerLinkActive="active" routerLink="/administracion/catalogos">
+                    <img src="assets/imgs/icons/inicio/items/catalogo.png" class="itemsTextoImagenCentro" />
+                    Catálogos</a></div>
+                  </div>
+                  <div
+                    class="elementsMenus d-flex flex-column justify-content-center"
+                  >
+                    <div>Usuarios</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12 marginResponsibe">
+          <div class="card">
+            <div
+              class="aling-items-center text-center headerCardsMenu"
+              style="background-color: #464E7E"
+            >
+              <img
+                src="assets/imgs/icons/inicio/proceso.svg"
+                class="rounded-circle ImgsMenuHome"
+              />
+              <div
+                class="d-flex flex-column align-items-center justify-content-center heightTitleCardsMenu"
+              >
+                Procesos
+              </div>
+            </div>
+
+            <div class="card-body">
+              <div
+                class="d-flex flex-column align-items-center justify-content-center"
+              >
+                <div>
+                  <div
+                    class="elementsMenus d-flex flex-column justify-content-center"
+                  >
+                    <div>      <a routerLinkActive="active" routerLink="/administracion/catalogos">
+                      <img src="../assets/imgs/icons/catalogo.svg" class="img.itemsTextoImagenCentro" />
+                      Catálogos</a></div>
+                  </div>
+                  <div
+                    class="elementsMenus d-flex flex-column justify-content-center"
+                  >
+                    <div>Usuarios</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12 marginResponsibe">
+          <div class="card">
+            <div
+              class="aling-items-center text-center headerCardsMenu"
+              style="background-color: #035FA4"
+            >
+              <img
+                src="assets/imgs/icons/inicio/auditoria.svg"
+                class="rounded-circle ImgsMenuHome"
+              />
+              <div
+                class="d-flex flex-column align-items-center justify-content-center heightTitleCardsMenu"
+              >
+              Auditoría
+              </div>
+            </div>
+
+            <div class="card-body">
+              <div
+                class="d-flex flex-column align-items-center justify-content-center"
+              >
+                <div>
+                  <div
+                    class="elementsMenus d-flex flex-column justify-content-center"
+                  >
+                    <div>Catálogos</div>
+                  </div>
+                  <div
+                    class="elementsMenus d-flex flex-column justify-content-center"
+                  >
+                    <div>Usuarios</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      
+    </div>
+  </div>
+</section>

@@ -1,4 +1,4 @@
-<div class="wrapper">
+<div class="wrapper" *ngIf="DataUser$ | async as DataUser">
   <nav id="sidebar" class="d-flex flex-column">
     <div class="sidebar-header">
       <div class="logo-navbar"></div>
@@ -6,7 +6,12 @@
     <ul class="lisst-unstyled components">
       <p class="text-title-menu">Sistema Integral Automtizado</p>
       <li>
-        <a routerLinkActive="active" routerLink="/">Inicio</a>
+        <a routerLinkActive="active" routerLink="/"
+          ><img
+            src="../assets/imgs/inicio.svg"
+            class="alineadoTextoImagenCentro"
+          />Inicio</a
+        >
       </li>
       <li class="active">
         <a
@@ -16,17 +21,29 @@
           data-target="#administracion"
           aria-expanded="false"
         >
+          <img
+            src="../assets/imgs/administracion.svg"
+            class="alineadoTextoImagenCentro"
+          />
           Administración
         </a>
         <ul class="collapse lisst-unstyled" id="administracion">
-          <li>
-            <a routerLinkActive="active" routerLink="/administracion/catalogos"
-              >Catálogos</a
+          <li *ngIf="rolesValids(DataUser, [Administrador, Ejecutor])">
+            <a routerLinkActive="active" routerLink="/administracion/catalogos">
+              <img
+                src="../assets/imgs/icons/catalogo.svg"
+                class="alineadoTextoImagenCentro"
+              />
+              Catálogos</a
             >
           </li>
-          <li>
-            <a routerLinkActive="active" routerLink="/administracion/usuarios"
-              >Usuarios</a
+          <li *ngIf="rolesValids(DataUser, [Soporte])">
+            <a routerLinkActive="active" routerLink="/administracion/usuarios">
+              <img
+                src="../assets/imgs/icons/usuarios.svg"
+                class="alineadoTextoImagenCentro"
+              />
+              Usuarios</a
             >
           </li>
         </ul>
@@ -40,20 +57,47 @@
           aria-expanded="false"
           routerLink="/auditoria/"
         >
-          Auditoria
+          <img
+            src="../assets/imgs/auditoria.svg"
+            class="alineadoTextoImagenCentro"
+          />Auditoria
         </a>
         <ul class="collapse lisst-unstyled" id="auditoria">
           <li>
-            <a routerLinkActive="active" routerLink="/auditoria/archivos">Archivos</a>
+            <a routerLinkActive="active" routerLink="/auditoria/archivos">
+              <img
+                src="../assets/imgs/icons/archivos.svg"
+                class="alineadoTextoImagenCentro"
+              />
+              Archivos</a
+            >
           </li>
           <li>
-            <a routerLinkActive="active" routerLink="/auditoria/catalogos">Catálogos</a>
+            <a routerLinkActive="active" routerLink="/auditoria/catalogos">
+              <img
+                src="../assets/imgs/icons/catalogo.svg"
+                class="alineadoTextoImagenCentro"
+              />
+              Catálogos</a
+            >
           </li>
           <li>
-            <a routerLinkActive="active" routerLink="/auditoria/procesos"  >Procesos</a>
+            <a routerLinkActive="active" routerLink="/auditoria/procesos">
+              <img
+                src="../assets/imgs/icons/procesos.svg"
+                class="alineadoTextoImagenCentro"
+              />
+              Procesos</a
+            >
           </li>
           <li>
-            <a routerLinkActive="active" routerLink="/auditoria/usuarios">Usuarios</a>
+            <a routerLinkActive="active" routerLink="/auditoria/usuarios">
+              <img
+                src="../assets/imgs/icons/usuarios.svg"
+                class="alineadoTextoImagenCentro"
+              />
+              Usuarios</a
+            >
           </li>
         </ul>
       </li>
@@ -65,19 +109,39 @@
           data-target="#procesos"
           aria-expanded="false"
         >
-          Procesos
+          <img
+            src="../assets/imgs/procesos.svg"
+            class="alineadoTextoImagenCentro"
+          />Procesos
         </a>
         <ul class="collapse lisst-unstyled" id="procesos">
           <li>
-            <a routerLinkActive="active" routerLink="/procesos/diurnos">Diurnos</a>
+            <a routerLinkActive="active" routerLink="/procesos/diurnos">
+              <img
+                src="../assets/imgs/icons/sun.svg"
+                class="alineadoTextoImagenCentro"
+              />
+              Diurnos</a
+            >
           </li>
           <li>
-            <a routerLinkActive="active" routerLink="/procesos/nocturnos">Nocturnos</a>
+            <a routerLinkActive="active" routerLink="/procesos/nocturnos">
+              <img
+                src="../assets/imgs/icons/moon.svg"
+                class="alineadoTextoImagenCentro"
+              />
+              Nocturnos</a
+            >
           </li>
         </ul>
       </li>
       <li>
-        <a (click)="signOut()">Cerrar sesión</a>
+        <a (click)="signOut()"
+          ><img
+            src="../assets/imgs/cerrar-sesion.svg"
+            class="alineadoTextoImagenCentro"
+          />Cerrar sesión</a
+        >
       </li>
     </ul>
   </nav>
@@ -85,6 +149,7 @@
   <div id="content">
     <nav
       style="margin-top: 34px"
+      id="headernav"
       class="navbar navbar-expand-lg navbar-light bg-light navbar-fixed-top navbar-slide-nav"
     >
       <div class="container-fluid">
@@ -96,9 +161,16 @@
         >
           <span class="navbar-toggler-icon"></span>
         </button>
+        <div class="alineadoTextoDerecha">
+          <p>
+            <b>{{ DataUser.email }}</b>
+          </p>
+          <p>{{ DataUser.groups[0] }}</p>
+        </div>
       </div>
     </nav>
-
-    <router-outlet></router-outlet>
+    <div style="margin-top: 150px">
+      <router-outlet></router-outlet>
+    </div>
   </div>
 </div>

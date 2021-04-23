@@ -1,6 +1,5 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AuthService } from '../../../../services/auth.service';
 import { AppState } from '../../../../ReduxStore/app.reducers';
 import { Usuario } from 'src/app/model/usuario.model';
 import { Observable } from 'rxjs';
@@ -17,7 +16,8 @@ export class HomeComponent implements OnInit {
   constructor(private store: Store<AppState>) { }
 
   ngOnInit(): void {
-    this.DataUser$ = this.store.select( ({usuario}) => usuario.user)
+    this.DataUser$ = this.store.select(({ usuario }) => usuario.user);
+
   }
 
 }
