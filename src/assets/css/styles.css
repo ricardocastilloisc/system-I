@@ -311,3 +311,9 @@ img.alineadoTextoImagenCentro {
   margin-top: 50px;
   width: 100%;
 }
+
+
+img.itemsTextoImagenCentro {
+  vertical-align: middle;
+  margin-top: 0 !important;
+}
