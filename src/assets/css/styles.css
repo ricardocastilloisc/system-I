@@ -128,10 +128,22 @@ a:focus {
   opacity: 1;
   transition: all 0.3s;
   color: #fff;
+  position: fixed;
+  z-index: 200;
 }
 
+#headernav {
+  position: fixed;
+  z-index: 40;
+  width: 85%;
+}
 #sidebar.active {
   margin-left: -253px;
+}
+
+#content {
+  margin-left: 253px;
+  transition: all 0.3s;
 }
 
 #sidebar .sidebar-header {
@@ -209,11 +221,23 @@ a[data-toggle="collapse"] {
   #sidebar {
     margin-left: -253px;
   }
+
+  #content {
+    margin-left: 0px;
+  }
+
+  #headernav {
+    width: 100%;
+  }
   #sidebar.active {
     margin-left: 0;
   }
   #sidebarCollapse span {
     display: none;
+  }
+
+  .marginResponsibe {
+    margin-top: 70px;
   }
 }
 
@@ -246,5 +270,44 @@ img.alineadoTextoImagenCentro {
   margin-top: 15px;
   margin-right: 10px;
   line-height: 5px;
-  color: #00C4D9;
+  color: #00c4d9;
+}
+
+#optionshome {
+  margin-top: 150px;
+}
+
+#optionshome img {
+  margin-top: -50px;
+}
+#optionshome .card {
+  border-radius: 30px;
+}
+.headerCardsMenu {
+  border-radius: 30px 30px 0 0;
+  padding-bottom: 20px;
+}
+
+.ImgsMenuHome {
+  height: 80px;
+  width: 80px;
+}
+.heightTitleCardsMenu {
+  height: 200px;
+  height: 50px;
+  font: normal normal bold 25px/33px FS Elliot Pro;
+  letter-spacing: 0px;
+  color: #ffffff;
+}
+
+.elementsMenus {
+  height: 64px;
+  font: normal normal bold 20px/26px FS Elliot Pro;
+  letter-spacing: 0px;
+  color: #707070;
+}
+
+.contentCards {
+  margin-top: 50px;
+  width: 100%;
 }
