@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as AWS from 'aws-sdk';
-import { environment } from '../../../../../../environments/environment.prod';
-
-
+import { environment } from '../../../../../../environments/environment';
 
 // me imagino que son configuraciones absolutas  y solo van a cambiar depeendiendo si es produccion o desarrollo?
 AWS.config.update(environment.SESConfig);
@@ -20,8 +18,8 @@ export class UsuariosComponent implements OnInit {
 ///estos van a cambiar constatantemente????????
   params = {
     GroupName: "Administrador", /* required */
-    UserPoolId: "us-east-1_Cx1XNNQxU", /* required */
-    Username: "azure_rwayeowx9nsigogmrb6adqmpgrl2hohoivn5bgsobja" /* required */
+    UserPoolId: "us-east-1_Cx1XNNQxU", /* required */ /* mandar a enviroment*/
+    Username: "azure_rwayeowx9nsigogmrb6adqmpgrl2hohoivn5bgsobja" /* required */ /* mandar a enviroment*/
   };
 
   constructor() {
