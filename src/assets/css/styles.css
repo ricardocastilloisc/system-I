@@ -259,7 +259,6 @@ a[data-toggle="collapse"] {
   display: flex;
 }
 
-<<<<<<< HEAD
 .detalle-icon{
   background: transparent url('../icons/Icono\ -\ \ detalles.svg') 0% 0% no-repeat padding-box;
   width: 30px;
@@ -284,7 +283,6 @@ a[data-toggle="collapse"] {
   opacity: 1;
   margin: 0 15px;
 }
-=======
 img.alineadoTextoImagenCentro {
   vertical-align: middle;
   float: left;
@@ -343,4 +341,3 @@ img.itemsTextoImagenCentro {
   vertical-align: middle;
   margin-top: 0 !important;
 }
->>>>>>> e6a0f205aacddf4688d7c3b99133ccdb6914f2b3
