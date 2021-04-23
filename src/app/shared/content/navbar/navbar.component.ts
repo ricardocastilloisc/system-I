@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { AfterViewInit, Component, HostListener, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AuthService } from 'src/app/services/auth.service';
 import { AppState } from '../../../ReduxStore/app.reducers';
@@ -12,7 +12,7 @@ declare var $: any;
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css'],
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, AfterViewInit {
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.resizeMenuContent();
@@ -27,6 +27,9 @@ export class NavbarComponent implements OnInit {
     private authService: AuthService,
     private store: Store<AppState>
   ) {}
+  ngAfterViewInit(): void {
+    this.resizeMenuContent();
+  }
 
   ngOnInit(): void {
     this.DataUser$ = this.store.select(({ usuario }) => usuario.user);
@@ -49,7 +52,7 @@ export class NavbarComponent implements OnInit {
     if (window.innerWidth < 769) {
       if ($('#sidebar').hasClass('active')) {
         $('#content').css('margin-left', '253px');
-        $('#headernav').css('width', '80%');
+        $('#headernav').css('width', window.innerWidth + 'px');
       } else {
         $('#content').css('margin-left', '0px');
         $('#headernav').css('width', '100%');
@@ -60,7 +63,7 @@ export class NavbarComponent implements OnInit {
         $('#headernav').css('width', '100%');
       } else {
         $('#content').css('margin-left', '253px');
-        $('#headernav').css('width', '80%');
+        $('#headernav').css('width', window.innerWidth - 253 + 'px');
       }
     }
   };
