@@ -40,4 +40,8 @@ export const rutasConNombres =
     rutaAngular: 'archivos',
     ValorEsp: 'Achivos',
   },
+  {
+    rutaAngular: 'proceso',
+    ValorEsp: 'Proceso',
+  },
 ]

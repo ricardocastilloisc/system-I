@@ -379,3 +379,9 @@ img.itemsTextoImagenCentro {
 .navbar > .container-fluid {
   justify-content: flex-start !important;
 }
+
+
+.botonActivado {
+  background-color: #035fa4 !important;
+  color: white !important;
+}
