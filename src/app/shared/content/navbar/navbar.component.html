@@ -152,22 +152,34 @@
       id="headernav"
       class="navbar navbar-expand-lg navbar-light bg-light navbar-fixed-top navbar-slide-nav"
     >
+
       <div class="container-fluid">
         <button
           (click)="toggle()"
           type="button"
           id="siderCollapse"
-          class="btn btn-light"
+          class="btn btn-light col-1"
         >
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="alineadoTextoDerecha">
-          <p>
-            <b>{{ DataUser.email }}</b>
-          </p>
-          <p>{{ DataUser.groups[0] }}</p>
+
+
+          <div class="alineadoTextoIzquierda col-5">
+            <p>{{getRuta()}}</p>
+
+          </div>
+          <div class="alineadoTextoDerecha col-5 align-self-end texto-responsivo-usuario">
+
+            <p>
+
+
+              <b>{{ DataUser.email }}</b>
+            </p>
+            <p>{{ DataUser.groups[0] }}</p>
+          </div>
         </div>
-      </div>
+
+
     </nav>
     <div style="margin-top: 150px">
       <router-outlet></router-outlet>
