@@ -1,3 +1,4 @@
+import { rutasConNombres } from './../../../helpers/rutas';
 import { AfterViewInit, Component, HostListener, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AuthService } from 'src/app/services/auth.service';
@@ -5,6 +6,7 @@ import { AppState } from '../../../ReduxStore/app.reducers';
 import { Usuario } from '../../../model/usuario.model';
 import { Observable } from 'rxjs';
 import { ERole } from '../../../validators/roles';
+import { ActivatedRoute } from '@angular/router';
 
 declare var $: any;
 @Component({
@@ -25,11 +27,27 @@ export class NavbarComponent implements OnInit, AfterViewInit {
 
   constructor(
     private authService: AuthService,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private rutaActiva: ActivatedRoute
   ) {}
   ngAfterViewInit(): void {
     this.resizeMenuContent();
+    this.getRuta();
   }
+
+  getRuta = () => {
+    let ArrayRuta =  [];
+     window.location.pathname.split('/').map((elementoRuta) => {
+      rutasConNombres.forEach((elementoValidar) => {
+        if(elementoRuta === elementoValidar.rutaAngular){
+          ArrayRuta.push(elementoValidar.ValorEsp);
+        }
+      });
+    });
+    let nombreRuta = ArrayRuta.join('/').toString();
+    return nombreRuta.length>0?nombreRuta:'Inicio';
+  };
+
 
   ngOnInit(): void {
     this.DataUser$ = this.store.select(({ usuario }) => usuario.user);
