@@ -1,48 +1,34 @@
 # this is an auto generated file. This will be overwritten
-query GetTodo($id: ID!) {
-  getTodo(id: $id) {
-    id
-    name
-    description
-    createdAt
-    updatedAt
+query GetAUDGENUSUARIOS($ID: String!) {
+  getAUDGENUSUARIOS(ID: $ID) {
+    ID
   }
 }
-query ListTodos(
-  $filter: ModelTodoFilterInput
+query ListAUDGENUSUARIOS(
+  $filter: TableAUDGENUSUARIOSFilterInput
   $limit: Int
   $nextToken: String
 ) {
-  listTodos(filter: $filter, limit: $limit, nextToken: $nextToken) {
+  listAUDGENUSUARIOS(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
-      id
-      name
-      description
-      createdAt
-      updatedAt
+      ID
     }
     nextToken
   }
 }
-query GetCATGENDIASFERIADOS($ID: Int!, $FECHA_FERIADO: String!) {
-  getCATGENDIASFERIADOS(ID: $ID, FECHA_FERIADO: $FECHA_FERIADO) {
-    FECHA_FERIADO
-    ID
+query GetAUDGENPROCESOS($ID_REGISTRO: String!) {
+  getAUDGENPROCESOS(ID_REGISTRO: $ID_REGISTRO) {
+    ID_REGISTRO
   }
 }
-query ListCATGENDIASFERIADOS(
-  $filter: TableCATGENDIASFERIADOSFilterInput
+query ListAUDGENPROCESOS(
+  $filter: TableAUDGENPROCESOSFilterInput
   $limit: Int
   $nextToken: String
 ) {
-  listCATGENDIASFERIADOS(
-    filter: $filter
-    limit: $limit
-    nextToken: $nextToken
-  ) {
+  listAUDGENPROCESOS(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
-      FECHA_FERIADO
-      ID
+      ID_REGISTRO
     }
     nextToken
   }

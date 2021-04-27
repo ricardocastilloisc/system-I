@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { APIService, CreateCATGENDIASFERIADOSInput } from '../../../../../API.service';
+import { APIService, CreateAUDGENPROCESOSInput } from '../../../../../API.service';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 
 @Component({
@@ -14,7 +14,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit {
   public createForm: FormGroup;
   constructor(private router: Router, private api: APIService, private fb: FormBuilder) { }
 
-  diasFeriados: Array<CreateCATGENDIASFERIADOSInput>;
+  consultaCatalogo: Array<CreateAUDGENPROCESOSInput>
   ngOnInit(): void {
     this.createForm = this.fb.group({
       'ID': ['', Validators.required],
@@ -26,21 +26,15 @@ export class ProcesosPantallaGeneralComponent implements OnInit {
     this.router.navigate(['/'+window.location.pathname+'/proceso']);
   }
 
-  public onCreate(restaurant: CreateCATGENDIASFERIADOSInput) {
-    this.api.CreateCATGENDIASFERIADOS(restaurant).then(event => {
-      console.log('item created!');
-      this.createForm.reset();
-    })
-    .catch(e => {
-      console.log('error creating restaurant...', e);
-    });
+  public onCreate() {
+    
   }
 
   async consultarCatalogo(){
     console.log("Entre a la funcion")
-    this.api.ListCATGENDIASFERIADOS().then(event => {
-      this.diasFeriados = event.items;
-      console.log('Lista', this.diasFeriados);
+    this.api.ListAUDGENPROCESOS().then(event => {
+      this.consultaCatalogo = event.items;
+      console.log('Lista', this.consultaCatalogo);
     })
     .catch(e => {
       console.log('error...', e);

@@ -9,133 +9,42 @@ export interface SubscriptionResponse<T> {
   value: GraphQLResult<T>;
 }
 
-export type CreateTodoInput = {
-  id?: string | null;
-  name: string;
-  description?: string | null;
+export type CreateAUDGENUSUARIOSInput = {
+  ID: string;
 };
 
-export type ModelTodoConditionInput = {
-  name?: ModelStringInput | null;
-  description?: ModelStringInput | null;
-  and?: Array<ModelTodoConditionInput | null> | null;
-  or?: Array<ModelTodoConditionInput | null> | null;
-  not?: ModelTodoConditionInput | null;
+export type AUDGENUSUARIOS = {
+  __typename: "AUDGENUSUARIOS";
+  ID?: string;
 };
 
-export type ModelStringInput = {
-  ne?: string | null;
-  eq?: string | null;
-  le?: string | null;
-  lt?: string | null;
-  ge?: string | null;
-  gt?: string | null;
-  contains?: string | null;
-  notContains?: string | null;
-  between?: Array<string | null> | null;
-  beginsWith?: string | null;
-  attributeExists?: boolean | null;
-  attributeType?: ModelAttributeTypes | null;
-  size?: ModelSizeInput | null;
+export type UpdateAUDGENUSUARIOSInput = {
+  ID: string;
 };
 
-export enum ModelAttributeTypes {
-  binary = "binary",
-  binarySet = "binarySet",
-  bool = "bool",
-  list = "list",
-  map = "map",
-  number = "number",
-  numberSet = "numberSet",
-  string = "string",
-  stringSet = "stringSet",
-  _null = "_null"
-}
-
-export type ModelSizeInput = {
-  ne?: number | null;
-  eq?: number | null;
-  le?: number | null;
-  lt?: number | null;
-  ge?: number | null;
-  gt?: number | null;
-  between?: Array<number | null> | null;
+export type DeleteAUDGENUSUARIOSInput = {
+  ID: string;
 };
 
-export type Todo = {
-  __typename: "Todo";
-  id?: string;
-  name?: string;
-  description?: string | null;
-  createdAt?: string;
-  updatedAt?: string;
+export type CreateAUDGENPROCESOSInput = {
+  ID_REGISTRO: string;
 };
 
-export type UpdateTodoInput = {
-  id: string;
-  name?: string | null;
-  description?: string | null;
+export type AUDGENPROCESOS = {
+  __typename: "AUDGENPROCESOS";
+  ID_REGISTRO?: string;
 };
 
-export type DeleteTodoInput = {
-  id?: string | null;
+export type UpdateAUDGENPROCESOSInput = {
+  ID_REGISTRO: string;
 };
 
-export type CreateCATGENDIASFERIADOSInput = {
-  FECHA_FERIADO: string;
-  ID: number;
+export type DeleteAUDGENPROCESOSInput = {
+  ID_REGISTRO: string;
 };
 
-export type CATGENDIASFERIADOS = {
-  __typename: "CATGENDIASFERIADOS";
-  FECHA_FERIADO?: string;
-  ID?: number;
-};
-
-export type UpdateCATGENDIASFERIADOSInput = {
-  FECHA_FERIADO: string;
-  ID: number;
-};
-
-export type DeleteCATGENDIASFERIADOSInput = {
-  FECHA_FERIADO: string;
-  ID: number;
-};
-
-export type ModelTodoFilterInput = {
-  id?: ModelIDInput | null;
-  name?: ModelStringInput | null;
-  description?: ModelStringInput | null;
-  and?: Array<ModelTodoFilterInput | null> | null;
-  or?: Array<ModelTodoFilterInput | null> | null;
-  not?: ModelTodoFilterInput | null;
-};
-
-export type ModelIDInput = {
-  ne?: string | null;
-  eq?: string | null;
-  le?: string | null;
-  lt?: string | null;
-  ge?: string | null;
-  gt?: string | null;
-  contains?: string | null;
-  notContains?: string | null;
-  between?: Array<string | null> | null;
-  beginsWith?: string | null;
-  attributeExists?: boolean | null;
-  attributeType?: ModelAttributeTypes | null;
-  size?: ModelSizeInput | null;
-};
-
-export type ModelTodoConnection = {
-  __typename: "ModelTodoConnection";
-  items?: Array<Todo | null> | null;
-  nextToken?: string | null;
-};
-
-export type TableCATGENDIASFERIADOSFilterInput = {
-  FECHA_FERIADO?: TableStringFilterInput | null;
-  ID?: TableIntFilterInput | null;
+export type TableAUDGENUSUARIOSFilterInput = {
+  ID?: TableStringFilterInput | null;
 };
 
 export type TableStringFilterInput = {
@@ -151,238 +60,120 @@ export type TableStringFilterInput = {
   beginsWith?: string | null;
 };
 
-export type TableIntFilterInput = {
-  ne?: number | null;
-  eq?: number | null;
-  le?: number | null;
-  lt?: number | null;
-  ge?: number | null;
-  gt?: number | null;
-  contains?: number | null;
-  notContains?: number | null;
-  between?: Array<number | null> | null;
-};
-
-export type CATGENDIASFERIADOSConnection = {
-  __typename: "CATGENDIASFERIADOSConnection";
-  items?: Array<CATGENDIASFERIADOS | null> | null;
+export type AUDGENUSUARIOSConnection = {
+  __typename: "AUDGENUSUARIOSConnection";
+  items?: Array<AUDGENUSUARIOS | null> | null;
   nextToken?: string | null;
 };
 
-export type CreateTodoMutation = {
-  __typename: "Todo";
-  id: string;
-  name: string;
-  description?: string | null;
-  createdAt: string;
-  updatedAt: string;
+export type TableAUDGENPROCESOSFilterInput = {
+  ID_REGISTRO?: TableStringFilterInput | null;
 };
 
-export type UpdateTodoMutation = {
-  __typename: "Todo";
-  id: string;
-  name: string;
-  description?: string | null;
-  createdAt: string;
-  updatedAt: string;
+export type AUDGENPROCESOSConnection = {
+  __typename: "AUDGENPROCESOSConnection";
+  items?: Array<AUDGENPROCESOS | null> | null;
+  nextToken?: string | null;
 };
 
-export type DeleteTodoMutation = {
-  __typename: "Todo";
-  id: string;
-  name: string;
-  description?: string | null;
-  createdAt: string;
-  updatedAt: string;
+export type CreateAUDGENUSUARIOSMutation = {
+  __typename: "AUDGENUSUARIOS";
+  ID: string;
 };
 
-export type CreateCATGENDIASFERIADOSMutation = {
-  __typename: "CATGENDIASFERIADOS";
-  FECHA_FERIADO: string;
-  ID: number;
+export type UpdateAUDGENUSUARIOSMutation = {
+  __typename: "AUDGENUSUARIOS";
+  ID: string;
 };
 
-export type UpdateCATGENDIASFERIADOSMutation = {
-  __typename: "CATGENDIASFERIADOS";
-  FECHA_FERIADO: string;
-  ID: number;
+export type DeleteAUDGENUSUARIOSMutation = {
+  __typename: "AUDGENUSUARIOS";
+  ID: string;
 };
 
-export type DeleteCATGENDIASFERIADOSMutation = {
-  __typename: "CATGENDIASFERIADOS";
-  FECHA_FERIADO: string;
-  ID: number;
+export type CreateAUDGENPROCESOSMutation = {
+  __typename: "AUDGENPROCESOS";
+  ID_REGISTRO: string;
 };
 
-export type GetTodoQuery = {
-  __typename: "Todo";
-  id: string;
-  name: string;
-  description?: string | null;
-  createdAt: string;
-  updatedAt: string;
+export type UpdateAUDGENPROCESOSMutation = {
+  __typename: "AUDGENPROCESOS";
+  ID_REGISTRO: string;
 };
 
-export type ListTodosQuery = {
-  __typename: "ModelTodoConnection";
+export type DeleteAUDGENPROCESOSMutation = {
+  __typename: "AUDGENPROCESOS";
+  ID_REGISTRO: string;
+};
+
+export type GetAUDGENUSUARIOSQuery = {
+  __typename: "AUDGENUSUARIOS";
+  ID: string;
+};
+
+export type ListAUDGENUSUARIOSQuery = {
+  __typename: "AUDGENUSUARIOSConnection";
   items?: Array<{
-    __typename: "Todo";
-    id: string;
-    name: string;
-    description?: string | null;
-    createdAt: string;
-    updatedAt: string;
+    __typename: "AUDGENUSUARIOS";
+    ID: string;
   } | null> | null;
   nextToken?: string | null;
 };
 
-export type GetCATGENDIASFERIADOSQuery = {
-  __typename: "CATGENDIASFERIADOS";
-  FECHA_FERIADO: string;
-  ID: number;
+export type GetAUDGENPROCESOSQuery = {
+  __typename: "AUDGENPROCESOS";
+  ID_REGISTRO: string;
 };
 
-export type ListCATGENDIASFERIADOSQuery = {
-  __typename: "CATGENDIASFERIADOSConnection";
+export type ListAUDGENPROCESOSQuery = {
+  __typename: "AUDGENPROCESOSConnection";
   items?: Array<{
-    __typename: "CATGENDIASFERIADOS";
-    FECHA_FERIADO: string;
-    ID: number;
+    __typename: "AUDGENPROCESOS";
+    ID_REGISTRO: string;
   } | null> | null;
   nextToken?: string | null;
 };
 
-export type OnCreateTodoSubscription = {
-  __typename: "Todo";
-  id: string;
-  name: string;
-  description?: string | null;
-  createdAt: string;
-  updatedAt: string;
+export type OnCreateAUDGENUSUARIOSSubscription = {
+  __typename: "AUDGENUSUARIOS";
+  ID: string;
 };
 
-export type OnUpdateTodoSubscription = {
-  __typename: "Todo";
-  id: string;
-  name: string;
-  description?: string | null;
-  createdAt: string;
-  updatedAt: string;
+export type OnUpdateAUDGENUSUARIOSSubscription = {
+  __typename: "AUDGENUSUARIOS";
+  ID: string;
 };
 
-export type OnDeleteTodoSubscription = {
-  __typename: "Todo";
-  id: string;
-  name: string;
-  description?: string | null;
-  createdAt: string;
-  updatedAt: string;
+export type OnDeleteAUDGENUSUARIOSSubscription = {
+  __typename: "AUDGENUSUARIOS";
+  ID: string;
 };
 
-export type OnCreateCATGENDIASFERIADOSSubscription = {
-  __typename: "CATGENDIASFERIADOS";
-  FECHA_FERIADO: string;
-  ID: number;
+export type OnCreateAUDGENPROCESOSSubscription = {
+  __typename: "AUDGENPROCESOS";
+  ID_REGISTRO: string;
 };
 
-export type OnUpdateCATGENDIASFERIADOSSubscription = {
-  __typename: "CATGENDIASFERIADOS";
-  FECHA_FERIADO: string;
-  ID: number;
+export type OnUpdateAUDGENPROCESOSSubscription = {
+  __typename: "AUDGENPROCESOS";
+  ID_REGISTRO: string;
 };
 
-export type OnDeleteCATGENDIASFERIADOSSubscription = {
-  __typename: "CATGENDIASFERIADOS";
-  FECHA_FERIADO: string;
-  ID: number;
+export type OnDeleteAUDGENPROCESOSSubscription = {
+  __typename: "AUDGENPROCESOS";
+  ID_REGISTRO: string;
 };
 
 @Injectable({
   providedIn: "root"
 })
 export class APIService {
-  async CreateTodo(
-    input: CreateTodoInput,
-    condition?: ModelTodoConditionInput
-  ): Promise<CreateTodoMutation> {
-    const statement = `mutation CreateTodo($input: CreateTodoInput!, $condition: ModelTodoConditionInput) {
-        createTodo(input: $input, condition: $condition) {
+  async CreateAUDGENUSUARIOS(
+    input: CreateAUDGENUSUARIOSInput
+  ): Promise<CreateAUDGENUSUARIOSMutation> {
+    const statement = `mutation CreateAUDGENUSUARIOS($input: CreateAUDGENUSUARIOSInput!) {
+        createAUDGENUSUARIOS(input: $input) {
           __typename
-          id
-          name
-          description
-          createdAt
-          updatedAt
-        }
-      }`;
-    const gqlAPIServiceArguments: any = {
-      input
-    };
-    if (condition) {
-      gqlAPIServiceArguments.condition = condition;
-    }
-    const response = (await API.graphql(
-      graphqlOperation(statement, gqlAPIServiceArguments)
-    )) as any;
-    return <CreateTodoMutation>response.data.createTodo;
-  }
-  async UpdateTodo(
-    input: UpdateTodoInput,
-    condition?: ModelTodoConditionInput
-  ): Promise<UpdateTodoMutation> {
-    const statement = `mutation UpdateTodo($input: UpdateTodoInput!, $condition: ModelTodoConditionInput) {
-        updateTodo(input: $input, condition: $condition) {
-          __typename
-          id
-          name
-          description
-          createdAt
-          updatedAt
-        }
-      }`;
-    const gqlAPIServiceArguments: any = {
-      input
-    };
-    if (condition) {
-      gqlAPIServiceArguments.condition = condition;
-    }
-    const response = (await API.graphql(
-      graphqlOperation(statement, gqlAPIServiceArguments)
-    )) as any;
-    return <UpdateTodoMutation>response.data.updateTodo;
-  }
-  async DeleteTodo(
-    input: DeleteTodoInput,
-    condition?: ModelTodoConditionInput
-  ): Promise<DeleteTodoMutation> {
-    const statement = `mutation DeleteTodo($input: DeleteTodoInput!, $condition: ModelTodoConditionInput) {
-        deleteTodo(input: $input, condition: $condition) {
-          __typename
-          id
-          name
-          description
-          createdAt
-          updatedAt
-        }
-      }`;
-    const gqlAPIServiceArguments: any = {
-      input
-    };
-    if (condition) {
-      gqlAPIServiceArguments.condition = condition;
-    }
-    const response = (await API.graphql(
-      graphqlOperation(statement, gqlAPIServiceArguments)
-    )) as any;
-    return <DeleteTodoMutation>response.data.deleteTodo;
-  }
-  async CreateCATGENDIASFERIADOS(
-    input: CreateCATGENDIASFERIADOSInput
-  ): Promise<CreateCATGENDIASFERIADOSMutation> {
-    const statement = `mutation CreateCATGENDIASFERIADOS($input: CreateCATGENDIASFERIADOSInput!) {
-        createCATGENDIASFERIADOS(input: $input) {
-          __typename
-          FECHA_FERIADO
           ID
         }
       }`;
@@ -392,17 +183,14 @@ export class APIService {
     const response = (await API.graphql(
       graphqlOperation(statement, gqlAPIServiceArguments)
     )) as any;
-    return <CreateCATGENDIASFERIADOSMutation>(
-      response.data.createCATGENDIASFERIADOS
-    );
+    return <CreateAUDGENUSUARIOSMutation>response.data.createAUDGENUSUARIOS;
   }
-  async UpdateCATGENDIASFERIADOS(
-    input: UpdateCATGENDIASFERIADOSInput
-  ): Promise<UpdateCATGENDIASFERIADOSMutation> {
-    const statement = `mutation UpdateCATGENDIASFERIADOS($input: UpdateCATGENDIASFERIADOSInput!) {
-        updateCATGENDIASFERIADOS(input: $input) {
+  async UpdateAUDGENUSUARIOS(
+    input: UpdateAUDGENUSUARIOSInput
+  ): Promise<UpdateAUDGENUSUARIOSMutation> {
+    const statement = `mutation UpdateAUDGENUSUARIOS($input: UpdateAUDGENUSUARIOSInput!) {
+        updateAUDGENUSUARIOS(input: $input) {
           __typename
-          FECHA_FERIADO
           ID
         }
       }`;
@@ -412,17 +200,14 @@ export class APIService {
     const response = (await API.graphql(
       graphqlOperation(statement, gqlAPIServiceArguments)
     )) as any;
-    return <UpdateCATGENDIASFERIADOSMutation>(
-      response.data.updateCATGENDIASFERIADOS
-    );
+    return <UpdateAUDGENUSUARIOSMutation>response.data.updateAUDGENUSUARIOS;
   }
-  async DeleteCATGENDIASFERIADOS(
-    input: DeleteCATGENDIASFERIADOSInput
-  ): Promise<DeleteCATGENDIASFERIADOSMutation> {
-    const statement = `mutation DeleteCATGENDIASFERIADOS($input: DeleteCATGENDIASFERIADOSInput!) {
-        deleteCATGENDIASFERIADOS(input: $input) {
+  async DeleteAUDGENUSUARIOS(
+    input: DeleteAUDGENUSUARIOSInput
+  ): Promise<DeleteAUDGENUSUARIOSMutation> {
+    const statement = `mutation DeleteAUDGENUSUARIOS($input: DeleteAUDGENUSUARIOSInput!) {
+        deleteAUDGENUSUARIOS(input: $input) {
           __typename
-          FECHA_FERIADO
           ID
         }
       }`;
@@ -432,94 +217,84 @@ export class APIService {
     const response = (await API.graphql(
       graphqlOperation(statement, gqlAPIServiceArguments)
     )) as any;
-    return <DeleteCATGENDIASFERIADOSMutation>(
-      response.data.deleteCATGENDIASFERIADOS
-    );
+    return <DeleteAUDGENUSUARIOSMutation>response.data.deleteAUDGENUSUARIOS;
   }
-  async GetTodo(id: string): Promise<GetTodoQuery> {
-    const statement = `query GetTodo($id: ID!) {
-        getTodo(id: $id) {
+  async CreateAUDGENPROCESOS(
+    input: CreateAUDGENPROCESOSInput
+  ): Promise<CreateAUDGENPROCESOSMutation> {
+    const statement = `mutation CreateAUDGENPROCESOS($input: CreateAUDGENPROCESOSInput!) {
+        createAUDGENPROCESOS(input: $input) {
           __typename
-          id
-          name
-          description
-          createdAt
-          updatedAt
+          ID_REGISTRO
         }
       }`;
     const gqlAPIServiceArguments: any = {
-      id
+      input
     };
     const response = (await API.graphql(
       graphqlOperation(statement, gqlAPIServiceArguments)
     )) as any;
-    return <GetTodoQuery>response.data.getTodo;
+    return <CreateAUDGENPROCESOSMutation>response.data.createAUDGENPROCESOS;
   }
-  async ListTodos(
-    filter?: ModelTodoFilterInput,
+  async UpdateAUDGENPROCESOS(
+    input: UpdateAUDGENPROCESOSInput
+  ): Promise<UpdateAUDGENPROCESOSMutation> {
+    const statement = `mutation UpdateAUDGENPROCESOS($input: UpdateAUDGENPROCESOSInput!) {
+        updateAUDGENPROCESOS(input: $input) {
+          __typename
+          ID_REGISTRO
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {
+      input
+    };
+    const response = (await API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    )) as any;
+    return <UpdateAUDGENPROCESOSMutation>response.data.updateAUDGENPROCESOS;
+  }
+  async DeleteAUDGENPROCESOS(
+    input: DeleteAUDGENPROCESOSInput
+  ): Promise<DeleteAUDGENPROCESOSMutation> {
+    const statement = `mutation DeleteAUDGENPROCESOS($input: DeleteAUDGENPROCESOSInput!) {
+        deleteAUDGENPROCESOS(input: $input) {
+          __typename
+          ID_REGISTRO
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {
+      input
+    };
+    const response = (await API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    )) as any;
+    return <DeleteAUDGENPROCESOSMutation>response.data.deleteAUDGENPROCESOS;
+  }
+  async GetAUDGENUSUARIOS(ID: string): Promise<GetAUDGENUSUARIOSQuery> {
+    const statement = `query GetAUDGENUSUARIOS($ID: String!) {
+        getAUDGENUSUARIOS(ID: $ID) {
+          __typename
+          ID
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {
+      ID
+    };
+    const response = (await API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    )) as any;
+    return <GetAUDGENUSUARIOSQuery>response.data.getAUDGENUSUARIOS;
+  }
+  async ListAUDGENUSUARIOS(
+    filter?: TableAUDGENUSUARIOSFilterInput,
     limit?: number,
     nextToken?: string
-  ): Promise<ListTodosQuery> {
-    const statement = `query ListTodos($filter: ModelTodoFilterInput, $limit: Int, $nextToken: String) {
-        listTodos(filter: $filter, limit: $limit, nextToken: $nextToken) {
+  ): Promise<ListAUDGENUSUARIOSQuery> {
+    const statement = `query ListAUDGENUSUARIOS($filter: TableAUDGENUSUARIOSFilterInput, $limit: Int, $nextToken: String) {
+        listAUDGENUSUARIOS(filter: $filter, limit: $limit, nextToken: $nextToken) {
           __typename
           items {
             __typename
-            id
-            name
-            description
-            createdAt
-            updatedAt
-          }
-          nextToken
-        }
-      }`;
-    const gqlAPIServiceArguments: any = {};
-    if (filter) {
-      gqlAPIServiceArguments.filter = filter;
-    }
-    if (limit) {
-      gqlAPIServiceArguments.limit = limit;
-    }
-    if (nextToken) {
-      gqlAPIServiceArguments.nextToken = nextToken;
-    }
-    const response = (await API.graphql(
-      graphqlOperation(statement, gqlAPIServiceArguments)
-    )) as any;
-    return <ListTodosQuery>response.data.listTodos;
-  }
-  async GetCATGENDIASFERIADOS(
-    ID: number,
-    FECHA_FERIADO: string
-  ): Promise<GetCATGENDIASFERIADOSQuery> {
-    const statement = `query GetCATGENDIASFERIADOS($ID: Int!, $FECHA_FERIADO: String!) {
-        getCATGENDIASFERIADOS(ID: $ID, FECHA_FERIADO: $FECHA_FERIADO) {
-          __typename
-          FECHA_FERIADO
-          ID
-        }
-      }`;
-    const gqlAPIServiceArguments: any = {
-      ID,
-      FECHA_FERIADO
-    };
-    const response = (await API.graphql(
-      graphqlOperation(statement, gqlAPIServiceArguments)
-    )) as any;
-    return <GetCATGENDIASFERIADOSQuery>response.data.getCATGENDIASFERIADOS;
-  }
-  async ListCATGENDIASFERIADOS(
-    filter?: TableCATGENDIASFERIADOSFilterInput,
-    limit?: number,
-    nextToken?: string
-  ): Promise<ListCATGENDIASFERIADOSQuery> {
-    const statement = `query ListCATGENDIASFERIADOS($filter: TableCATGENDIASFERIADOSFilterInput, $limit: Int, $nextToken: String) {
-        listCATGENDIASFERIADOS(filter: $filter, limit: $limit, nextToken: $nextToken) {
-          __typename
-          items {
-            __typename
-            FECHA_FERIADO
             ID
           }
           nextToken
@@ -538,131 +313,160 @@ export class APIService {
     const response = (await API.graphql(
       graphqlOperation(statement, gqlAPIServiceArguments)
     )) as any;
-    return <ListCATGENDIASFERIADOSQuery>response.data.listCATGENDIASFERIADOS;
+    return <ListAUDGENUSUARIOSQuery>response.data.listAUDGENUSUARIOS;
   }
-  OnCreateTodoListener: Observable<
-    SubscriptionResponse<OnCreateTodoSubscription>
-  > = API.graphql(
-    graphqlOperation(
-      `subscription OnCreateTodo {
-        onCreateTodo {
+  async GetAUDGENPROCESOS(
+    ID_REGISTRO: string
+  ): Promise<GetAUDGENPROCESOSQuery> {
+    const statement = `query GetAUDGENPROCESOS($ID_REGISTRO: String!) {
+        getAUDGENPROCESOS(ID_REGISTRO: $ID_REGISTRO) {
           __typename
-          id
-          name
-          description
-          createdAt
-          updatedAt
+          ID_REGISTRO
         }
-      }`
-    )
-  ) as Observable<SubscriptionResponse<OnCreateTodoSubscription>>;
-
-  OnUpdateTodoListener: Observable<
-    SubscriptionResponse<OnUpdateTodoSubscription>
-  > = API.graphql(
-    graphqlOperation(
-      `subscription OnUpdateTodo {
-        onUpdateTodo {
+      }`;
+    const gqlAPIServiceArguments: any = {
+      ID_REGISTRO
+    };
+    const response = (await API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    )) as any;
+    return <GetAUDGENPROCESOSQuery>response.data.getAUDGENPROCESOS;
+  }
+  async ListAUDGENPROCESOS(
+    filter?: TableAUDGENPROCESOSFilterInput,
+    limit?: number,
+    nextToken?: string
+  ): Promise<ListAUDGENPROCESOSQuery> {
+    const statement = `query ListAUDGENPROCESOS($filter: TableAUDGENPROCESOSFilterInput, $limit: Int, $nextToken: String) {
+        listAUDGENPROCESOS(filter: $filter, limit: $limit, nextToken: $nextToken) {
           __typename
-          id
-          name
-          description
-          createdAt
-          updatedAt
+          items {
+            __typename
+            ID_REGISTRO
+          }
+          nextToken
         }
-      }`
-    )
-  ) as Observable<SubscriptionResponse<OnUpdateTodoSubscription>>;
-
-  OnDeleteTodoListener: Observable<
-    SubscriptionResponse<OnDeleteTodoSubscription>
-  > = API.graphql(
-    graphqlOperation(
-      `subscription OnDeleteTodo {
-        onDeleteTodo {
+      }`;
+    const gqlAPIServiceArguments: any = {};
+    if (filter) {
+      gqlAPIServiceArguments.filter = filter;
+    }
+    if (limit) {
+      gqlAPIServiceArguments.limit = limit;
+    }
+    if (nextToken) {
+      gqlAPIServiceArguments.nextToken = nextToken;
+    }
+    const response = (await API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    )) as any;
+    return <ListAUDGENPROCESOSQuery>response.data.listAUDGENPROCESOS;
+  }
+  OnCreateAUDGENUSUARIOSListener(
+    ID?: string
+  ): Observable<SubscriptionResponse<OnCreateAUDGENUSUARIOSSubscription>> {
+    const statement = `subscription OnCreateAUDGENUSUARIOS($ID: String) {
+        onCreateAUDGENUSUARIOS(ID: $ID) {
           __typename
-          id
-          name
-          description
-          createdAt
-          updatedAt
-        }
-      }`
-    )
-  ) as Observable<SubscriptionResponse<OnDeleteTodoSubscription>>;
-
-  OnCreateCATGENDIASFERIADOSListener(
-    FECHA_FERIADO?: string,
-    ID?: number
-  ): Observable<SubscriptionResponse<OnCreateCATGENDIASFERIADOSSubscription>> {
-    const statement = `subscription OnCreateCATGENDIASFERIADOS($FECHA_FERIADO: String, $ID: Int) {
-        onCreateCATGENDIASFERIADOS(FECHA_FERIADO: $FECHA_FERIADO, ID: $ID) {
-          __typename
-          FECHA_FERIADO
           ID
         }
       }`;
     const gqlAPIServiceArguments: any = {};
-    if (FECHA_FERIADO) {
-      gqlAPIServiceArguments.FECHA_FERIADO = FECHA_FERIADO;
-    }
     if (ID) {
       gqlAPIServiceArguments.ID = ID;
     }
     return API.graphql(
       graphqlOperation(statement, gqlAPIServiceArguments)
-    ) as Observable<
-      SubscriptionResponse<OnCreateCATGENDIASFERIADOSSubscription>
-    >;
+    ) as Observable<SubscriptionResponse<OnCreateAUDGENUSUARIOSSubscription>>;
   }
 
-  OnUpdateCATGENDIASFERIADOSListener(
-    FECHA_FERIADO?: string,
-    ID?: number
-  ): Observable<SubscriptionResponse<OnUpdateCATGENDIASFERIADOSSubscription>> {
-    const statement = `subscription OnUpdateCATGENDIASFERIADOS($FECHA_FERIADO: String, $ID: Int) {
-        onUpdateCATGENDIASFERIADOS(FECHA_FERIADO: $FECHA_FERIADO, ID: $ID) {
+  OnUpdateAUDGENUSUARIOSListener(
+    ID?: string
+  ): Observable<SubscriptionResponse<OnUpdateAUDGENUSUARIOSSubscription>> {
+    const statement = `subscription OnUpdateAUDGENUSUARIOS($ID: String) {
+        onUpdateAUDGENUSUARIOS(ID: $ID) {
           __typename
-          FECHA_FERIADO
           ID
         }
       }`;
     const gqlAPIServiceArguments: any = {};
-    if (FECHA_FERIADO) {
-      gqlAPIServiceArguments.FECHA_FERIADO = FECHA_FERIADO;
-    }
     if (ID) {
       gqlAPIServiceArguments.ID = ID;
     }
     return API.graphql(
       graphqlOperation(statement, gqlAPIServiceArguments)
-    ) as Observable<
-      SubscriptionResponse<OnUpdateCATGENDIASFERIADOSSubscription>
-    >;
+    ) as Observable<SubscriptionResponse<OnUpdateAUDGENUSUARIOSSubscription>>;
   }
 
-  OnDeleteCATGENDIASFERIADOSListener(
-    FECHA_FERIADO?: string,
-    ID?: number
-  ): Observable<SubscriptionResponse<OnDeleteCATGENDIASFERIADOSSubscription>> {
-    const statement = `subscription OnDeleteCATGENDIASFERIADOS($FECHA_FERIADO: String, $ID: Int) {
-        onDeleteCATGENDIASFERIADOS(FECHA_FERIADO: $FECHA_FERIADO, ID: $ID) {
+  OnDeleteAUDGENUSUARIOSListener(
+    ID?: string
+  ): Observable<SubscriptionResponse<OnDeleteAUDGENUSUARIOSSubscription>> {
+    const statement = `subscription OnDeleteAUDGENUSUARIOS($ID: String) {
+        onDeleteAUDGENUSUARIOS(ID: $ID) {
           __typename
-          FECHA_FERIADO
           ID
         }
       }`;
     const gqlAPIServiceArguments: any = {};
-    if (FECHA_FERIADO) {
-      gqlAPIServiceArguments.FECHA_FERIADO = FECHA_FERIADO;
-    }
     if (ID) {
       gqlAPIServiceArguments.ID = ID;
     }
     return API.graphql(
       graphqlOperation(statement, gqlAPIServiceArguments)
-    ) as Observable<
-      SubscriptionResponse<OnDeleteCATGENDIASFERIADOSSubscription>
-    >;
+    ) as Observable<SubscriptionResponse<OnDeleteAUDGENUSUARIOSSubscription>>;
+  }
+
+  OnCreateAUDGENPROCESOSListener(
+    ID_REGISTRO?: string
+  ): Observable<SubscriptionResponse<OnCreateAUDGENPROCESOSSubscription>> {
+    const statement = `subscription OnCreateAUDGENPROCESOS($ID_REGISTRO: String) {
+        onCreateAUDGENPROCESOS(ID_REGISTRO: $ID_REGISTRO) {
+          __typename
+          ID_REGISTRO
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {};
+    if (ID_REGISTRO) {
+      gqlAPIServiceArguments.ID_REGISTRO = ID_REGISTRO;
+    }
+    return API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    ) as Observable<SubscriptionResponse<OnCreateAUDGENPROCESOSSubscription>>;
+  }
+
+  OnUpdateAUDGENPROCESOSListener(
+    ID_REGISTRO?: string
+  ): Observable<SubscriptionResponse<OnUpdateAUDGENPROCESOSSubscription>> {
+    const statement = `subscription OnUpdateAUDGENPROCESOS($ID_REGISTRO: String) {
+        onUpdateAUDGENPROCESOS(ID_REGISTRO: $ID_REGISTRO) {
+          __typename
+          ID_REGISTRO
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {};
+    if (ID_REGISTRO) {
+      gqlAPIServiceArguments.ID_REGISTRO = ID_REGISTRO;
+    }
+    return API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    ) as Observable<SubscriptionResponse<OnUpdateAUDGENPROCESOSSubscription>>;
+  }
+
+  OnDeleteAUDGENPROCESOSListener(
+    ID_REGISTRO?: string
+  ): Observable<SubscriptionResponse<OnDeleteAUDGENPROCESOSSubscription>> {
+    const statement = `subscription OnDeleteAUDGENPROCESOS($ID_REGISTRO: String) {
+        onDeleteAUDGENPROCESOS(ID_REGISTRO: $ID_REGISTRO) {
+          __typename
+          ID_REGISTRO
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {};
+    if (ID_REGISTRO) {
+      gqlAPIServiceArguments.ID_REGISTRO = ID_REGISTRO;
+    }
+    return API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    ) as Observable<SubscriptionResponse<OnDeleteAUDGENPROCESOSSubscription>>;
   }
 }

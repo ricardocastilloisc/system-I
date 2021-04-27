@@ -1,46 +1,31 @@
 # this is an auto generated file. This will be overwritten
-subscription OnCreateTodo {
-  onCreateTodo {
-    id
-    name
-    description
-    createdAt
-    updatedAt
-  }
-}
-subscription OnUpdateTodo {
-  onUpdateTodo {
-    id
-    name
-    description
-    createdAt
-    updatedAt
-  }
-}
-subscription OnDeleteTodo {
-  onDeleteTodo {
-    id
-    name
-    description
-    createdAt
-    updatedAt
-  }
-}
-subscription OnCreateCATGENDIASFERIADOS($FECHA_FERIADO: String, $ID: Int) {
-  onCreateCATGENDIASFERIADOS(FECHA_FERIADO: $FECHA_FERIADO, ID: $ID) {
-    FECHA_FERIADO
+subscription OnCreateAUDGENUSUARIOS($ID: String) {
+  onCreateAUDGENUSUARIOS(ID: $ID) {
     ID
   }
 }
-subscription OnUpdateCATGENDIASFERIADOS($FECHA_FERIADO: String, $ID: Int) {
-  onUpdateCATGENDIASFERIADOS(FECHA_FERIADO: $FECHA_FERIADO, ID: $ID) {
-    FECHA_FERIADO
+subscription OnUpdateAUDGENUSUARIOS($ID: String) {
+  onUpdateAUDGENUSUARIOS(ID: $ID) {
     ID
   }
 }
-subscription OnDeleteCATGENDIASFERIADOS($FECHA_FERIADO: String, $ID: Int) {
-  onDeleteCATGENDIASFERIADOS(FECHA_FERIADO: $FECHA_FERIADO, ID: $ID) {
-    FECHA_FERIADO
+subscription OnDeleteAUDGENUSUARIOS($ID: String) {
+  onDeleteAUDGENUSUARIOS(ID: $ID) {
     ID
+  }
+}
+subscription OnCreateAUDGENPROCESOS($ID_REGISTRO: String) {
+  onCreateAUDGENPROCESOS(ID_REGISTRO: $ID_REGISTRO) {
+    ID_REGISTRO
+  }
+}
+subscription OnUpdateAUDGENPROCESOS($ID_REGISTRO: String) {
+  onUpdateAUDGENPROCESOS(ID_REGISTRO: $ID_REGISTRO) {
+    ID_REGISTRO
+  }
+}
+subscription OnDeleteAUDGENPROCESOS($ID_REGISTRO: String) {
+  onDeleteAUDGENPROCESOS(ID_REGISTRO: $ID_REGISTRO) {
+    ID_REGISTRO
   }
 }
