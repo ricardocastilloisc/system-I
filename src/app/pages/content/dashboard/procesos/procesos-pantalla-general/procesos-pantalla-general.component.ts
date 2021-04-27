@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { APIService, CreateAUDGENPROCESOSInput } from '../../../../../API.service';
 import { fromPromise } from 'rxjs/observable/fromPromise';
+import { formatDate } from '@angular/common';
+
 
 @Component({
   selector: 'app-procesos-pantalla-general',
@@ -12,7 +14,10 @@ import { fromPromise } from 'rxjs/observable/fromPromise';
 export class ProcesosPantallaGeneralComponent implements OnInit {
 
   public createForm: FormGroup;
-  constructor(private router: Router, private api: APIService, private fb: FormBuilder) { }
+
+  inputFecha = formatDate(new Date(),'yyyy-MM-dd', 'en-US');
+
+  constructor(private router: Router, private api: APIService, private fb: FormBuilder, private rutaActiva: ActivatedRoute) { }
 
   consultaCatalogo: Array<CreateAUDGENPROCESOSInput>
   ngOnInit(): void {
@@ -20,6 +25,10 @@ export class ProcesosPantallaGeneralComponent implements OnInit {
       'ID': ['', Validators.required],
       'FECHA_FERIADO': ['', Validators.required]
     });
+  }
+
+  botonActivado = (parametocomparar:string):boolean => {
+    return this.rutaActiva.snapshot.params.tipo===parametocomparar?true:false;
   }
 
   consultar(){

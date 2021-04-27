@@ -4,17 +4,26 @@
     class="flex-row-reverse justify-content-center"
     style="height: 50vh; width: 100%"
   >
-  <div class="row justify-content-center ">
-    
-    <div class=" d-flex col-md-4 col-xs-4 col-sm-4 col-lg-4 mr-4 col-4 align-items-center selector-proceso" style="height: 45px;">
-    
-      <!-- <button id="left-button" routerLink="/procesos/diurnos">Diurnos</button> -->
-      <button id="left-button" (click)="consultarCatalogo()">Diurnos</button>
-      <button id="right-button" routerLink="/procesos/diurnos">Nocturnos</button>
-      
-
-      
-
+    <div class="row justify-content-center">
+      <div
+        class="d-flex col-md-4 col-xs-4 col-sm-4 col-lg-4 mr-4 col-4 align-items-center selector-proceso"
+        style="height: 45px"
+      >
+        <button
+          id="left-button"
+          routerLink="/procesos/diurnos"
+          [ngClass]="botonActivado('diurnos') ? 'botonActivado' : ''"
+        >
+          Diurnos
+        </button>
+        <button
+          id="right-button"
+          routerLink="/procesos/nocturnos"
+          [ngClass]="botonActivado('nocturnos') ? 'botonActivado' : ''"
+        >
+          Nocturnos
+        </button>
+      </div>
     </div>
     
 
@@ -26,16 +35,24 @@
         
         <div class="card-calendario">
           <div>Selecciona una fecha</div>
-          <div><input type="date" placeholder="Selecciona una fecha" /></div>
           <div>
+            <input
+              type="date"
+              placeholder="Selecciona una fecha"
+              [(ngModel)]="inputFecha"
+            />
+          </div>
+          <div>
+            <!--
             <select name="cars" id="cars" value="Estado">
               <option disabled selected>Estado</option>
               <option value="iniciado">En proceso</option>
               <option value="detenido">Detenido</option>
               
             </select>
+             -->
           </div>
-          <div><button>Buscar</button></div>
+          <div><button (click)="consultarCatalogo()">Buscar</button></div>
         </div>
       
       

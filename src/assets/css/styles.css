@@ -13,10 +13,12 @@
 }
 
 body {
-  background: #e8e8e8;
-  opacity: 1;
+  background:#E8E8E8;
 }
 
+.card{
+  box-shadow: 4px 4px 10px #00000033;
+}
 .bg {
   background: url("../imgs/login\ -\ 2.png") no-repeat center center fixed;
   width: 100%;
@@ -402,4 +404,10 @@ img.itemsTextoImagenCentro {
 .navbar > .container,
 .navbar > .container-fluid {
   justify-content: flex-start !important;
+}
+
+
+.botonActivado {
+  background-color: #035fa4 !important;
+  color: white !important;
 }
