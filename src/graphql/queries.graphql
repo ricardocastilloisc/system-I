@@ -18,7 +18,29 @@ query ListAUDGENUSUARIOS(
 }
 query GetAUDGENPROCESOS($ID_REGISTRO: String!) {
   getAUDGENPROCESOS(ID_REGISTRO: $ID_REGISTRO) {
+    ACTIVIDAD
+    DESTINO
+    ETAPA
+    FECHA
+    ID_FLUJO_PROCESO
     ID_REGISTRO
+    INSUMO
+    INTERFAZ
+    MENSAJE {
+      DETALLE
+      TIPO
+    }
+    NEGOCIO
+    PROCESO {
+      EJECUCION
+      ESTADO
+      TIPO
+    }
+    SERVICIOAWS
+    USUARIO {
+      CORREO
+      ROL
+    }
   }
 }
 query ListAUDGENPROCESOS(
@@ -28,7 +50,29 @@ query ListAUDGENPROCESOS(
 ) {
   listAUDGENPROCESOS(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
+      ACTIVIDAD
+      DESTINO
+      ETAPA
+      FECHA
+      ID_FLUJO_PROCESO
       ID_REGISTRO
+      INSUMO
+      INTERFAZ
+      MENSAJE {
+        DETALLE
+        TIPO
+      }
+      NEGOCIO
+      PROCESO {
+        EJECUCION
+        ESTADO
+        TIPO
+      }
+      SERVICIOAWS
+      USUARIO {
+        CORREO
+        ROL
+      }
     }
     nextToken
   }
