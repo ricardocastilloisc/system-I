@@ -6,9 +6,8 @@ import { AppState } from '../../../ReduxStore/app.reducers';
 import { Usuario } from '../../../model/usuario.model';
 import { Observable } from 'rxjs';
 import { ERole } from '../../../validators/roles';
-import { ActivatedRoute } from '@angular/router';
-
 declare var $: any;
+
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -28,7 +27,6 @@ export class NavbarComponent implements OnInit, AfterViewInit {
   constructor(
     private authService: AuthService,
     private store: Store<AppState>,
-    private rutaActiva: ActivatedRoute
   ) {}
   ngAfterViewInit(): void {
     this.resizeMenuContent();
