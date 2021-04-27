@@ -29,6 +29,16 @@
 
   </div>
 
+  <div class="form-body">
+    <form autocomplete="off" [formGroup]="createForm" (ngSubmit)="onCreate(createForm.value)">
+      <div>
+        <label>ID: </label>
+        <input type="text" formControlName="ID_REGISTRO" autocomplete="off">
+      </div>
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
   <div class="row justify-content-center ">
     <div class="d-flex col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-6 justify-content-center">
       
@@ -52,7 +62,7 @@
             </select>
              -->
           </div>
-          <div><button (click)="consultarCatalogo()">Buscar</button></div>
+          <div><button >Buscar</button></div>
         </div>
       
       

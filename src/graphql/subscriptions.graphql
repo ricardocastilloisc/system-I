@@ -16,16 +16,82 @@ subscription OnDeleteAUDGENUSUARIOS($ID: String) {
 }
 subscription OnCreateAUDGENPROCESOS($ID_REGISTRO: String) {
   onCreateAUDGENPROCESOS(ID_REGISTRO: $ID_REGISTRO) {
+    ACTIVIDAD
+    DESTINO
+    ETAPA
+    FECHA
+    ID_FLUJO_PROCESO
     ID_REGISTRO
+    INSUMO
+    INTERFAZ
+    MENSAJE {
+      DETALLE
+      TIPO
+    }
+    NEGOCIO
+    PROCESO {
+      EJECUCION
+      ESTADO
+      TIPO
+    }
+    SERVICIOAWS
+    USUARIO {
+      CORREO
+      ROL
+    }
   }
 }
 subscription OnUpdateAUDGENPROCESOS($ID_REGISTRO: String) {
   onUpdateAUDGENPROCESOS(ID_REGISTRO: $ID_REGISTRO) {
+    ACTIVIDAD
+    DESTINO
+    ETAPA
+    FECHA
+    ID_FLUJO_PROCESO
     ID_REGISTRO
+    INSUMO
+    INTERFAZ
+    MENSAJE {
+      DETALLE
+      TIPO
+    }
+    NEGOCIO
+    PROCESO {
+      EJECUCION
+      ESTADO
+      TIPO
+    }
+    SERVICIOAWS
+    USUARIO {
+      CORREO
+      ROL
+    }
   }
 }
 subscription OnDeleteAUDGENPROCESOS($ID_REGISTRO: String) {
   onDeleteAUDGENPROCESOS(ID_REGISTRO: $ID_REGISTRO) {
+    ACTIVIDAD
+    DESTINO
+    ETAPA
+    FECHA
+    ID_FLUJO_PROCESO
     ID_REGISTRO
+    INSUMO
+    INTERFAZ
+    MENSAJE {
+      DETALLE
+      TIPO
+    }
+    NEGOCIO
+    PROCESO {
+      EJECUCION
+      ESTADO
+      TIPO
+    }
+    SERVICIOAWS
+    USUARIO {
+      CORREO
+      ROL
+    }
   }
 }

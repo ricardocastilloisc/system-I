@@ -16,16 +16,82 @@ mutation DeleteAUDGENUSUARIOS($input: DeleteAUDGENUSUARIOSInput!) {
 }
 mutation CreateAUDGENPROCESOS($input: CreateAUDGENPROCESOSInput!) {
   createAUDGENPROCESOS(input: $input) {
+    ACTIVIDAD
+    DESTINO
+    ETAPA
+    FECHA
+    ID_FLUJO_PROCESO
     ID_REGISTRO
+    INSUMO
+    INTERFAZ
+    MENSAJE {
+      DETALLE
+      TIPO
+    }
+    NEGOCIO
+    PROCESO {
+      EJECUCION
+      ESTADO
+      TIPO
+    }
+    SERVICIOAWS
+    USUARIO {
+      CORREO
+      ROL
+    }
   }
 }
 mutation UpdateAUDGENPROCESOS($input: UpdateAUDGENPROCESOSInput!) {
   updateAUDGENPROCESOS(input: $input) {
+    ACTIVIDAD
+    DESTINO
+    ETAPA
+    FECHA
+    ID_FLUJO_PROCESO
     ID_REGISTRO
+    INSUMO
+    INTERFAZ
+    MENSAJE {
+      DETALLE
+      TIPO
+    }
+    NEGOCIO
+    PROCESO {
+      EJECUCION
+      ESTADO
+      TIPO
+    }
+    SERVICIOAWS
+    USUARIO {
+      CORREO
+      ROL
+    }
   }
 }
 mutation DeleteAUDGENPROCESOS($input: DeleteAUDGENPROCESOSInput!) {
   deleteAUDGENPROCESOS(input: $input) {
+    ACTIVIDAD
+    DESTINO
+    ETAPA
+    FECHA
+    ID_FLUJO_PROCESO
     ID_REGISTRO
+    INSUMO
+    INTERFAZ
+    MENSAJE {
+      DETALLE
+      TIPO
+    }
+    NEGOCIO
+    PROCESO {
+      EJECUCION
+      ESTADO
+      TIPO
+    }
+    SERVICIOAWS
+    USUARIO {
+      CORREO
+      ROL
+    }
   }
 }

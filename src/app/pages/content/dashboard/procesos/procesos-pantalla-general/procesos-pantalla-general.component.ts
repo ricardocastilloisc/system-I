@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { APIService, CreateAUDGENPROCESOSInput } from '../../../../../API.service';
+import { APIService, AUDGENPROCESOS } from '../../../../../API.service';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { formatDate } from '@angular/common';
 
@@ -19,11 +19,10 @@ export class ProcesosPantallaGeneralComponent implements OnInit {
 
   constructor(private router: Router, private api: APIService, private fb: FormBuilder, private rutaActiva: ActivatedRoute) { }
 
-  consultaCatalogo: Array<CreateAUDGENPROCESOSInput>
+  consultaCatalogo: Array<AUDGENPROCESOS>
   ngOnInit(): void {
     this.createForm = this.fb.group({
-      'ID': ['', Validators.required],
-      'FECHA_FERIADO': ['', Validators.required]
+      'ID_REGISTRO': ['', Validators.required]
     });
   }
 
@@ -35,18 +34,24 @@ export class ProcesosPantallaGeneralComponent implements OnInit {
     this.router.navigate(['/'+window.location.pathname+'/proceso']);
   }
 
-  public onCreate() {
-    
-  }
-
-  async consultarCatalogo(){
-    console.log("Entre a la funcion")
-    this.api.ListAUDGENPROCESOS().then(event => {
-      this.consultaCatalogo = event.items;
-      console.log('Lista', this.consultaCatalogo);
+  public onCreate(proceso: AUDGENPROCESOS) {
+    this.api.GetAUDGENPROCESOS(proceso.ID_REGISTRO).then(event => {
+      console.log('Got!', event);
+      this.createForm.reset();
     })
     .catch(e => {
-      console.log('error...', e);
+      console.log('error creating restaurant...', e);
     });
   }
+
+  // async consultarCatalogo(){
+  //   console.log("Entre a la funcion")
+  //   this.api.GetAUDGENPROCESOS().then(event => {
+  //     this.consultaCatalogo = event.items;
+  //     console.log('Lista', this.consultaCatalogo);
+  //   })
+  //   .catch(e => {
+  //     console.log('error...', e);
+  //   });
+  // }
 }
