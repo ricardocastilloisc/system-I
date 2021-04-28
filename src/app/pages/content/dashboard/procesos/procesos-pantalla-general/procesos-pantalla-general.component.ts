@@ -39,8 +39,17 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
 
     this.AUDGENPROCESOS$ = this.store.select(
       ({ AUDGENPROCESOS }) => AUDGENPROCESOS.AUDGENPROCESOS
-    );
-    this.store.dispatch(LoadAUDGENPROCESOS());
+    )
+
+
+
+
+
+let body =   {
+  filter:{​​​​​ ID_FLUJO_PROCESO: {​​​​​ eq:"544cb86f-e173-496c-871e-acc6cbfb5daa"}​​​​​ }​​​​​
+}
+
+    this.store.dispatch(LoadAUDGENPROCESOS({consult:body}));
   }
 
   botonActivado = (parametocomparar: string): boolean => {

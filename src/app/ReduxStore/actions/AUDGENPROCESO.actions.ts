@@ -1,7 +1,7 @@
 import { createAction, props } from "@ngrx/store";
 import { AUDGENPROCESO_INERFACE } from '../../model/AUDGENPROCESO.model';
 
-export const LoadAUDGENPROCESOS  = createAction('[AUDGENPROCESO] AUDGENPROCESO Load');
+export const LoadAUDGENPROCESOS  = createAction('[AUDGENPROCESO] AUDGENPROCESO Load', props<{consult: any}>());
 
 export const LoadAUDGENPROCESOSuccess  = createAction('[AUDGENPROCESO Succes] AUDGENPROCESO Success', props<{AUDGENPROCESOS:AUDGENPROCESO_INERFACE[]}>());
 
