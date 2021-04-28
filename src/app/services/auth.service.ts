@@ -10,6 +10,7 @@ import * as authActions from '../ReduxStore/actions/usuario.actions';
 import { User } from '../model/user';
 import { Usuario } from '../model/usuario.model';
 import { Router } from '@angular/router';
+import { UnsetAUDGENPROCESO } from '../ReduxStore/actions';
 
 
 Amplify.configure(environment.amplifyConfig);
@@ -67,6 +68,7 @@ export class AuthService {
 
   cleanStates = () => {
     this.store.dispatch(authActions.unSetUser());
+    this.store.dispatch(UnsetAUDGENPROCESO());
   }
 
   getToken = (): String => {

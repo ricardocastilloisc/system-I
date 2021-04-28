@@ -2,7 +2,7 @@
 <div class="container-fluid">
   <div
     class="flex-row-reverse justify-content-center"
-    style="height: 50vh; width: 100%"
+    style="height: 20vh; width: 100%"
   >
     <div class="row justify-content-center">
       <div
@@ -25,14 +25,14 @@
         </button>
       </div>
     </div>
-    
+
 
   </div>
 
   <div class="row justify-content-center ">
     <div class="d-flex col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-6 justify-content-center">
-      
-        
+
+
         <div class="card-calendario">
           <div>Selecciona una fecha</div>
           <div>
@@ -48,78 +48,35 @@
               <option disabled selected>Estado</option>
               <option value="iniciado">En proceso</option>
               <option value="detenido">Detenido</option>
-              
+
             </select>
              -->
           </div>
-          <div><button (click)="consultarCatalogo()">Buscar</button></div>
+          <div><button>Buscar</button></div>
         </div>
-      
-      
+
+
     </div>
     <div class="d-flex col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-6 justify-content-center">
-      
-      
+
+
         <div class="card-lista-proceso" style="overflow-x:auto;">
-          <table class="table  listado-proceso">
+          <table class="table  listado-proceso" *ngIf="AUDGENPROCESOS$ | async as AUDGENPROCESOS">
               <tr>
                 <th>Proceso</th>
                 <th>Acción</th>
               </tr>
-              <tr>
-                <td>MO</td>
-                <td><img class="play-icon">
-                    <img class="stop-icon" (click)="consultar()"  >
-                    <img class="detalle-icon" (click)="consultar()" 
+              <tr *ngFor="let AUDGENPROCESO of AUDGENPROCESOS">
+                <td>{{AUDGENPROCESO.INTERFAZ}}</td>
+                <td><img *ngIf="AUDGENPROCESO.PROCESO.EJECUCION !== 'AUTOMATICA'" class="play-icon">
+                    <img *ngIf="AUDGENPROCESO.PROCESO.EJECUCION !== 'AUTOMATICA'" class="stop-icon" (click)="consultar()"  >
+                    <img  class="detalle-icon" (click)="consultar()"
                     ></td>
               </tr>
-              <tr>
-                <td>MD</td>
-                <td><img class="play-icon" >
-                  <img class="stop-icon" >
-                  <img class="detalle-icon" (click)="consultar()" ></td>
-              </tr>
-              <tr>
-                <td>AIMS y Excedentes</td>
-                <td><img class="play-icon" >
-                  <img class="stop-icon" >
-                  <img class="detalle-icon" (click)="consultar()" ></td>
-              </tr>
-              <tr>
-                <td>CRD</td>
-                <td><img class="play-icon" >
-                  <img class="stop-icon" >
-                  <img class="detalle-icon" (click)="consultar()" ></td>
-              </tr>
-              <tr>
-                <td>Caja fondos</td>
-                <td><img class="play-icon" >
-                  <img class="stop-icon" >
-                  <img class="detalle-icon" (click)="consultar()"  ></td>
-              </tr>
-              <tr>
-                <td>PFN</td>
-                <td><img class="play-icon" >
-                  <img class="stop-icon" >
-                  <img class="detalle-icon" (click)="consultar()" ></td>
-              </tr>
-              <tr>
-                <td>AIMS y Excedentes</td>
-                <td><img class="play-icon" >
-                  <img class="stop-icon" >
-                  <img class="detalle-icon" (click)="consultar()" ></td>
-              </tr>
-              <tr>
-                <td>CRD</td>
-                <td><img class="play-icon" >
-                  <img class="stop-icon" >
-                  <img class="detalle-icon" (click)="consultar()" ></td>
-              </tr>
-              
             </table>
         </div>
-      
-      
+
+
 
     </div>
   </div>

@@ -17,6 +17,8 @@ import { LoginComponent } from './pages/login/login.component';
 import { appReducers } from './ReduxStore/app.reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
+import { EffectsModule } from '@ngrx/effects';
+import { EffectsArrays } from './ReduxStore/effects';
 
 
 @NgModule({
@@ -30,6 +32,7 @@ import { environment } from '../environments/environment';
     /* configure app with AmplifyUIAngularModule */
     AmplifyUIAngularModule,
     StoreModule.forRoot(appReducers),
+    EffectsModule.forRoot(EffectsArrays),
     StoreDevtoolsModule.instrument({
       maxAge:25,
       logOnly: environment.production

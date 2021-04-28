@@ -1,9 +1,14 @@
+import { LoadAUDGENPROCESOS } from './../../../../../ReduxStore/actions/AUDGENPROCESO.actions';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { APIService, CreateAUDGENPROCESOSInput } from '../../../../../API.service';
+import { APIService, CreateAUDGENPROCESOSInput, ListAUDGENPROCESOSQuery } from '../../../../../API.service';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { formatDate } from '@angular/common';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../../../ReduxStore/app.reducers';
+import { Observable } from 'rxjs';
+import { AUDGENPROCESO_INERFACE } from '../../../../../model/AUDGENPROCESO.model';
 
 
 @Component({
@@ -17,14 +22,20 @@ export class ProcesosPantallaGeneralComponent implements OnInit {
 
   inputFecha = formatDate(new Date(),'yyyy-MM-dd', 'en-US');
 
-  constructor(private router: Router, private api: APIService, private fb: FormBuilder, private rutaActiva: ActivatedRoute) { }
 
-  consultaCatalogo: Array<CreateAUDGENPROCESOSInput>
+  AUDGENPROCESOS$:Observable<AUDGENPROCESO_INERFACE[]>
+
+  constructor(private router: Router, private store: Store<AppState>, private fb: FormBuilder, private rutaActiva: ActivatedRoute) { }
+  
   ngOnInit(): void {
     this.createForm = this.fb.group({
       'ID': ['', Validators.required],
       'FECHA_FERIADO': ['', Validators.required]
     });
+
+    this.AUDGENPROCESOS$ = this.store.select(({AUDGENPROCESOS})=>AUDGENPROCESOS.AUDGENPROCESOS);
+
+    this.store.dispatch(LoadAUDGENPROCESOS());
   }
 
   botonActivado = (parametocomparar:string):boolean => {
@@ -33,20 +44,5 @@ export class ProcesosPantallaGeneralComponent implements OnInit {
 
   consultar(){
     this.router.navigate(['/'+window.location.pathname+'/proceso']);
-  }
-
-  public onCreate() {
-    
-  }
-
-  async consultarCatalogo(){
-    console.log("Entre a la funcion")
-    this.api.ListAUDGENPROCESOS().then(event => {
-      this.consultaCatalogo = event.items;
-      console.log('Lista', this.consultaCatalogo);
-    })
-    .catch(e => {
-      console.log('error...', e);
-    });
   }
 }
