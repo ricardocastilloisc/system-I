@@ -9,20 +9,40 @@ import * as AUDGENPROCESOActions from '../actions/AUDGENPROCESO.actions';
 
 @Injectable()
 export class AUDGENPROCESOSEfffects {
-    constructor(
-        private actions$: Actions,
-        private api: APIService
-    ) {}
+  constructor(private actions$: Actions, private api: APIService) {}
 
-    loadAUDGENPROCESO$ = createEffect(() =>
+  loadAUDGENPROCESO$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AUDGENPROCESOActions.LoadAUDGENPROCESOS),
-      mergeMap(() =>
-      fromPromise(this.api.ListAUDGENPROCESOS()).pipe(
-          map( ({items}:any) => AUDGENPROCESOActions.LoadAUDGENPROCESOSuccess( {AUDGENPROCESOS: items} )),
-          catchError( error => of(AUDGENPROCESOActions.LoadAUDGENPROCESOError({payload:error})))
-        )
-      )
+      mergeMap(({ consult }) => {
+        if (consult) {
+          return fromPromise(this.api.ListAUDGENPROCESOS(consult)).pipe(
+            map(({ items }: any) =>
+              AUDGENPROCESOActions.LoadAUDGENPROCESOSuccess({
+                AUDGENPROCESOS: items,
+              })
+            ),
+            catchError((error) =>
+              of(
+                AUDGENPROCESOActions.LoadAUDGENPROCESOError({ payload: error })
+              )
+            )
+          );
+        } else {
+          return fromPromise(this.api.ListAUDGENPROCESOS()).pipe(
+            map(({ items }: any) =>
+              AUDGENPROCESOActions.LoadAUDGENPROCESOSuccess({
+                AUDGENPROCESOS: items,
+              })
+            ),
+            catchError((error) =>
+              of(
+                AUDGENPROCESOActions.LoadAUDGENPROCESOError({ payload: error })
+              )
+            )
+          );
+        }
+      })
     )
   );
 }

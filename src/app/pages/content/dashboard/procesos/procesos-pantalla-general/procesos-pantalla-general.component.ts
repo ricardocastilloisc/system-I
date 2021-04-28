@@ -40,7 +40,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
     this.AUDGENPROCESOS$ = this.store.select(
       ({ AUDGENPROCESOS }) => AUDGENPROCESOS.AUDGENPROCESOS
     );
-    this.store.dispatch(LoadAUDGENPROCESOS());
+    this.store.dispatch(LoadAUDGENPROCESOS({consult:null}));
   }
 
   botonActivado = (parametocomparar: string): boolean => {

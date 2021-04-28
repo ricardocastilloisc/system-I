@@ -5,10 +5,12 @@ import { LoadAUDGENPROCESOS, LoadAUDGENPROCESOError, LoadAUDGENPROCESOSuccess, U
 
 export interface AUDGENPROCESOState {
   AUDGENPROCESOS:AUDGENPROCESO_INERFACE[],
+  consult:any,
   error: any;
 }
 export const AUDGENPROCESOState: AUDGENPROCESOState = {
   AUDGENPROCESOS:[],
+  consult:null,
   error: null,
 };
 
@@ -23,7 +25,8 @@ const _AUDGENPROCESOReducer = createReducer(
   on(UnsetAUDGENPROCESO, (state) => ({
     ...state,
     AUDGENPROCESOS: null,
-    error: null
+    error: null,
+    consult: null
   })),
 
   on(LoadAUDGENPROCESOError, (state, {payload}) =>
