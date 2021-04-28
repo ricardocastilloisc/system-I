@@ -16,7 +16,7 @@ export const AUDGENPROCESOState: AUDGENPROCESOState = {
 
 const _AUDGENPROCESOReducer = createReducer(
   AUDGENPROCESOState,
-  on(LoadAUDGENPROCESOS, (state) => ({ ...state })),
+  on(LoadAUDGENPROCESOS, (state, {consult}) => ({ ...state })),
   on(LoadAUDGENPROCESOSuccess, (state, { AUDGENPROCESOS }) => ({
     ...state,
     AUDGENPROCESOS: [...AUDGENPROCESOS],
