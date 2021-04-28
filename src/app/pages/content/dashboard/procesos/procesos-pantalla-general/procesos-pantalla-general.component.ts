@@ -1,9 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { LoadAUDGENPROCESOS, UnsetAUDGENPROCESO } from './../../../../../ReduxStore/actions/AUDGENPROCESO.actions';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { APIService, AUDGENPROCESOS } from '../../../../../API.service';
-import { fromPromise } from 'rxjs/observable/fromPromise';
 import { formatDate } from '@angular/common';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../../../ReduxStore/app.reducers';
+import { Observable } from 'rxjs';
+import { AUDGENPROCESO_INERFACE } from '../../../../../model/AUDGENPROCESO.model';
 
 
 @Component({
@@ -11,37 +14,43 @@ import { formatDate } from '@angular/common';
   templateUrl: './procesos-pantalla-general.component.html',
   styleUrls: ['./procesos-pantalla-general.component.css'],
 })
-export class ProcesosPantallaGeneralComponent implements OnInit {
-
+export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
   public createForm: FormGroup;
 
-  inputFecha = formatDate(new Date(),'yyyy-MM-dd', 'en-US');
+  inputFecha = formatDate(new Date(), 'yyyy-MM-dd', 'en-US');
 
-  constructor(private router: Router, private api: APIService, private fb: FormBuilder, private rutaActiva: ActivatedRoute) { }
+  AUDGENPROCESOS$: Observable<AUDGENPROCESO_INERFACE[]>;
 
-  consultaCatalogo: Array<AUDGENPROCESOS>
+  constructor(
+    private router: Router,
+    private store: Store<AppState>,
+    private fb: FormBuilder,
+    private rutaActiva: ActivatedRoute
+  ) {}
+  ngOnDestroy(): void {
+    this.store.dispatch(UnsetAUDGENPROCESO());
+  }
+
   ngOnInit(): void {
     this.createForm = this.fb.group({
-      'ID_REGISTRO': ['', Validators.required]
+      ID: ['', Validators.required],
+      FECHA_FERIADO: ['', Validators.required],
     });
+
+    this.AUDGENPROCESOS$ = this.store.select(
+      ({ AUDGENPROCESOS }) => AUDGENPROCESOS.AUDGENPROCESOS
+    );
+    this.store.dispatch(LoadAUDGENPROCESOS());
   }
 
-  botonActivado = (parametocomparar:string):boolean => {
-    return this.rutaActiva.snapshot.params.tipo===parametocomparar?true:false;
-  }
+  botonActivado = (parametocomparar: string): boolean => {
+    return this.rutaActiva.snapshot.params.tipo === parametocomparar
+      ? true
+      : false;
+  };
 
-  consultar(){
-    this.router.navigate(['/'+window.location.pathname+'/proceso']);
-  }
-
-  public onCreate(proceso: AUDGENPROCESOS) {
-    this.api.GetAUDGENPROCESOS(proceso.ID_REGISTRO).then(event => {
-      console.log('Got!', event);
-      this.createForm.reset();
-    })
-    .catch(e => {
-      console.log('error creating restaurant...', e);
-    });
+  consultar() {
+    this.router.navigate(['/' + window.location.pathname + '/proceso']);
   }
 
   // async consultarCatalogo(){

@@ -1,0 +1,60 @@
+.wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.content {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+
+#right-button {
+  border-top-right-radius: 25px 25px;
+  border-bottom-right-radius: 25px 25px;
+}
+
+#left-button {
+  border-top-left-radius: 25px 25px;
+  border-bottom-left-radius: 25px 25px;
+}
+
+div.card-busqueda {
+  background: white;
+  display: flex;
+  width: 100%;
+  height: 285px;
+  min-width: 420px;
+  max-width: 500px;
+  margin: 25px 0;
+  margin-right: 5%;
+  margin-left: 5%;
+  flex-direction: column;
+  color: white;
+  align-items: center;
+  border-radius: 25px;
+  border-left: 10px solid #0a8299;
+  box-shadow: 4px 4px 10px #00000033;
+}
+
+.card-busqueda div {
+  color: #0A8299;
+  border: black;
+  height: auto;
+  width: auto;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  font: bold 20px FS Elliot Pro;
+}
+
+.card-busqueda div > button {
+  background-color: #0a8299;
+  color: white;
+  width: 296px;
+  height: 50px;
+  border-radius: 25px;
+  font: bold 20px FS Elliot Pro;
+  border: none;
+}

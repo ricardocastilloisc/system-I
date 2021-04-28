@@ -10,6 +10,7 @@ import * as authActions from '../ReduxStore/actions/usuario.actions';
 import { User } from '../model/user';
 import { Usuario } from '../model/usuario.model';
 import { Router } from '@angular/router';
+import { UnsetAUDGENPROCESO, UnsetListaUsuarios } from '../ReduxStore/actions';
 
 
 Amplify.configure(environment.amplifyConfig);
