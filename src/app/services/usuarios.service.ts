@@ -108,7 +108,6 @@ ayuda de atibutos: {Name: "sub", Value: "42ae1b55-8029-4a09-8c81-8c805c650aaf"}
 
   reformatearArrayDeUsuarios = (objectUsers) => {
     let arrayUsers = [];
-    console.log(objectUsers)
     objectUsers.Users.forEach(objectUser =>{
       let object = {
         UserCreateDate: objectUser.UserCreateDate,
