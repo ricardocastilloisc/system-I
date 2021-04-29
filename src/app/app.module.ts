@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 
 /* import AmplifyUIAngularModule  */
 import { AmplifyUIAngularModule } from '@aws-amplify/ui-angular';
@@ -28,6 +29,7 @@ import { EffectsArrays } from './ReduxStore/effects';
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     AppRoutingModule,
     /* configure app with AmplifyUIAngularModule */
     AmplifyUIAngularModule,
