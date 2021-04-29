@@ -21,7 +21,7 @@ export class ProcesoComponent implements OnInit,OnDestroy {
 
   ngOnInit(): void {
 
-    
+
     this.store.select(
       ({ AUDGENPROCESOS }) => AUDGENPROCESOS.AUDGENPROCESOS
     )
@@ -29,10 +29,7 @@ export class ProcesoComponent implements OnInit,OnDestroy {
     let body =   {
       filter:{​​​​​ ID_FLUJO_PROCESO: {​​​​​ eq:"544cb86f-e173-496c-871e-acc6cbfb5daa"}​​​​​ }​​​​​
     }
-
         this.store.dispatch(LoadAUDGENPROCESOS({consult:body}));
-
-
    }
 
 

@@ -1,36 +1,50 @@
-import { LoadListaUsuarios, LoadListaUsuariosError, LoadListaUsuariosSuccess } from './../actions/listaUsuarios.actions';
+import {
+  LoadListaUsuarios,
+  LoadListaUsuariosError,
+  LoadListaUsuariosSuccess,
+} from './../actions/listaUsuarios.actions';
 import { createReducer, on } from '@ngrx/store';
 import { UnsetListaUsuarios } from '../actions/listaUsuarios.actions';
 import { UsuarioListado } from '../../model/usuarioLitsa.model';
 
+export interface ConsultaUsuario {
+  parametro: string;
+  tipo: string;
+}
 export interface ListaUsuariosState {
-  ListaUsuarios:UsuarioListado[],
+  ListaUsuarios: UsuarioListado[];
+  consulta: ConsultaUsuario;
   error: any;
 }
 export const ListaUsuariosState: ListaUsuariosState = {
-  ListaUsuarios:[],
+  ListaUsuarios: [],
+  consulta: null,
   error: null,
 };
 
 const _ListadoUsuariosReducer = createReducer(
   ListaUsuariosState,
-  on(LoadListaUsuarios, (state) => ({ ...state })),
+  on(LoadListaUsuarios, (state, { consulta }) => ({
+    ...state,
+    consulta: consulta,
+  })),
   on(LoadListaUsuariosSuccess, (state, { ListaUsuarios }) => ({
     ...state,
     ListaUsuarios: [...ListaUsuarios],
-    error: null
+    error: null,
   })),
   on(UnsetListaUsuarios, (state) => ({
     ...state,
     ListaUsuarios: null,
-    error: null
+    consulta: null,
+    error: null,
   })),
 
-  on(LoadListaUsuariosError, (state, {payload}) =>
-  ({
+  on(LoadListaUsuariosError, (state, { payload }) => ({
     ...state,
-    error: payload
+    error: payload,
   }))
 );
 
-export let ListadoUsuariosReducer = (state, action) =>  _ListadoUsuariosReducer(state, action)
+export let ListadoUsuariosReducer = (state, action) =>
+  _ListadoUsuariosReducer(state, action);

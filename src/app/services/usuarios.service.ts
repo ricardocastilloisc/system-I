@@ -76,12 +76,15 @@ export class UsuariosService {
       .promise();
   }
 
-  consultarUsuariosEnGrupo(): void {
+  consultarUsuariosEnGrupo(parametro) {
     // metodo para consultar todos los usuarios que pertenecen a un grupo dentro del user pool
-    cognitoidentityserviceprovider.listUsersInGroup(
-      this.paramsUserGroups,
-      this.callbackAws
-    );
+    const paramsUserGroups = {
+      GroupName: parametro /* es un dato de entrada de la pantalla */ /* --> ???? relacionado a la tabla */,
+      Limit: environment.Limit,
+      UserPoolId: environment.UserPoolId,
+    };
+    return cognitoidentityserviceprovider.listUsersInGroup(
+      paramsUserGroups).promise();
   }
 
   obtenerDetalleUsuario(): void {
@@ -109,7 +112,7 @@ export class UsuariosService {
   }
 
   actualizarAtributosUsuario(): void {
-    // metodo para actualizar los valores de los atributos del usuario en el user pool 
+    // metodo para actualizar los valores de los atributos del usuario en el user pool
     cognitoidentityserviceprovider.adminUpdateUserAttributes(
       this.paramsAtributos,
       this.callbackAws
