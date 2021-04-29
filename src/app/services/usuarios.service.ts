@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import * as AWS from 'aws-sdk';
 import { environment } from '../../environments/environment';
 import { AppState } from '../ReduxStore/app.reducers';
-import {Store} from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { setUserArea } from '../ReduxStore/actions/usuario.actions';
 
 AWS.config.update(environment.SESConfig);
@@ -55,17 +55,15 @@ export class UsuariosService {
       }
     ],
     Username:
-      'azure_38ojuohxn1cmwbllvomkhwl4mdb48x0mqwfeg2zcl5s', /* identificador del usuario en el user pool */
+      'azure_rwayeowx9nsigogmrb6adqmpgrl2hohoivn5bgsobja', /* identificador del usuario en el user pool */
     UserPoolId: environment.UserPoolId
   };
 
-  paramsGrupoUsuario ={
-    
-      Username: 'azure_38ojuohxn1cmwbllvomkhwl4mdb48x0mqwfeg2zcl5s', /* identificador del usuario en el user pool */
-    UserPoolId:  environment.UserPoolId
-   
+  paramsGrupoUsuario = {
+    Username: 'azure_rwayeowx9nsigogmrb6adqmpgrl2hohoivn5bgsobja', /* identificador del usuario en el user pool */
+    UserPoolId: environment.UserPoolId
   };
-  constructor(private store: Store<AppState> ) { }
+  constructor(private store: Store<AppState>) { }
 
   consultarGrupos(): void {
     // metodo para consultar todos los grupos del user pool
@@ -144,7 +142,7 @@ export class UsuariosService {
       //console.log(JSON.stringify(data));
       var area = data['UserAttributes'].find(el => el.Name == 'custom:area')['Value'];
       this.store.dispatch(setUserArea({
-        area:area
+        area: area
       }))
       console.log(area);
     }

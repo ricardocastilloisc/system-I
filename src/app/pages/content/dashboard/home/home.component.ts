@@ -27,8 +27,8 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.DataUser$ = this.store.select(({ usuario }) => usuario.user);
-    this.store.select(({ usuario }) => usuario.area).subscribe(res => {console.log(res)});
-    this.usuario.obtenerDetalleUsuario();
+    //this.store.select(({ usuario }) => usuario.area).subscribe(res => {console.log(res)});
+    this.usuario.obtenerDetalleUsuario();    
   }
 
   rolesValids = (User: Usuario, roles: any[]): boolean => {
