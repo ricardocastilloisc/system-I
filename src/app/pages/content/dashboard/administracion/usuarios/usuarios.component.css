@@ -46,3 +46,26 @@ div.card-busqueda {
   font: bold 20px FS Elliot Pro;
   border: none;
 }
+
+
+
+div.card-lista-design-general {
+  width: auto;
+
+  min-width: 477px;
+  flex: auto;
+  display: flex;
+  flex-wrap: wrap;
+  vertical-align: middle;
+}
+
+
+
+
+table.listado-design-general th {
+  background-color:#0A8299;
+  font: bold 18px FS Elliot Pro;
+  height: 40px;
+  height: 40px;
+  font: bold 18px FS Elliot Pro;
+}

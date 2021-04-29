@@ -37,6 +37,10 @@ export const environment = {
           endpoint:
             'https://tnjo8cjoj1.execute-api.us-east-1.amazonaws.com/prod/', // for local test change to something such as 'http://localhost:3001'
         },
+        {
+          name: 'sqs-dev', 
+          endpoint: 'https://sqs.us-east-1.amazonaws.com/335672086802/sia-encolamiento-mensajes-monitoreo-dev'
+        }
       ],
     },
   },

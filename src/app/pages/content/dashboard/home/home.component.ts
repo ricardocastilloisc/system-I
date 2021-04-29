@@ -4,6 +4,7 @@ import { AppState } from '../../../../ReduxStore/app.reducers';
 import { Usuario } from 'src/app/model/usuario.model';
 import { Observable } from 'rxjs';
 import { AuthService } from '../../../../services/auth.service';
+import {UsuariosService} from '../../../../services/usuarios.service';
 import { ERole } from '../../../../validators/roles';
 
 @Component({
@@ -20,11 +21,14 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private store: Store<AppState>,
-    private authService: AuthService
+    private authService: AuthService,
+    private usuario: UsuariosService
   ) {}
 
   ngOnInit(): void {
     this.DataUser$ = this.store.select(({ usuario }) => usuario.user);
+    this.store.select(({ usuario }) => usuario.area).subscribe(res => {console.log(res)});
+    this.usuario.obtenerDetalleUsuario();
   }
 
   rolesValids = (User: Usuario, roles: any[]): boolean => {

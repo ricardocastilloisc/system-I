@@ -298,7 +298,7 @@ a[data-toggle="collapse"] {
   height: 30px;
   opacity: 1;
   margin: 0 15px;
-  
+
 }
 
 .play-icon{
@@ -311,6 +311,13 @@ a[data-toggle="collapse"] {
 
 .stop-icon{
   background: transparent url('../icons/Icono\ -\ \ detener.svg') 0% 0% no-repeat padding-box;
+  width: 30px;
+  height: 30px;
+  opacity: 1;
+  margin: 0 15px;
+}
+.editar-icon{
+  background: transparent url('../icons/Icono\ -\ \ editar.svg') 0% 0% no-repeat padding-box;
   width: 30px;
   height: 30px;
   opacity: 1;
@@ -410,4 +417,34 @@ img.itemsTextoImagenCentro {
 .botonActivado {
   background-color: #035fa4 !important;
   color: white !important;
+}
+
+
+
+
+table.listado-design-general {
+  color: white;
+  width: 100%;
+  margin: 25px 0;
+  margin-left: 5%;
+  margin-right: 5%;
+  border-collapse: separate;
+  border-spacing: 0 6px;
+}
+
+
+table.listado-design-general td {
+  background-color: white;
+  color: #707070;
+  font: 18px FS Elliot Pro;
+  height: 40px;
+  margin: 6px 0px;
+}
+.listado-design-general tr td:first-of-type {
+  border-top-left-radius: 25px;
+  border-bottom-left-radius: 25px;
+}
+.listado-design-general tr td:last-of-type {
+  border-top-right-radius: 25px;
+  border-bottom-right-radius: 25px;
 }

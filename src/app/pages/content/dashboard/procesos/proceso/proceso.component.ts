@@ -42,6 +42,7 @@ export class ProcesoComponent implements OnInit,OnDestroy {
 
     let lenght = this.AUDGENPROCESOS$.subscribe(res => {return res.length})
     console.log("here", lenght);
+        
    }
 
 

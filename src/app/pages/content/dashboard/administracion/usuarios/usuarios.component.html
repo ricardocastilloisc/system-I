@@ -2,16 +2,44 @@
   <div class="d-flex col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-6 justify-content-center">
     <div class="card-busqueda">
       <div>Buscar usuario por</div>
-      <div> 
-        <select name="cars" id="cars" value="Permiso">
+
+      <div>
+        <form [formGroup]="FiltroUsuarioForm">
+        <select formControlName="grupo" name="grupo" id="grupo" value="Permiso">
           <option disabled selected>Permiso</option>
-          <option value="Administrador">Administrador</option>
-          <option value="AdministradorArea">Administrador de área</option>
-          <option value="Ejecutor">Ejecutor</option>
-          <option value="Soporte">Soporte</option>
+          <option *ngFor="let grupo of Grupos" [value]="grupo.value">{{grupo.label}}</option>
         </select>
+      </form>
       </div>
-      <div><button>Buscar</button></div>
+      <div><button  (click)="filtrar()">Buscar</button></div>
+
     </div>
   </div>
 </div>
+
+
+<div class="row justify-content-center ">
+
+  <div class="d-flex col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12 justify-content-center">
+
+    <div class="card-lista-design-general" style="overflow-x:auto;">
+      <table class="table  listado-design-general"  *ngIf="ListadoUsuarios$ | async as ListadoUsuarios">
+        <tr>
+          <th>Nombre</th>
+          <th>Correo</th>
+          <th>Área</th>
+          <th>Permisos</th>
+          <th>Acciones</th>
+        </tr>
+        <tr *ngFor="let usuario of ListadoUsuarios">
+          <td style="padding-left: 40px;"> {{retornarStringSiexiste(usuario.Attributes, 'given_name')}} {{retornarStringSiexiste(usuario.Attributes, 'family_name')}} </td>
+          <td> {{retornarStringSiexiste(usuario.Attributes, 'email')}} </td>
+          <td></td>
+          <td></td>
+          <td><img class="editar-icon"></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+

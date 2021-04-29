@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import * as AWS from 'aws-sdk';
 import { environment } from '../../environments/environment';
+import { AppState } from '../ReduxStore/app.reducers';
+import {Store} from '@ngrx/store';
+import { setUserArea } from '../ReduxStore/actions/usuario.actions';
 
 AWS.config.update(environment.SESConfig);
 var cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider();
@@ -39,12 +42,24 @@ export class UsuariosService {
   };
 
   paramsUserGroups = {
-    GroupName: 'Administrador' /* es un dato de entrada de la pantalla */,
+    GroupName: 'Administrador' /* es un dato de entrada de la pantalla */ /* --> ?? relacionado a la tabla --> roles  */,
     Limit: environment.Limit,
     UserPoolId: environment.UserPoolId,
   };
 
-  constructor() {}
+  paramsAtributos = {
+    UserAttributes: [
+      {
+        Name: "custom:area",
+        Value: "Tesorería"
+      }
+    ],
+    Username:
+      'azure_38ojuohxn1cmwbllvomkhwl4mdb48x0mqwfeg2zcl5s', /* identificador del usuario en el user pool */
+    UserPoolId: environment.UserPoolId
+  };
+
+  constructor(private store: Store<AppState> ) { }
 
   consultarGrupos(): void {
     // metodo para consultar todos los grupos del user pool
@@ -61,19 +76,22 @@ export class UsuariosService {
       .promise();
   }
 
-  consultarUsuariosEnGrupo(): void {
+  consultarUsuariosEnGrupo(parametro) {
     // metodo para consultar todos los usuarios que pertenecen a un grupo dentro del user pool
-    cognitoidentityserviceprovider.listUsersInGroup(
-      this.paramsUserGroups,
-      this.callbackAws
-    );
+    const paramsUserGroups = {
+      GroupName: parametro /* es un dato de entrada de la pantalla */ /* --> ???? relacionado a la tabla */,
+      Limit: environment.Limit,
+      UserPoolId: environment.UserPoolId,
+    };
+    return cognitoidentityserviceprovider.listUsersInGroup(
+      paramsUserGroups).promise();
   }
 
   obtenerDetalleUsuario(): void {
     // metodo para obtener el los datos a detalle del usuario
     cognitoidentityserviceprovider.adminGetUser(
       this.paramsUser,
-      this.callbackAws
+      this.callbackAwsDetalle
     );
   }
 
@@ -93,10 +111,30 @@ export class UsuariosService {
     );
   }
 
+  actualizarAtributosUsuario(): void {
+    // metodo para actualizar los valores de los atributos del usuario en el user pool
+    cognitoidentityserviceprovider.adminUpdateUserAttributes(
+      this.paramsAtributos,
+      this.callbackAws
+    );
+  }
+
   callbackAws = (err, data) => {
     if (err) console.log(err, err.stack);
     else console.log(data);
   };
+
+  callbackAwsDetalle = (err, data) => {
+    if (err) console.log(err, err.stack);
+    else {
+      var area = data['UserAttributes'].find(el => el.Name == 'custom:area')['Value'];
+      this.store.dispatch(setUserArea({
+        area:area
+      }))
+      console.log(area);
+    }
+  };
+
   /*
 ayuda de atibutos: {Name: "sub", Value: "42ae1b55-8029-4a09-8c81-8c805c650aaf"}
 1: {Name: "identities", Value: "[{"userId":"PY5dp6qYCyodowdB_EBAmPy3aF9cV6iO1-k6Ue…null,"primary":true,"dateCreated":1618943540138}]"}
@@ -108,7 +146,7 @@ ayuda de atibutos: {Name: "sub", Value: "42ae1b55-8029-4a09-8c81-8c805c650aaf"}
 
   reformatearArrayDeUsuarios = (objectUsers) => {
     let arrayUsers = [];
-    objectUsers.Users.forEach(objectUser =>{
+    objectUsers.Users.forEach(objectUser => {
       let object = {
         UserCreateDate: objectUser.UserCreateDate,
         UserLastModifiedDate: objectUser.UserLastModifiedDate,
@@ -117,7 +155,7 @@ ayuda de atibutos: {Name: "sub", Value: "42ae1b55-8029-4a09-8c81-8c805c650aaf"}
         Username: objectUser.Username,
         Attributes: {},
       };
-      objectUser.Attributes.forEach( attribute => {
+      objectUser.Attributes.forEach(attribute => {
         object.Attributes[attribute.Name] = attribute.Value;
       });
       arrayUsers.push(object)
