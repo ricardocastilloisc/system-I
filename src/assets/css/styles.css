@@ -13,10 +13,10 @@
 }
 
 body {
-  background:#E8E8E8;
+  background: #e8e8e8;
 }
 
-.card{
+.card {
   box-shadow: 4px 4px 10px #00000033;
 }
 .bg {
@@ -292,37 +292,46 @@ a[data-toggle="collapse"] {
   display: flex;
 }
 
-.detalle-icon{
-  background: transparent url('../icons/Icono\ -\ \ detalles.svg') 0% 0% no-repeat padding-box;
+.detalle-icon {
+  background: transparent url("../icons/Icono\ -\ \ detalles.svg") 0% 0%
+    no-repeat padding-box;
   width: 30px;
   height: 30px;
   opacity: 1;
   margin: 0 15px;
-
+  padding: 15px;
 }
 
-.play-icon{
-  background: transparent url('../icons/Icono\ -\ \ iniciar.svg') 0% 0% no-repeat padding-box;
+.play-icon {
+  background: transparent url("../icons/Icono\ -\ \ iniciar.svg") 0% 0%
+    no-repeat padding-box;
   width: 30px;
   height: 30px;
   opacity: 1;
   margin: 0 15px;
+  padding: 15px;
 }
 
-.stop-icon{
-  background: transparent url('../icons/Icono\ -\ \ detener.svg') 0% 0% no-repeat padding-box;
+.stop-icon {
+  background: transparent url("../icons/Icono\ -\ \ detener.svg") 0% 0%
+    no-repeat padding-box;
   width: 30px;
   height: 30px;
   opacity: 1;
   margin: 0 15px;
+  padding: 15px;
 }
-.editar-icon{
-  background: transparent url('../icons/Icono\ -\ \ editar.svg') 0% 0% no-repeat padding-box;
+
+.editar-icon {  
+  background: transparent url("../icons/Icono\ -\  editar.svg") 0% 0%
+    no-repeat padding-box;
   width: 30px;
   height: 30px;
   opacity: 1;
   margin: 0 15px;
+  padding: 15px;
 }
+
 img.alineadoTextoImagenCentro {
   vertical-align: middle;
   float: left;
@@ -413,14 +422,10 @@ img.itemsTextoImagenCentro {
   justify-content: flex-start !important;
 }
 
-
 .botonActivado {
   background-color: #035fa4 !important;
   color: white !important;
 }
-
-
-
 
 table.listado-design-general {
   color: white;
@@ -431,7 +436,6 @@ table.listado-design-general {
   border-collapse: separate;
   border-spacing: 0 6px;
 }
-
 
 table.listado-design-general td {
   background-color: white;

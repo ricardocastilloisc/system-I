@@ -59,6 +59,12 @@ export class UsuariosService {
     UserPoolId: environment.UserPoolId
   };
 
+  paramsGrupoUsuario ={
+    
+      Username: 'azure_38ojuohxn1cmwbllvomkhwl4mdb48x0mqwfeg2zcl5s', /* identificador del usuario en el user pool */
+    UserPoolId:  environment.UserPoolId
+   
+  };
   constructor(private store: Store<AppState> ) { }
 
   consultarGrupos(): void {
@@ -119,6 +125,14 @@ export class UsuariosService {
     );
   }
 
+  obtenerGruposUsuario(): void {
+    // metodo para consultar los grupos a los que pertenece un usuario del user pool
+    cognitoidentityserviceprovider.adminListGroupsForUser(
+      this.paramsGrupoUsuario,
+      this.callbackAws
+    );
+  }
+
   callbackAws = (err, data) => {
     if (err) console.log(err, err.stack);
     else console.log(data);
@@ -127,6 +141,7 @@ export class UsuariosService {
   callbackAwsDetalle = (err, data) => {
     if (err) console.log(err, err.stack);
     else {
+      //console.log(JSON.stringify(data));
       var area = data['UserAttributes'].find(el => el.Name == 'custom:area')['Value'];
       this.store.dispatch(setUserArea({
         area:area

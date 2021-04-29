@@ -47,20 +47,14 @@ div.card-busqueda {
   border: none;
 }
 
-
-
 div.card-lista-design-general {
   width: auto;
-
   min-width: 477px;
   flex: auto;
   display: flex;
   flex-wrap: wrap;
   vertical-align: middle;
 }
-
-
-
 
 table.listado-design-general th {
   background-color:#0A8299;
