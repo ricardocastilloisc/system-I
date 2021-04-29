@@ -39,7 +39,7 @@ export class UsuariosService {
   };
 
   paramsUserGroups = {
-    GroupName: 'Administrador' /* es un dato de entrada de la pantalla */,
+    GroupName: 'Administrador' /* es un dato de entrada de la pantalla */ /* --> ???? relacionado a la tabla */,
     Limit: environment.Limit,
     UserPoolId: environment.UserPoolId,
   };
