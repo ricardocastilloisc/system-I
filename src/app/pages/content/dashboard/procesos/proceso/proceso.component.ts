@@ -21,7 +21,8 @@ export class ProcesoComponent implements OnInit,OnDestroy {
 
   constructor(
     private store: Store<AppState>,
-    private rutaActiva: ActivatedRoute) { }
+    private rutaActiva: ActivatedRoute,
+    ) { }
 
   AUDGENPROCESOS$: Observable<AUDGENPROCESO_INERFACE[]>;
 
@@ -32,7 +33,9 @@ export class ProcesoComponent implements OnInit,OnDestroy {
   
   ngOnInit(): void {
     
+    console.log(this.rutaActiva.snapshot.params.id)
     
+
     this.AUDGENPROCESOS$ = this.store.select(
       ({ AUDGENPROCESOS }) => AUDGENPROCESOS.AUDGENPROCESOS
     ).pipe(map((res) =>{return res = res.slice().sort(function (a, b) {
@@ -46,7 +49,7 @@ export class ProcesoComponent implements OnInit,OnDestroy {
     
 
     let body =   {
-      filter:{​​​​​ ID_FLUJO_PROCESO: {​​​​​ eq:"544cb86f-e173-496c-871e-acc6cbfb5daa"}​​​​​ }​​​​​
+      filter:{​​​​​ ID_FLUJO_PROCESO: {​​​​​ eq: this.rutaActiva.snapshot.params.id}​​​​​ }​​​​​
     }
 
     this.store.dispatch(LoadAUDGENPROCESOS({consult:body}));

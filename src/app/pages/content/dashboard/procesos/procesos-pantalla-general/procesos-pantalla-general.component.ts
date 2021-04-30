@@ -58,8 +58,8 @@ let body =   {
       : false;
   };
 
-  consultar() {
-    this.router.navigate(['/' + window.location.pathname + '/proceso']);
+  consultar(idProceso) {
+    this.router.navigate(['/' + window.location.pathname + '/proceso/' + idProceso]);
   }
 
   // async consultarCatalogo(){
