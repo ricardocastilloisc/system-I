@@ -1,3 +1,4 @@
+import { ProcesoTerminado } from './../ReduxStore/actions/loaderProcesoCambios.actions';
 import { Injectable } from '@angular/core';
 import * as AWS from 'aws-sdk';
 import { environment } from '../../environments/environment';
@@ -172,23 +173,38 @@ export class UsuariosService {
     return cognitoidentityserviceprovider.adminAddUserToGroup(params).promise();
   }
 
-  eliminarUsuarioGrupo(GroupName, Username): void {
+  eliminarUsuarioGrupo(GroupName, Username) {
     const params = {
       GroupName: GroupName,
       UserPoolId: environment.UserPoolId,
       Username: Username,
     };
 
+
+    let terminado = null;
     cognitoidentityserviceprovider.adminRemoveUserFromGroup(
       params,
       (err, data) => {
         if (err) {
-          console.log(err);
+          terminado = 1
         } else {
-          console.log(data);
+          terminado = 1
         }
       }
     );
+
+    new Promise((resolve) => {
+      const intervalo = setInterval(() => {
+        if (terminado) {
+          resolve("ok");
+          clearInterval(intervalo);
+        }
+      }, 100);
+    }).then(() => {
+      this.store.dispatch(ProcesoTerminado())
+    });
+
+
   }
 
   actualizarAtributosUsuario(): void {

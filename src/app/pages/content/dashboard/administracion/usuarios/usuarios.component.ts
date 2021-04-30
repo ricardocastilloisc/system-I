@@ -14,6 +14,7 @@ import { ERole } from 'src/app/validators/roles';
 import { ValorFiltrarGrupo } from '../../../../../validators/opcionesDeFiltroUsuarioAdmininistracion';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { UsuariosService } from '../../../../../services/usuarios.service';
+import { ProcesoLimpiar } from '../../../../../ReduxStore/actions/loaderProcesoCambios.actions';
 
 @Component({
   selector: 'app-usuarios',
@@ -59,7 +60,6 @@ export class UsuariosComponent implements OnInit, OnDestroy {
 
   openModal(content, ObjectUsuario: UsuarioListado) {
     this.ObjectUsuarioCambiar = ObjectUsuario;
-    console.log(ObjectUsuario);
     if (ObjectUsuario.GrupoQuePertenece === '') {
       this.FormCambioPermiso.get('grupoCambiar').setValue('Permiso');
     } else {
@@ -76,62 +76,18 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     }
 
     if(this.ObjectUsuarioCambiar.GrupoQuePertenece === ''){
-      this.UsuariosService.agregarUsuarioGrupo(
-        this.FormCambioPermiso.get('grupoCambiar').value,
+      this.cambiarValorDelPermiso();
+    }else {
+      this.UsuariosService.eliminarUsuarioGrupo(
+        this.ObjectUsuarioCambiar.GrupoQuePertenece,
         this.ObjectUsuarioCambiar.Username
       )
-        .then(() => {
-          this.salirYRestablecer(modal);
-        })
-        .catch(() => {
-          this.salirYRestablecer(modal);
-        });
     }
-
-
-    this.UsuariosService.eliminarUsuarioGrupo(
-      this.ObjectUsuarioCambiar.GrupoQuePertenece,
-      this.ObjectUsuarioCambiar.Username
-    )
-    setTimeout(() => {
-      this.UsuariosService.agregarUsuarioGrupo(
-        this.FormCambioPermiso.get('grupoCambiar').value,
-        this.ObjectUsuarioCambiar.Username
-      )
-        .then(() => {
-          this.salirYRestablecer(modal);
-        })
-        .catch(() => {
-          this.salirYRestablecer(modal);
-        });
-    }, 500);
-
-
-    /*
-      .then(() => {
-        () => {
-          console.log('exito 1')
-          this.UsuariosService.agregarUsuarioGrupo(
-            this.FormCambioPermiso.get('grupoCambiar').value,
-            this.ObjectUsuarioCambiar.Username
-          )
-            .then(() => {
-              console.log('exito 2')
-              this.salirYRestablecer(modal);
-            })
-            .catch(() => {
-              console.log('error 2')
-              this.salirYRestablecer(modal);
-            });
-        };
-      })
-      */
   };
 
-  salirYRestablecer = (modal) => {
+  salirYRestablecer = () => {
     this.store.dispatch(LoadListaUsuarios({ consulta: null }));
     this.modalService.dismissAll();
-    modal.close();
   };
 
   ngOnInit(): void {
@@ -146,6 +102,29 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       ({ ListaUsuarios }) => ListaUsuarios.ListaUsuarios
     );
     this.store.dispatch(LoadListaUsuarios({ consulta: null }));
+
+
+    this.store.select(({ProcesoCambios}) => ProcesoCambios.terminado).subscribe( estado  => {
+      if(estado){
+        this.cambiarValorDelPermiso();
+        this.store.dispatch(ProcesoLimpiar());
+      }
+    });
+  }
+
+
+  cambiarValorDelPermiso = () => {
+
+    this.UsuariosService.agregarUsuarioGrupo(
+      this.FormCambioPermiso.get('grupoCambiar').value,
+      this.ObjectUsuarioCambiar.Username
+    )
+      .then(() => {
+        this.salirYRestablecer();
+      })
+      .catch(() => {
+        this.salirYRestablecer();
+      });
   }
 
   retornarStringSiexiste = (object, attribute) => {
