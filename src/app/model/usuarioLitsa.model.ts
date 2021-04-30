@@ -5,4 +5,5 @@ export interface UsuarioListado {
   UserLastModifiedDate: any;
   UserStatus: string;
   Username: string;
+  GrupoQuePertenece: string;
 }

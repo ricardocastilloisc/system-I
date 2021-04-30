@@ -29,6 +29,7 @@ export class HomeComponent implements OnInit {
     this.DataUser$ = this.store.select(({ usuario }) => usuario.user);
     //this.store.select(({ usuario }) => usuario.area).subscribe(res => {console.log(res)});
     this.usuario.obtenerDetalleUsuario();    
+    //this.usuario.eliminarUsuarioGrupo();
   }
 
   rolesValids = (User: Usuario, roles: any[]): boolean => {
