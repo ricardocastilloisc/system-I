@@ -4,6 +4,9 @@ import { environment } from '../../environments/environment';
 import { AppState } from '../ReduxStore/app.reducers';
 import { Store } from '@ngrx/store';
 import { setUserArea } from '../ReduxStore/actions/usuario.actions';
+import { ERole } from '../validators/roles';
+import { ConsultaUsuario } from '../ReduxStore/reducers';
+import { ValorFiltrarGrupo } from '../validators/opcionesDeFiltroUsuarioAdmininistracion';
 
 AWS.config.update(environment.SESConfig);
 var cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider();
@@ -42,7 +45,8 @@ export class UsuariosService {
   };
 
   paramsUserGroups = {
-    GroupName: 'Administrador' /* es un dato de entrada de la pantalla */ /* --> ?? relacionado a la tabla --> roles  */,
+    GroupName:
+      'Administrador' /* es un dato de entrada de la pantalla */ /* --> ?? relacionado a la tabla --> roles  */,
     Limit: environment.Limit,
     UserPoolId: environment.UserPoolId,
   };
@@ -50,20 +54,29 @@ export class UsuariosService {
   paramsAtributos = {
     UserAttributes: [
       {
-        Name: "custom:area",
-        Value: "Tesorería"
-      }
+        Name: 'custom:area',
+        Value: 'Tesorería',
+      },
     ],
     Username:
-      'azure_rwayeowx9nsigogmrb6adqmpgrl2hohoivn5bgsobja', /* identificador del usuario en el user pool */
-    UserPoolId: environment.UserPoolId
+      'azure_rwayeowx9nsigogmrb6adqmpgrl2hohoivn5bgsobja' /* identificador del usuario en el user pool */,
+    UserPoolId: environment.UserPoolId,
   };
 
   paramsGrupoUsuario = {
-    Username: 'azure_rwayeowx9nsigogmrb6adqmpgrl2hohoivn5bgsobja', /* identificador del usuario en el user pool */
-    UserPoolId: environment.UserPoolId
+    Username:
+      'azure_rwayeowx9nsigogmrb6adqmpgrl2hohoivn5bgsobja' /* identificador del usuario en el user pool */,
+    UserPoolId: environment.UserPoolId,
   };
-  constructor(private store: Store<AppState>) { }
+
+  Grupos = [
+    ERole.Administrador,
+    ERole.AdministradorArea,
+    ERole.Ejecutor,
+    ERole.Soporte,
+  ];
+
+  constructor(private store: Store<AppState>) {}
 
   consultarGrupos(): void {
     // metodo para consultar todos los grupos del user pool
@@ -73,23 +86,73 @@ export class UsuariosService {
     );
   }
 
-  consultarUsuarios() {
-    // metodo para consultar todos los usuarios del user pool
-    return cognitoidentityserviceprovider
-      .listUsers(this.paramsGroups)
-      .promise();
-  }
-
-  consultarUsuariosEnGrupo(parametro) {
-    // metodo para consultar todos los usuarios que pertenecen a un grupo dentro del user pool
+  consultarUsuariosEnGrupo = (parametro) => {
     const paramsUserGroups = {
       GroupName: parametro /* es un dato de entrada de la pantalla */ /* --> ???? relacionado a la tabla */,
       Limit: environment.Limit,
       UserPoolId: environment.UserPoolId,
     };
-    return cognitoidentityserviceprovider.listUsersInGroup(
-      paramsUserGroups).promise();
-  }
+    return cognitoidentityserviceprovider.listUsersInGroup(paramsUserGroups);
+  };
+
+  consultarUsuarios = () => {
+    // metodo para consultar todos los usuarios del user pool
+    return cognitoidentityserviceprovider.listUsers(this.paramsGroups);
+  };
+
+  consultaSinFiltroYConFiltro = (consulta: ConsultaUsuario | null) => {
+    let promesa = this.consultarUsuarios();
+    if (consulta) {
+      switch (consulta.tipo) {
+        case ValorFiltrarGrupo.Grupo:
+          promesa = this.consultarUsuariosEnGrupo(consulta.parametro);
+      }
+    }
+    return promesa.promise();
+  };
+
+  consultaUsuariosMultipleFactor = (parametro) => {
+    return new Promise((resolve) => {
+      let ObjectUsers = [];
+      let UserList = [];
+      this.consultaSinFiltroYConFiltro(parametro).then(({ Users }) => {
+        ObjectUsers = [...Users];
+        if (ObjectUsers.length === 0) {
+          resolve(ObjectUsers);
+        }
+        ObjectUsers.forEach((UserElement, index) => {
+          this.obtenerGrupoUsuarioPromise(UserElement.Username).then(
+            ({ Groups }) => {
+              Groups.forEach((e, indexGroup) => {
+                let tempString = '';
+                if (e.hasOwnProperty('GroupName')) {
+                  tempString = e.GroupName;
+                }
+                this.Grupos.forEach((validador) => {
+                  if (validador === tempString) {
+                    ObjectUsers[index].GrupoQuePertenece = tempString;
+                  }
+                });
+                if (indexGroup + 1 === Groups.length) {
+                  UserList.push(
+                    this.reformatearArrayDeUsuarios(ObjectUsers[index])
+                  );
+                }
+                if (
+                  indexGroup + 1 === Groups.length &&
+                  ObjectUsers.length === index + 1
+                ) {
+                  setTimeout(() => {
+                    resolve(UserList);
+                  }, 800);
+                }
+              });
+            }
+          );
+        });
+      });
+    });
+  };
 
   obtenerDetalleUsuario(): void {
     // metodo para obtener el los datos a detalle del usuario
@@ -123,6 +186,16 @@ export class UsuariosService {
     );
   }
 
+  obtenerGrupoUsuarioPromise = (username) => {
+    let paramsGrupoUsuario = {
+      Username: username /* identificador del usuario en el user pool */,
+      UserPoolId: environment.UserPoolId,
+    };
+    return cognitoidentityserviceprovider
+      .adminListGroupsForUser(paramsGrupoUsuario)
+      .promise();
+  };
+
   obtenerGruposUsuario(): void {
     // metodo para consultar los grupos a los que pertenece un usuario del user pool
     cognitoidentityserviceprovider.adminListGroupsForUser(
@@ -140,10 +213,16 @@ export class UsuariosService {
     if (err) console.log(err, err.stack);
     else {
       //console.log(JSON.stringify(data));
-      var area = data['UserAttributes'].find(el => el.Name == 'custom:area')['Value'];
-      this.store.dispatch(setUserArea({
-        area: area
-      }))
+
+      console.log(data);
+      var area = data['UserAttributes'].find((el) => el.Name == 'custom:area')[
+        'Value'
+      ];
+      this.store.dispatch(
+        setUserArea({
+          area: area,
+        })
+      );
       console.log(area);
     }
   };
@@ -157,22 +236,19 @@ ayuda de atibutos: {Name: "sub", Value: "42ae1b55-8029-4a09-8c81-8c805c650aaf"}
 5: {Name: "email", Value: "garcia.diego@principal.com"}
 */
 
-  reformatearArrayDeUsuarios = (objectUsers) => {
-    let arrayUsers = [];
-    objectUsers.Users.forEach(objectUser => {
-      let object = {
-        UserCreateDate: objectUser.UserCreateDate,
-        UserLastModifiedDate: objectUser.UserLastModifiedDate,
-        Enabled: objectUser.Enabled,
-        UserStatus: objectUser.UserStatus,
-        Username: objectUser.Username,
-        Attributes: {},
-      };
-      objectUser.Attributes.forEach(attribute => {
-        object.Attributes[attribute.Name] = attribute.Value;
-      });
-      arrayUsers.push(object)
+  reformatearArrayDeUsuarios = (objectUser) => {
+    let object = {
+      UserCreateDate: objectUser.UserCreateDate,
+      UserLastModifiedDate: objectUser.UserLastModifiedDate,
+      Enabled: objectUser.Enabled,
+      UserStatus: objectUser.UserStatus,
+      Username: objectUser.Username,
+      GrupoQuePertenece: objectUser.hasOwnProperty('GrupoQuePertenece')?objectUser.GrupoQuePertenece:'',
+      Attributes: {},
+    };
+    objectUser.Attributes.forEach((attribute) => {
+      object.Attributes[attribute.Name] = attribute.Value;
     });
-    return arrayUsers
+    return object;
   };
 }

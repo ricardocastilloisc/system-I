@@ -20,6 +20,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { EffectsArrays } from './ReduxStore/effects';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import { EffectsArrays } from './ReduxStore/effects';
     StoreDevtoolsModule.instrument({
       maxAge:25,
       logOnly: environment.production
-    })
+    }),
+    NgbModule
   ],
   providers: [
     AmplifyService

@@ -12,7 +12,8 @@ import { retornarStringSiexiste } from '../../../../../helpers/FuncionesUtiles';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ERole } from 'src/app/validators/roles';
 import { ValorFiltrarGrupo } from '../../../../../validators/opcionesDeFiltroUsuarioAdmininistracion';
-
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { UsuariosService } from '../../../../../services/usuarios.service';
 
 
 @Component({
@@ -44,9 +45,20 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     },
   ];
 
-  constructor(private store: Store<AppState>, private fb: FormBuilder) {}
+
+
+  constructor(
+    private store: Store<AppState>,
+    private fb: FormBuilder,
+    private modalService: NgbModal,
+    private UsuariosService: UsuariosService
+    ) {}
   ngOnDestroy(): void {
     this.store.dispatch(UnsetListaUsuarios());
+  }
+
+  open(content) {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'});
   }
 
   ngOnInit(): void {
@@ -76,4 +88,8 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     }
     this.store.dispatch(LoadListaUsuarios({ consulta: consulta}));
   };
+
+
+
+
 }

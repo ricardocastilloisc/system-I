@@ -18,14 +18,12 @@ export class ListadoUsuariosEfffects {
     this.actions$.pipe(
       ofType(LoadListaUsuariosActions.LoadListaUsuarios),
       mergeMap(({ consulta }) => {
-        if (!consulta) {
-          return fromPromise(this.UsuariosService.consultarUsuarios()).pipe(
+
+          return fromPromise(this.UsuariosService.consultaUsuariosMultipleFactor(consulta)).pipe(
             map(
-              (data) =>
+              (data:any) =>
                 LoadListaUsuariosActions.LoadListaUsuariosSuccess({
-                  ListaUsuarios: this.UsuariosService.reformatearArrayDeUsuarios(
-                    data
-                  ),
+                  ListaUsuarios: data
                 }),
               catchError((error) =>
                 of(
@@ -36,38 +34,7 @@ export class ListadoUsuariosEfffects {
               )
             )
           );
-        } else {
-          /* aqui se va definir los tipos
-el tipo uno es para consulta  por grupo
-*/
-          switch (consulta.tipo) {
-            case ValorFiltrarGrupo.Grupo:
-              return fromPromise(
-                this.UsuariosService.consultarUsuariosEnGrupo(
-                  consulta.parametro
-                )
-              ).pipe(
-                map(
-                  (data) =>
-                    LoadListaUsuariosActions.LoadListaUsuariosSuccess({
-                      ListaUsuarios: this.UsuariosService.reformatearArrayDeUsuarios(
-                        data
-                      ),
-                    }),
-                  catchError((error) =>
-                    of(
-                      LoadListaUsuariosActions.LoadListaUsuariosError({
-                        payload: error,
-                      })
-                    )
-                  )
-                )
-              );
 
-            default:
-              break;
-          }
-        }
       })
     )
   );
