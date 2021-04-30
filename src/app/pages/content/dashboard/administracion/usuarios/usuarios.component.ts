@@ -22,10 +22,10 @@ import { ProcesoLimpiar } from '../../../../../ReduxStore/actions/loaderProcesoC
   styleUrls: ['./usuarios.component.css'],
 })
 export class UsuariosComponent implements OnInit, OnDestroy {
-  ListadoUsuarios$: Observable<UsuarioListado[]>;
-
   FiltroUsuarioForm: FormGroup;
   FormCambioPermiso: FormGroup;
+
+  ListadoUsuarios: UsuarioListado[] = [];
 
   Grupos = [
     {
@@ -49,6 +49,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   ObjectUsuarioCambiar: UsuarioListado;
 
   EstadoProceso: Subscription;
+  ListadoUsuariosSub$: Subscription;
 
   constructor(
     private store: Store<AppState>,
@@ -59,6 +60,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.store.dispatch(UnsetListaUsuarios());
     this.EstadoProceso.unsubscribe();
+    this.ListadoUsuariosSub$.unsubscribe();
   }
 
   openModal(content, ObjectUsuario: UsuarioListado) {
@@ -70,21 +72,22 @@ export class UsuariosComponent implements OnInit, OnDestroy {
         ObjectUsuario.GrupoQuePertenece
       );
     }
+
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
   }
 
-  guardarCambioPermisoUsuario = async (modal) => {
+  guardarCambioPermisoUsuario = () => {
     if (this.FormCambioPermiso.get('grupoCambiar').value === 'Permiso') {
       return;
     }
 
-    if(this.ObjectUsuarioCambiar.GrupoQuePertenece === ''){
+    if (this.ObjectUsuarioCambiar.GrupoQuePertenece === '') {
       this.cambiarValorDelPermiso();
-    }else {
+    } else {
       this.UsuariosService.eliminarUsuarioGrupo(
         this.ObjectUsuarioCambiar.GrupoQuePertenece,
         this.ObjectUsuarioCambiar.Username
-      )
+      );
     }
   };
 
@@ -101,22 +104,54 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       grupoCambiar: ['Permiso'],
     });
 
-    this.ListadoUsuarios$ = this.store.select(
-      ({ ListaUsuarios }) => ListaUsuarios.ListaUsuarios
-    );
+    this.ListadoUsuariosSub$ = this.store
+      .select(({ ListaUsuarios }) => ListaUsuarios.ListaUsuarios)
+      .subscribe((res) => {
+        let array = [...res];
+        if (array.length > 0) {
+          array.sort((a, b) => {
+            if (
+              !a.Attributes.hasOwnProperty('email') ||
+              !b.Attributes.hasOwnProperty('email')
+            ) {
+              // property doesn't exist on either object
+              return 0;
+            }
+
+            const varA =
+              typeof a.Attributes.email === 'string'
+                ? a.Attributes.email.toUpperCase()
+                : a.Attributes.email;
+            const varB =
+              typeof b.Attributes.email === 'string'
+                ? b.Attributes.email.toUpperCase()
+                : b.Attributes.email;
+
+            let comparison = 0;
+            if (varA > varB) {
+              comparison = 1;
+            } else if (varA < varB) {
+              comparison = -1;
+            }
+            return comparison;
+          });
+          this.ListadoUsuarios = array;
+        }
+      });
+
     this.store.dispatch(LoadListaUsuarios({ consulta: null }));
 
-    this.EstadoProceso =  this.store.select(({ProcesoCambios}) => ProcesoCambios.terminado).subscribe( estado  => {
-      if(estado){
-        this.cambiarValorDelPermiso();
-        this.store.dispatch(ProcesoLimpiar());
-      }
-    });
+    this.EstadoProceso = this.store
+      .select(({ ProcesoCambios }) => ProcesoCambios.terminado)
+      .subscribe((estado) => {
+        if (estado) {
+          this.cambiarValorDelPermiso();
+          this.store.dispatch(ProcesoLimpiar());
+        }
+      });
   }
 
-
   cambiarValorDelPermiso = () => {
-
     this.UsuariosService.agregarUsuarioGrupo(
       this.FormCambioPermiso.get('grupoCambiar').value,
       this.ObjectUsuarioCambiar.Username
@@ -127,7 +162,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       .catch(() => {
         this.salirYRestablecer();
       });
-  }
+  };
 
   retornarStringSiexiste = (object, attribute) => {
     return retornarStringSiexiste(object, attribute);

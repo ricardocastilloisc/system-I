@@ -23,7 +23,7 @@
   <div class="d-flex col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12 justify-content-center">
 
     <div class="card-lista-design-general" style="overflow-x:auto;">
-      <table class="table  listado-design-general"  *ngIf="ListadoUsuarios$ | async as ListadoUsuarios">
+      <table class="table  listado-design-general"  *ngIf="ListadoUsuarios.length > 0">
         <tr>
           <th>Nombre</th>
           <th>Correo</th>
@@ -71,7 +71,7 @@
     </div>
 
     <div class="modal-footer">
-      <button type="button" class="btn btn-primary" (click)="guardarCambioPermisoUsuario(modal)">Guardar cambio</button>
+      <button type="button" class="btn btn-primary" (click)="guardarCambioPermisoUsuario()">Guardar cambio</button>
       <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="modal.close()">Cerrar</button>
     </div>
 
