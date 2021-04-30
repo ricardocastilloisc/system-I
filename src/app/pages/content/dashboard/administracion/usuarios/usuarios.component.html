@@ -36,7 +36,7 @@
           <td> {{retornarStringSiexiste(usuario.Attributes, 'email')}} </td>
           <td>{{retornarStringSiexiste(usuario.Attributes, 'custom:area')}} </td>
           <td>{{usuario.GrupoQuePertenece}}</td>
-          <td> <img  (click)="open(content)" class="editar-icon"></td>
+          <td> <img  (click)="openModal(content,usuario)" class="editar-icon"></td>
         </tr>
       </table>
     </div>
@@ -58,8 +58,8 @@
           <label for="dateOfBirth">Permiso</label>
           <div class="input-group">
 
-            <form>
-              <select class="form-select" name="grupo" id="grupo" value="Permiso">
+            <form [formGroup]="FormCambioPermiso">
+              <select  formControlName="grupoCambiar" class="form-select" name="grupo" id="grupo" value="Permiso">
                 <option disabled selected>Permiso</option>
                 <option *ngFor="let grupo of Grupos" [value]="grupo.value">{{grupo.label}}</option>
               </select>
@@ -71,7 +71,7 @@
     </div>
 
     <div class="modal-footer">
-      <button type="button" class="btn btn-primary">Guardar cambio</button>
+      <button type="button" class="btn btn-primary" (click)="guardarCambioPermisoUsuario(modal)">Guardar cambio</button>
       <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="modal.close()">Cerrar</button>
     </div>
 

@@ -12,9 +12,8 @@ import { retornarStringSiexiste } from '../../../../../helpers/FuncionesUtiles';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ERole } from 'src/app/validators/roles';
 import { ValorFiltrarGrupo } from '../../../../../validators/opcionesDeFiltroUsuarioAdmininistracion';
-import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { UsuariosService } from '../../../../../services/usuarios.service';
-
 
 @Component({
   selector: 'app-usuarios',
@@ -25,6 +24,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   ListadoUsuarios$: Observable<UsuarioListado[]>;
 
   FiltroUsuarioForm: FormGroup;
+  FormCambioPermiso: FormGroup;
 
   Grupos = [
     {
@@ -45,25 +45,101 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     },
   ];
 
-
+  ObjectUsuarioCambiar: UsuarioListado;
 
   constructor(
     private store: Store<AppState>,
     private fb: FormBuilder,
     private modalService: NgbModal,
     private UsuariosService: UsuariosService
-    ) {}
+  ) {}
   ngOnDestroy(): void {
     this.store.dispatch(UnsetListaUsuarios());
   }
 
-  open(content) {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'});
+  openModal(content, ObjectUsuario: UsuarioListado) {
+    this.ObjectUsuarioCambiar = ObjectUsuario;
+    console.log(ObjectUsuario);
+    if (ObjectUsuario.GrupoQuePertenece === '') {
+      this.FormCambioPermiso.get('grupoCambiar').setValue('Permiso');
+    } else {
+      this.FormCambioPermiso.get('grupoCambiar').setValue(
+        ObjectUsuario.GrupoQuePertenece
+      );
+    }
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
   }
+
+  guardarCambioPermisoUsuario = async (modal) => {
+    if (this.FormCambioPermiso.get('grupoCambiar').value === 'Permiso') {
+      return;
+    }
+
+    if(this.ObjectUsuarioCambiar.GrupoQuePertenece === ''){
+      this.UsuariosService.agregarUsuarioGrupo(
+        this.FormCambioPermiso.get('grupoCambiar').value,
+        this.ObjectUsuarioCambiar.Username
+      )
+        .then(() => {
+          this.salirYRestablecer(modal);
+        })
+        .catch(() => {
+          this.salirYRestablecer(modal);
+        });
+    }
+
+
+    this.UsuariosService.eliminarUsuarioGrupo(
+      this.ObjectUsuarioCambiar.GrupoQuePertenece,
+      this.ObjectUsuarioCambiar.Username
+    )
+    setTimeout(() => {
+      this.UsuariosService.agregarUsuarioGrupo(
+        this.FormCambioPermiso.get('grupoCambiar').value,
+        this.ObjectUsuarioCambiar.Username
+      )
+        .then(() => {
+          this.salirYRestablecer(modal);
+        })
+        .catch(() => {
+          this.salirYRestablecer(modal);
+        });
+    }, 500);
+
+
+    /*
+      .then(() => {
+        () => {
+          console.log('exito 1')
+          this.UsuariosService.agregarUsuarioGrupo(
+            this.FormCambioPermiso.get('grupoCambiar').value,
+            this.ObjectUsuarioCambiar.Username
+          )
+            .then(() => {
+              console.log('exito 2')
+              this.salirYRestablecer(modal);
+            })
+            .catch(() => {
+              console.log('error 2')
+              this.salirYRestablecer(modal);
+            });
+        };
+      })
+      */
+  };
+
+  salirYRestablecer = (modal) => {
+    this.store.dispatch(LoadListaUsuarios({ consulta: null }));
+    this.modalService.dismissAll();
+    modal.close();
+  };
 
   ngOnInit(): void {
     this.FiltroUsuarioForm = this.fb.group({
       grupo: ['Permiso'],
+    });
+    this.FormCambioPermiso = this.fb.group({
+      grupoCambiar: ['Permiso'],
     });
 
     this.ListadoUsuarios$ = this.store.select(
@@ -77,19 +153,13 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   };
 
   filtrar = () => {
-
-    if(this.FiltroUsuarioForm.get('grupo').value === 'Permiso'){
-      return
+    if (this.FiltroUsuarioForm.get('grupo').value === 'Permiso') {
+      return;
     }
-    let consulta:ConsultaUsuario =
-    {
+    let consulta: ConsultaUsuario = {
       parametro: this.FiltroUsuarioForm.get('grupo').value,
-      tipo: ValorFiltrarGrupo.Grupo
-    }
-    this.store.dispatch(LoadListaUsuarios({ consulta: consulta}));
+      tipo: ValorFiltrarGrupo.Grupo,
+    };
+    this.store.dispatch(LoadListaUsuarios({ consulta: consulta }));
   };
-
-
-
-
 }

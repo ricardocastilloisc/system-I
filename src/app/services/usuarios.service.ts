@@ -162,19 +162,32 @@ export class UsuariosService {
     );
   }
 
-  agregarUsuarioGrupo(): void {
+  agregarUsuarioGrupo(GroupName, Username) {
+    const params = {
+      GroupName: GroupName,
+      UserPoolId: environment.UserPoolId,
+      Username: Username,
+    };
     // metodo para agregar a un usuario habilitado en el user pool a un grupo en especifico
-    cognitoidentityserviceprovider.adminAddUserToGroup(
-      this.params,
-      this.callbackAws
-    );
+    return cognitoidentityserviceprovider.adminAddUserToGroup(params).promise();
   }
 
-  eliminarUsuarioGrupo(): void {
-    // metodo para remover a un usuario habilitado en el user pool a un grupo en especifico al que pertenece
+  eliminarUsuarioGrupo(GroupName, Username): void {
+    const params = {
+      GroupName: GroupName,
+      UserPoolId: environment.UserPoolId,
+      Username: Username,
+    };
+
     cognitoidentityserviceprovider.adminRemoveUserFromGroup(
-      this.params,
-      this.callbackAws
+      params,
+      (err, data) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(data);
+        }
+      }
     );
   }
 
@@ -243,7 +256,9 @@ ayuda de atibutos: {Name: "sub", Value: "42ae1b55-8029-4a09-8c81-8c805c650aaf"}
       Enabled: objectUser.Enabled,
       UserStatus: objectUser.UserStatus,
       Username: objectUser.Username,
-      GrupoQuePertenece: objectUser.hasOwnProperty('GrupoQuePertenece')?objectUser.GrupoQuePertenece:'',
+      GrupoQuePertenece: objectUser.hasOwnProperty('GrupoQuePertenece')
+        ? objectUser.GrupoQuePertenece
+        : '',
       Attributes: {},
     };
     objectUser.Attributes.forEach((attribute) => {
