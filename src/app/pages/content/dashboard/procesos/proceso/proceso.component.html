@@ -1,17 +1,28 @@
-<div class="container-fluid">
+<div class="container-fluid" ng>
     <div
       class="flex-row-reverse justify-content-center"
       style="height: 100vh; width: 100%"
     >
     <div class="row justify-content-center">
       
-      <div class=" d-flex col-md-12 col-xs-4 col-sm-4 col-lg-12 mr-4 col-4 align-items-center justify-content-center container-progeso" style="height: 45px;">
+      <div *ngIf="AUDGENPROCESOS$ | async as AUDGENPROCESOS  " class=" d-flex col-md-12 col-xs-4 col-sm-4 col-lg-12 mr-4 col-4 align-items-center justify-content-center container-progeso" style="height: 45px;">
       
-        <span class="step-proceso">Inicio</span>
-        <span class="step-proceso-disabled">Insumos</span>
-        <span class="step-proceso-disabled">Mapeo de datos</span>
-        <span class="step-proceso-disabled">Generacion de salida</span>
-        <span class="step-proceso-disabled">Entrega a backoffice</span>
+        <span [ngClass]="{'step-proceso-enabled': AUDGENPROCESOS[0]?.ETAPA != 'INICIAR' || AUDGENPROCESOS[0]?.ETAPA != 'OBTENER ARCHIVO' || AUDGENPROCESOS[0]?.ETAPA != 'VALIDAR ARCHIVO' || AUDGENPROCESOS[0]?.ETAPA != 'PROCESAR ARCHIVO' ||  AUDGENPROCESOS[0]?.ETAPA != 'FINALIZAR' }"  class="step-proceso" >Inicio</span>
+
+        <span [ngClass]="{'step-proceso-enabled': AUDGENPROCESOS[0]?.ETAPA == 'OBTENER ARCHIVO' || AUDGENPROCESOS[0]?.ETAPA == 'VALIDAR ARCHIVO' || AUDGENPROCESOS[0]?.ETAPA == 'PROCESAR ARCHIVO' || AUDGENPROCESOS[0]?.ETAPA == 'FINALIZAR' , 
+                          'step-proceso-disabled': AUDGENPROCESOS[0]?.ETAPA != 'INICIAR'}"  class=" step-1-proceso">Insumos</span>
+
+        <span [ngClass]="{'step-proceso-enabled': AUDGENPROCESOS[0]?.ETAPA == 'VALIDAR ARCHIVO' || AUDGENPROCESOS[0]?.ETAPA == 'PROCESAR ARCHIVO' || AUDGENPROCESOS[0]?.ETAPA == 'FINALIZAR',
+                          'step-proceso-disabled': AUDGENPROCESOS[0]?.ETAPA == 'INICIAR' || AUDGENPROCESOS[0]?.ETAPA == 'OBTENER ARCHIVO' }" class="step-proceso-enabled step-2-proceso">Mapeo de datos</span>
+        
+        
+        <span [ngClass]="{'step-proceso-enabled': AUDGENPROCESOS[0]?.ETAPA == 'PROCESAR ARCHIVO' || AUDGENPROCESOS[0]?.ETAPA == 'FINALIZAR', 
+                          'step-proceso-disabled': AUDGENPROCESOS[0]?.ETAPA != 'INICIAR' || AUDGENPROCESOS[0]?.ETAPA != 'OBTENER ARCHIVO' || AUDGENPROCESOS[0]?.ETAPA != 'VALIDAR ARCHIVO' } " class="step-3-proceso" >Generacion de salida</span>
+        
+        
+         <span [ngClass]="{'step-proceso-enabled': AUDGENPROCESOS[0]?.ETAPA == 'FINALIZAR', 
+                           'step-proceso-disabled': AUDGENPROCESOS[0]?.ETAPA != 'INICIAR' || AUDGENPROCESOS[0]?.ETAPA != 'OBTENER ARCHIVO' || AUDGENPROCESOS[0]?.ETAPA != 'VALIDAR ARCHIVO' || AUDGENPROCESOS[0]?.ETAPA != 'PROCESAR ARCHIVO',
+                           'step-4-proceso-finalizado': AUDGENPROCESOS[0]?.ETAPA == 'FINALIZAR'}" class="step-4-proceso ">Entrega a backoffice</span>
         
       </div>
       
@@ -49,12 +60,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let AUDGENPROCESO of AUDGENPROCESOS | orderBy:'FECHA':true;  ">
-                        <td style="color: #1791DA;">{{AUDGENPROCESO.MENSAJE.TIPO}}</td>
-                        <td >{{AUDGENPROCESO.FECHA}}</td>
+                    <tr *ngFor="let AUDGENPROCESO of AUDGENPROCESOS  let last = last ; let first = first" [ngClass]="{first: first, last: last, primero: primero }">
+                        <td *ngIf="AUDGENPROCESO.MENSAJE.TIPO === 'INFO' " style="color: #1791DA;">{{AUDGENPROCESO.MENSAJE.TIPO}}</td>
+                        <td *ngIf="AUDGENPROCESO.MENSAJE.TIPO === 'DEBUG' " style="color: #FF7000;">{{AUDGENPROCESO.MENSAJE.TIPO}}</td>
+                        <td *ngIf="AUDGENPROCESO.MENSAJE.TIPO === 'ERROR' " style="color: #C00000;">{{AUDGENPROCESO.MENSAJE.TIPO}}</td>
+                        <td >{{AUDGENPROCESO.FECHA}} {{AUDGENPROCESO.ETAPA}}</td>
                         <td >{{AUDGENPROCESO.MENSAJE.DETALLE}}</td>
                     </tr>
-                    
                 </tbody>
               </table>
         </div>

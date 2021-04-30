@@ -12,7 +12,7 @@
     align-items: center;
     font:  16px FS Elliot Pro;
     color: white;
-    z-index: 1;
+    z-index: 6;
     box-shadow: 3px 3px 5px #00000033;
 }
 
@@ -28,6 +28,45 @@
     align-items: center;
     font: 16px FS Elliot Pro;
     color: white;
+}
+
+.step-proceso-enabled{
+    margin-left: -50px;
+    background: #7C69C3;
+    width: auto;
+    min-width: 200px;
+    border-radius: 50px;
+    border-top-left-radius: -50px;
+    border-bottom-left-radius: -50px;
+    height: 63px;
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    font:  16px FS Elliot Pro;
+    color: white;
+    box-shadow: 3px 3px 5px #00000033;
+    padding-left: 60px;
+    padding-right: 25px;
+}
+
+.step-1-proceso{
+    z-index: 4;
+}
+
+.step-2-proceso{
+    z-index: 3;
+}
+
+.step-3-proceso{
+    z-index: 2;
+}
+
+.step-4-proceso{
+    z-index: 1;
+}
+.step-4-proceso-finalizado{
+    z-index: 1;
+    background: #464E7E;
 }
 
 .container-referencias-log{
@@ -63,6 +102,8 @@ table.listado-log  th{
     height: 40px;
     font: bold 18px FS Elliot Pro;
     table-layout:fixed;
+    text-align: center;
+    align-content: center;
 }
 table.listado-log  td{
 
@@ -72,6 +113,9 @@ table.listado-log  td{
     font: 15px FS Elliot Pro;
     height: 40px;
     margin: 6px 0px;
+    text-align: center;
+    align-content: center;
+    vertical-align: middle;
 }
 
 table.listado-log td.wideRow, table th.wideRow{

@@ -5,6 +5,8 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../../../../ReduxStore/app.reducers';
 import { Observable } from 'rxjs';
 import { AUDGENPROCESO_INERFACE } from '../../../../../model/AUDGENPROCESO.model';
+import {map} from "rxjs/operators";
+import { resolve } from 'node:path';
 
 @Component({
   selector: 'app-proceso',
@@ -12,6 +14,10 @@ import { AUDGENPROCESO_INERFACE } from '../../../../../model/AUDGENPROCESO.model
   styleUrls: ['./proceso.component.css']
 })
 export class ProcesoComponent implements OnInit,OnDestroy {
+
+  last;
+  PROCESOS: any;
+
 
   constructor(
     private store: Store<AppState>,
@@ -23,14 +29,20 @@ export class ProcesoComponent implements OnInit,OnDestroy {
     this.store.dispatch(UnsetAUDGENPROCESO());
   }
 
-
+  
   ngOnInit(): void {
-
+    
     
     this.AUDGENPROCESOS$ = this.store.select(
       ({ AUDGENPROCESOS }) => AUDGENPROCESOS.AUDGENPROCESOS
-    )
+    ).pipe(map((res) =>{return res = res.slice().sort(function (a, b) {
+      return new Date(b.FECHA).getTime() - new Date(a.FECHA).getTime(); 
+   })}))
 
+
+
+    
+    
     
 
     let body =   {
@@ -40,10 +52,10 @@ export class ProcesoComponent implements OnInit,OnDestroy {
     this.store.dispatch(LoadAUDGENPROCESOS({consult:body}));
 
 
-    // let lenght = this.AUDGENPROCESOS$.subscribe(res => {return res.length})
-    // console.log("here", lenght);
-        
+
+  
    }
 
-
+  
+   
 }
