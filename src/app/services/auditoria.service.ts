@@ -8,12 +8,13 @@ var sqs = new AWS.SQS();
 
 var payload = { /* este objeto se llenara por cada pantalla/proceso que se lanza */ 
   areaNegocio: "TESORERÍA",
-  rol: "REVIEW-2",
-  correo: "garcia.pablo@principal.com",
+  rol: "Soporte",
+  correo: "garcia.diego@principal.com",
   fecha: "2021-03-22T20:32:43.838-06:00",
   usuario: {
-    apellidoPaterno: "GARCIA",
-    apellidoMaterno: "Rosas",
+    apellidoPaterno: "Garcia",
+    apellidoMaterno: "Diaz",
+    nombre: "Diego",
     correo: "bernal.pablo@principal.com",
     inicioSesion: "2021-03-22T20:32:43.838-06:00",
     finSesion: "2021-03-22T20:32:43.838-06:00"
