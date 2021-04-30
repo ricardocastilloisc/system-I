@@ -6,7 +6,7 @@ import {
 import { AppState } from './../../../../../ReduxStore/app.reducers';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { UsuarioListado } from 'src/app/model/usuarioLitsa.model';
 import { retornarStringSiexiste } from '../../../../../helpers/FuncionesUtiles';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -48,6 +48,8 @@ export class UsuariosComponent implements OnInit, OnDestroy {
 
   ObjectUsuarioCambiar: UsuarioListado;
 
+  EstadoProceso: Subscription;
+
   constructor(
     private store: Store<AppState>,
     private fb: FormBuilder,
@@ -56,6 +58,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   ) {}
   ngOnDestroy(): void {
     this.store.dispatch(UnsetListaUsuarios());
+    this.EstadoProceso.unsubscribe();
   }
 
   openModal(content, ObjectUsuario: UsuarioListado) {
@@ -103,8 +106,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     );
     this.store.dispatch(LoadListaUsuarios({ consulta: null }));
 
-
-    this.store.select(({ProcesoCambios}) => ProcesoCambios.terminado).subscribe( estado  => {
+    this.EstadoProceso =  this.store.select(({ProcesoCambios}) => ProcesoCambios.terminado).subscribe( estado  => {
       if(estado){
         this.cambiarValorDelPermiso();
         this.store.dispatch(ProcesoLimpiar());

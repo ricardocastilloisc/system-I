@@ -121,6 +121,8 @@ export class UsuariosService {
         if (ObjectUsers.length === 0) {
           resolve(ObjectUsers);
         }
+        const flagDeTerminado = ObjectUsers.length;
+        let comparacion = 0;
         ObjectUsers.forEach((UserElement, index) => {
           this.obtenerGrupoUsuarioPromise(UserElement.Username).then(
             ({ Groups }) => {
@@ -139,17 +141,22 @@ export class UsuariosService {
                     this.reformatearArrayDeUsuarios(ObjectUsers[index])
                   );
                 }
-                if (
-                  indexGroup + 1 === Groups.length &&
-                  ObjectUsers.length === index + 1
-                ) {
-                  setTimeout(() => {
-                    resolve(UserList);
-                  }, 800);
+                if (indexGroup + 1 === Groups.length) {
+                  comparacion = comparacion + 1;
                 }
               });
             }
           );
+        });
+        new Promise((resolve2) => {
+          const intervalo = setInterval(() => {
+            if (comparacion === flagDeTerminado) {
+              resolve2('ok');
+              clearInterval(intervalo);
+            }
+          }, 100);
+        }).then(() => {
+          resolve(UserList);
         });
       });
     });
@@ -180,15 +187,14 @@ export class UsuariosService {
       Username: Username,
     };
 
-
     let terminado = null;
     cognitoidentityserviceprovider.adminRemoveUserFromGroup(
       params,
       (err, data) => {
         if (err) {
-          terminado = 1
+          terminado = 1;
         } else {
-          terminado = 1
+          terminado = 1;
         }
       }
     );
@@ -196,15 +202,13 @@ export class UsuariosService {
     new Promise((resolve) => {
       const intervalo = setInterval(() => {
         if (terminado) {
-          resolve("ok");
+          resolve('ok');
           clearInterval(intervalo);
         }
       }, 100);
     }).then(() => {
-      this.store.dispatch(ProcesoTerminado())
+      this.store.dispatch(ProcesoTerminado());
     });
-
-
   }
 
   actualizarAtributosUsuario(): void {
