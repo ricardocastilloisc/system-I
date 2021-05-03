@@ -26,4 +26,6 @@ export interface AUDGENPROCESO_INERFACE {
     ROL?: string | null;
   } | null;
   TIPO?: string | null;
+  NIVEL?: string | null;
+  STEP?: string | null;
 }

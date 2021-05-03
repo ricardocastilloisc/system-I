@@ -39,6 +39,8 @@ mutation CreateAUDGENPROCESOS($input: CreateAUDGENPROCESOSInput!) {
       ROL
     }
     TIPO
+    NIVEL
+    STEP
   }
 }
 mutation UpdateAUDGENPROCESOS($input: UpdateAUDGENPROCESOSInput!) {
@@ -66,6 +68,8 @@ mutation UpdateAUDGENPROCESOS($input: UpdateAUDGENPROCESOSInput!) {
       ROL
     }
     TIPO
+    NIVEL
+    STEP
   }
 }
 mutation DeleteAUDGENPROCESOS($input: DeleteAUDGENPROCESOSInput!) {
@@ -93,6 +97,8 @@ mutation DeleteAUDGENPROCESOS($input: DeleteAUDGENPROCESOSInput!) {
       ROL
     }
     TIPO
+    NIVEL
+    STEP
   }
 }
 mutation CreateAUDGENESTADOPROCESO($input: CreateAUDGENESTADOPROCESOInput!) {
@@ -103,7 +109,6 @@ mutation CreateAUDGENESTADOPROCESO($input: CreateAUDGENESTADOPROCESOInput!) {
     FECHA_ACTUALIZACION
     FECHA_CREADO
     ID_PROCESO
-    ID_REGISTRO
     INSUMO
     INTERFAZ
     TIPO_PROCESO
@@ -117,7 +122,6 @@ mutation UpdateAUDGENESTADOPROCESO($input: UpdateAUDGENESTADOPROCESOInput!) {
     FECHA_ACTUALIZACION
     FECHA_CREADO
     ID_PROCESO
-    ID_REGISTRO
     INSUMO
     INTERFAZ
     TIPO_PROCESO
@@ -131,7 +135,6 @@ mutation DeleteAUDGENESTADOPROCESO($input: DeleteAUDGENESTADOPROCESOInput!) {
     FECHA_ACTUALIZACION
     FECHA_CREADO
     ID_PROCESO
-    ID_REGISTRO
     INSUMO
     INTERFAZ
     TIPO_PROCESO

@@ -11,6 +11,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { Usuario } from '../../../../../model/usuario.model';
 import { ERole } from '../../../../../validators/roles';
 import { LoadAUDGENESTADOPROCESOS } from 'src/app/ReduxStore/actions';
+import { APIService } from '../../../../../API.service' 
 
 @Component({
   selector: 'app-proceso',
@@ -31,7 +32,8 @@ export class ProcesoComponent implements OnInit,OnDestroy {
   constructor(
     private store: Store<AppState>,
     private rutaActiva: ActivatedRoute,
-    private authService: AuthService
+    private authService: AuthService,
+    private api: APIService
     ) { }
 
   AUDGENPROCESOS$: Observable<AUDGENPROCESO_INERFACE[]>;
@@ -64,12 +66,17 @@ export class ProcesoComponent implements OnInit,OnDestroy {
       ({ AUDGENESTADOPROCESOS }) => AUDGENESTADOPROCESOS.AUDGENESTADOPROCESO
     )
 
+    // this.store.select(
+    //   ({ AUDGENESTADOPROCESOS }) => AUDGENESTADOPROCESOS.AUDGENESTADOPROCESO
+    // ).subscribe(res => console.log(res))
+
+
     let body =   {
       filter:{​​​​​ ID_PROCESO: {​​​​​ eq: this.rutaActiva.snapshot.params.id}​​​​​ }​​​​​
     }
 
-    
-    
+    let res = this.api.ListAUDGENESTADOPROCESOS(​​​​​)
+    console.log(res)
     this.store.dispatch(LoadAUDGENPROCESOS({consult:body}));
 
     this.store.dispatch(LoadAUDGENESTADOPROCESOS({consult:body}));

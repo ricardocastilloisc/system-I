@@ -7,71 +7,45 @@
       
       <div *ngIf="AUDGENESTADOPROCESOS$ | async as AUDGENESTADOPROCESOS  " class=" d-flex col-md-12 col-xs-4 col-sm-4 col-lg-12 mr-4 col-4 align-items-center justify-content-center container-progeso" style="height: 45px;">
       
-        <div [ngClass]="{'step-completado': AUDGENESTADOPROCESOS[0].ESTADO == 'FINALIZADO' && AUDGENESTADOPROCESOS[0].ETAPA != 'INICIAR', 'step-incompleto': AUDGENESTADOPROCESOS[0].ESTADO == 'INICIADO' && AUDGENESTADOPROCESOS[0].ETAPA == 'INICIAR'}"  class="step-proceso step-proceso-enabled" >
+        <div [ngClass]="{'step-completado': AUDGENESTADOPROCESOS[0].ESTADO == 'FINALIZADO' && AUDGENESTADOPROCESOS[0].ETAPA != 'INICIAR', 'step-incompleto': AUDGENESTADOPROCESOS[0].ESTADO == 'ERROR' && AUDGENESTADOPROCESOS[0].ETAPA == 'INICIAR'}"  class="step-proceso step-proceso-enabled" >
             <span >
                 <div>Inicio</div>
                 <div class="separador-titulos"></div>
-                <div *ngIf="AUDGENESTADOPROCESOS[0].ESTADO === 'FINALIZADO' || AUDGENESTADOPROCESOS[0].ETAPA !== 'INICIAR' ">Completado</div>
-                <div *ngIf="AUDGENESTADOPROCESOS[0].ESTADO === 'INICIADO' && AUDGENESTADOPROCESOS[0].ETAPA === 'INICIAR' ">Incompleto</div>
+                <div *ngIf="AUDGENESTADOPROCESOS[0].ESTADO === 'FINALIZADO' || AUDGENESTADOPROCESOS[0].ETAPA !== 'CREANDO EJECUCION' ">Completado</div>
+                <div *ngIf="(AUDGENESTADOPROCESOS[0].ESTADO === 'INICIADO' || AUDGENESTADOPROCESOS[0].ESTADO === 'ERROR') && AUDGENESTADOPROCESOS[0].ETAPA === 'CREANDO EJECUCION' ">Incompleto</div>
             </span>
         </div>
 
-        <div  [ngClass]="{'step-proceso-disabled': AUDGENESTADOPROCESOS[0].ETAPA == 'INICIAR',
-                        'step-proceso-enabled': AUDGENESTADOPROCESOS[0].ETAPA != 'INICIAR' && (AUDGENESTADOPROCESOS[0].ESTADO_EJECUCION == 'PROCESO' || AUDGENESTADOPROCESOS[0].ESTADO_EJECUCION == 'FIN'),
-                        'step-completado': AUDGENESTADOPROCESOS[0].ETAPA != 'INICIAR' && AUDGENESTADOPROCESOS[0].ESTADO == 'FINALIZADO' && (AUDGENESTADOPROCESOS[0].ETAPA == 'MOVER ARCHIVO' || AUDGENESTADOPROCESOS[0].ETAPA == 'VALIDAR ARCHIVO' || AUDGENESTADOPROCESOS[0].ETAPA == 'PROCESAR ARCHIVO' || AUDGENESTADOPROCESOS[0].ETAPA == 'FINALIZAR') && AUDGENESTADOPROCESOS[0].ESTADO_EJECUCION == 'PROCESO'  , 
-                        'step-incompleto': AUDGENESTADOPROCESOS[0].ESTADO == 'INICIADO' && AUDGENESTADOPROCESOS[0].ETAPA == 'MOVER ARCHIVO'
+        
+
+         <div  [ngClass]="{'step-proceso-disabled': AUDGENESTADOPROCESOS[0].ETAPA == 'CREANDO EJECUCION',
+                        'step-proceso-enabled': AUDGENESTADOPROCESOS[0].ETAPA != 'CREANDO EJECUCION' && (AUDGENESTADOPROCESOS[0].ESTADO_EJECUCION == 'PROCESO' || AUDGENESTADOPROCESOS[0].ESTADO_EJECUCION == 'FINALIZADO'),
+                        'step-completado': AUDGENESTADOPROCESOS[0].ETAPA != 'CREANDO EJECUCION' &&  AUDGENESTADOPROCESOS[0].ETAPA == 'FINALIZADO' && AUDGENESTADOPROCESOS[0].ESTADO_EJECUCION == 'FINALIZADO'  , 
+                        'step-incompleto': AUDGENESTADOPROCESOS[0].ESTADO == 'ERROR' && AUDGENESTADOPROCESOS[0].ETAPA == 'PROCESAMIENTO'
                         }" class=" step-1-proceso">
             <span >
-                <div>Mover Archivo</div>
-                <div *ngIf="AUDGENESTADOPROCESOS[0].ETAPA !== 'INICIAR'">
+                <div>Proceso</div>
+                <div *ngIf="AUDGENESTADOPROCESOS[0].ETAPA !== 'CREANDO EJECUCION'">
                     <div  class="separador-titulos"></div>
-                    <div *ngIf="AUDGENESTADOPROCESOS[0].ETAPA !== 'INICIAR' && AUDGENESTADOPROCESOS[0].ETAPA !== 'MOVER ARCHIVO'">Completado</div>
-                    <div *ngIf="AUDGENESTADOPROCESOS[0].ESTADO === 'INICIADO' && AUDGENESTADOPROCESOS[0].ETAPA == 'MOVER ARCHIVO'">Incompleto</div>
+                    <div *ngIf="AUDGENESTADOPROCESOS[0].ETAPA !== 'CREANDO EJECUCION' && AUDGENESTADOPROCESOS[0].ETAPA !== 'PROCESAMIENTO'">Completado</div>
+                    <div *ngIf="(AUDGENESTADOPROCESOS[0].ESTADO === 'INICIADO' || AUDGENESTADOPROCESOS[0].ESTADO === 'ERROR') && AUDGENESTADOPROCESOS[0].ETAPA == 'PROCESAMIENTO'">Incompleto</div>
                 </div>
             </span>
         </div>
 
-        <div  [ngClass]="{'step-proceso-disabled': AUDGENESTADOPROCESOS[0].ETAPA == 'INICIAR' || AUDGENESTADOPROCESOS[0].ETAPA == 'MOVER ARCHIVO',
-                        'step-proceso-enabled': AUDGENESTADOPROCESOS[0].ETAPA != 'INICIAR' && AUDGENESTADOPROCESOS[0].ETAPA != 'MOVER ARCHIVO' && (AUDGENESTADOPROCESOS[0].ESTADO_EJECUCION == 'PROCESO' || AUDGENESTADOPROCESOS[0].ESTADO_EJECUCION == 'FIN'),
-                        'step-completado': AUDGENESTADOPROCESOS[0].ETAPA != 'INICIAR' && AUDGENESTADOPROCESOS[0].ETAPA != 'MOVER ARCHIVO' && AUDGENESTADOPROCESOS[0].ESTADO == 'FINALIZADO' && ( AUDGENESTADOPROCESOS[0].ETAPA == 'VALIDAR ARCHIVO' || AUDGENESTADOPROCESOS[0].ETAPA == 'PROCESAR ARCHIVO' || AUDGENESTADOPROCESOS[0].ETAPA == 'FINALIZAR') && AUDGENESTADOPROCESOS[0].ESTADO_EJECUCION == 'PROCESO'  , 
-                        'step-incompleto': AUDGENESTADOPROCESOS[0].ESTADO == 'INICIADO' && AUDGENESTADOPROCESOS[0].ETAPA == 'VALIDAR ARCHIVO'
-                        }" class="step-2-proceso">
-            <span >
-                <div>Validar Archivo</div>
-                <div *ngIf="AUDGENESTADOPROCESOS[0].ETAPA !== 'INICIAR' && AUDGENESTADOPROCESOS[0].ETAPA !== 'MOVER ARCHIVO'">
-                    <div  class="separador-titulos"></div>
-                    <div *ngIf="AUDGENESTADOPROCESOS[0].ETAPA !== 'INICIAR' && AUDGENESTADOPROCESOS[0].ETAPA !== 'MOVER ARCHIVO' && AUDGENESTADOPROCESOS[0].ETAPA !== 'VALIDAR ARCHIVO'">Completado</div>
-                    <div *ngIf="AUDGENESTADOPROCESOS[0].ESTADO === 'INICIADO' &&  AUDGENESTADOPROCESOS[0].ETAPA === 'VALIDAR ARCHIVO'">Incompleto</div>
-                </div>
-            </span>
-        </div>
+        
 
-        <div  [ngClass]="{'step-proceso-disabled': AUDGENESTADOPROCESOS[0].ETAPA == 'INICIAR' || AUDGENESTADOPROCESOS[0].ETAPA == 'MOVER ARCHIVO' || AUDGENESTADOPROCESOS[0].ETAPA == 'VALIDAR ARCHIVO',
-                        'step-proceso-enabled': AUDGENESTADOPROCESOS[0].ETAPA != 'INICIAR' && AUDGENESTADOPROCESOS[0].ETAPA != 'MOVER ARCHIVO' && AUDGENESTADOPROCESOS[0].ETAPA != 'VALIDAR ARCHIVO' && (AUDGENESTADOPROCESOS[0].ESTADO_EJECUCION == 'PROCESO' || AUDGENESTADOPROCESOS[0].ESTADO_EJECUCION == 'FIN'),
-                        'step-completado': AUDGENESTADOPROCESOS[0].ETAPA != 'INICIAR' && AUDGENESTADOPROCESOS[0].ETAPA != 'MOVER ARCHIVO' && AUDGENESTADOPROCESOS[0].ETAPA != 'VALIDAR ARCHIVO' && AUDGENESTADOPROCESOS[0].ESTADO == 'FINALIZADO' && (AUDGENESTADOPROCESOS[0].ETAPA == 'PROCESAR ARCHIVO' || AUDGENESTADOPROCESOS[0].ETAPA == 'FINALIZAR') && AUDGENESTADOPROCESOS[0].ESTADO_EJECUCION == 'PROCESO'  , 
-                        'step-incompleto': AUDGENESTADOPROCESOS[0].ESTADO == 'INICIADO' && AUDGENESTADOPROCESOS[0].ETAPA == 'PROCESAR ARCHIVO'
-                        }" class="step-3-proceso">
-            <span >
-                <div>Procesar Archivo</div>
-                <div *ngIf="AUDGENESTADOPROCESOS[0].ETAPA !== 'INICIAR' && AUDGENESTADOPROCESOS[0].ETAPA !== 'MOVER ARCHIVO' && AUDGENESTADOPROCESOS[0].ETAPA !== 'VALIDAR ARCHIVO' ">
-                    <div  class="separador-titulos"></div>
-                    <div *ngIf="AUDGENESTADOPROCESOS[0].ETAPA !== 'INICIAR' && AUDGENESTADOPROCESOS[0].ETAPA !== 'MOVER ARCHIVO' && AUDGENESTADOPROCESOS[0].ETAPA !== 'VALIDAR ARCHIVO' && AUDGENESTADOPROCESOS[0].ETAPA !== 'PROCESAR ARCHIVO'">Completado</div>
-                    <div *ngIf="AUDGENESTADOPROCESOS[0].ESTADO === 'INICIADO' && AUDGENESTADOPROCESOS[0].ETAPA === 'PROCESAR ARCHIVO'">Incompleto</div>
-                </div>
-            </span>
-        </div>
-
-        <div  [ngClass]="{'step-proceso-disabled': AUDGENESTADOPROCESOS[0].ETAPA != 'FINALIZAR',
-                        'step-proceso-enabled': AUDGENESTADOPROCESOS[0].ETAPA === 'FINALIZAR' && AUDGENESTADOPROCESOS[0].ESTADO_EJECUCION == 'FIN',
-                        'step-completado': AUDGENESTADOPROCESOS[0].ESTADO == 'FINALIZADO' && AUDGENESTADOPROCESOS[0].ETAPA == 'FINALIZAR', 
-                        'step-incompleto': AUDGENESTADOPROCESOS[0].ESTADO == 'INICIADO' && AUDGENESTADOPROCESOS[0].ETAPA == 'FINALIZAR'
+        <div  [ngClass]="{'step-proceso-disabled': AUDGENESTADOPROCESOS[0].ETAPA != 'FINALIZADO',
+                        'step-proceso-enabled': AUDGENESTADOPROCESOS[0].ETAPA === 'FINALIZADO' && AUDGENESTADOPROCESOS[0].ESTADO_EJECUCION == 'FINALIZADO',
+                        'step-completado': AUDGENESTADOPROCESOS[0].ESTADO == 'FINALIZADO' && AUDGENESTADOPROCESOS[0].ETAPA == 'FINALIZADO', 
+                        'step-incompleto': AUDGENESTADOPROCESOS[0].ESTADO == 'ERROR' && AUDGENESTADOPROCESOS[0].ETAPA == 'FINALIZADO'
                         }" class="step-4-proceso">
             <span >
                 <div>Finalizar</div>
-                <div *ngIf="AUDGENESTADOPROCESOS[0].ETAPA === 'FINALIZAR' ">
+                <div *ngIf="AUDGENESTADOPROCESOS[0].ETAPA === 'FINALIZADO'">
                     <div  class="separador-titulos"></div>
-                    <div *ngIf="AUDGENESTADOPROCESOS[0].ESTADO === 'FINALIZADO' && AUDGENESTADOPROCESOS[0].ETAPA !== 'FINALIZAR'">Completado</div>
-                    <div *ngIf="AUDGENESTADOPROCESOS[0].ESTADO === 'INICIADO' && AUDGENESTADOPROCESOS[0].ETAPA !== 'FINALIZAR' ">Incompleto</div>
+                    <div *ngIf="AUDGENESTADOPROCESOS[0].ESTADO === 'FINALIZADO' && AUDGENESTADOPROCESOS[0].ETAPA === 'FINALIZADO'">Completado</div>
+                    <div *ngIf="(AUDGENESTADOPROCESOS[0].ESTADO === 'INICIADO' || AUDGENESTADOPROCESOS[0].ESTADO === 'ERROR') && AUDGENESTADOPROCESOS[0].ETAPA === 'FINALIZADO'">Incompleto</div>
                 </div>
             </span>
         </div>
@@ -113,9 +87,9 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let AUDGENPROCESO of AUDGENPROCESOS  let last = last ; let first = first" [ngClass]="{first: first, last: last, primero: primero }">
-                        <td *ngIf="AUDGENPROCESO.TIPO === 'INFO' " style="color: #1791DA;">{{AUDGENPROCESO.TIPO}}</td>
-                        <td *ngIf="AUDGENPROCESO.TIPO === 'DEBUG' " style="color: #FF7000;">{{AUDGENPROCESO.TIPO}}</td>
-                        <td *ngIf="AUDGENPROCESO.TIPO === 'ERROR' " style="color: #C00000;">{{AUDGENPROCESO.TIPO}}</td>
+                        <td *ngIf="AUDGENPROCESO.NIVEL === 'INFO' " style="color: #1791DA;">{{AUDGENPROCESO.NIVEL}}</td>
+                        <td *ngIf="AUDGENPROCESO.NIVEL === 'DEBUG' " style="color: #FF7000;">{{AUDGENPROCESO.NIVEL}}</td>
+                        <td *ngIf="AUDGENPROCESO.NIVEL === 'ERROR' " style="color: #C00000;">{{AUDGENPROCESO.NIVEL}}</td>
                         <td >{{AUDGENPROCESO.FECHA}} {{AUDGENPROCESO.ETAPA}}</td>
                         <td >{{AUDGENPROCESO.MENSAJE_SOPORTE}}</td>
                     </tr>
@@ -135,9 +109,9 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let AUDGENPROCESO of AUDGENPROCESOS  let last = last ; let first = first" [ngClass]="{first: first, last: last, primero: primero }">
-                        <td *ngIf="AUDGENPROCESO.TIPO === 'INFO' " style="color: #1791DA;">{{AUDGENPROCESO.TIPO}}</td>
-                        <td *ngIf="AUDGENPROCESO.TIPO === 'DEBUG' " style="color: #FF7000;">{{AUDGENPROCESO.TIPO}}</td>
-                        <td *ngIf="AUDGENPROCESO.TIPO === 'ERROR' " style="color: #C00000;">{{AUDGENPROCESO.TIPO}}</td>
+                        <td *ngIf="AUDGENPROCESO.NIVEL === 'INFO' " style="color: #1791DA;">{{AUDGENPROCESO.NIVEL}}</td>
+                        <td *ngIf="AUDGENPROCESO.NIVEL === 'DEBUG' " style="color: #FF7000;">{{AUDGENPROCESO.NIVEL}}</td>
+                        <td *ngIf="AUDGENPROCESO.NIVEL === 'ERROR' " style="color: #C00000;">{{AUDGENPROCESO.NIVEL}}</td>
                         <td >{{AUDGENPROCESO.FECHA}} {{AUDGENPROCESO.ETAPA}}</td>
                         <td >{{AUDGENPROCESO.MENSAJE_NEGOCIO}}</td>
                     </tr>

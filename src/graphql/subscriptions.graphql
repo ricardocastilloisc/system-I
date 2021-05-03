@@ -39,6 +39,8 @@ subscription OnCreateAUDGENPROCESOS($ID_REGISTRO: String) {
       ROL
     }
     TIPO
+    NIVEL
+    STEP
   }
 }
 subscription OnUpdateAUDGENPROCESOS($ID_REGISTRO: String) {
@@ -66,6 +68,8 @@ subscription OnUpdateAUDGENPROCESOS($ID_REGISTRO: String) {
       ROL
     }
     TIPO
+    NIVEL
+    STEP
   }
 }
 subscription OnDeleteAUDGENPROCESOS($ID_REGISTRO: String) {
@@ -93,14 +97,16 @@ subscription OnDeleteAUDGENPROCESOS($ID_REGISTRO: String) {
       ROL
     }
     TIPO
+    NIVEL
+    STEP
   }
 }
 subscription OnCreateAUDGENESTADOPROCESO(
-  $ID_REGISTRO: String
+  $ID_PROCESO: String
   $FECHA_CREADO: String
 ) {
   onCreateAUDGENESTADOPROCESO(
-    ID_REGISTRO: $ID_REGISTRO
+    ID_PROCESO: $ID_PROCESO
     FECHA_CREADO: $FECHA_CREADO
   ) {
     ESTADO
@@ -109,18 +115,17 @@ subscription OnCreateAUDGENESTADOPROCESO(
     FECHA_ACTUALIZACION
     FECHA_CREADO
     ID_PROCESO
-    ID_REGISTRO
     INSUMO
     INTERFAZ
     TIPO_PROCESO
   }
 }
 subscription OnUpdateAUDGENESTADOPROCESO(
-  $ID_REGISTRO: String
+  $ID_PROCESO: String
   $FECHA_CREADO: String
 ) {
   onUpdateAUDGENESTADOPROCESO(
-    ID_REGISTRO: $ID_REGISTRO
+    ID_PROCESO: $ID_PROCESO
     FECHA_CREADO: $FECHA_CREADO
   ) {
     ESTADO
@@ -129,18 +134,17 @@ subscription OnUpdateAUDGENESTADOPROCESO(
     FECHA_ACTUALIZACION
     FECHA_CREADO
     ID_PROCESO
-    ID_REGISTRO
     INSUMO
     INTERFAZ
     TIPO_PROCESO
   }
 }
 subscription OnDeleteAUDGENESTADOPROCESO(
-  $ID_REGISTRO: String
+  $ID_PROCESO: String
   $FECHA_CREADO: String
 ) {
   onDeleteAUDGENESTADOPROCESO(
-    ID_REGISTRO: $ID_REGISTRO
+    ID_PROCESO: $ID_PROCESO
     FECHA_CREADO: $FECHA_CREADO
   ) {
     ESTADO
@@ -149,7 +153,6 @@ subscription OnDeleteAUDGENESTADOPROCESO(
     FECHA_ACTUALIZACION
     FECHA_CREADO
     ID_PROCESO
-    ID_REGISTRO
     INSUMO
     INTERFAZ
     TIPO_PROCESO

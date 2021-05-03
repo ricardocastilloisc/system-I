@@ -5,10 +5,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { formatDate } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../../ReduxStore/app.reducers';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { AUDGENPROCESO_INERFACE } from '../../../../../model/AUDGENPROCESO.model';
 import { APIService } from '../../../../../API.service';
-import { map } from 'rxjs/operators';
+import { distinct, filter, map, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-procesos-pantalla-general',
@@ -22,6 +22,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
 
   AUDGENPROCESOS$: Observable<AUDGENPROCESO_INERFACE[]>;
 
+  PROCESOS = new Array();
   constructor(
     private router: Router,
     private store: Store<AppState>,
@@ -37,8 +38,13 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
 
     this.AUDGENPROCESOS$ = this.store.select(
       ({ AUDGENPROCESOS }) => AUDGENPROCESOS.AUDGENPROCESOS
-    )
-
+    ).pipe( map (res => {
+      if( res == null) return res
+      else
+        return res.filter((item, i, res) => {
+          return res.indexOf(res.find(t => t.ID_PROCESO === item.ID_PROCESO)) === i
+        })
+    }))
 
     this.api.ListAUDGENPROCESOS().then(res => console.log('respuesta',res.items))
 
