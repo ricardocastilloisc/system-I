@@ -64,7 +64,7 @@
             <td>{{AUDGENPROCESO.INTERFAZ}}</td>
             <td><img *ngIf="AUDGENPROCESO.PROCESO.EJECUCION !== 'AUTOMATICA'" class="play-icon">
               <img *ngIf="AUDGENPROCESO.PROCESO.EJECUCION !== 'AUTOMATICA'" class="stop-icon" (click)="consultar()">
-              <img class="detalle-icon" (click)="consultar(AUDGENPROCESO.ID_FLUJO_PROCESO)">
+              <img class="detalle-icon" (click)="consultar(AUDGENPROCESO.ID_PROCESO)">
             </td>
           </tr>
         </table>

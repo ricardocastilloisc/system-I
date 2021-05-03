@@ -5,12 +5,14 @@ export interface AppState {
   usuario: reducers.UserState,
   AUDGENPROCESOS: reducers.AUDGENPROCESOState,
   ListaUsuarios: reducers.ListaUsuariosState,
-  ProcesoCambios: reducers.ProcesoCambiosState
+  ProcesoCambios: reducers.ProcesoCambiosState,
+  AUDGENESTADOPROCESOS: reducers.AUDGENESTADOPROCESOtate
 }
 
 export const appReducers:ActionReducerMap<AppState> = {
   usuario: reducers.authReducer,
   AUDGENPROCESOS: reducers.AUDGENPROCESOReducer,
   ListaUsuarios: reducers.ListadoUsuariosReducer,
-  ProcesoCambios: reducers.ProcesoCambiosReducer
+  ProcesoCambios: reducers.ProcesoCambiosReducer,
+  AUDGENESTADOPROCESOS: reducers.AUDGENESTADOPROCESOReducer
 }

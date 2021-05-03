@@ -16,22 +16,21 @@ mutation DeleteAUDGENUSUARIOS($input: DeleteAUDGENUSUARIOSInput!) {
 }
 mutation CreateAUDGENPROCESOS($input: CreateAUDGENPROCESOSInput!) {
   createAUDGENPROCESOS(input: $input) {
-    ACTIVIDAD
     DESTINO
     ETAPA
     FECHA
-    ID_FLUJO_PROCESO
+    ID_PROCESO
     ID_REGISTRO
     INSUMO
     INTERFAZ
-    MENSAJE {
+    MENSAJE_NEGOCIO {
       DETALLE
       TIPO
     }
+    MENSAJE_SOPORTE
     NEGOCIO
     PROCESO {
       EJECUCION
-      ESTADO
       TIPO
     }
     SERVICIOAWS
@@ -39,26 +38,26 @@ mutation CreateAUDGENPROCESOS($input: CreateAUDGENPROCESOSInput!) {
       CORREO
       ROL
     }
+    TIPO
   }
 }
 mutation UpdateAUDGENPROCESOS($input: UpdateAUDGENPROCESOSInput!) {
   updateAUDGENPROCESOS(input: $input) {
-    ACTIVIDAD
     DESTINO
     ETAPA
     FECHA
-    ID_FLUJO_PROCESO
+    ID_PROCESO
     ID_REGISTRO
     INSUMO
     INTERFAZ
-    MENSAJE {
+    MENSAJE_NEGOCIO {
       DETALLE
       TIPO
     }
+    MENSAJE_SOPORTE
     NEGOCIO
     PROCESO {
       EJECUCION
-      ESTADO
       TIPO
     }
     SERVICIOAWS
@@ -66,26 +65,26 @@ mutation UpdateAUDGENPROCESOS($input: UpdateAUDGENPROCESOSInput!) {
       CORREO
       ROL
     }
+    TIPO
   }
 }
 mutation DeleteAUDGENPROCESOS($input: DeleteAUDGENPROCESOSInput!) {
   deleteAUDGENPROCESOS(input: $input) {
-    ACTIVIDAD
     DESTINO
     ETAPA
     FECHA
-    ID_FLUJO_PROCESO
+    ID_PROCESO
     ID_REGISTRO
     INSUMO
     INTERFAZ
-    MENSAJE {
+    MENSAJE_NEGOCIO {
       DETALLE
       TIPO
     }
+    MENSAJE_SOPORTE
     NEGOCIO
     PROCESO {
       EJECUCION
-      ESTADO
       TIPO
     }
     SERVICIOAWS
@@ -93,5 +92,48 @@ mutation DeleteAUDGENPROCESOS($input: DeleteAUDGENPROCESOSInput!) {
       CORREO
       ROL
     }
+    TIPO
+  }
+}
+mutation CreateAUDGENESTADOPROCESO($input: CreateAUDGENESTADOPROCESOInput!) {
+  createAUDGENESTADOPROCESO(input: $input) {
+    ESTADO
+    ESTADO_EJECUCION
+    ETAPA
+    FECHA_ACTUALIZACION
+    FECHA_CREADO
+    ID_PROCESO
+    ID_REGISTRO
+    INSUMO
+    INTERFAZ
+    TIPO_PROCESO
+  }
+}
+mutation UpdateAUDGENESTADOPROCESO($input: UpdateAUDGENESTADOPROCESOInput!) {
+  updateAUDGENESTADOPROCESO(input: $input) {
+    ESTADO
+    ESTADO_EJECUCION
+    ETAPA
+    FECHA_ACTUALIZACION
+    FECHA_CREADO
+    ID_PROCESO
+    ID_REGISTRO
+    INSUMO
+    INTERFAZ
+    TIPO_PROCESO
+  }
+}
+mutation DeleteAUDGENESTADOPROCESO($input: DeleteAUDGENESTADOPROCESOInput!) {
+  deleteAUDGENESTADOPROCESO(input: $input) {
+    ESTADO
+    ESTADO_EJECUCION
+    ETAPA
+    FECHA_ACTUALIZACION
+    FECHA_CREADO
+    ID_PROCESO
+    ID_REGISTRO
+    INSUMO
+    INTERFAZ
+    TIPO_PROCESO
   }
 }

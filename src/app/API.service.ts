@@ -32,19 +32,20 @@ export type CreateAUDGENPROCESOSInput = {
 
 export type AUDGENPROCESOS = {
   __typename: "AUDGENPROCESOS";
-  ACTIVIDAD?: string | null;
   DESTINO?: string | null;
   ETAPA?: string | null;
   FECHA?: string | null;
-  ID_FLUJO_PROCESO?: string | null;
+  ID_PROCESO?: string | null;
   ID_REGISTRO?: string | null;
   INSUMO?: string | null;
   INTERFAZ?: string | null;
-  MENSAJE?: MENSAJE;
+  MENSAJE_NEGOCIO?: MENSAJE;
+  MENSAJE_SOPORTE?: string | null;
   NEGOCIO?: string | null;
   PROCESO?: PROCESO;
   SERVICIOAWS?: string | null;
   USUARIO?: USUARIO;
+  TIPO?: string | null;
 };
 
 export type MENSAJE = {
@@ -56,7 +57,6 @@ export type MENSAJE = {
 export type PROCESO = {
   __typename: "PROCESO";
   EJECUCION?: string | null;
-  ESTADO?: string | null;
   TIPO?: string | null;
 };
 
@@ -71,6 +71,34 @@ export type UpdateAUDGENPROCESOSInput = {
 };
 
 export type DeleteAUDGENPROCESOSInput = {
+  ID_REGISTRO: string;
+};
+
+export type CreateAUDGENESTADOPROCESOInput = {
+  ID_REGISTRO: string;
+  FECHA_CREADO?: string | null;
+};
+
+export type AUDGENESTADOPROCESO = {
+  __typename: "AUDGENESTADOPROCESO";
+  ESTADO?: string | null;
+  ESTADO_EJECUCION?: string | null;
+  ETAPA?: string | null;
+  FECHA_ACTUALIZACION?: string | null;
+  FECHA_CREADO?: string | null;
+  ID_PROCESO?: string | null;
+  ID_REGISTRO?: string;
+  INSUMO?: string | null;
+  INTERFAZ?: string | null;
+  TIPO_PROCESO?: string | null;
+};
+
+export type UpdateAUDGENESTADOPROCESOInput = {
+  ID_REGISTRO: string;
+  FECHA_CREADO?: string | null;
+};
+
+export type DeleteAUDGENESTADOPROCESOInput = {
   ID_REGISTRO: string;
 };
 
@@ -100,12 +128,24 @@ export type AUDGENUSUARIOSConnection = {
 export type TableAUDGENPROCESOSFilterInput = {
   FECHA?: TableStringFilterInput | null;
   ESTADO?: TableStringFilterInput | null;
-  ID_FLUJO_PROCESO?: TableStringFilterInput | null;
+  ID_PROCESO?: TableStringFilterInput | null;
 };
 
 export type AUDGENPROCESOSConnection = {
   __typename: "AUDGENPROCESOSConnection";
   items?: Array<AUDGENPROCESOS | null> | null;
+  nextToken?: string | null;
+};
+
+export type TableAUDGENESTADOPROCESOFilterInput = {
+  ID_REGISTRO?: TableStringFilterInput | null;
+  FECHA_CREADO?: TableStringFilterInput | null;
+  ID_PROCESO?: TableStringFilterInput | null;
+};
+
+export type AUDGENESTADOPROCESOConnection = {
+  __typename: "AUDGENESTADOPROCESOConnection";
+  items?: Array<AUDGENESTADOPROCESO | null> | null;
   nextToken?: string | null;
 };
 
@@ -126,24 +166,23 @@ export type DeleteAUDGENUSUARIOSMutation = {
 
 export type CreateAUDGENPROCESOSMutation = {
   __typename: "AUDGENPROCESOS";
-  ACTIVIDAD?: string | null;
   DESTINO?: string | null;
   ETAPA?: string | null;
   FECHA?: string | null;
-  ID_FLUJO_PROCESO?: string | null;
+  ID_PROCESO?: string | null;
   ID_REGISTRO?: string | null;
   INSUMO?: string | null;
   INTERFAZ?: string | null;
-  MENSAJE?: {
+  MENSAJE_NEGOCIO?: {
     __typename: "MENSAJE";
     DETALLE?: string | null;
     TIPO?: string | null;
   } | null;
+  MENSAJE_SOPORTE?: string | null;
   NEGOCIO?: string | null;
   PROCESO?: {
     __typename: "PROCESO";
     EJECUCION?: string | null;
-    ESTADO?: string | null;
     TIPO?: string | null;
   } | null;
   SERVICIOAWS?: string | null;
@@ -152,28 +191,28 @@ export type CreateAUDGENPROCESOSMutation = {
     CORREO?: string | null;
     ROL?: string | null;
   } | null;
+  TIPO?: string | null;
 };
 
 export type UpdateAUDGENPROCESOSMutation = {
   __typename: "AUDGENPROCESOS";
-  ACTIVIDAD?: string | null;
   DESTINO?: string | null;
   ETAPA?: string | null;
   FECHA?: string | null;
-  ID_FLUJO_PROCESO?: string | null;
+  ID_PROCESO?: string | null;
   ID_REGISTRO?: string | null;
   INSUMO?: string | null;
   INTERFAZ?: string | null;
-  MENSAJE?: {
+  MENSAJE_NEGOCIO?: {
     __typename: "MENSAJE";
     DETALLE?: string | null;
     TIPO?: string | null;
   } | null;
+  MENSAJE_SOPORTE?: string | null;
   NEGOCIO?: string | null;
   PROCESO?: {
     __typename: "PROCESO";
     EJECUCION?: string | null;
-    ESTADO?: string | null;
     TIPO?: string | null;
   } | null;
   SERVICIOAWS?: string | null;
@@ -182,28 +221,28 @@ export type UpdateAUDGENPROCESOSMutation = {
     CORREO?: string | null;
     ROL?: string | null;
   } | null;
+  TIPO?: string | null;
 };
 
 export type DeleteAUDGENPROCESOSMutation = {
   __typename: "AUDGENPROCESOS";
-  ACTIVIDAD?: string | null;
   DESTINO?: string | null;
   ETAPA?: string | null;
   FECHA?: string | null;
-  ID_FLUJO_PROCESO?: string | null;
+  ID_PROCESO?: string | null;
   ID_REGISTRO?: string | null;
   INSUMO?: string | null;
   INTERFAZ?: string | null;
-  MENSAJE?: {
+  MENSAJE_NEGOCIO?: {
     __typename: "MENSAJE";
     DETALLE?: string | null;
     TIPO?: string | null;
   } | null;
+  MENSAJE_SOPORTE?: string | null;
   NEGOCIO?: string | null;
   PROCESO?: {
     __typename: "PROCESO";
     EJECUCION?: string | null;
-    ESTADO?: string | null;
     TIPO?: string | null;
   } | null;
   SERVICIOAWS?: string | null;
@@ -212,6 +251,49 @@ export type DeleteAUDGENPROCESOSMutation = {
     CORREO?: string | null;
     ROL?: string | null;
   } | null;
+  TIPO?: string | null;
+};
+
+export type CreateAUDGENESTADOPROCESOMutation = {
+  __typename: "AUDGENESTADOPROCESO";
+  ESTADO?: string | null;
+  ESTADO_EJECUCION?: string | null;
+  ETAPA?: string | null;
+  FECHA_ACTUALIZACION?: string | null;
+  FECHA_CREADO?: string | null;
+  ID_PROCESO?: string | null;
+  ID_REGISTRO: string;
+  INSUMO?: string | null;
+  INTERFAZ?: string | null;
+  TIPO_PROCESO?: string | null;
+};
+
+export type UpdateAUDGENESTADOPROCESOMutation = {
+  __typename: "AUDGENESTADOPROCESO";
+  ESTADO?: string | null;
+  ESTADO_EJECUCION?: string | null;
+  ETAPA?: string | null;
+  FECHA_ACTUALIZACION?: string | null;
+  FECHA_CREADO?: string | null;
+  ID_PROCESO?: string | null;
+  ID_REGISTRO: string;
+  INSUMO?: string | null;
+  INTERFAZ?: string | null;
+  TIPO_PROCESO?: string | null;
+};
+
+export type DeleteAUDGENESTADOPROCESOMutation = {
+  __typename: "AUDGENESTADOPROCESO";
+  ESTADO?: string | null;
+  ESTADO_EJECUCION?: string | null;
+  ETAPA?: string | null;
+  FECHA_ACTUALIZACION?: string | null;
+  FECHA_CREADO?: string | null;
+  ID_PROCESO?: string | null;
+  ID_REGISTRO: string;
+  INSUMO?: string | null;
+  INTERFAZ?: string | null;
+  TIPO_PROCESO?: string | null;
 };
 
 export type GetAUDGENUSUARIOSQuery = {
@@ -230,24 +312,23 @@ export type ListAUDGENUSUARIOSQuery = {
 
 export type GetAUDGENPROCESOSQuery = {
   __typename: "AUDGENPROCESOS";
-  ACTIVIDAD?: string | null;
   DESTINO?: string | null;
   ETAPA?: string | null;
   FECHA?: string | null;
-  ID_FLUJO_PROCESO?: string | null;
+  ID_PROCESO?: string | null;
   ID_REGISTRO?: string | null;
   INSUMO?: string | null;
   INTERFAZ?: string | null;
-  MENSAJE?: {
+  MENSAJE_NEGOCIO?: {
     __typename: "MENSAJE";
     DETALLE?: string | null;
     TIPO?: string | null;
   } | null;
+  MENSAJE_SOPORTE?: string | null;
   NEGOCIO?: string | null;
   PROCESO?: {
     __typename: "PROCESO";
     EJECUCION?: string | null;
-    ESTADO?: string | null;
     TIPO?: string | null;
   } | null;
   SERVICIOAWS?: string | null;
@@ -256,30 +337,30 @@ export type GetAUDGENPROCESOSQuery = {
     CORREO?: string | null;
     ROL?: string | null;
   } | null;
+  TIPO?: string | null;
 };
 
 export type ListAUDGENPROCESOSQuery = {
   __typename: "AUDGENPROCESOSConnection";
   items?: Array<{
     __typename: "AUDGENPROCESOS";
-    ACTIVIDAD?: string | null;
     DESTINO?: string | null;
     ETAPA?: string | null;
     FECHA?: string | null;
-    ID_FLUJO_PROCESO?: string | null;
+    ID_PROCESO?: string | null;
     ID_REGISTRO?: string | null;
     INSUMO?: string | null;
     INTERFAZ?: string | null;
-    MENSAJE?: {
+    MENSAJE_NEGOCIO?: {
       __typename: "MENSAJE";
       DETALLE?: string | null;
       TIPO?: string | null;
     } | null;
+    MENSAJE_SOPORTE?: string | null;
     NEGOCIO?: string | null;
     PROCESO?: {
       __typename: "PROCESO";
       EJECUCION?: string | null;
-      ESTADO?: string | null;
       TIPO?: string | null;
     } | null;
     SERVICIOAWS?: string | null;
@@ -288,6 +369,57 @@ export type ListAUDGENPROCESOSQuery = {
       CORREO?: string | null;
       ROL?: string | null;
     } | null;
+    TIPO?: string | null;
+  } | null> | null;
+  nextToken?: string | null;
+};
+
+export type GetAUDGENESTADOPROCESOQuery = {
+  __typename: "AUDGENESTADOPROCESO";
+  ESTADO?: string | null;
+  ESTADO_EJECUCION?: string | null;
+  ETAPA?: string | null;
+  FECHA_ACTUALIZACION?: string | null;
+  FECHA_CREADO?: string | null;
+  ID_PROCESO?: string | null;
+  ID_REGISTRO: string;
+  INSUMO?: string | null;
+  INTERFAZ?: string | null;
+  TIPO_PROCESO?: string | null;
+};
+
+export type ListAUDGENESTADOPROCESOSQuery = {
+  __typename: "AUDGENESTADOPROCESOConnection";
+  items?: Array<{
+    __typename: "AUDGENESTADOPROCESO";
+    ESTADO?: string | null;
+    ESTADO_EJECUCION?: string | null;
+    ETAPA?: string | null;
+    FECHA_ACTUALIZACION?: string | null;
+    FECHA_CREADO?: string | null;
+    ID_PROCESO?: string | null;
+    ID_REGISTRO: string;
+    INSUMO?: string | null;
+    INTERFAZ?: string | null;
+    TIPO_PROCESO?: string | null;
+  } | null> | null;
+  nextToken?: string | null;
+};
+
+export type QueryAUDGENESTADOPROCESOSByIDREGISTROFECHACREADOIndexQuery = {
+  __typename: "AUDGENESTADOPROCESOConnection";
+  items?: Array<{
+    __typename: "AUDGENESTADOPROCESO";
+    ESTADO?: string | null;
+    ESTADO_EJECUCION?: string | null;
+    ETAPA?: string | null;
+    FECHA_ACTUALIZACION?: string | null;
+    FECHA_CREADO?: string | null;
+    ID_PROCESO?: string | null;
+    ID_REGISTRO: string;
+    INSUMO?: string | null;
+    INTERFAZ?: string | null;
+    TIPO_PROCESO?: string | null;
   } | null> | null;
   nextToken?: string | null;
 };
@@ -309,24 +441,23 @@ export type OnDeleteAUDGENUSUARIOSSubscription = {
 
 export type OnCreateAUDGENPROCESOSSubscription = {
   __typename: "AUDGENPROCESOS";
-  ACTIVIDAD?: string | null;
   DESTINO?: string | null;
   ETAPA?: string | null;
   FECHA?: string | null;
-  ID_FLUJO_PROCESO?: string | null;
+  ID_PROCESO?: string | null;
   ID_REGISTRO?: string | null;
   INSUMO?: string | null;
   INTERFAZ?: string | null;
-  MENSAJE?: {
+  MENSAJE_NEGOCIO?: {
     __typename: "MENSAJE";
     DETALLE?: string | null;
     TIPO?: string | null;
   } | null;
+  MENSAJE_SOPORTE?: string | null;
   NEGOCIO?: string | null;
   PROCESO?: {
     __typename: "PROCESO";
     EJECUCION?: string | null;
-    ESTADO?: string | null;
     TIPO?: string | null;
   } | null;
   SERVICIOAWS?: string | null;
@@ -335,28 +466,28 @@ export type OnCreateAUDGENPROCESOSSubscription = {
     CORREO?: string | null;
     ROL?: string | null;
   } | null;
+  TIPO?: string | null;
 };
 
 export type OnUpdateAUDGENPROCESOSSubscription = {
   __typename: "AUDGENPROCESOS";
-  ACTIVIDAD?: string | null;
   DESTINO?: string | null;
   ETAPA?: string | null;
   FECHA?: string | null;
-  ID_FLUJO_PROCESO?: string | null;
+  ID_PROCESO?: string | null;
   ID_REGISTRO?: string | null;
   INSUMO?: string | null;
   INTERFAZ?: string | null;
-  MENSAJE?: {
+  MENSAJE_NEGOCIO?: {
     __typename: "MENSAJE";
     DETALLE?: string | null;
     TIPO?: string | null;
   } | null;
+  MENSAJE_SOPORTE?: string | null;
   NEGOCIO?: string | null;
   PROCESO?: {
     __typename: "PROCESO";
     EJECUCION?: string | null;
-    ESTADO?: string | null;
     TIPO?: string | null;
   } | null;
   SERVICIOAWS?: string | null;
@@ -365,28 +496,28 @@ export type OnUpdateAUDGENPROCESOSSubscription = {
     CORREO?: string | null;
     ROL?: string | null;
   } | null;
+  TIPO?: string | null;
 };
 
 export type OnDeleteAUDGENPROCESOSSubscription = {
   __typename: "AUDGENPROCESOS";
-  ACTIVIDAD?: string | null;
   DESTINO?: string | null;
   ETAPA?: string | null;
   FECHA?: string | null;
-  ID_FLUJO_PROCESO?: string | null;
+  ID_PROCESO?: string | null;
   ID_REGISTRO?: string | null;
   INSUMO?: string | null;
   INTERFAZ?: string | null;
-  MENSAJE?: {
+  MENSAJE_NEGOCIO?: {
     __typename: "MENSAJE";
     DETALLE?: string | null;
     TIPO?: string | null;
   } | null;
+  MENSAJE_SOPORTE?: string | null;
   NEGOCIO?: string | null;
   PROCESO?: {
     __typename: "PROCESO";
     EJECUCION?: string | null;
-    ESTADO?: string | null;
     TIPO?: string | null;
   } | null;
   SERVICIOAWS?: string | null;
@@ -395,6 +526,49 @@ export type OnDeleteAUDGENPROCESOSSubscription = {
     CORREO?: string | null;
     ROL?: string | null;
   } | null;
+  TIPO?: string | null;
+};
+
+export type OnCreateAUDGENESTADOPROCESOSubscription = {
+  __typename: "AUDGENESTADOPROCESO";
+  ESTADO?: string | null;
+  ESTADO_EJECUCION?: string | null;
+  ETAPA?: string | null;
+  FECHA_ACTUALIZACION?: string | null;
+  FECHA_CREADO?: string | null;
+  ID_PROCESO?: string | null;
+  ID_REGISTRO: string;
+  INSUMO?: string | null;
+  INTERFAZ?: string | null;
+  TIPO_PROCESO?: string | null;
+};
+
+export type OnUpdateAUDGENESTADOPROCESOSubscription = {
+  __typename: "AUDGENESTADOPROCESO";
+  ESTADO?: string | null;
+  ESTADO_EJECUCION?: string | null;
+  ETAPA?: string | null;
+  FECHA_ACTUALIZACION?: string | null;
+  FECHA_CREADO?: string | null;
+  ID_PROCESO?: string | null;
+  ID_REGISTRO: string;
+  INSUMO?: string | null;
+  INTERFAZ?: string | null;
+  TIPO_PROCESO?: string | null;
+};
+
+export type OnDeleteAUDGENESTADOPROCESOSubscription = {
+  __typename: "AUDGENESTADOPROCESO";
+  ESTADO?: string | null;
+  ESTADO_EJECUCION?: string | null;
+  ETAPA?: string | null;
+  FECHA_ACTUALIZACION?: string | null;
+  FECHA_CREADO?: string | null;
+  ID_PROCESO?: string | null;
+  ID_REGISTRO: string;
+  INSUMO?: string | null;
+  INTERFAZ?: string | null;
+  TIPO_PROCESO?: string | null;
 };
 
 @Injectable({
@@ -458,24 +632,23 @@ export class APIService {
     const statement = `mutation CreateAUDGENPROCESOS($input: CreateAUDGENPROCESOSInput!) {
         createAUDGENPROCESOS(input: $input) {
           __typename
-          ACTIVIDAD
           DESTINO
           ETAPA
           FECHA
-          ID_FLUJO_PROCESO
+          ID_PROCESO
           ID_REGISTRO
           INSUMO
           INTERFAZ
-          MENSAJE {
+          MENSAJE_NEGOCIO {
             __typename
             DETALLE
             TIPO
           }
+          MENSAJE_SOPORTE
           NEGOCIO
           PROCESO {
             __typename
             EJECUCION
-            ESTADO
             TIPO
           }
           SERVICIOAWS
@@ -484,6 +657,7 @@ export class APIService {
             CORREO
             ROL
           }
+          TIPO
         }
       }`;
     const gqlAPIServiceArguments: any = {
@@ -500,24 +674,23 @@ export class APIService {
     const statement = `mutation UpdateAUDGENPROCESOS($input: UpdateAUDGENPROCESOSInput!) {
         updateAUDGENPROCESOS(input: $input) {
           __typename
-          ACTIVIDAD
           DESTINO
           ETAPA
           FECHA
-          ID_FLUJO_PROCESO
+          ID_PROCESO
           ID_REGISTRO
           INSUMO
           INTERFAZ
-          MENSAJE {
+          MENSAJE_NEGOCIO {
             __typename
             DETALLE
             TIPO
           }
+          MENSAJE_SOPORTE
           NEGOCIO
           PROCESO {
             __typename
             EJECUCION
-            ESTADO
             TIPO
           }
           SERVICIOAWS
@@ -526,6 +699,7 @@ export class APIService {
             CORREO
             ROL
           }
+          TIPO
         }
       }`;
     const gqlAPIServiceArguments: any = {
@@ -542,24 +716,23 @@ export class APIService {
     const statement = `mutation DeleteAUDGENPROCESOS($input: DeleteAUDGENPROCESOSInput!) {
         deleteAUDGENPROCESOS(input: $input) {
           __typename
-          ACTIVIDAD
           DESTINO
           ETAPA
           FECHA
-          ID_FLUJO_PROCESO
+          ID_PROCESO
           ID_REGISTRO
           INSUMO
           INTERFAZ
-          MENSAJE {
+          MENSAJE_NEGOCIO {
             __typename
             DETALLE
             TIPO
           }
+          MENSAJE_SOPORTE
           NEGOCIO
           PROCESO {
             __typename
             EJECUCION
-            ESTADO
             TIPO
           }
           SERVICIOAWS
@@ -568,6 +741,7 @@ export class APIService {
             CORREO
             ROL
           }
+          TIPO
         }
       }`;
     const gqlAPIServiceArguments: any = {
@@ -577,6 +751,90 @@ export class APIService {
       graphqlOperation(statement, gqlAPIServiceArguments)
     )) as any;
     return <DeleteAUDGENPROCESOSMutation>response.data.deleteAUDGENPROCESOS;
+  }
+  async CreateAUDGENESTADOPROCESO(
+    input: CreateAUDGENESTADOPROCESOInput
+  ): Promise<CreateAUDGENESTADOPROCESOMutation> {
+    const statement = `mutation CreateAUDGENESTADOPROCESO($input: CreateAUDGENESTADOPROCESOInput!) {
+        createAUDGENESTADOPROCESO(input: $input) {
+          __typename
+          ESTADO
+          ESTADO_EJECUCION
+          ETAPA
+          FECHA_ACTUALIZACION
+          FECHA_CREADO
+          ID_PROCESO
+          ID_REGISTRO
+          INSUMO
+          INTERFAZ
+          TIPO_PROCESO
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {
+      input
+    };
+    const response = (await API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    )) as any;
+    return <CreateAUDGENESTADOPROCESOMutation>(
+      response.data.createAUDGENESTADOPROCESO
+    );
+  }
+  async UpdateAUDGENESTADOPROCESO(
+    input: UpdateAUDGENESTADOPROCESOInput
+  ): Promise<UpdateAUDGENESTADOPROCESOMutation> {
+    const statement = `mutation UpdateAUDGENESTADOPROCESO($input: UpdateAUDGENESTADOPROCESOInput!) {
+        updateAUDGENESTADOPROCESO(input: $input) {
+          __typename
+          ESTADO
+          ESTADO_EJECUCION
+          ETAPA
+          FECHA_ACTUALIZACION
+          FECHA_CREADO
+          ID_PROCESO
+          ID_REGISTRO
+          INSUMO
+          INTERFAZ
+          TIPO_PROCESO
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {
+      input
+    };
+    const response = (await API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    )) as any;
+    return <UpdateAUDGENESTADOPROCESOMutation>(
+      response.data.updateAUDGENESTADOPROCESO
+    );
+  }
+  async DeleteAUDGENESTADOPROCESO(
+    input: DeleteAUDGENESTADOPROCESOInput
+  ): Promise<DeleteAUDGENESTADOPROCESOMutation> {
+    const statement = `mutation DeleteAUDGENESTADOPROCESO($input: DeleteAUDGENESTADOPROCESOInput!) {
+        deleteAUDGENESTADOPROCESO(input: $input) {
+          __typename
+          ESTADO
+          ESTADO_EJECUCION
+          ETAPA
+          FECHA_ACTUALIZACION
+          FECHA_CREADO
+          ID_PROCESO
+          ID_REGISTRO
+          INSUMO
+          INTERFAZ
+          TIPO_PROCESO
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {
+      input
+    };
+    const response = (await API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    )) as any;
+    return <DeleteAUDGENESTADOPROCESOMutation>(
+      response.data.deleteAUDGENESTADOPROCESO
+    );
   }
   async GetAUDGENUSUARIOS(ID: string): Promise<GetAUDGENUSUARIOSQuery> {
     const statement = `query GetAUDGENUSUARIOS($ID: String!) {
@@ -623,30 +881,27 @@ export class APIService {
     )) as any;
     return <ListAUDGENUSUARIOSQuery>response.data.listAUDGENUSUARIOS;
   }
-  async GetAUDGENPROCESOS(
-    ID_REGISTRO: string
-  ): Promise<GetAUDGENPROCESOSQuery> {
-    const statement = `query GetAUDGENPROCESOS($ID_REGISTRO: String!) {
-        getAUDGENPROCESOS(ID_REGISTRO: $ID_REGISTRO) {
+  async GetAUDGENPROCESOS(ID_PROCESO: string): Promise<GetAUDGENPROCESOSQuery> {
+    const statement = `query GetAUDGENPROCESOS($ID_PROCESO: String!) {
+        getAUDGENPROCESOS(ID_PROCESO: $ID_PROCESO) {
           __typename
-          ACTIVIDAD
           DESTINO
           ETAPA
           FECHA
-          ID_FLUJO_PROCESO
+          ID_PROCESO
           ID_REGISTRO
           INSUMO
           INTERFAZ
-          MENSAJE {
+          MENSAJE_NEGOCIO {
             __typename
             DETALLE
             TIPO
           }
+          MENSAJE_SOPORTE
           NEGOCIO
           PROCESO {
             __typename
             EJECUCION
-            ESTADO
             TIPO
           }
           SERVICIOAWS
@@ -655,10 +910,11 @@ export class APIService {
             CORREO
             ROL
           }
+          TIPO
         }
       }`;
     const gqlAPIServiceArguments: any = {
-      ID_REGISTRO
+      ID_PROCESO
     };
     const response = (await API.graphql(
       graphqlOperation(statement, gqlAPIServiceArguments)
@@ -675,24 +931,23 @@ export class APIService {
           __typename
           items {
             __typename
-            ACTIVIDAD
             DESTINO
             ETAPA
             FECHA
-            ID_FLUJO_PROCESO
+            ID_PROCESO
             ID_REGISTRO
             INSUMO
             INTERFAZ
-            MENSAJE {
+            MENSAJE_NEGOCIO {
               __typename
               DETALLE
               TIPO
             }
+            MENSAJE_SOPORTE
             NEGOCIO
             PROCESO {
               __typename
               EJECUCION
-              ESTADO
               TIPO
             }
             SERVICIOAWS
@@ -701,6 +956,7 @@ export class APIService {
               CORREO
               ROL
             }
+            TIPO
           }
           nextToken
         }
@@ -719,6 +975,113 @@ export class APIService {
       graphqlOperation(statement, gqlAPIServiceArguments)
     )) as any;
     return <ListAUDGENPROCESOSQuery>response.data.listAUDGENPROCESOS;
+  }
+  async GetAUDGENESTADOPROCESO(
+    ID_REGISTRO: string
+  ): Promise<GetAUDGENESTADOPROCESOQuery> {
+    const statement = `query GetAUDGENESTADOPROCESO($ID_REGISTRO: String!) {
+        getAUDGENESTADOPROCESO(ID_REGISTRO: $ID_REGISTRO) {
+          __typename
+          ESTADO
+          ESTADO_EJECUCION
+          ETAPA
+          FECHA_ACTUALIZACION
+          FECHA_CREADO
+          ID_PROCESO
+          ID_REGISTRO
+          INSUMO
+          INTERFAZ
+          TIPO_PROCESO
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {
+      ID_REGISTRO
+    };
+    const response = (await API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    )) as any;
+    return <GetAUDGENESTADOPROCESOQuery>response.data.getAUDGENESTADOPROCESO;
+  }
+  async ListAUDGENESTADOPROCESOS(
+    filter?: TableAUDGENESTADOPROCESOFilterInput,
+    limit?: number,
+    nextToken?: string
+  ): Promise<ListAUDGENESTADOPROCESOSQuery> {
+    const statement = `query ListAUDGENESTADOPROCESOS($filter: TableAUDGENESTADOPROCESOFilterInput, $limit: Int, $nextToken: String) {
+        listAUDGENESTADOPROCESOS(filter: $filter, limit: $limit, nextToken: $nextToken) {
+          __typename
+          items {
+            __typename
+            ESTADO
+            ESTADO_EJECUCION
+            ETAPA
+            FECHA_ACTUALIZACION
+            FECHA_CREADO
+            ID_PROCESO
+            ID_REGISTRO
+            INSUMO
+            INTERFAZ
+            TIPO_PROCESO
+          }
+          nextToken
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {};
+    if (filter) {
+      gqlAPIServiceArguments.filter = filter;
+    }
+    if (limit) {
+      gqlAPIServiceArguments.limit = limit;
+    }
+    if (nextToken) {
+      gqlAPIServiceArguments.nextToken = nextToken;
+    }
+    const response = (await API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    )) as any;
+    return <ListAUDGENESTADOPROCESOSQuery>(
+      response.data.listAUDGENESTADOPROCESOS
+    );
+  }
+  async QueryAUDGENESTADOPROCESOSByIDREGISTROFECHACREADOIndex(
+    ID_REGISTRO: string,
+    first?: number,
+    after?: string
+  ): Promise<QueryAUDGENESTADOPROCESOSByIDREGISTROFECHACREADOIndexQuery> {
+    const statement = `query QueryAUDGENESTADOPROCESOSByIDREGISTROFECHACREADOIndex($ID_REGISTRO: String!, $first: Int, $after: String) {
+        queryAUDGENESTADOPROCESOSByIDREGISTROFECHACREADOIndex(ID_REGISTRO: $ID_REGISTRO, first: $first, after: $after) {
+          __typename
+          items {
+            __typename
+            ESTADO
+            ESTADO_EJECUCION
+            ETAPA
+            FECHA_ACTUALIZACION
+            FECHA_CREADO
+            ID_PROCESO
+            ID_REGISTRO
+            INSUMO
+            INTERFAZ
+            TIPO_PROCESO
+          }
+          nextToken
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {
+      ID_REGISTRO
+    };
+    if (first) {
+      gqlAPIServiceArguments.first = first;
+    }
+    if (after) {
+      gqlAPIServiceArguments.after = after;
+    }
+    const response = (await API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    )) as any;
+    return <QueryAUDGENESTADOPROCESOSByIDREGISTROFECHACREADOIndexQuery>(
+      response.data.queryAUDGENESTADOPROCESOSByIDREGISTROFECHACREADOIndex
+    );
   }
   OnCreateAUDGENUSUARIOSListener(
     ID?: string
@@ -780,24 +1143,23 @@ export class APIService {
     const statement = `subscription OnCreateAUDGENPROCESOS($ID_REGISTRO: String) {
         onCreateAUDGENPROCESOS(ID_REGISTRO: $ID_REGISTRO) {
           __typename
-          ACTIVIDAD
           DESTINO
           ETAPA
           FECHA
-          ID_FLUJO_PROCESO
+          ID_PROCESO
           ID_REGISTRO
           INSUMO
           INTERFAZ
-          MENSAJE {
+          MENSAJE_NEGOCIO {
             __typename
             DETALLE
             TIPO
           }
+          MENSAJE_SOPORTE
           NEGOCIO
           PROCESO {
             __typename
             EJECUCION
-            ESTADO
             TIPO
           }
           SERVICIOAWS
@@ -806,6 +1168,7 @@ export class APIService {
             CORREO
             ROL
           }
+          TIPO
         }
       }`;
     const gqlAPIServiceArguments: any = {};
@@ -823,24 +1186,23 @@ export class APIService {
     const statement = `subscription OnUpdateAUDGENPROCESOS($ID_REGISTRO: String) {
         onUpdateAUDGENPROCESOS(ID_REGISTRO: $ID_REGISTRO) {
           __typename
-          ACTIVIDAD
           DESTINO
           ETAPA
           FECHA
-          ID_FLUJO_PROCESO
+          ID_PROCESO
           ID_REGISTRO
           INSUMO
           INTERFAZ
-          MENSAJE {
+          MENSAJE_NEGOCIO {
             __typename
             DETALLE
             TIPO
           }
+          MENSAJE_SOPORTE
           NEGOCIO
           PROCESO {
             __typename
             EJECUCION
-            ESTADO
             TIPO
           }
           SERVICIOAWS
@@ -849,6 +1211,7 @@ export class APIService {
             CORREO
             ROL
           }
+          TIPO
         }
       }`;
     const gqlAPIServiceArguments: any = {};
@@ -866,24 +1229,23 @@ export class APIService {
     const statement = `subscription OnDeleteAUDGENPROCESOS($ID_REGISTRO: String) {
         onDeleteAUDGENPROCESOS(ID_REGISTRO: $ID_REGISTRO) {
           __typename
-          ACTIVIDAD
           DESTINO
           ETAPA
           FECHA
-          ID_FLUJO_PROCESO
+          ID_PROCESO
           ID_REGISTRO
           INSUMO
           INTERFAZ
-          MENSAJE {
+          MENSAJE_NEGOCIO {
             __typename
             DETALLE
             TIPO
           }
+          MENSAJE_SOPORTE
           NEGOCIO
           PROCESO {
             __typename
             EJECUCION
-            ESTADO
             TIPO
           }
           SERVICIOAWS
@@ -892,6 +1254,7 @@ export class APIService {
             CORREO
             ROL
           }
+          TIPO
         }
       }`;
     const gqlAPIServiceArguments: any = {};
@@ -901,5 +1264,104 @@ export class APIService {
     return API.graphql(
       graphqlOperation(statement, gqlAPIServiceArguments)
     ) as Observable<SubscriptionResponse<OnDeleteAUDGENPROCESOSSubscription>>;
+  }
+
+  OnCreateAUDGENESTADOPROCESOListener(
+    ID_REGISTRO?: string,
+    FECHA_CREADO?: string
+  ): Observable<SubscriptionResponse<OnCreateAUDGENESTADOPROCESOSubscription>> {
+    const statement = `subscription OnCreateAUDGENESTADOPROCESO($ID_REGISTRO: String, $FECHA_CREADO: String) {
+        onCreateAUDGENESTADOPROCESO(ID_REGISTRO: $ID_REGISTRO, FECHA_CREADO: $FECHA_CREADO) {
+          __typename
+          ESTADO
+          ESTADO_EJECUCION
+          ETAPA
+          FECHA_ACTUALIZACION
+          FECHA_CREADO
+          ID_PROCESO
+          ID_REGISTRO
+          INSUMO
+          INTERFAZ
+          TIPO_PROCESO
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {};
+    if (ID_REGISTRO) {
+      gqlAPIServiceArguments.ID_REGISTRO = ID_REGISTRO;
+    }
+    if (FECHA_CREADO) {
+      gqlAPIServiceArguments.FECHA_CREADO = FECHA_CREADO;
+    }
+    return API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    ) as Observable<
+      SubscriptionResponse<OnCreateAUDGENESTADOPROCESOSubscription>
+    >;
+  }
+
+  OnUpdateAUDGENESTADOPROCESOListener(
+    ID_REGISTRO?: string,
+    FECHA_CREADO?: string
+  ): Observable<SubscriptionResponse<OnUpdateAUDGENESTADOPROCESOSubscription>> {
+    const statement = `subscription OnUpdateAUDGENESTADOPROCESO($ID_REGISTRO: String, $FECHA_CREADO: String) {
+        onUpdateAUDGENESTADOPROCESO(ID_REGISTRO: $ID_REGISTRO, FECHA_CREADO: $FECHA_CREADO) {
+          __typename
+          ESTADO
+          ESTADO_EJECUCION
+          ETAPA
+          FECHA_ACTUALIZACION
+          FECHA_CREADO
+          ID_PROCESO
+          ID_REGISTRO
+          INSUMO
+          INTERFAZ
+          TIPO_PROCESO
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {};
+    if (ID_REGISTRO) {
+      gqlAPIServiceArguments.ID_REGISTRO = ID_REGISTRO;
+    }
+    if (FECHA_CREADO) {
+      gqlAPIServiceArguments.FECHA_CREADO = FECHA_CREADO;
+    }
+    return API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    ) as Observable<
+      SubscriptionResponse<OnUpdateAUDGENESTADOPROCESOSubscription>
+    >;
+  }
+
+  OnDeleteAUDGENESTADOPROCESOListener(
+    ID_REGISTRO?: string,
+    FECHA_CREADO?: string
+  ): Observable<SubscriptionResponse<OnDeleteAUDGENESTADOPROCESOSubscription>> {
+    const statement = `subscription OnDeleteAUDGENESTADOPROCESO($ID_REGISTRO: String, $FECHA_CREADO: String) {
+        onDeleteAUDGENESTADOPROCESO(ID_REGISTRO: $ID_REGISTRO, FECHA_CREADO: $FECHA_CREADO) {
+          __typename
+          ESTADO
+          ESTADO_EJECUCION
+          ETAPA
+          FECHA_ACTUALIZACION
+          FECHA_CREADO
+          ID_PROCESO
+          ID_REGISTRO
+          INSUMO
+          INTERFAZ
+          TIPO_PROCESO
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {};
+    if (ID_REGISTRO) {
+      gqlAPIServiceArguments.ID_REGISTRO = ID_REGISTRO;
+    }
+    if (FECHA_CREADO) {
+      gqlAPIServiceArguments.FECHA_CREADO = FECHA_CREADO;
+    }
+    return API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    ) as Observable<
+      SubscriptionResponse<OnDeleteAUDGENESTADOPROCESOSubscription>
+    >;
   }
 }

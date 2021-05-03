@@ -1,5 +1,7 @@
 .container-progeso {
     margin-top: 50px;
+    margin-left: auto;
+    margin-right: auto;
 }
  
 .step-proceso{
@@ -13,6 +15,20 @@
     color: white;
     z-index: 6;
     box-shadow: 3px 3px 5px #00000033;
+    padding: 0px !important;
+}
+.separador-titulos{
+    height: 1px;
+    width: 70%;
+    background: white;
+}
+
+.step-incompleto{
+    background: #FF9231 !important;
+}
+
+.step-completado{
+    background: #7C69C3 !important;
 }
 
 .step-proceso-disabled{
@@ -27,7 +43,7 @@
     align-items: center;
     font: 16px FS Elliot Pro;
     color: white;
-    padding-left: 30px;
+    padding: 30px;
 }
 
 .step-proceso-enabled{
@@ -47,6 +63,7 @@
     box-shadow: 3px 3px 5px #00000033;
     padding-left: 60px;
     padding-right: 25px;
+
 }
 
 .step-1-proceso{
@@ -68,6 +85,7 @@
     z-index: 1;
     background: #464E7E;
 }
+
 
 .container-referencias-log{
     margin-top: 50px;

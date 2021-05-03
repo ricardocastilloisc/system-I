@@ -16,24 +16,23 @@ query ListAUDGENUSUARIOS(
     nextToken
   }
 }
-query GetAUDGENPROCESOS($ID_REGISTRO: String!) {
-  getAUDGENPROCESOS(ID_REGISTRO: $ID_REGISTRO) {
-    ACTIVIDAD
+query GetAUDGENPROCESOS($ID_PROCESO: String!) {
+  getAUDGENPROCESOS(ID_PROCESO: $ID_PROCESO) {
     DESTINO
     ETAPA
     FECHA
-    ID_FLUJO_PROCESO
+    ID_PROCESO
     ID_REGISTRO
     INSUMO
     INTERFAZ
-    MENSAJE {
+    MENSAJE_NEGOCIO {
       DETALLE
       TIPO
     }
+    MENSAJE_SOPORTE
     NEGOCIO
     PROCESO {
       EJECUCION
-      ESTADO
       TIPO
     }
     SERVICIOAWS
@@ -41,6 +40,7 @@ query GetAUDGENPROCESOS($ID_REGISTRO: String!) {
       CORREO
       ROL
     }
+    TIPO
   }
 }
 query ListAUDGENPROCESOS(
@@ -50,22 +50,21 @@ query ListAUDGENPROCESOS(
 ) {
   listAUDGENPROCESOS(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
-      ACTIVIDAD
       DESTINO
       ETAPA
       FECHA
-      ID_FLUJO_PROCESO
+      ID_PROCESO
       ID_REGISTRO
       INSUMO
       INTERFAZ
-      MENSAJE {
+      MENSAJE_NEGOCIO {
         DETALLE
         TIPO
       }
+      MENSAJE_SOPORTE
       NEGOCIO
       PROCESO {
         EJECUCION
-        ESTADO
         TIPO
       }
       SERVICIOAWS
@@ -73,6 +72,71 @@ query ListAUDGENPROCESOS(
         CORREO
         ROL
       }
+      TIPO
+    }
+    nextToken
+  }
+}
+query GetAUDGENESTADOPROCESO($ID_REGISTRO: String!) {
+  getAUDGENESTADOPROCESO(ID_REGISTRO: $ID_REGISTRO) {
+    ESTADO
+    ESTADO_EJECUCION
+    ETAPA
+    FECHA_ACTUALIZACION
+    FECHA_CREADO
+    ID_PROCESO
+    ID_REGISTRO
+    INSUMO
+    INTERFAZ
+    TIPO_PROCESO
+  }
+}
+query ListAUDGENESTADOPROCESOS(
+  $filter: TableAUDGENESTADOPROCESOFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listAUDGENESTADOPROCESOS(
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      ESTADO
+      ESTADO_EJECUCION
+      ETAPA
+      FECHA_ACTUALIZACION
+      FECHA_CREADO
+      ID_PROCESO
+      ID_REGISTRO
+      INSUMO
+      INTERFAZ
+      TIPO_PROCESO
+    }
+    nextToken
+  }
+}
+query QueryAUDGENESTADOPROCESOSByIDREGISTROFECHACREADOIndex(
+  $ID_REGISTRO: String!
+  $first: Int
+  $after: String
+) {
+  queryAUDGENESTADOPROCESOSByIDREGISTROFECHACREADOIndex(
+    ID_REGISTRO: $ID_REGISTRO
+    first: $first
+    after: $after
+  ) {
+    items {
+      ESTADO
+      ESTADO_EJECUCION
+      ETAPA
+      FECHA_ACTUALIZACION
+      FECHA_CREADO
+      ID_PROCESO
+      ID_REGISTRO
+      INSUMO
+      INTERFAZ
+      TIPO_PROCESO
     }
     nextToken
   }

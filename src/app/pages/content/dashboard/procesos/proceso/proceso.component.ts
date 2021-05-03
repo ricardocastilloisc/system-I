@@ -1,12 +1,16 @@
 import { LoadAUDGENPROCESOS, UnsetAUDGENPROCESO } from './../../../../../ReduxStore/actions/AUDGENPROCESO.actions';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../../ReduxStore/app.reducers';
 import { Observable } from 'rxjs';
 import { AUDGENPROCESO_INERFACE } from '../../../../../model/AUDGENPROCESO.model';
-import {map} from "rxjs/operators";
-import { resolve } from 'node:path';
+import { AUDGENESTADOPROCESO_INTERFACE } from '../../../../../model/AUDGENESTADOPROCESO.model';
+import { map } from "rxjs/operators";
+import { AuthService } from 'src/app/services/auth.service';
+import { Usuario } from '../../../../../model/usuario.model';
+import { ERole } from '../../../../../validators/roles';
+import { LoadAUDGENESTADOPROCESOS } from 'src/app/ReduxStore/actions';
 
 @Component({
   selector: 'app-proceso',
@@ -15,50 +19,60 @@ import { resolve } from 'node:path';
 })
 export class ProcesoComponent implements OnInit,OnDestroy {
 
+  DataUser$: Observable<Usuario>;
   last;
-  PROCESOS: any;
+  PROCESOS = new Array();
 
+
+  Administrador = ERole.Administrador;
+  Ejecutor = ERole.Ejecutor;
+  Soporte = ERole.Soporte;
 
   constructor(
     private store: Store<AppState>,
     private rutaActiva: ActivatedRoute,
+    private authService: AuthService
     ) { }
 
   AUDGENPROCESOS$: Observable<AUDGENPROCESO_INERFACE[]>;
+  AUDGENESTADOPROCESOS$: Observable<AUDGENESTADOPROCESO_INTERFACE[]>
 
   ngOnDestroy(): void {
     this.store.dispatch(UnsetAUDGENPROCESO());
   }
 
-  
-  ngOnInit(): void {
-    
-    console.log(this.rutaActiva.snapshot.params.id)
-    
+  rolesValids = (User: Usuario, roles: any[]): boolean => {
+    return this.authService.rolesValids(User, roles);
+  };
 
+  ngOnInit(): void {
+    this.DataUser$ = this.store.select(({ usuario }) => usuario.user);
+
+    
     this.AUDGENPROCESOS$ = this.store.select(
       ({ AUDGENPROCESOS }) => AUDGENPROCESOS.AUDGENPROCESOS
-    ).pipe(map((res) =>{return res = res.slice().sort(function (a, b) {
-      return new Date(b.FECHA).getTime() - new Date(a.FECHA).getTime(); 
-   })}))
-
-
-
-    
-    
-    
+    ).pipe(map(res => 
+        {
+          if(res === null) return res
+          else return res.slice().sort(function(a,b)
+          {return new Date(b.FECHA).getTime() - new Date(a.FECHA).getTime()})
+        }
+      
+      ))
+      
+    this.AUDGENESTADOPROCESOS$ = this.store.select(
+      ({ AUDGENESTADOPROCESOS }) => AUDGENESTADOPROCESOS.AUDGENESTADOPROCESO
+    )
 
     let body =   {
-      filter:{​​​​​ ID_FLUJO_PROCESO: {​​​​​ eq: this.rutaActiva.snapshot.params.id}​​​​​ }​​​​​
+      filter:{​​​​​ ID_PROCESO: {​​​​​ eq: this.rutaActiva.snapshot.params.id}​​​​​ }​​​​​
     }
 
+    
+    
     this.store.dispatch(LoadAUDGENPROCESOS({consult:body}));
 
-
-
-  
+    this.store.dispatch(LoadAUDGENESTADOPROCESOS({consult:body}));
    }
 
-  
-   
 }

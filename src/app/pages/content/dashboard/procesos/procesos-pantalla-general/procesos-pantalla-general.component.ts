@@ -7,7 +7,8 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../../../../ReduxStore/app.reducers';
 import { Observable } from 'rxjs';
 import { AUDGENPROCESO_INERFACE } from '../../../../../model/AUDGENPROCESO.model';
-
+import { APIService } from '../../../../../API.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-procesos-pantalla-general',
@@ -24,32 +25,28 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
   constructor(
     private router: Router,
     private store: Store<AppState>,
-    private fb: FormBuilder,
-    private rutaActiva: ActivatedRoute
+    private rutaActiva: ActivatedRoute,
+    private api: APIService
   ) {}
   ngOnDestroy(): void {
     this.store.dispatch(UnsetAUDGENPROCESO());
   }
 
   ngOnInit(): void {
-    this.createForm = this.fb.group({
-      ID: ['', Validators.required],
-      FECHA_FERIADO: ['', Validators.required],
-    });
+
 
     this.AUDGENPROCESOS$ = this.store.select(
       ({ AUDGENPROCESOS }) => AUDGENPROCESOS.AUDGENPROCESOS
     )
 
 
+    this.api.ListAUDGENPROCESOS().then(res => console.log('respuesta',res.items))
 
 
 
-let body =   {
-  filter:{​​​​​ ID_FLUJO_PROCESO: {​​​​​ eq:"544cb86f-e173-496c-871e-acc6cbfb5daa"}​​​​​ }​​​​​
-}
 
-    this.store.dispatch(LoadAUDGENPROCESOS({consult:body}));
+
+    this.store.dispatch(LoadAUDGENPROCESOS({consult:null}));
   }
 
   botonActivado = (parametocomparar: string): boolean => {
