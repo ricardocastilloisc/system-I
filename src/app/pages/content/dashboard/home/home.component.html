@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="d-flex" style="height: 75vh; width: 100%">
       <div class="row contentCards">
-        <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+        <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12" *ngIf="rolesValids(DataUser, [Administrador, Ejecutor])">
           <div class="card">
             <div
               class="aling-items-center text-center headerCardsMenu"

@@ -77,7 +77,7 @@ export class UsuariosService {
     ERole.Soporte,
   ];
 
-  constructor(private store: Store<AppState>) {}
+  constructor(private store: Store<AppState>) { }
 
   consultarGrupos(): void {
     // metodo para consultar todos los grupos del user pool
@@ -237,6 +237,15 @@ export class UsuariosService {
     );
   }
 
+  validarRolUsuario(): boolean {
+    var banderaRol = false;
+    this.store.select(({ usuario }) => usuario.user.groups[0]).subscribe(res => {
+      banderaRol = this.Grupos.includes(res);
+    });
+    return banderaRol;
+  }
+
+
   callbackAws = (err, data) => {
     if (err) console.log(err, err.stack);
     else console.log(data);
@@ -245,9 +254,6 @@ export class UsuariosService {
   callbackAwsDetalle = (err, data) => {
     if (err) console.log(err, err.stack);
     else {
-      //console.log(JSON.stringify(data));
-
-      console.log(data);
       var area = data['UserAttributes'].find((el) => el.Name == 'custom:area')[
         'Value'
       ];
@@ -256,7 +262,6 @@ export class UsuariosService {
           area: area,
         })
       );
-      console.log(area);
     }
   };
 

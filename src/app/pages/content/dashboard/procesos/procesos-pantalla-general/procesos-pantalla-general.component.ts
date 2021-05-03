@@ -65,14 +65,4 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
     this.router.navigate(['/' + window.location.pathname + '/proceso/' + idProceso]);
   }
 
-  // async consultarCatalogo(){
-  //   console.log("Entre a la funcion")
-  //   this.api.GetAUDGENPROCESOS().then(event => {
-  //     this.consultaCatalogo = event.items;
-  //     console.log('Lista', this.consultaCatalogo);
-  //   })
-  //   .catch(e => {
-  //     console.log('error...', e);
-  //   });
-  // }
 }

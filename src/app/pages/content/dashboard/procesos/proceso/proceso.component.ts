@@ -18,7 +18,7 @@ import { APIService } from '../../../../../API.service'
   templateUrl: './proceso.component.html',
   styleUrls: ['./proceso.component.css']
 })
-export class ProcesoComponent implements OnInit,OnDestroy {
+export class ProcesoComponent implements OnInit, OnDestroy {
 
   DataUser$: Observable<Usuario>;
   last;
