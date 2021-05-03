@@ -47,19 +47,19 @@
 
   <ng-template #content let-modal>
     <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title"><div>Cambiar Permiso</div></h4>
+      <h4 class="modal-title" id="modal-basic-title"><div>Cambiar permiso</div></h4>
       <button type="button"  aria-label="Close" (click)="modal.dismiss()">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
     <div class="modal-body">
-      <form>
+
         <div class="form-group">
           <label for="dateOfBirth">Permiso</label>
           <div class="input-group">
 
-            <form [formGroup]="FormCambioPermiso">
-              <select  formControlName="grupoCambiar" class="form-select" name="grupo" id="grupo" value="Permiso">
+            <form [formGroup]="FormCambioPermiso" style="width: 100%">
+              <select   formControlName="grupoCambiar" class="form-control" name="grupo" id="grupo" value="Permiso">
                 <option disabled selected>Permiso</option>
                 <option *ngFor="let grupo of Grupos" [value]="grupo.value">{{grupo.label}}</option>
               </select>
@@ -67,7 +67,7 @@
 
           </div>
         </div>
-      </form>
+
     </div>
 
     <div class="modal-footer">

@@ -272,6 +272,18 @@ a[data-toggle="collapse"] {
   .alineadoTextoIzquierda {
     margin-left: 16px;
   }
+
+  .margin-principal {
+    margin-top: 75px;
+  }
+
+  .margin-navbar-barra {
+    margin-top: 0px !important;
+  }
+
+  #optionshome {
+    margin-top: 75px;
+  }
 }
 
 .text-title-menu {
@@ -322,9 +334,9 @@ a[data-toggle="collapse"] {
   padding: 15px;
 }
 
-.editar-icon {  
-  background: transparent url("../icons/Icono\ -\  editar.svg") 0% 0%
-    no-repeat padding-box;
+.editar-icon {
+  background: transparent url("../icons/Icono\ -\  editar.svg") 0% 0% no-repeat
+    padding-box;
   width: 30px;
   height: 30px;
   opacity: 1;
@@ -451,4 +463,12 @@ table.listado-design-general td {
 .listado-design-general tr td:last-of-type {
   border-top-right-radius: 25px;
   border-bottom-right-radius: 25px;
+}
+
+.margin-principal {
+  margin-top: 150px;
+}
+
+.margin-navbar-barra {
+  margin-top: 34px;
 }
