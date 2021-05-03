@@ -10,7 +10,6 @@ export class AuditoriageneralComponent implements OnInit {
   constructor(private auditoria: AuditoriaService) { }
 
   ngOnInit(): void {
-    console.log("AUDITORIA COMPONENT");
     this.auditoria.enviarMensaje();
   }
 

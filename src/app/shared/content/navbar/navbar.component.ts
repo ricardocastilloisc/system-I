@@ -21,29 +21,30 @@ export class NavbarComponent implements OnInit, AfterViewInit {
   DataUser$: Observable<Usuario>;
 
   Administrador = ERole.Administrador;
+  AdministradorArea = ERole.AdministradorArea;
   Ejecutor = ERole.Ejecutor;
   Soporte = ERole.Soporte;
 
   constructor(
     private authService: AuthService,
     private store: Store<AppState>,
-  ) {}
+  ) { }
   ngAfterViewInit(): void {
     this.resizeMenuContent();
     this.getRuta();
   }
 
   getRuta = () => {
-    let ArrayRuta =  [];
-     window.location.pathname.split('/').map((elementoRuta) => {
+    let ArrayRuta = [];
+    window.location.pathname.split('/').map((elementoRuta) => {
       rutasConNombres.forEach((elementoValidar) => {
-        if(elementoRuta === elementoValidar.rutaAngular){
+        if (elementoRuta === elementoValidar.rutaAngular) {
           ArrayRuta.push(elementoValidar.ValorEsp);
         }
       });
     });
     let nombreRuta = ArrayRuta.join('/').toString();
-    return nombreRuta.length>0?nombreRuta:'Inicio';
+    return nombreRuta.length > 0 ? nombreRuta : 'Inicio';
   };
 
 
@@ -58,6 +59,7 @@ export class NavbarComponent implements OnInit, AfterViewInit {
   rolesValids = (User: Usuario, roles: any[]): boolean => {
     return this.authService.rolesValids(User, roles);
   };
+
 
   toggle = () => {
     $('#sidebar').toggleClass('active');

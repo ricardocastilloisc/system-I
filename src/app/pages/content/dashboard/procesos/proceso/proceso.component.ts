@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../../../../ReduxStore/app.reducers';
 import { Observable } from 'rxjs';
 import { AUDGENPROCESO_INERFACE } from '../../../../../model/AUDGENPROCESO.model';
-import {map} from "rxjs/operators";
+import { map } from "rxjs/operators";
 import { resolve } from 'node:path';
 
 @Component({
@@ -13,7 +13,7 @@ import { resolve } from 'node:path';
   templateUrl: './proceso.component.html',
   styleUrls: ['./proceso.component.css']
 })
-export class ProcesoComponent implements OnInit,OnDestroy {
+export class ProcesoComponent implements OnInit, OnDestroy {
 
   last;
   PROCESOS: any;
@@ -22,7 +22,7 @@ export class ProcesoComponent implements OnInit,OnDestroy {
   constructor(
     private store: Store<AppState>,
     private rutaActiva: ActivatedRoute,
-    ) { }
+  ) { }
 
   AUDGENPROCESOS$: Observable<AUDGENPROCESO_INERFACE[]>;
 
@@ -30,35 +30,36 @@ export class ProcesoComponent implements OnInit,OnDestroy {
     this.store.dispatch(UnsetAUDGENPROCESO());
   }
 
-  
+
   ngOnInit(): void {
-    
-    console.log(this.rutaActiva.snapshot.params.id)
-    
+
+
 
     this.AUDGENPROCESOS$ = this.store.select(
       ({ AUDGENPROCESOS }) => AUDGENPROCESOS.AUDGENPROCESOS
-    ).pipe(map((res) =>{return res = res.slice().sort(function (a, b) {
-      return new Date(b.FECHA).getTime() - new Date(a.FECHA).getTime(); 
-   })}))
+    ).pipe(map((res) => {
+      return res = res.slice().sort(function (a, b) {
+        return new Date(b.FECHA).getTime() - new Date(a.FECHA).getTime();
+      })
+    }))
 
 
 
-    
-    
-    
 
-    let body =   {
-      filter:{​​​​​ ID_FLUJO_PROCESO: {​​​​​ eq: this.rutaActiva.snapshot.params.id}​​​​​ }​​​​​
+
+
+
+    let body = {
+      filter: { ID_FLUJO_PROCESO: { eq: this.rutaActiva.snapshot.params.id } }
     }
 
-    this.store.dispatch(LoadAUDGENPROCESOS({consult:body}));
+    this.store.dispatch(LoadAUDGENPROCESOS({ consult: body }));
 
 
 
-  
-   }
 
-  
-   
+  }
+
+
+
 }
