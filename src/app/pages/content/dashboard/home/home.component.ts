@@ -23,7 +23,6 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private store: Store<AppState>,
-    private router: Router,
     private authService: AuthService,
     private usuario: UsuariosService
   ) { }
@@ -31,8 +30,6 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.DataUser$ = this.store.select(({ usuario }) => usuario.user);
     this.usuario.obtenerDetalleUsuario();
-    var bandera = this.usuario.validarRolUsuario();
-    console.log("bandera: " + bandera);
   }
 
 

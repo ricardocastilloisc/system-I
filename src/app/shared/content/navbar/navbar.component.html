@@ -29,7 +29,7 @@
           Administración
         </a>
         <ul class="collapse lisst-unstyled" id="administracion">
-          <li *ngIf="rolesValids(DataUser, [Administrador, Ejecutor])">
+          <li *ngIf="usuario.validarRolUsuario() || rolesValids(DataUser, [Administrador, Ejecutor])">
             <a routerLinkActive="active" routerLink="/administracion/catalogos">
               <img
                 src="../assets/imgs/icons/catalogo.svg"
@@ -49,7 +49,7 @@
           </li>
         </ul>
       </li>
-      <li class="active">
+      <li class="active" *ngIf="usuario.validarRolUsuario()">
         <a
           href="#auditoria"
           class="dropdown-toggle"
@@ -102,7 +102,7 @@
           </li>
         </ul>
       </li>
-      <li class="active">
+      <li class="active" *ngIf="usuario.validarRolUsuario()">
         <a
           href="#procesos"
           class="dropdown-toggle"
@@ -171,7 +171,7 @@
           <p>
             <b>{{ DataUser.attributes.given_name}} {{ DataUser.attributes.family_name}}</b>
           </p>
-          <p>{{ DataUser.groups[0] }}</p>
+          <p  *ngIf="usuario.validarRolUsuario()">{{ DataUser.groups[0] }}</p>
         </div>
       </div>
     </nav>

@@ -1,3 +1,4 @@
+import { UsuariosService } from './../../../services/usuarios.service';
 import { rutasConNombres } from './../../../helpers/rutas';
 import { AfterViewInit, Component, HostListener, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
@@ -28,6 +29,7 @@ export class NavbarComponent implements OnInit, AfterViewInit {
   constructor(
     private authService: AuthService,
     private store: Store<AppState>,
+    private usuario: UsuariosService
   ) { }
   ngAfterViewInit(): void {
     this.resizeMenuContent();

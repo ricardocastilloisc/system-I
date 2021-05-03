@@ -237,10 +237,12 @@ export class UsuariosService {
     );
   }
 
-  validarRolUsuario(): boolean {
+  public validarRolUsuario(): boolean {
     var banderaRol = false;
-    this.store.select(({ usuario }) => usuario.user.groups[0]).subscribe(res => {
-      banderaRol = this.Grupos.includes(res);
+    this.store.select(({ usuario }) => usuario.user).subscribe(user =>{
+      if(user){
+        banderaRol = this.Grupos.includes(user.groups[0]);
+      }
     });
     return banderaRol;
   }
