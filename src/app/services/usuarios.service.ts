@@ -67,11 +67,11 @@ export class UsuariosService {
     UserAttributes: [
       {
         Name: 'custom:negocio',
-        Value: 'Afore',
+        Value: 'Afore', /* campo de entrada identificado como negocio */
       },
       {
         Name: 'custom:rol',
-        Value: 'Soporte',
+        Value: 'Soporte', /* campo de entrada identificado como permiso */
       },
     ],
     Username:
@@ -109,7 +109,7 @@ export class UsuariosService {
 
   consultarUsuarios = () => {
     // metodo para consultar todos los usuarios del user pool
-    return cognitoidentityserviceprovider.listUsers(this.paramsGroups);
+    return cognitoidentityserviceprovider.listUsers(this.paramsGroups,this.callbackAws);
   };
 
   consultaSinFiltroYConFiltro = (consulta: ConsultaUsuario | null) => {
@@ -311,25 +311,14 @@ export class UsuariosService {
 
   callbackAws = (err, data) => {
     if (err) console.log(err, err.stack);
-    else console.log(data);
+    else console.log(JSON.stringify(data));
   };
 
   callbackAwsDetalle = (err, data) => {
     if (err) console.log(err, err.stack);
     else {
-      //console.log(data);
-      var rol = data['UserAttributes'].find((el) => el.Name == 'custom:rol')[
-        'Value'
-      ];
-      var negocio = data['UserAttributes'].find((el) => el.Name == 'custom:negocio')[
-        'Value'
-      ];
-      //console.log(rol + ' -' + negocio);
-      this.store.dispatch(
-        setUserRol({
-          rol: rol,
-        })
-      );
+      console.log(JSON.stringify(data));
+
     }
   };
 
