@@ -41,19 +41,18 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     },
   ];
 
-
   Areas = [
     EArea.Contabilidad,
     EArea.Custodia,
     EArea.Inversiones_Riesgos,
-    EArea.Tesoreria
+    EArea.Tesoreria,
   ];
 
   Negocios = [
     ENegocio.Afore,
     ENegocio.Fondos,
     ENegocio.Seguros,
-    ENegocio.Afore_Fondos
+    ENegocio.Afore_Fondos,
   ];
 
   ObjectUsuarioCambiar: UsuarioListado;
@@ -71,7 +70,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   ) {}
   ngOnDestroy(): void {
     this.store.dispatch(UnsetListaUsuarios());
-    this.EstadoProceso.unsubscribe();
+    //this.EstadoProceso.unsubscribe();
   }
 
   openModal(content, ObjectUsuario: UsuarioListado) {
@@ -87,7 +86,6 @@ export class UsuariosComponent implements OnInit, OnDestroy {
         );
       }
     }
-
 
     if (!retornarStringSiexiste(ObjectUsuario.Attributes, 'custom:negocio')) {
       this.FormCambioPermiso.get('negocioCambiar').setValue('negocio');
@@ -112,14 +110,43 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       return;
     }
 
-    let procesos = {
-      Grupo: {
-        GroupName: this.ObjectUsuarioCambiar.GrupoQuePertenece,
-        Username: this.ObjectUsuarioCambiar.Username,
+    const UserAttributes = [
+      {
+        Name: 'custom:negocio',
+        Value: this.FormCambioPermiso.get('negocioCambiar').value,
       },
-    };
+      {
+        Name: 'custom:rol',
+        Value: this.FormCambioPermiso.get('rolCambiar').value,
+      },
+    ];
 
-    this.UsuariosService.validacionDeProcesosEliminar(1, procesos);
+    this.UsuariosService.actualizarAtributosUsuario(
+      UserAttributes,
+      this.ObjectUsuarioCambiar.Username
+    )
+      .then(() => {
+        this.salirYRestablecer();
+      })
+      .catch(() => {
+        this.salirYRestablecer();
+      });
+    /*
+
+
+   UserAttributes: [
+      {
+        Name: 'custom:negocio',
+        Value: 'Afore',  campo de entrada identificado como negocio
+      },
+      {
+        Name: 'custom:rol',
+        Value: 'Soporte',  campo de entrada identificado como permiso
+      },
+    ],
+
+
+    //this.UsuariosService.validacionDeProcesosEliminar(1, procesos);
     //this.UsuariosService.validacionDeProcesos(Object.keys(this.FormCambioPermiso.value).length);
     /*
     this.UsuariosService.eliminarUsuarioGrupo(
@@ -148,7 +175,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     );
 
     this.store.dispatch(LoadListaUsuarios({ consulta: null }));
-
+    /*
     this.EstadoProceso = this.store
       .select(({ ProcesoCambios }) => ProcesoCambios.terminado)
       .subscribe((estado) => {
@@ -162,14 +189,13 @@ export class UsuariosComponent implements OnInit, OnDestroy {
           this.store.dispatch(ProcesoLimpiar());
           this.insertarValores = true;
         }
-
         if (estado && this.insertarValores) {
           this.cambiarValorDelPermiso();
           this.store.dispatch(ProcesoLimpiar());
           this.insertarValores = false;
         }
-*/
       });
+      */
   }
 
   cambiarValorDelPermiso = () => {

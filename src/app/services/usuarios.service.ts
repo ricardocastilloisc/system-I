@@ -18,27 +18,21 @@ var objFiltrado = [];
 @Injectable({
   providedIn: 'root',
 })
-
 export class UsuariosService {
-
-  Roles = [
-    ERole.Administrador,
-    ERole.Ejecutor,
-    ERole.Soporte,
-  ];
+  Roles = [ERole.Administrador, ERole.Ejecutor, ERole.Soporte];
 
   Areas = [
     EArea.Contabilidad,
     EArea.Custodia,
     EArea.Inversiones_Riesgos,
-    EArea.Tesoreria
+    EArea.Tesoreria,
   ];
 
   Negocios = [
     ENegocio.Afore,
     ENegocio.Afore_Fondos,
     ENegocio.Fondos,
-    ENegocio.Seguros
+    ENegocio.Seguros,
   ];
 
   params = {
@@ -60,8 +54,7 @@ export class UsuariosService {
   };
 
   paramsUserGroups = {
-    GroupName:
-      'Tesoreria' /* es un dato de entrada de la pantalla */,
+    GroupName: 'Tesoreria' /* es un dato de entrada de la pantalla */,
     Limit: environment.Limit,
     UserPoolId: environment.UserPoolId,
   };
@@ -70,11 +63,11 @@ export class UsuariosService {
     UserAttributes: [
       {
         Name: 'custom:negocio',
-        Value: 'Afore', /* campo de entrada identificado como negocio */
+        Value: 'Afore' /* campo de entrada identificado como negocio */,
       },
       {
         Name: 'custom:rol',
-        Value: 'Soporte', /* campo de entrada identificado como permiso */
+        Value: 'Soporte' /* campo de entrada identificado como permiso */,
       },
     ],
     Username:
@@ -90,7 +83,7 @@ export class UsuariosService {
 
   numeroDeProcesos = 0;
 
-  constructor(private store: Store<AppState>) { }
+  constructor(private store: Store<AppState>) {}
 
   consultarGrupos(): void {
     // metodo para consultar todos los grupos del user pool
@@ -230,7 +223,7 @@ export class UsuariosService {
       this.numeroDeProcesos++;
     });
   }
-
+  /*
 
   validacionDeProcesosInsertar = (numeroProcesosComparar, procesos) => {
   }
@@ -255,14 +248,23 @@ export class UsuariosService {
       this.store.dispatch(ProcesoTerminado());
     });
   }
-
-  actualizarAtributosUsuario(): void {
+*/
+  actualizarAtributosUsuario = (UserAttributes, Username) => {
     // metodo para actualizar los valores de los atributos del usuario en el user pool
-    cognitoidentityserviceprovider.adminUpdateUserAttributes(
-      this.paramsAtributos,
-      this.callbackAws
-    );
-  }
+    /* cognitoidentityserviceprovider.adminUpdateUserAttributes(
+    this.paramsAtributos,
+    this.callbackAws
+  );*/
+
+    const paramsAtributos = {
+      UserAttributes: UserAttributes,
+      Username: Username /* identificador del usuario en el user pool */,
+      UserPoolId: environment.UserPoolId,
+    };
+    return cognitoidentityserviceprovider
+      .adminUpdateUserAttributes(paramsAtributos)
+      .promise();
+  };
 
   obtenerGrupoUsuarioPromise = (usuario) => {
     let params = {
@@ -283,18 +285,19 @@ export class UsuariosService {
   }
 
   public validarRolUsuario(): boolean {
-
     let flagValidate = false;
-    this.store.select(({ usuario }) => usuario.user).subscribe(({ attributes }: any) => {
-      // console.log(attributes);
-      if (!attributes.hasOwnProperty('custom:rol')) {
-        return flagValidate;
-      } else {
-        if (this.Roles.includes(attributes['custom:rol'])) {
-          flagValidate = true;
+    this.store
+      .select(({ usuario }) => usuario.user)
+      .subscribe(({ attributes }: any) => {
+        // console.log(attributes);
+        if (!attributes.hasOwnProperty('custom:rol')) {
+          return flagValidate;
+        } else {
+          if (this.Roles.includes(attributes['custom:rol'])) {
+            flagValidate = true;
+          }
         }
-      }
-    });
+      });
     return flagValidate;
   }
 
@@ -339,8 +342,14 @@ ayuda de atibutos: {Name: "sub", Value: "42ae1b55-8029-4a09-8c81-8c805c650aaf"}
     // filtrado por permiso
     if (permiso != null) {
       for (var i = 0; i < usuarios.Users.length; i++) {
-        if (usuarios.Users[i]['Attributes'].find(fruta => fruta.Name === 'custom:rol')) {
-          var atrPermiso = usuarios.Users[i]['Attributes'].find(fruta => fruta.Name === 'custom:rol')['Value'];
+        if (
+          usuarios.Users[i]['Attributes'].find(
+            (fruta) => fruta.Name === 'custom:rol'
+          )
+        ) {
+          var atrPermiso = usuarios.Users[i]['Attributes'].find(
+            (fruta) => fruta.Name === 'custom:rol'
+          )['Value'];
           if (atrPermiso === permiso) {
             result.push(usuarios.Users[i]);
           }
@@ -350,8 +359,14 @@ ayuda de atibutos: {Name: "sub", Value: "42ae1b55-8029-4a09-8c81-8c805c650aaf"}
     // filtrado por negocio
     if (negocio != null) {
       for (var i = 0; i < usuarios.Users.length; i++) {
-        if (usuarios.Users[i]['Attributes'].find(fruta => fruta.Name === 'custom:negocio')) {
-          var atrNegocio = usuarios.Users[i]['Attributes'].find(fruta => fruta.Name === 'custom:negocio')['Value'];
+        if (
+          usuarios.Users[i]['Attributes'].find(
+            (fruta) => fruta.Name === 'custom:negocio'
+          )
+        ) {
+          var atrNegocio = usuarios.Users[i]['Attributes'].find(
+            (fruta) => fruta.Name === 'custom:negocio'
+          )['Value'];
           if (atrNegocio === negocio) {
             result.push(usuarios.Users[i]);
           }
@@ -361,8 +376,14 @@ ayuda de atibutos: {Name: "sub", Value: "42ae1b55-8029-4a09-8c81-8c805c650aaf"}
     // filtrado por correo
     if (correo != null) {
       for (var i = 0; i < usuarios.Users.length; i++) {
-        if (usuarios.Users[i]['Attributes'].find(fruta => fruta.Name === 'email')) {
-          var atrCorreo = usuarios.Users[i]['Attributes'].find(fruta => fruta.Name === 'email')['Value'];
+        if (
+          usuarios.Users[i]['Attributes'].find(
+            (fruta) => fruta.Name === 'email'
+          )
+        ) {
+          var atrCorreo = usuarios.Users[i]['Attributes'].find(
+            (fruta) => fruta.Name === 'email'
+          )['Value'];
           if (atrCorreo === correo) {
             result.push(usuarios.Users[i]);
           }
@@ -373,7 +394,7 @@ ayuda de atibutos: {Name: "sub", Value: "42ae1b55-8029-4a09-8c81-8c805c650aaf"}
     const map = new Map();
     for (const item of result) {
       if (!map.has(item.Username)) {
-        map.set(item.Username, true);  
+        map.set(item.Username, true);
         objFiltrado.push(item);
       }
     }

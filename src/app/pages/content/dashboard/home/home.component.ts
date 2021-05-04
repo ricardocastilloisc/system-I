@@ -94,9 +94,9 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.DataUser$ = this.store.select(({ usuario }) => usuario.user);
     this.usuario.obtenerDetalleUsuario();
-    this.usuario.filtrarUsuarios(users, 'Soporte', 'Afore', 'galicia.brenda@principal.com');
+    //this.usuario.filtrarUsuarios(users, 'Soporte', 'Afore', 'galicia.brenda@principal.com');
   }
-  
+
   rolesValids = (User:Usuario, roles: any[]): boolean => {
     return this.authService.rolesValids( User, roles);
   };
