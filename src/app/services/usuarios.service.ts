@@ -77,6 +77,8 @@ export class UsuariosService {
     ERole.Soporte,
   ];
 
+  numeroDeProcesos = 0;
+
   constructor(private store: Store<AppState>) { }
 
   consultarGrupos(): void {
@@ -162,6 +164,8 @@ export class UsuariosService {
     });
   };
 
+
+
   obtenerDetalleUsuario(): void {
     // metodo para obtener el los datos a detalle del usuario
     cognitoidentityserviceprovider.adminGetUser(
@@ -188,16 +192,21 @@ export class UsuariosService {
     };
 
     let terminado = null;
-    cognitoidentityserviceprovider.adminRemoveUserFromGroup(
-      params,
-      (err, data) => {
-        if (err) {
-          terminado = 1;
-        } else {
-          terminado = 1;
+
+    if(GroupName.trim().length === 0){
+      terminado = 1;
+    }else{
+      cognitoidentityserviceprovider.adminRemoveUserFromGroup(
+        params,
+        (err, data) => {
+          if (err) {
+            terminado = 1;
+          } else {
+            terminado = 1;
+          }
         }
-      }
-    );
+      );
+    }
 
     new Promise((resolve) => {
       const intervalo = setInterval(() => {
@@ -207,6 +216,32 @@ export class UsuariosService {
         }
       }, 100);
     }).then(() => {
+      this.numeroDeProcesos++;
+    });
+  }
+
+
+  validacionDeProcesosInsertar = (numeroProcesosComparar, procesos) => {
+    
+  }
+
+  validacionDeProcesosEliminar = (numeroProcesosComparar, procesos) => {
+
+    const {Grupo} = procesos;
+
+    const {GroupName, Username} = Grupo;
+
+    this.eliminarUsuarioGrupo(GroupName, Username);
+
+    new Promise((resolve) => {
+      const intervalo = setInterval(() => {
+        if (numeroProcesosComparar === this.numeroDeProcesos) {
+          resolve('ok');
+          clearInterval(intervalo);
+        }
+      }, 100);
+    }).then(() => {
+      this.numeroDeProcesos = 0;
       this.store.dispatch(ProcesoTerminado());
     });
   }

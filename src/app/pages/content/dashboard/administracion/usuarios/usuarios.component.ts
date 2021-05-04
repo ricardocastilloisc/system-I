@@ -25,8 +25,6 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   FiltroUsuarioForm: FormGroup;
   FormCambioPermiso: FormGroup;
 
-  ListadoUsuarios: UsuarioListado[] = [];
-
   Grupos = [
     {
       label: 'Administrador',
@@ -59,6 +57,8 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   EstadoProceso: Subscription;
   ListadoUsuarios$: Observable<UsuarioListado[]>;
 
+  insertarValores = false;
+
   constructor(
     private store: Store<AppState>,
     private fb: FormBuilder,
@@ -80,22 +80,44 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       );
     }
 
+    if (!retornarStringSiexiste(ObjectUsuario.Attributes, 'custom:area')) {
+      this.FormCambioPermiso.get('area').setValue('area');
+    } else {
+      if (ObjectUsuario.Attributes['custom:area'] === '') {
+        this.FormCambioPermiso.get('area').setValue('area');
+      } else {
+        this.FormCambioPermiso.get('area').setValue(
+          ObjectUsuario.Attributes['custom:area']
+        );
+      }
+    }
+
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
   }
 
   guardarCambioPermisoUsuario = () => {
-    if (this.FormCambioPermiso.get('grupoCambiar').value === 'Permiso') {
+    if (
+      this.FormCambioPermiso.get('grupoCambiar').value === 'Permiso' &&
+      this.FormCambioPermiso.get('area').value === 'area'
+    ) {
       return;
     }
 
-    if (this.ObjectUsuarioCambiar.GrupoQuePertenece === '') {
-      this.cambiarValorDelPermiso();
-    } else {
-      this.UsuariosService.eliminarUsuarioGrupo(
-        this.ObjectUsuarioCambiar.GrupoQuePertenece,
-        this.ObjectUsuarioCambiar.Username
-      );
-    }
+    let procesos = {
+      Grupo: {
+        GroupName: this.ObjectUsuarioCambiar.GrupoQuePertenece,
+        Username: this.ObjectUsuarioCambiar.Username,
+      },
+    };
+
+    this.UsuariosService.validacionDeProcesosEliminar(1, procesos);
+    //this.UsuariosService.validacionDeProcesos(Object.keys(this.FormCambioPermiso.value).length);
+    /*
+    this.UsuariosService.eliminarUsuarioGrupo(
+      this.ObjectUsuarioCambiar.GrupoQuePertenece,
+      this.ObjectUsuarioCambiar.Username
+    );
+ */
   };
 
   salirYRestablecer = () => {
@@ -125,6 +147,19 @@ export class UsuariosComponent implements OnInit, OnDestroy {
           this.cambiarValorDelPermiso();
           this.store.dispatch(ProcesoLimpiar());
         }
+        /*
+        if (estado && !this.insertarValores) {
+          this.cambiarValorDelPermiso();
+          this.store.dispatch(ProcesoLimpiar());
+          this.insertarValores = true;
+        }
+
+        if (estado && this.insertarValores) {
+          this.cambiarValorDelPermiso();
+          this.store.dispatch(ProcesoLimpiar());
+          this.insertarValores = false;
+        }
+*/
       });
   }
 
