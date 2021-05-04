@@ -4,15 +4,15 @@
     <form [formGroup]="FiltroUsuarioForm">
       <section>
         <div class="col2-row2">
-          <input type="email" id="email" name="email" placeholder="Correo electrónico">
+          <input type="email" id="email" name="email" placeholder="Correo electrónico" class="selectList">
         </div>
         <div class="col2-row2">
-          <select formControlName="grupo" name="grupo" id="grupo" value="permiso">
+          <select formControlName="grupo" name="grupo" id="grupo" value="permiso" class="selectList">
             <option disabled selected value="permiso">Permiso</option>
             <option *ngFor="let Permiso of Permisos" [value]="Permiso">{{Permiso}}</option>
           </select>
         </div>
-        <div class="col2-row2"><select formControlName="grupo" name="grupo" id="grupo" value="area">
+        <div class="col2-row2"><select formControlName="grupo" name="grupo" id="grupo" value="area" class="selectList">
             <option disabled selected value="area">Área</option>
             <option *ngFor="let Area of Areas" [value]="Area">{{Area}}</option>
           </select></div>
