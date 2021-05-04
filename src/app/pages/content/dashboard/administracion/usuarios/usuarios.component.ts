@@ -7,15 +7,14 @@ import {
 import { AppState } from './../../../../../ReduxStore/app.reducers';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { UsuarioListado } from 'src/app/model/usuarioLitsa.model';
 import { retornarStringSiexiste } from '../../../../../helpers/FuncionesUtiles';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ERole, ENegocio } from 'src/app/validators/roles';
-import { ValorFiltrarGrupo } from '../../../../../validators/opcionesDeFiltroUsuarioAdmininistracion';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UsuariosService } from '../../../../../services/usuarios.service';
-import { ProcesoLimpiar } from '../../../../../ReduxStore/actions/loaderProcesoCambios.actions';
+
 
 @Component({
   selector: 'app-usuarios',
@@ -72,7 +71,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private modalService: NgbModal,
     private UsuariosService: UsuariosService
-  ) { }
+  ) {}
   ngOnDestroy(): void {
     this.store.dispatch(UnsetListaUsuarios());
     this.ListadoUsuarios$.unsubscribe();
@@ -81,6 +80,8 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.FiltroUsuarioForm = this.fb.group({
       rolFiltrar: ['Permiso'],
+      areaFiltrar: ['area'],
+      correoFiltrar: ['correo'],
     });
     this.FormCambioPermiso = this.fb.group({
       rolCambiar: ['Permiso'],
@@ -95,27 +96,6 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       });
 
     this.store.dispatch(LoadListaUsuarios({ consulta: null }));
-    /*
-    this.EstadoProceso = this.store
-      .select(({ ProcesoCambios }) => ProcesoCambios.terminado)
-      .subscribe((estado) => {
-        if (estado) {
-          this.cambiarValorDelPermiso();
-          this.store.dispatch(ProcesoLimpiar());
-        }
-        /*
-        if (estado && !this.insertarValores) {
-          this.cambiarValorDelPermiso();
-          this.store.dispatch(ProcesoLimpiar());
-          this.insertarValores = true;
-        }
-        if (estado && this.insertarValores) {
-          this.cambiarValorDelPermiso();
-          this.store.dispatch(ProcesoLimpiar());
-          this.insertarValores = false;
-        }
-      });
-      */
   }
 
   openModal(content, ObjectUsuario: UsuarioListado) {
@@ -176,29 +156,6 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       .catch(() => {
         this.salirYRestablecer();
       });
-    /*
-
-
-   UserAttributes: [
-      {
-        Name: 'custom:negocio',
-        Value: 'Afore',  campo de entrada identificado como negocio
-      },
-      {
-        Name: 'custom:rol',
-        Value: 'Soporte',  campo de entrada identificado como permiso
-      },
-    ],
-
-
-    //this.UsuariosService.validacionDeProcesosEliminar(1, procesos);
-    //this.UsuariosService.validacionDeProcesos(Object.keys(this.FormCambioPermiso.value).length);
-    /*
-    this.UsuariosService.eliminarUsuarioGrupo(
-      this.ObjectUsuarioCambiar.GrupoQuePertenece,
-      this.ObjectUsuarioCambiar.Username
-    );
- */
   };
 
   salirYRestablecer = () => {
@@ -228,26 +185,20 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       this.FiltroUsuarioForm.get('rolFiltrar').value === 'Permiso'
         ? null
         : this.FiltroUsuarioForm.get('rolFiltrar').value;
-    let FiltrarNegocio = null;
-    let FiltrarCorreo = null;
+    let FiltrarArea =
+      this.FiltroUsuarioForm.get('areaFiltrar').value === 'area'
+        ? null
+        : this.FiltroUsuarioForm.get('areaFiltrar').value;
+    let FiltrarCorreo =
+      this.FiltroUsuarioForm.get('correoFiltrar').value === 'correo'
+        ? null
+        : this.FiltroUsuarioForm.get('correoFiltrar').value;
 
     this.ListadoUsuariosPantalla = this.UsuariosService.filtrarUsuariosConAtributos(
       this.ListadoUsuariosOriginal,
       FiltrarRol,
-      FiltrarNegocio,
+      FiltrarArea,
       FiltrarCorreo
     );
-
-    /*
-    //console.log(this.usuario.filtrarUsuarios(users, 'Soporte', 'Afore', 'galicia.brenda@principal.com'));
-
-
-    let consulta: ConsultaUsuario = {
-      parametro: this.FiltroUsuarioForm.get('grupo').value,
-      tipo: ValorFiltrarGrupo.Grupo,
-    };
-    //this.store.dispatch(LoadListaUsuarios({ consulta: consulta }));
-
-  */
   };
 }

@@ -339,13 +339,13 @@ ayuda de atibutos: {Name: "sub", Value: "42ae1b55-8029-4a09-8c81-8c805c650aaf"}
     return object;
   };
 
-filtrarUsuariosConAtributos = (usuarios: UsuarioListado[], permiso, negocio, correo) => {
+filtrarUsuariosConAtributos = (usuarios: UsuarioListado[], permiso, area, correo) => {
   let Usuarios = [...usuarios];
   if (permiso != null){
     Usuarios = Usuarios.filter( e => e.Attributes['custom:rol'] === permiso)
   }
-  if (negocio != null){
-    Usuarios = Usuarios.filter( e => e.Attributes['custom:negocio'] === negocio)
+  if (area != null){
+    Usuarios = Usuarios.filter( e => e.GrupoQuePertenece === area)
   }
   if (correo != null){
     Usuarios = Usuarios.filter( e => e.Attributes['email'] === correo)
