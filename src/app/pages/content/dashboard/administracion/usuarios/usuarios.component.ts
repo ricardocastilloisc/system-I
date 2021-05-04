@@ -48,6 +48,8 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     EArea.Tesoreria,
   ];
 
+  Permisos = [ERole.Administrador, ERole.Ejecutor, ERole.Soporte];
+
   Negocios = [
     ENegocio.Afore,
     ENegocio.Fondos,
@@ -70,7 +72,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private modalService: NgbModal,
     private UsuariosService: UsuariosService
-  ) {}
+  ) { }
   ngOnDestroy(): void {
     this.store.dispatch(UnsetListaUsuarios());
     this.ListadoUsuarios$.unsubscribe();
