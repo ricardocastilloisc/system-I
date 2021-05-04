@@ -1,13 +1,18 @@
 <div class="row justify-content-center">
-  <div class="d-flex col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-6 justify-content-center">
+  <div class="">
     <div class="card-busqueda">
       <div>Buscar usuario por</div>
 
       <div>
         <form [formGroup]="FiltroUsuarioForm">
+          <input type="email" id="email" name="email" placeholder="Correo electrónico">
         <select formControlName="grupo" name="grupo" id="grupo" value="area">
           <option disabled selected value="area">Área</option>
           <option *ngFor="let Area of Areas" [value]="Area">{{Area}}</option>
+        </select>
+        <select formControlName="grupo" name="grupo" id="grupo" value="permiso">
+          <option disabled selected value="permiso">Permiso</option>
+          <option *ngFor="let Permiso of Permisos" [value]="Permiso">{{Permiso}}</option>
         </select>
       </form>
       </div>
