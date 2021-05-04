@@ -109,7 +109,8 @@ export class UsuariosService {
 
   consultarUsuarios = () => {
     // metodo para consultar todos los usuarios del user pool
-    return cognitoidentityserviceprovider.listUsers(this.paramsGroups,this.callbackAws);
+    //return cognitoidentityserviceprovider.listUsers(this.paramsGroups,this.callbackAws);
+    return cognitoidentityserviceprovider.listUsers(this.paramsGroups);
   };
 
   consultaSinFiltroYConFiltro = (consulta: ConsultaUsuario | null) => {
@@ -142,7 +143,7 @@ export class UsuariosService {
                 if (e.hasOwnProperty('GroupName')) {
                   tempString = e.GroupName;
                 }
-                this.Roles.forEach((validador) => {
+                this.Areas.forEach((validador) => {
                   if (validador === tempString) {
                     ObjectUsers[index].GrupoQuePertenece = tempString;
                   }
@@ -280,7 +281,7 @@ export class UsuariosService {
   }
 
   public validarRolUsuario(): boolean {
-    
+
     let flagValidate = false;
 /*
     if (roles.includes('Soporte')) {

@@ -27,15 +27,17 @@
         <tr>
           <th>Nombre</th>
           <th>Correo</th>
-          <th>Área</th>
+          <th>Grupo</th>
           <th>Permisos</th>
+          <th>Negocio</th>
           <th>Acciones</th>
         </tr>
         <tr *ngFor="let usuario of ListadoUsuarios | oredenascEmailusurios:'email' ">
           <td style="padding-left: 40px;"> {{retornarStringSiexiste(usuario.Attributes, 'given_name')}} {{retornarStringSiexiste(usuario.Attributes, 'family_name')}} </td>
           <td> {{retornarStringSiexiste(usuario.Attributes, 'email')}} </td>
-          <td>{{retornarStringSiexiste(usuario.Attributes, 'custom:area')}} </td>
           <td>{{usuario.GrupoQuePertenece}}</td>
+          <td>{{retornarStringSiexiste(usuario.Attributes, 'custom:rol')}} </td>
+          <td>{{retornarStringSiexiste(usuario.Attributes, 'custom:negocio')}} </td>
           <td> <img  (click)="openModal(content,usuario)" class="editar-icon"></td>
         </tr>
       </table>
