@@ -76,22 +76,27 @@ export class UsuariosComponent implements OnInit, OnDestroy {
 
   openModal(content, ObjectUsuario: UsuarioListado) {
     this.ObjectUsuarioCambiar = ObjectUsuario;
-    if (ObjectUsuario.GrupoQuePertenece === '') {
-      this.FormCambioPermiso.get('grupoCambiar').setValue('Permiso');
+    if (!retornarStringSiexiste(ObjectUsuario.Attributes, 'custom:rol')) {
+      this.FormCambioPermiso.get('rolCambiar').setValue('Permiso');
     } else {
-      this.FormCambioPermiso.get('grupoCambiar').setValue(
-        ObjectUsuario.GrupoQuePertenece
-      );
+      if (ObjectUsuario.Attributes['custom:rol'] === '') {
+        this.FormCambioPermiso.get('rolCambiar').setValue('Permiso');
+      } else {
+        this.FormCambioPermiso.get('rolCambiar').setValue(
+          ObjectUsuario.Attributes['custom:rol']
+        );
+      }
     }
 
-    if (!retornarStringSiexiste(ObjectUsuario.Attributes, 'custom:area')) {
-      this.FormCambioPermiso.get('area').setValue('area');
+
+    if (!retornarStringSiexiste(ObjectUsuario.Attributes, 'custom:negocio')) {
+      this.FormCambioPermiso.get('negocioCambiar').setValue('negocio');
     } else {
-      if (ObjectUsuario.Attributes['custom:area'] === '') {
-        this.FormCambioPermiso.get('area').setValue('area');
+      if (ObjectUsuario.Attributes['custom:negocio'] === '') {
+        this.FormCambioPermiso.get('negocioCambiar').setValue('negocio');
       } else {
-        this.FormCambioPermiso.get('area').setValue(
-          ObjectUsuario.Attributes['custom:area']
+        this.FormCambioPermiso.get('negocioCambiar').setValue(
+          ObjectUsuario.Attributes['custom:negocio']
         );
       }
     }
@@ -101,8 +106,8 @@ export class UsuariosComponent implements OnInit, OnDestroy {
 
   guardarCambioPermisoUsuario = () => {
     if (
-      this.FormCambioPermiso.get('grupoCambiar').value === 'Permiso' &&
-      this.FormCambioPermiso.get('area').value === 'area'
+      this.FormCambioPermiso.get('rolCambiar').value === 'Permiso' &&
+      this.FormCambioPermiso.get('negocioCambiar').value === 'negocio'
     ) {
       return;
     }
@@ -134,8 +139,8 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       grupo: ['area'],
     });
     this.FormCambioPermiso = this.fb.group({
-      grupoCambiar: ['Permiso'],
-      area: ['area'],
+      rolCambiar: ['Permiso'],
+      negocioCambiar: ['negocio'],
     });
 
     this.ListadoUsuarios$ = this.store.select(

@@ -59,7 +59,7 @@
         <div class="form-group">
           <label for="dateOfBirth">Permiso</label>
           <div class="input-group">
-              <select   formControlName="grupoCambiar" class="form-control" name="grupo" id="grupo" value="Permiso">
+              <select   formControlName="rolCambiar" class="form-control" name="grupo" id="grupo" value="Permiso">
                 <option disabled selected>Permiso</option>
                 <option *ngFor="let grupo of Roles" [value]="grupo.value">{{grupo.label}}</option>
               </select>
@@ -68,9 +68,9 @@
         <div class="form-group">
           <label for="dateOfBirth">Negocio</label>
           <div class="input-group">
-            <select  formControlName="area" class="form-control" name="area" id="area" value="area">
-              <option disabled selected value="area">Negocio</option>
-              <option *ngFor="let area of Negocios" [value]="area">{{area}}</option>
+            <select  formControlName="negocioCambiar" class="form-control" name="negocio" id="negocio" value="negocio">
+              <option disabled selected value="negocio">Negocio</option>
+              <option *ngFor="let negocio of Negocios" [value]="negocio">{{negocio}}</option>
             </select>
           </div>
         </div>
