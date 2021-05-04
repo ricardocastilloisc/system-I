@@ -10,13 +10,17 @@ import { map } from "rxjs/operators";
 import { AuthService } from 'src/app/services/auth.service';
 import { Usuario } from '../../../../../model/usuario.model';
 import { ERole } from '../../../../../validators/roles';
-import { LoadAUDGENESTADOPROCESOS, UnsetAUDGENESTADOPROCESO } from 'src/app/ReduxStore/actions';
-import { APIService } from '../../../../../API.service' 
+import { LoadAUDGENESTADOPROCESOS, UnsetAUDGENESTADOPROCESO, LoadAUDGENEJECUCIONESPROCESO, UnsetAUDGENEJECUCIONPROCESO } from 'src/app/ReduxStore/actions';
+import { APIService } from '../../../../../API.service';
+import { UsuariosService } from '../../../../../services/usuarios.service';
+import {NgbPaginationConfig} from '@ng-bootstrap/ng-bootstrap';
+
 
 @Component({
   selector: 'app-proceso',
   templateUrl: './proceso.component.html',
-  styleUrls: ['./proceso.component.css']
+  styleUrls: ['./proceso.component.css'],
+  providers: [NgbPaginationConfig]
 })
 export class ProcesoComponent implements OnInit, OnDestroy {
 
@@ -24,20 +28,32 @@ export class ProcesoComponent implements OnInit, OnDestroy {
   last;
   PROCESOS = new Array();
 
+  listaProcesos: any;
+  totalItems: number;
+  actualPage: number = 1;
+  previousPage: number;
+  showPagination: boolean;
+  pageSize: number;
+
 
   Administrador = ERole.Administrador;
   Ejecutor = ERole.Ejecutor;
   Soporte = ERole.Soporte;
+  DataUser: any;
 
   constructor(
     private store: Store<AppState>,
     private rutaActiva: ActivatedRoute,
     private authService: AuthService,
-    private api: APIService
-    ) { }
+    private api: APIService,
+    private usuario: UsuariosService,
+    private config: NgbPaginationConfig,
+    ) {
+      this.config.boundaryLinks = true;
+    }
 
   AUDGENPROCESOS$: Observable<AUDGENPROCESO_INERFACE[]>;
-  AUDGENPROCESOSINTERFAZ$: Observable<AUDGENPROCESO_INERFACE[]>;
+  AUDGENEJECUCIONPROCESO$: Observable<AUDGENPROCESO_INERFACE[]>;
   AUDGENESTADOPROCESOS$: Observable<AUDGENESTADOPROCESO_INTERFACE[]>
 
   ngOnDestroy(): void {
@@ -50,36 +66,31 @@ export class ProcesoComponent implements OnInit, OnDestroy {
   };*/
 
   ngOnInit(): void {
+
+
     this.DataUser$ = this.store.select(({ usuario }) => usuario.user);
 
-    
-    this.AUDGENPROCESOS$ = this.store.select(
-      ({ AUDGENPROCESOS }) => AUDGENPROCESOS.AUDGENPROCESOS
-    ).pipe(map(res => 
-        {
-          if(res === null) return res
-          else return res.slice().sort(function(a,b)
-          {return new Date(b.FECHA).getTime() - new Date(a.FECHA).getTime()})
-          .filter(item => {
-            return item.MENSAJE_NEGOCIO != ""
-          })
-        }
-      
-      ))
-      
-    
 
+    this.DataUser$.subscribe(res => this.DataUser = res).unsubscribe()
+
+    //console.log(this.DataUser)
     this.AUDGENESTADOPROCESOS$ = this.store.select(
       ({ AUDGENESTADOPROCESOS }) => AUDGENESTADOPROCESOS.AUDGENESTADOPROCESO
-    ).pipe(map(res => 
+    ).pipe(map(res =>
       {
         if(res === null) return res
-        else return res.slice().sort(function(a,b)
-        {return new Date(b.FECHA_ACTUALIZACION).getTime() - new Date(a.FECHA_ACTUALIZACION).getTime()})
-        
+        else  return res.slice().sort(function(a,b)
+        {return new Date(b.FECHA_ACTUALIZACION).getTime() - new Date(a.FECHA_ACTUALIZACION).getTime()}).filter((item, i, res) => {
+          return res.indexOf(res.find(t => t.ID_PROCESO === item.ID_PROCESO)) === i
+        }).filter(item => {
+          return item.ETAPA != ""
+        })
+
+
       }
-    
     ))
+
+
 
     this.store.select(
       ({ AUDGENPROCESOS }) => AUDGENPROCESOS.AUDGENPROCESOS
@@ -92,24 +103,22 @@ export class ProcesoComponent implements OnInit, OnDestroy {
 
 
     let body =   {
-      filter:{​​​​​ ID_PROCESO: {​​​​​ eq: this.rutaActiva.snapshot.params.id}​​​​​ }​​​​​,
+      filter:{​​​​​ INTERFAZ: {​​​​​ eq: this.rutaActiva.snapshot.params.id}​​​​​ }​​​​​,
       limit: 1000
     }
 
-    //console.log('id Proceso: ', this.rutaActiva.snapshot.params.id)
 
-    // this.api.ListAUDGENESTADOPROCESOS({ ID_PROCESO: {​​​​​ eq: this.rutaActiva.snapshot.params.id}​​​​}, 1000 ).then(res => {console.log(res)})
-    
-    // let rs1 = this.api.ListAUDGENPROCESOS({​​​​​ ID_PROCESO: {​​​​​ eq: this.rutaActiva.snapshot.params.id}​​​​​ }, 1000).then(res => console.log('Consulta directa proceos:', res))
-    // console.log(res)
-    this.store.dispatch(LoadAUDGENPROCESOS({consult:body}));
 
     this.store.dispatch(LoadAUDGENESTADOPROCESOS({consult:body}));
+
+    // this.llenarTabla(this.page);
+
    }
 
-   consultaDetalle(idProceso){
-    this.AUDGENPROCESOSINTERFAZ$ = this.store.select(
-      ({ AUDGENPROCESOS }) => AUDGENPROCESOS.AUDGENPROCESOS
+   consultarDetalle(idProceso){
+
+    this.AUDGENEJECUCIONPROCESO$ = this.store.select(
+      ({ AUDGENEJECUCIONESPROCESO }) => AUDGENEJECUCIONESPROCESO.AUDGENEJECUCIONESPROCESO
     ).pipe( map (res => {
       if( res == null) return res
       else
@@ -118,10 +127,84 @@ export class ProcesoComponent implements OnInit, OnDestroy {
         })
     }))
 
+    this.store.select(
+      ({ AUDGENEJECUCIONESPROCESO }) => AUDGENEJECUCIONESPROCESO.AUDGENEJECUCIONESPROCESO
+    ).pipe( map (res => {
+      if( res == null) return res
+      else
+        return res.filter((item, i, res) => {
+          return res.indexOf(res.find(t => t.ID_PROCESO === item.ID_PROCESO)) === i
+        })
+    })).subscribe(res => console.log(res))
+
+    if(this.rolesValids(this.DataUser, [this.Administrador]))
+    {
+      console.log('entre al admin')
+      this.AUDGENPROCESOS$ = this.store.select(
+        ({ AUDGENPROCESOS }) => AUDGENPROCESOS.AUDGENPROCESOS
+      ).pipe(map(res =>
+          {
+            if(res === null) return res
+            else return res.slice().sort(function(a,b)
+            {return new Date(b.FECHA).getTime() - new Date(a.FECHA).getTime()})
+            .filter(item => {
+              return item.MENSAJE_NEGOCIO != ""
+            })
+          }
+
+        ))
+    }
+
+    else
+
+    {
+      this.AUDGENPROCESOS$ = this.store.select(
+        ({ AUDGENPROCESOS }) => AUDGENPROCESOS.AUDGENPROCESOS
+      ).pipe(map(res =>
+          {
+            if(res === null) return res
+            else return res.slice().sort(function(a,b)
+            {return new Date(b.FECHA).getTime() - new Date(a.FECHA).getTime()})
+          }
+
+        ))
+    }
+
+
     let body =   {
       filter:{​​​​​ ID_PROCESO: {​​​​​ eq: idProceso}​​​​​ }​​​​​,
       limit: 1000
     }
-    
+
+    this.store.dispatch(LoadAUDGENEJECUCIONESPROCESO({consult:body}));
+    this.store.dispatch(LoadAUDGENPROCESOS({consult:body}));
+
    }
+
+   rolesValids = (User:Usuario, roles: any[]): boolean => {
+    return this.authService.rolesValids( User, roles);
+  };
+
+  // loadPage(page: number) {
+  //   if (page !== this.previousPage) {
+  //     this.previousPage = page;
+  //     this.llenarTabla(this.page-1);
+  //   }
+  // }
+
+  llenarTabla(page : number): void {
+
+    this.AUDGENESTADOPROCESOS$.subscribe(res => { if(res == null) {
+                                                  this.listaProcesos = []; this.showPagination == false;
+                                                } else {
+                                                  this.listaProcesos = res; this.totalItems = res.length; this.showPagination = true
+                                                }
+                                              }, error => {
+                                                console.log(error)
+                                              })
+
+    console.log('aqui', this.totalItems)
+
+  }
+
 }

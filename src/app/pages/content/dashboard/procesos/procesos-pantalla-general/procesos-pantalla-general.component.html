@@ -60,12 +60,12 @@
             <th>Proceso</th>
             <th>Acción</th>
           </tr>
-          <tr >
-            <td>{{AUDGENESTADOPROCESOS[0].INTERFAZ}}</td>
+          <tr *ngFor="let AUDGENESTADOPROCESO of AUDGENESTADOPROCESOS">
+            <td>{{AUDGENESTADOPROCESO?.INTERFAZ}}</td>
             <td>
               <!-- <img *ngIf="AUDGENPROCESO.PROCESO.EJECUCION !== 'AUTOMATICA'" class="play-icon">
               <img *ngIf="AUDGENPROCESO.PROCESO.EJECUCION !== 'AUTOMATICA'" class="stop-icon" (click)="consultar()"> -->
-              <img class="detalle-icon" (click)="consultar(AUDGENESTADOPROCESOS[0]?.ID_PROCESO)">
+              <img class="detalle-icon" (click)="consultar(AUDGENESTADOPROCESO.INTERFAZ)">
             </td>
           </tr>
         </table>

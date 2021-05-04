@@ -6,7 +6,7 @@ import { ProcesosPantallaGeneralComponent } from './procesos-pantalla-general.co
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProcesoComponent } from '../proceso/proceso.component'
 import { OrderModule } from 'ngx-order-pipe';
-
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -14,6 +14,7 @@ import { OrderModule } from 'ngx-order-pipe';
     ProcesoComponent
   ],
   imports: [
+    NgxPaginationModule,
     CommonModule,
     ProcesosPantallaGeneralRoutingModule,
     ReactiveFormsModule,

@@ -21,6 +21,7 @@ import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { EffectsArrays } from './ReduxStore/effects';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
   ],
   imports: [
     BrowserModule,
+    NgxPaginationModule,
     CommonModule,
     AppRoutingModule,
     /* configure app with AmplifyUIAngularModule */
@@ -40,7 +42,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
       maxAge:25,
       logOnly: environment.production
     }),
-    NgbModule
+    NgbModule,
+    
   ],
   providers: [
     AmplifyService

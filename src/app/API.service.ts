@@ -149,6 +149,7 @@ export type AUDGENPROCESOSConnection = {
 export type TableAUDGENESTADOPROCESOFilterInput = {
   FECHA_CREADO?: TableStringFilterInput | null;
   ID_PROCESO?: TableStringFilterInput | null;
+  INTERFAZ?: TableStringFilterInput | null;
 };
 
 export type AUDGENESTADOPROCESOConnection = {

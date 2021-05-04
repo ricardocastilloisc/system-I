@@ -7,6 +7,7 @@
  
 .step-proceso{
     background: #7C69C3;
+    width: auto;
     border-radius: 50px;
     height: 63px;
     display: flex; 
@@ -32,12 +33,16 @@
     background: #7C69C3 !important;
 }
 
+.step-completado-final{
+    background: #464E7E !important;
+}
 .step-proceso-disabled{
     margin-left: -25px;
     background: #D6D6D6;
     border-top-right-radius: 50px;
     border-bottom-right-radius: 50px;
-    width: 200px;
+    width: 100%;
+    min-width: 200px;
     height: 63px;
     display: flex; 
     justify-content: center;
@@ -50,7 +55,7 @@
 .step-proceso-enabled{
     margin-left: -50px;
     background: #7C69C3;
-    width: auto;
+    width: 100%;
     min-width: 200px;
     border-radius: 50px;
     border-top-left-radius: -50px;
@@ -89,7 +94,7 @@
 
 
 .container-referencias-log{
-    margin-top: 50px;
+    margin-top: 30px;
     margin-bottom: 50px;
 }
 
@@ -102,18 +107,22 @@
 }
 
 .title-log-table{
-    font: bold 18px FS Elliot Pro;
+    font: normal normal bold 18px/45px FS Elliot Pro;
  
 }
 table.listado-log{
-    color: white;
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    align-content: left;
     width: 100%;
     margin: 25px 0;
     border-spacing: 0 6px;
     text-align: center;
+    font: normal normal normal 15px/18px FS Elliot Pro ;
 }
 
 table.listado-log  th{
+    color: white;
+    padding-left: 20px;
     margin-left: 20px;
     background-color: #464E7E ;
     font: bold 18px FS Elliot Pro;
@@ -121,18 +130,18 @@ table.listado-log  th{
     height: 40px;
     font: bold 18px FS Elliot Pro;
     table-layout:fixed;
-    text-align: center;
+    text-align: left;
     align-content: center;
 }
 table.listado-log  td{
-
+    padding-left: 20px;
     margin-left: 20px;
     background-color: #FFFFFF ;
     color: #707070;
     font: 15px FS Elliot Pro;
     height: 40px;
     margin: 6px 0px;
-    text-align: center;
+    text-align: left;
     align-content: center;
     vertical-align: middle;
 }
@@ -140,3 +149,65 @@ table.listado-log  td{
 table.listado-log td.wideRow, table th.wideRow{
     width: 300px;
     }
+
+
+.error-log{
+    color: #C00000 !important;
+}
+
+.warning-log{
+    color: #FF7000 !important;
+}
+
+.info-log{
+    color: #1791DA !important;
+}
+
+.debug-log{
+    color: #FF7000 !important;
+}
+
+
+table.listado-ejecuciones tr:hover td {
+    background-color: #c5c5c5;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+.clickable {
+    
+    cursor: pointer;
+  }
+
+.titulo-proceso{
+    color: #464E7E;
+    font: normal normal bold 20px/20px FS Elliot Pro;
+    letter-spacing: 0px;
+    margin-top: 30px;
+}
+
+.custom-pagination .page-number{
+    display: inline-block;
+    font: normal normal bold 18px/45px FS Elliot Pro;
+    background: none;
+    margin: 0px 4px;
+    text-align: right;
+}
+
+.page-number.current{
+    background: none !important;
+    text-decoration: underline;
+    color: #464E7E;
+}
+
+.page-number span{
+    display: block;
+    width: 10px;
+    height: 20px;
+    
+    cursor: pointer;
+}
+
+.pagination-previous,.pagination-next{
+    display: inline-block;
+   
+}
