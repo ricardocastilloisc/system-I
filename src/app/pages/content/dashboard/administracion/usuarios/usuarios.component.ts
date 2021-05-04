@@ -10,9 +10,9 @@ import { Observable, Subscription } from 'rxjs';
 import { UsuarioListado } from 'src/app/model/usuarioLitsa.model';
 import { retornarStringSiexiste } from '../../../../../helpers/FuncionesUtiles';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ERole } from 'src/app/validators/roles';
+import { ERole, AREAS } from 'src/app/validators/roles';
 import { ValorFiltrarGrupo } from '../../../../../validators/opcionesDeFiltroUsuarioAdmininistracion';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UsuariosService } from '../../../../../services/usuarios.service';
 import { ProcesoLimpiar } from '../../../../../ReduxStore/actions/loaderProcesoCambios.actions';
 
@@ -46,10 +46,18 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     },
   ];
 
+  areas = [
+    AREAS.Afore,
+    AREAS.Fondos,
+    AREAS.Seguros,
+    AREAS.Afore_Fondos,
+    AREAS.Tesoreria,
+  ];
+
   ObjectUsuarioCambiar: UsuarioListado;
 
   EstadoProceso: Subscription;
-  ListadoUsuariosSub$: Subscription;
+  ListadoUsuarios$: Observable<UsuarioListado[]>;
 
   constructor(
     private store: Store<AppState>,
@@ -60,7 +68,6 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.store.dispatch(UnsetListaUsuarios());
     this.EstadoProceso.unsubscribe();
-    this.ListadoUsuariosSub$.unsubscribe();
   }
 
   openModal(content, ObjectUsuario: UsuarioListado) {
@@ -102,42 +109,12 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     });
     this.FormCambioPermiso = this.fb.group({
       grupoCambiar: ['Permiso'],
+      area: ['area'],
     });
 
-    this.ListadoUsuariosSub$ = this.store
-      .select(({ ListaUsuarios }) => ListaUsuarios.ListaUsuarios)
-      .subscribe((res) => {
-        let array = [...res];
-        if (array.length > 0) {
-          array.sort((a, b) => {
-            if (
-              !a.Attributes.hasOwnProperty('email') ||
-              !b.Attributes.hasOwnProperty('email')
-            ) {
-              // property doesn't exist on either object
-              return 0;
-            }
-
-            const varA =
-              typeof a.Attributes.email === 'string'
-                ? a.Attributes.email.toUpperCase()
-                : a.Attributes.email;
-            const varB =
-              typeof b.Attributes.email === 'string'
-                ? b.Attributes.email.toUpperCase()
-                : b.Attributes.email;
-
-            let comparison = 0;
-            if (varA > varB) {
-              comparison = 1;
-            } else if (varA < varB) {
-              comparison = -1;
-            }
-            return comparison;
-          });
-          this.ListadoUsuarios = array;
-        }
-      });
+    this.ListadoUsuarios$ = this.store.select(
+      ({ ListaUsuarios }) => ListaUsuarios.ListaUsuarios
+    );
 
     this.store.dispatch(LoadListaUsuarios({ consulta: null }));
 

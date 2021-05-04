@@ -20,7 +20,7 @@
           data-toggle="collapse"
           data-target="#administracion"
           aria-expanded="false"
-          *ngIf="rolesValids(DataUser, [Administrador, Ejecutor])"
+          *ngIf=" usuario.validarRolUsuario() && rolesValids(DataUser, [Administrador, Soporte])"
         >
           <img
             src="../assets/imgs/administracion.svg"
@@ -29,7 +29,7 @@
           Administración
         </a>
         <ul class="collapse lisst-unstyled" id="administracion">
-          <li *ngIf="usuario.validarRolUsuario() || rolesValids(DataUser, [Administrador, Ejecutor])">
+          <li *ngIf="rolesValids(DataUser, [Administrador, Ejecutor])">
             <a routerLinkActive="active" routerLink="/administracion/catalogos">
               <img
                 src="../assets/imgs/icons/catalogo.svg"

@@ -23,7 +23,7 @@
   <div class="d-flex col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12 justify-content-center">
 
     <div class="card-lista-design-general" style="overflow-x:auto;">
-      <table class="table  listado-design-general"  *ngIf="ListadoUsuarios.length > 0">
+      <table class="table  listado-design-general"  *ngIf="ListadoUsuarios$ | async as ListadoUsuarios ">
         <tr>
           <th>Nombre</th>
           <th>Correo</th>
@@ -31,7 +31,7 @@
           <th>Permisos</th>
           <th>Acciones</th>
         </tr>
-        <tr *ngFor="let usuario of ListadoUsuarios">
+        <tr *ngFor="let usuario of ListadoUsuarios | oredenascEmailusurios:'email' ">
           <td style="padding-left: 40px;"> {{retornarStringSiexiste(usuario.Attributes, 'given_name')}} {{retornarStringSiexiste(usuario.Attributes, 'family_name')}} </td>
           <td> {{retornarStringSiexiste(usuario.Attributes, 'email')}} </td>
           <td>{{retornarStringSiexiste(usuario.Attributes, 'custom:area')}} </td>
@@ -53,21 +53,26 @@
       </button>
     </div>
     <div class="modal-body">
-
+      <form [formGroup]="FormCambioPermiso" style="width: 100%">
         <div class="form-group">
           <label for="dateOfBirth">Permiso</label>
           <div class="input-group">
-
-            <form [formGroup]="FormCambioPermiso" style="width: 100%">
               <select   formControlName="grupoCambiar" class="form-control" name="grupo" id="grupo" value="Permiso">
                 <option disabled selected>Permiso</option>
                 <option *ngFor="let grupo of Grupos" [value]="grupo.value">{{grupo.label}}</option>
               </select>
-            </form>
-
           </div>
         </div>
-
+        <div class="form-group">
+          <label for="dateOfBirth">Área</label>
+          <div class="input-group">
+            <select  formControlName="area" class="form-control" name="area" id="area" value="area">
+              <option disabled selected value="area">Área</option>
+              <option *ngFor="let area of areas" [value]="area">{{area}}</option>
+            </select>
+          </div>
+        </div>
+      </form>
     </div>
 
     <div class="modal-footer">
