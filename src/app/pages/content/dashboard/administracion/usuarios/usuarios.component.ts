@@ -1,3 +1,4 @@
+import { EArea } from './../../../../../validators/roles';
 import { ConsultaUsuario } from './../../../../../ReduxStore/reducers/listaUsuarios.reducer';
 import {
   LoadListaUsuarios,
@@ -38,6 +39,14 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       label: 'Soporte',
       value: ERole.Soporte,
     },
+  ];
+
+
+  Areas = [
+    EArea.Contabilidad,
+    EArea.Custodia,
+    EArea.Inversiones_Riesgos,
+    EArea.Tesoreria
   ];
 
   Negocios = [
@@ -122,7 +131,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.FiltroUsuarioForm = this.fb.group({
-      grupo: ['Permiso'],
+      grupo: ['area'],
     });
     this.FormCambioPermiso = this.fb.group({
       grupoCambiar: ['Permiso'],

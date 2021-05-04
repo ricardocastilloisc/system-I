@@ -5,9 +5,9 @@
 
       <div>
         <form [formGroup]="FiltroUsuarioForm">
-        <select formControlName="grupo" name="grupo" id="grupo" value="Permiso">
-          <option disabled selected>Permiso</option>
-          <option *ngFor="let grupo of Roles" [value]="grupo.value">{{grupo.label}}</option>
+        <select formControlName="grupo" name="grupo" id="grupo" value="area">
+          <option disabled selected value="area">Área</option>
+          <option *ngFor="let Area of Areas" [value]="Area">{{Area}}</option>
         </select>
       </form>
       </div>
