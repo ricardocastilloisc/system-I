@@ -1,3 +1,4 @@
+import { EArea } from './../../../../../validators/roles';
 import { ConsultaUsuario } from './../../../../../ReduxStore/reducers/listaUsuarios.reducer';
 import {
   LoadListaUsuarios,
@@ -6,15 +7,14 @@ import {
 import { AppState } from './../../../../../ReduxStore/app.reducers';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { UsuarioListado } from 'src/app/model/usuarioLitsa.model';
 import { retornarStringSiexiste } from '../../../../../helpers/FuncionesUtiles';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ERole, ENegocio } from 'src/app/validators/roles';
-import { ValorFiltrarGrupo } from '../../../../../validators/opcionesDeFiltroUsuarioAdmininistracion';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UsuariosService } from '../../../../../services/usuarios.service';
-import { ProcesoLimpiar } from '../../../../../ReduxStore/actions/loaderProcesoCambios.actions';
+
 
 @Component({
   selector: 'app-usuarios',
@@ -40,17 +40,29 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     },
   ];
 
+  Areas = [
+    EArea.Contabilidad,
+    EArea.Custodia,
+    EArea.Inversiones_Riesgos,
+    EArea.Tesoreria,
+  ];
+
+  Permisos = [ERole.Administrador, ERole.Ejecutor, ERole.Soporte];
+
   Negocios = [
     ENegocio.Afore,
     ENegocio.Fondos,
     ENegocio.Seguros,
-    ENegocio.Afore_Fondos
+    ENegocio.Afore_Fondos,
   ];
 
   ObjectUsuarioCambiar: UsuarioListado;
 
   EstadoProceso: Subscription;
-  ListadoUsuarios$: Observable<UsuarioListado[]>;
+  ListadoUsuarios$: Subscription;
+
+  ListadoUsuariosOriginal: UsuarioListado[] = [];
+  ListadoUsuariosPantalla: UsuarioListado[] = [];
 
   insertarValores = false;
 
@@ -62,27 +74,52 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   ) {}
   ngOnDestroy(): void {
     this.store.dispatch(UnsetListaUsuarios());
-    this.EstadoProceso.unsubscribe();
+    this.ListadoUsuarios$.unsubscribe();
+  }
+
+  ngOnInit(): void {
+    this.FiltroUsuarioForm = this.fb.group({
+      rolFiltrar: ['Permiso'],
+      areaFiltrar: ['area'],
+      correoFiltrar: ['correo'],
+    });
+    this.FormCambioPermiso = this.fb.group({
+      rolCambiar: ['Permiso'],
+      negocioCambiar: ['negocio'],
+    });
+
+    this.ListadoUsuarios$ = this.store
+      .select(({ ListaUsuarios }) => ListaUsuarios.ListaUsuarios)
+      .subscribe((ListadoDeUsuarios) => {
+        this.ListadoUsuariosOriginal = ListadoDeUsuarios;
+        this.ListadoUsuariosPantalla = ListadoDeUsuarios;
+      });
+
+    this.store.dispatch(LoadListaUsuarios({ consulta: null }));
   }
 
   openModal(content, ObjectUsuario: UsuarioListado) {
     this.ObjectUsuarioCambiar = ObjectUsuario;
-    if (ObjectUsuario.GrupoQuePertenece === '') {
-      this.FormCambioPermiso.get('grupoCambiar').setValue('Permiso');
+    if (!retornarStringSiexiste(ObjectUsuario.Attributes, 'custom:rol')) {
+      this.FormCambioPermiso.get('rolCambiar').setValue('Permiso');
     } else {
-      this.FormCambioPermiso.get('grupoCambiar').setValue(
-        ObjectUsuario.GrupoQuePertenece
-      );
+      if (ObjectUsuario.Attributes['custom:rol'] === '') {
+        this.FormCambioPermiso.get('rolCambiar').setValue('Permiso');
+      } else {
+        this.FormCambioPermiso.get('rolCambiar').setValue(
+          ObjectUsuario.Attributes['custom:rol']
+        );
+      }
     }
 
-    if (!retornarStringSiexiste(ObjectUsuario.Attributes, 'custom:area')) {
-      this.FormCambioPermiso.get('area').setValue('area');
+    if (!retornarStringSiexiste(ObjectUsuario.Attributes, 'custom:negocio')) {
+      this.FormCambioPermiso.get('negocioCambiar').setValue('negocio');
     } else {
-      if (ObjectUsuario.Attributes['custom:area'] === '') {
-        this.FormCambioPermiso.get('area').setValue('area');
+      if (ObjectUsuario.Attributes['custom:negocio'] === '') {
+        this.FormCambioPermiso.get('negocioCambiar').setValue('negocio');
       } else {
-        this.FormCambioPermiso.get('area').setValue(
-          ObjectUsuario.Attributes['custom:area']
+        this.FormCambioPermiso.get('negocioCambiar').setValue(
+          ObjectUsuario.Attributes['custom:negocio']
         );
       }
     }
@@ -92,71 +129,39 @@ export class UsuariosComponent implements OnInit, OnDestroy {
 
   guardarCambioPermisoUsuario = () => {
     if (
-      this.FormCambioPermiso.get('grupoCambiar').value === 'Permiso' &&
-      this.FormCambioPermiso.get('area').value === 'area'
+      this.FormCambioPermiso.get('rolCambiar').value === 'Permiso' &&
+      this.FormCambioPermiso.get('negocioCambiar').value === 'negocio'
     ) {
       return;
     }
 
-    let procesos = {
-      Grupo: {
-        GroupName: this.ObjectUsuarioCambiar.GrupoQuePertenece,
-        Username: this.ObjectUsuarioCambiar.Username,
+    const UserAttributes = [
+      {
+        Name: 'custom:negocio',
+        Value: this.FormCambioPermiso.get('negocioCambiar').value,
       },
-    };
+      {
+        Name: 'custom:rol',
+        Value: this.FormCambioPermiso.get('rolCambiar').value,
+      },
+    ];
 
-    this.UsuariosService.validacionDeProcesosEliminar(1, procesos);
-    //this.UsuariosService.validacionDeProcesos(Object.keys(this.FormCambioPermiso.value).length);
-    /*
-    this.UsuariosService.eliminarUsuarioGrupo(
-      this.ObjectUsuarioCambiar.GrupoQuePertenece,
+    this.UsuariosService.actualizarAtributosUsuario(
+      UserAttributes,
       this.ObjectUsuarioCambiar.Username
-    );
- */
+    )
+      .then(() => {
+        this.salirYRestablecer();
+      })
+      .catch(() => {
+        this.salirYRestablecer();
+      });
   };
 
   salirYRestablecer = () => {
     this.store.dispatch(LoadListaUsuarios({ consulta: null }));
     this.modalService.dismissAll();
   };
-
-  ngOnInit(): void {
-    this.FiltroUsuarioForm = this.fb.group({
-      grupo: ['Permiso'],
-    });
-    this.FormCambioPermiso = this.fb.group({
-      grupoCambiar: ['Permiso'],
-      area: ['area'],
-    });
-
-    this.ListadoUsuarios$ = this.store.select(
-      ({ ListaUsuarios }) => ListaUsuarios.ListaUsuarios
-    );
-
-    this.store.dispatch(LoadListaUsuarios({ consulta: null }));
-
-    this.EstadoProceso = this.store
-      .select(({ ProcesoCambios }) => ProcesoCambios.terminado)
-      .subscribe((estado) => {
-        if (estado) {
-          this.cambiarValorDelPermiso();
-          this.store.dispatch(ProcesoLimpiar());
-        }
-        /*
-        if (estado && !this.insertarValores) {
-          this.cambiarValorDelPermiso();
-          this.store.dispatch(ProcesoLimpiar());
-          this.insertarValores = true;
-        }
-
-        if (estado && this.insertarValores) {
-          this.cambiarValorDelPermiso();
-          this.store.dispatch(ProcesoLimpiar());
-          this.insertarValores = false;
-        }
-*/
-      });
-  }
 
   cambiarValorDelPermiso = () => {
     this.UsuariosService.agregarUsuarioGrupo(
@@ -176,13 +181,24 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   };
 
   filtrar = () => {
-    if (this.FiltroUsuarioForm.get('grupo').value === 'Permiso') {
-      return;
-    }
-    let consulta: ConsultaUsuario = {
-      parametro: this.FiltroUsuarioForm.get('grupo').value,
-      tipo: ValorFiltrarGrupo.Grupo,
-    };
-    this.store.dispatch(LoadListaUsuarios({ consulta: consulta }));
+    let FiltrarRol =
+      this.FiltroUsuarioForm.get('rolFiltrar').value === 'Permiso'
+        ? null
+        : this.FiltroUsuarioForm.get('rolFiltrar').value;
+    let FiltrarArea =
+      this.FiltroUsuarioForm.get('areaFiltrar').value === 'area'
+        ? null
+        : this.FiltroUsuarioForm.get('areaFiltrar').value;
+    let FiltrarCorreo =
+      this.FiltroUsuarioForm.get('correoFiltrar').value === 'correo'
+        ? null
+        : this.FiltroUsuarioForm.get('correoFiltrar').value;
+
+    this.ListadoUsuariosPantalla = this.UsuariosService.filtrarUsuariosConAtributos(
+      this.ListadoUsuariosOriginal,
+      FiltrarRol,
+      FiltrarArea,
+      FiltrarCorreo
+    );
   };
 }
