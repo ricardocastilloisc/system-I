@@ -12,7 +12,7 @@ export enum ENegocio {
   Afore_Fondos = 'Afore y Fondos'
 }
 // DataUser --> user.usuario.groups
-export enum AREA {
+export enum EArea {
   Tesoreria = 'Tesoreria',
   Inversiones_Riesgos = 'Inversiones y Riesgos',
   Contabilidad = 'Contabilidad',
