@@ -55,16 +55,17 @@
 
 
       <div class="card-lista-proceso" style="overflow-x:auto;">
-        <table class="table  listado-proceso" *ngIf="AUDGENPROCESOS$ | async as AUDGENPROCESOS">
+        <table class="table  listado-proceso" *ngIf="AUDGENESTADOPROCESOS$ | async as AUDGENESTADOPROCESOS">
           <tr>
             <th>Proceso</th>
             <th>Acción</th>
           </tr>
-          <tr *ngFor="let AUDGENPROCESO of AUDGENPROCESOS">
-            <td>{{AUDGENPROCESO.INTERFAZ}}</td>
-            <td><img *ngIf="AUDGENPROCESO.PROCESO.EJECUCION !== 'AUTOMATICA'" class="play-icon">
-              <img *ngIf="AUDGENPROCESO.PROCESO.EJECUCION !== 'AUTOMATICA'" class="stop-icon" (click)="consultar()">
-              <img class="detalle-icon" (click)="consultar(AUDGENPROCESO.ID_PROCESO)">
+          <tr >
+            <td>{{AUDGENESTADOPROCESOS[0].INTERFAZ}}</td>
+            <td>
+              <!-- <img *ngIf="AUDGENPROCESO.PROCESO.EJECUCION !== 'AUTOMATICA'" class="play-icon">
+              <img *ngIf="AUDGENPROCESO.PROCESO.EJECUCION !== 'AUTOMATICA'" class="stop-icon" (click)="consultar()"> -->
+              <img class="detalle-icon" (click)="consultar(AUDGENESTADOPROCESOS[0]?.ID_PROCESO)">
             </td>
           </tr>
         </table>

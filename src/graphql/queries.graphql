@@ -25,10 +25,7 @@ query GetAUDGENPROCESOS($ID_PROCESO: String!) {
     ID_REGISTRO
     INSUMO
     INTERFAZ
-    MENSAJE_NEGOCIO {
-      DETALLE
-      TIPO
-    }
+    MENSAJE_NEGOCIO
     MENSAJE_SOPORTE
     NEGOCIO
     PROCESO {
@@ -59,10 +56,7 @@ query ListAUDGENPROCESOS(
       ID_REGISTRO
       INSUMO
       INTERFAZ
-      MENSAJE_NEGOCIO {
-        DETALLE
-        TIPO
-      }
+      MENSAJE_NEGOCIO
       MENSAJE_SOPORTE
       NEGOCIO
       PROCESO {

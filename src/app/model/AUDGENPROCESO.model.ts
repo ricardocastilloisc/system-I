@@ -7,11 +7,7 @@ export interface AUDGENPROCESO_INERFACE {
   ID_REGISTRO?: string | null;
   INSUMO?: string | null;
   INTERFAZ?: string | null;
-  MENSAJE_NEGOCIO?: {
-    __typename: string;
-    DETALLE?: string | null;
-    TIPO?: string | null;
-  } | null;
+  MENSAJE_NEGOCIO?: string | null;
   MENSAJE_SOPORTE?: string | null;
   NEGOCIO?: string | null;
   PROCESO?: {

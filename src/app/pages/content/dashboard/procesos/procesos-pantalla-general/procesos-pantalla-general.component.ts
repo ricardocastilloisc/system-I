@@ -9,6 +9,8 @@ import { Observable, of } from 'rxjs';
 import { AUDGENPROCESO_INERFACE } from '../../../../../model/AUDGENPROCESO.model';
 import { APIService } from '../../../../../API.service';
 import { distinct, filter, map, tap } from 'rxjs/operators';
+import { AUDGENESTADOPROCESO_INTERFACE } from 'src/app/model/AUDGENESTADOPROCESO.model';
+import { LoadAUDGENESTADOPROCESOS } from 'src/app/ReduxStore/actions';
 
 @Component({
   selector: 'app-procesos-pantalla-general',
@@ -21,6 +23,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
   inputFecha = formatDate(new Date(), 'yyyy-MM-dd', 'en-US');
 
   AUDGENPROCESOS$: Observable<AUDGENPROCESO_INERFACE[]>;
+  AUDGENESTADOPROCESOS$: Observable<AUDGENESTADOPROCESO_INTERFACE[]>
 
   PROCESOS = new Array();
   constructor(
@@ -51,8 +54,20 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
 
 
 
+    this.AUDGENESTADOPROCESOS$ = this.store.select(
+      ({ AUDGENESTADOPROCESOS }) => AUDGENESTADOPROCESOS.AUDGENESTADOPROCESO
+    ).pipe(map(res => 
+      {
+        if(res === null) return res
+        else return res.slice().sort(function(a,b)
+        {return new Date(b.FECHA_ACTUALIZACION).getTime() - new Date(a.FECHA_ACTUALIZACION).getTime()})
+        
+      }
+    
+    ))
 
     this.store.dispatch(LoadAUDGENPROCESOS({consult:null}));
+    this.store.dispatch(LoadAUDGENESTADOPROCESOS({consult:null}));
   }
 
   botonActivado = (parametocomparar: string): boolean => {

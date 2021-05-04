@@ -37,7 +37,7 @@ div.container-selector-proceso {
   font: bold 20px FS Elliot Pro;
 }
 .selector-proceso > button:focus {
-  background-color: #7C69C3;
+  background-color: #464E7E;
   color: white;
   transition: background 0.2s linear;
   box-shadow: 3px 3px 5px #464E7E;
@@ -126,7 +126,7 @@ table.listado-proceso {
 }
 
 table.listado-proceso th {
-  background-color: #7C69C3;
+  background-color: #464E7E;
   font: bold 18px FS Elliot Pro;
   height: 40px;
   height: 40px;

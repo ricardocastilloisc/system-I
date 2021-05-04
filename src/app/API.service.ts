@@ -39,7 +39,7 @@ export type AUDGENPROCESOS = {
   ID_REGISTRO?: string | null;
   INSUMO?: string | null;
   INTERFAZ?: string | null;
-  MENSAJE_NEGOCIO?: MENSAJE;
+  MENSAJE_NEGOCIO?: string | null;
   MENSAJE_SOPORTE?: string | null;
   NEGOCIO?: string | null;
   PROCESO?: PROCESO;
@@ -48,12 +48,6 @@ export type AUDGENPROCESOS = {
   TIPO?: string | null;
   NIVEL?: string | null;
   STEP?: string | null;
-};
-
-export type MENSAJE = {
-  __typename: "MENSAJE";
-  DETALLE?: string | null;
-  TIPO?: string | null;
 };
 
 export type PROCESO = {
@@ -130,6 +124,20 @@ export type TableAUDGENPROCESOSFilterInput = {
   FECHA?: TableStringFilterInput | null;
   ESTADO?: TableStringFilterInput | null;
   ID_PROCESO?: TableStringFilterInput | null;
+  INTERFAZ?: TableIDFilterInput | null;
+};
+
+export type TableIDFilterInput = {
+  ne?: string | null;
+  eq?: string | null;
+  le?: string | null;
+  lt?: string | null;
+  ge?: string | null;
+  gt?: string | null;
+  contains?: string | null;
+  notContains?: string | null;
+  between?: Array<string | null> | null;
+  beginsWith?: string | null;
 };
 
 export type AUDGENPROCESOSConnection = {
@@ -173,11 +181,7 @@ export type CreateAUDGENPROCESOSMutation = {
   ID_REGISTRO?: string | null;
   INSUMO?: string | null;
   INTERFAZ?: string | null;
-  MENSAJE_NEGOCIO?: {
-    __typename: "MENSAJE";
-    DETALLE?: string | null;
-    TIPO?: string | null;
-  } | null;
+  MENSAJE_NEGOCIO?: string | null;
   MENSAJE_SOPORTE?: string | null;
   NEGOCIO?: string | null;
   PROCESO?: {
@@ -205,11 +209,7 @@ export type UpdateAUDGENPROCESOSMutation = {
   ID_REGISTRO?: string | null;
   INSUMO?: string | null;
   INTERFAZ?: string | null;
-  MENSAJE_NEGOCIO?: {
-    __typename: "MENSAJE";
-    DETALLE?: string | null;
-    TIPO?: string | null;
-  } | null;
+  MENSAJE_NEGOCIO?: string | null;
   MENSAJE_SOPORTE?: string | null;
   NEGOCIO?: string | null;
   PROCESO?: {
@@ -237,11 +237,7 @@ export type DeleteAUDGENPROCESOSMutation = {
   ID_REGISTRO?: string | null;
   INSUMO?: string | null;
   INTERFAZ?: string | null;
-  MENSAJE_NEGOCIO?: {
-    __typename: "MENSAJE";
-    DETALLE?: string | null;
-    TIPO?: string | null;
-  } | null;
+  MENSAJE_NEGOCIO?: string | null;
   MENSAJE_SOPORTE?: string | null;
   NEGOCIO?: string | null;
   PROCESO?: {
@@ -322,11 +318,7 @@ export type GetAUDGENPROCESOSQuery = {
   ID_REGISTRO?: string | null;
   INSUMO?: string | null;
   INTERFAZ?: string | null;
-  MENSAJE_NEGOCIO?: {
-    __typename: "MENSAJE";
-    DETALLE?: string | null;
-    TIPO?: string | null;
-  } | null;
+  MENSAJE_NEGOCIO?: string | null;
   MENSAJE_SOPORTE?: string | null;
   NEGOCIO?: string | null;
   PROCESO?: {
@@ -356,11 +348,7 @@ export type ListAUDGENPROCESOSQuery = {
     ID_REGISTRO?: string | null;
     INSUMO?: string | null;
     INTERFAZ?: string | null;
-    MENSAJE_NEGOCIO?: {
-      __typename: "MENSAJE";
-      DETALLE?: string | null;
-      TIPO?: string | null;
-    } | null;
+    MENSAJE_NEGOCIO?: string | null;
     MENSAJE_SOPORTE?: string | null;
     NEGOCIO?: string | null;
     PROCESO?: {
@@ -452,11 +440,7 @@ export type OnCreateAUDGENPROCESOSSubscription = {
   ID_REGISTRO?: string | null;
   INSUMO?: string | null;
   INTERFAZ?: string | null;
-  MENSAJE_NEGOCIO?: {
-    __typename: "MENSAJE";
-    DETALLE?: string | null;
-    TIPO?: string | null;
-  } | null;
+  MENSAJE_NEGOCIO?: string | null;
   MENSAJE_SOPORTE?: string | null;
   NEGOCIO?: string | null;
   PROCESO?: {
@@ -484,11 +468,7 @@ export type OnUpdateAUDGENPROCESOSSubscription = {
   ID_REGISTRO?: string | null;
   INSUMO?: string | null;
   INTERFAZ?: string | null;
-  MENSAJE_NEGOCIO?: {
-    __typename: "MENSAJE";
-    DETALLE?: string | null;
-    TIPO?: string | null;
-  } | null;
+  MENSAJE_NEGOCIO?: string | null;
   MENSAJE_SOPORTE?: string | null;
   NEGOCIO?: string | null;
   PROCESO?: {
@@ -516,11 +496,7 @@ export type OnDeleteAUDGENPROCESOSSubscription = {
   ID_REGISTRO?: string | null;
   INSUMO?: string | null;
   INTERFAZ?: string | null;
-  MENSAJE_NEGOCIO?: {
-    __typename: "MENSAJE";
-    DETALLE?: string | null;
-    TIPO?: string | null;
-  } | null;
+  MENSAJE_NEGOCIO?: string | null;
   MENSAJE_SOPORTE?: string | null;
   NEGOCIO?: string | null;
   PROCESO?: {
@@ -646,11 +622,7 @@ export class APIService {
           ID_REGISTRO
           INSUMO
           INTERFAZ
-          MENSAJE_NEGOCIO {
-            __typename
-            DETALLE
-            TIPO
-          }
+          MENSAJE_NEGOCIO
           MENSAJE_SOPORTE
           NEGOCIO
           PROCESO {
@@ -690,11 +662,7 @@ export class APIService {
           ID_REGISTRO
           INSUMO
           INTERFAZ
-          MENSAJE_NEGOCIO {
-            __typename
-            DETALLE
-            TIPO
-          }
+          MENSAJE_NEGOCIO
           MENSAJE_SOPORTE
           NEGOCIO
           PROCESO {
@@ -734,11 +702,7 @@ export class APIService {
           ID_REGISTRO
           INSUMO
           INTERFAZ
-          MENSAJE_NEGOCIO {
-            __typename
-            DETALLE
-            TIPO
-          }
+          MENSAJE_NEGOCIO
           MENSAJE_SOPORTE
           NEGOCIO
           PROCESO {
@@ -902,11 +866,7 @@ export class APIService {
           ID_REGISTRO
           INSUMO
           INTERFAZ
-          MENSAJE_NEGOCIO {
-            __typename
-            DETALLE
-            TIPO
-          }
+          MENSAJE_NEGOCIO
           MENSAJE_SOPORTE
           NEGOCIO
           PROCESO {
@@ -950,11 +910,7 @@ export class APIService {
             ID_REGISTRO
             INSUMO
             INTERFAZ
-            MENSAJE_NEGOCIO {
-              __typename
-              DETALLE
-              TIPO
-            }
+            MENSAJE_NEGOCIO
             MENSAJE_SOPORTE
             NEGOCIO
             PROCESO {
@@ -1161,11 +1117,7 @@ export class APIService {
           ID_REGISTRO
           INSUMO
           INTERFAZ
-          MENSAJE_NEGOCIO {
-            __typename
-            DETALLE
-            TIPO
-          }
+          MENSAJE_NEGOCIO
           MENSAJE_SOPORTE
           NEGOCIO
           PROCESO {
@@ -1206,11 +1158,7 @@ export class APIService {
           ID_REGISTRO
           INSUMO
           INTERFAZ
-          MENSAJE_NEGOCIO {
-            __typename
-            DETALLE
-            TIPO
-          }
+          MENSAJE_NEGOCIO
           MENSAJE_SOPORTE
           NEGOCIO
           PROCESO {
@@ -1251,11 +1199,7 @@ export class APIService {
           ID_REGISTRO
           INSUMO
           INTERFAZ
-          MENSAJE_NEGOCIO {
-            __typename
-            DETALLE
-            TIPO
-          }
+          MENSAJE_NEGOCIO
           MENSAJE_SOPORTE
           NEGOCIO
           PROCESO {

@@ -16,7 +16,7 @@ export class AUDGENPROCESOSEfffects {
       ofType(AUDGENPROCESOActions.LoadAUDGENPROCESOS),
       mergeMap(({ consult }) => {
         if (consult) {
-          return fromPromise(this.api.ListAUDGENPROCESOS(consult.filter)).pipe(
+          return fromPromise(this.api.ListAUDGENPROCESOS(consult.filter, consult.limit)).pipe(
             map(({ items }: any) =>
               AUDGENPROCESOActions.LoadAUDGENPROCESOSuccess({
                 AUDGENPROCESOS: items,
