@@ -4,8 +4,8 @@ import * as AWS from 'aws-sdk';
 import { environment } from '../../environments/environment';
 import { AppState } from '../ReduxStore/app.reducers';
 import { Store } from '@ngrx/store';
-import { setUserArea } from '../ReduxStore/actions/usuario.actions';
-import { ERole } from '../validators/roles';
+import { setUserRol, setUserArea } from '../ReduxStore/actions/usuario.actions';
+import { ERole, ENegocio, EArea } from '../validators/roles';
 import { ConsultaUsuario } from '../ReduxStore/reducers';
 import { ValorFiltrarGrupo } from '../validators/opcionesDeFiltroUsuarioAdmininistracion';
 
@@ -15,10 +15,32 @@ var cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider();
 @Injectable({
   providedIn: 'root',
 })
+
 export class UsuariosService {
+
+  Roles = [
+    ERole.Administrador,
+    ERole.Ejecutor,
+    ERole.Soporte,
+  ];
+
+  Areas = [
+    EArea.Contabilidad,
+    EArea.Custodia,
+    EArea.Inversiones_Riesgos,
+    EArea.Tesoreria
+  ];
+
+  Negocios = [
+    ENegocio.Afore,
+    ENegocio.Afore_Fondos,
+    ENegocio.Fondos,
+    ENegocio.Seguros
+  ];
+
   params = {
     GroupName:
-      'Administrador' /* es un dato de entrada de la pantalla (grupo al que se agrega o remueve el usuario) */,
+      'Tesoreria' /* es un dato de entrada de la pantalla (grupo al que se agrega o remueve el usuario) */,
     UserPoolId: environment.UserPoolId,
     Username:
       'azure_rwayeowx9nsigogmrb6adqmpgrl2hohoivn5bgsobja' /* identificador del usuario en al user pool */,
@@ -34,20 +56,9 @@ export class UsuariosService {
     UserPoolId: environment.UserPoolId,
   };
 
-  paramsUsers = {
-    UserPoolId: environment.UserPoolId,
-    AttributesToGet: [
-      'STRING_VALUE',
-      /* more items */
-    ],
-    Filter: 'STRING_VALUE',
-    Limit: 'NUMBER_VALUE',
-    PaginationToken: 'STRING_VALUE',
-  };
-
   paramsUserGroups = {
     GroupName:
-      'Administrador' /* es un dato de entrada de la pantalla */ /* --> ?? relacionado a la tabla --> roles  */,
+      'Tesoreria' /* es un dato de entrada de la pantalla */,
     Limit: environment.Limit,
     UserPoolId: environment.UserPoolId,
   };
@@ -55,8 +66,12 @@ export class UsuariosService {
   paramsAtributos = {
     UserAttributes: [
       {
-        Name: 'custom:area',
-        Value: 'Tesorería',
+        Name: 'custom:negocio',
+        Value: 'Afore',
+      },
+      {
+        Name: 'custom:rol',
+        Value: 'Soporte',
       },
     ],
     Username:
@@ -70,13 +85,6 @@ export class UsuariosService {
     UserPoolId: environment.UserPoolId,
   };
 
-  Grupos = [
-    ERole.Administrador,
-    ERole.AdministradorArea,
-    ERole.Ejecutor,
-    ERole.Soporte,
-  ];
-
   numeroDeProcesos = 0;
 
   constructor(private store: Store<AppState>) { }
@@ -89,13 +97,14 @@ export class UsuariosService {
     );
   }
 
-  consultarUsuariosEnGrupo = (parametro) => {
-    const paramsUserGroups = {
-      GroupName: parametro /* es un dato de entrada de la pantalla */ /* --> ???? relacionado a la tabla */,
+  consultarUsuariosEnGrupo = (grupo) => {
+    // método para consultar todos los usuarios que existen en un grupo del user pool
+    const params = {
+      GroupName: grupo,
       Limit: environment.Limit,
       UserPoolId: environment.UserPoolId,
     };
-    return cognitoidentityserviceprovider.listUsersInGroup(paramsUserGroups);
+    return cognitoidentityserviceprovider.listUsersInGroup(params);
   };
 
   consultarUsuarios = () => {
@@ -133,7 +142,7 @@ export class UsuariosService {
                 if (e.hasOwnProperty('GroupName')) {
                   tempString = e.GroupName;
                 }
-                this.Grupos.forEach((validador) => {
+                this.Roles.forEach((validador) => {
                   if (validador === tempString) {
                     ObjectUsers[index].GrupoQuePertenece = tempString;
                   }
@@ -164,8 +173,6 @@ export class UsuariosService {
     });
   };
 
-
-
   obtenerDetalleUsuario(): void {
     // metodo para obtener el los datos a detalle del usuario
     cognitoidentityserviceprovider.adminGetUser(
@@ -174,28 +181,28 @@ export class UsuariosService {
     );
   }
 
-  agregarUsuarioGrupo(GroupName, Username) {
+  agregarUsuarioGrupo(grupo, usuario) {
     const params = {
-      GroupName: GroupName,
+      GroupName: grupo,
       UserPoolId: environment.UserPoolId,
-      Username: Username,
+      Username: usuario,
     };
     // metodo para agregar a un usuario habilitado en el user pool a un grupo en especifico
     return cognitoidentityserviceprovider.adminAddUserToGroup(params).promise();
   }
 
-  eliminarUsuarioGrupo(GroupName, Username) {
+  eliminarUsuarioGrupo(grupo, usuario) {
     const params = {
-      GroupName: GroupName,
+      GroupName: grupo,
       UserPoolId: environment.UserPoolId,
-      Username: Username,
+      Username: usuario,
     };
 
     let terminado = null;
 
-    if(GroupName.trim().length === 0){
+    if (grupo.trim().length === 0) {
       terminado = 1;
-    }else{
+    } else {
       cognitoidentityserviceprovider.adminRemoveUserFromGroup(
         params,
         (err, data) => {
@@ -222,14 +229,14 @@ export class UsuariosService {
 
 
   validacionDeProcesosInsertar = (numeroProcesosComparar, procesos) => {
-    
+
   }
 
   validacionDeProcesosEliminar = (numeroProcesosComparar, procesos) => {
 
-    const {Grupo} = procesos;
+    const { Grupo } = procesos;
 
-    const {GroupName, Username} = Grupo;
+    const { GroupName, Username } = Grupo;
 
     this.eliminarUsuarioGrupo(GroupName, Username);
 
@@ -254,13 +261,13 @@ export class UsuariosService {
     );
   }
 
-  obtenerGrupoUsuarioPromise = (username) => {
-    let paramsGrupoUsuario = {
-      Username: username /* identificador del usuario en el user pool */,
+  obtenerGrupoUsuarioPromise = (usuario) => {
+    let params = {
+      Username: usuario /* identificador del usuario en el user pool */,
       UserPoolId: environment.UserPoolId,
     };
     return cognitoidentityserviceprovider
-      .adminListGroupsForUser(paramsGrupoUsuario)
+      .adminListGroupsForUser(params)
       .promise();
   };
 
@@ -273,15 +280,34 @@ export class UsuariosService {
   }
 
   public validarRolUsuario(): boolean {
-    var banderaRol = false;
-    this.store.select(({ usuario }) => usuario.user).subscribe(user =>{
-      if(user){
-        banderaRol = this.Grupos.includes(user.groups[0]);
+    
+    let flagValidate = false;
+/*
+    if (roles.includes('Soporte')) {
+      flagValidate = true;
+    }*/
+
+    /*if(User.attributes.hasOwnProperty('custom:rol')){
+      return flagValidate;
+    }else {
+      if (roles.includes(User.attributes['custom:rol'])){
+        flagValidate = true;
+      }
+    }*/
+    this.store.select(({ usuario}) => usuario.user).subscribe(({attributes}:any) => {
+     // console.log(attributes);
+      if(!attributes.hasOwnProperty('custom:rol')){
+        return flagValidate;
+      }else {
+        if (this.Roles.includes(attributes['custom:rol'])){
+          flagValidate = true;
+        }
       }
     });
-    return banderaRol;
-  }
 
+    //console.log('flag: ' + flagValidate);
+    return flagValidate;
+  }
 
   callbackAws = (err, data) => {
     if (err) console.log(err, err.stack);
@@ -291,12 +317,17 @@ export class UsuariosService {
   callbackAwsDetalle = (err, data) => {
     if (err) console.log(err, err.stack);
     else {
-      var area = data['UserAttributes'].find((el) => el.Name == 'custom:area')[
+      //console.log(data);
+      var rol = data['UserAttributes'].find((el) => el.Name == 'custom:rol')[
         'Value'
       ];
+      var negocio = data['UserAttributes'].find((el) => el.Name == 'custom:negocio')[
+        'Value'
+      ];
+      //console.log(rol + ' -' + negocio);
       this.store.dispatch(
-        setUserArea({
-          area: area,
+        setUserRol({
+          rol: rol,
         })
       );
     }

@@ -171,7 +171,7 @@
           <p>
             <b>{{ DataUser.attributes.given_name}} {{ DataUser.attributes.family_name}}</b>
           </p>
-          <p  *ngIf="usuario.validarRolUsuario()">{{ DataUser.groups[0] }}</p>
+          <p  *ngIf="usuario.validarRolUsuario()">{{ DataUser.attributes.hasOwnProperty('custom:rol')?DataUser.attributes['custom:rol']:'' }}</p>
         </div>
       </div>
     </nav>

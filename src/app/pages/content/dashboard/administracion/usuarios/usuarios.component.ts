@@ -10,7 +10,7 @@ import { Observable, Subscription } from 'rxjs';
 import { UsuarioListado } from 'src/app/model/usuarioLitsa.model';
 import { retornarStringSiexiste } from '../../../../../helpers/FuncionesUtiles';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ERole, AREAS } from 'src/app/validators/roles';
+import { ERole, ENegocio } from 'src/app/validators/roles';
 import { ValorFiltrarGrupo } from '../../../../../validators/opcionesDeFiltroUsuarioAdmininistracion';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UsuariosService } from '../../../../../services/usuarios.service';
@@ -25,14 +25,10 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   FiltroUsuarioForm: FormGroup;
   FormCambioPermiso: FormGroup;
 
-  Grupos = [
+  Roles = [
     {
       label: 'Administrador',
       value: ERole.Administrador,
-    },
-    {
-      label: 'Administrador de área',
-      value: ERole.AdministradorArea,
     },
     {
       label: 'Ejecutor',
@@ -44,12 +40,11 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     },
   ];
 
-  areas = [
-    AREAS.Afore,
-    AREAS.Fondos,
-    AREAS.Seguros,
-    AREAS.Afore_Fondos,
-    AREAS.Tesoreria,
+  Negocios = [
+    ENegocio.Afore,
+    ENegocio.Fondos,
+    ENegocio.Seguros,
+    ENegocio.Afore_Fondos
   ];
 
   ObjectUsuarioCambiar: UsuarioListado;

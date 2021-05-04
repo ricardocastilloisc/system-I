@@ -19,9 +19,9 @@ const routes: Routes = [
         path: 'procesos/:tipo',
         loadChildren: () =>
           import('./procesos/procesos.module').then((m) => m.ProcesosModule),
-        canActivate: [GuardRolesGuard],
+      canActivate: [GuardRolesGuard],
         data: {
-          roles: [ERole.Administrador, ERole.AdministradorArea, ERole.Ejecutor, ERole.Soporte],
+          roles: [ERole.Administrador, ERole.Ejecutor, ERole.Soporte],
         }, ///aqui se ponen los roles autorizados
       },
       {
@@ -30,8 +30,8 @@ const routes: Routes = [
           import('./administracion/administracion.module').then(
             (m) => m.AdministracionModule
           ),
-          canActivate: [GuardRolesGuard],
-        data: { roles: [ERole.Administrador, ERole.AdministradorArea, ERole.Ejecutor, ERole.Soporte] },
+        canActivate: [GuardRolesGuard],
+        data: { roles: [ERole.Administrador, ERole.Ejecutor, ERole.Soporte] },
       },
       {
         path: 'auditoria',

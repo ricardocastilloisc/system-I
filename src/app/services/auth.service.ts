@@ -80,11 +80,13 @@ export class AuthService {
 
   rolesValids = (User: Usuario, roles: any[]): boolean => {
     let flagValidate = false;
-    User.groups.forEach((element) => {
-      if (roles.includes(element)) {
+    if(!User.attributes.hasOwnProperty('custom:rol')){
+      return flagValidate;
+    }else {
+      if (roles.includes(User.attributes['custom:rol'])){
         flagValidate = true;
       }
-    });
+    }
     return flagValidate;
   }
 

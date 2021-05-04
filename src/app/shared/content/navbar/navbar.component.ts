@@ -22,7 +22,6 @@ export class NavbarComponent implements OnInit, AfterViewInit {
   DataUser$: Observable<Usuario>;
 
   Administrador = ERole.Administrador;
-  AdministradorArea = ERole.AdministradorArea;
   Ejecutor = ERole.Ejecutor;
   Soporte = ERole.Soporte;
 
@@ -58,8 +57,8 @@ export class NavbarComponent implements OnInit, AfterViewInit {
     this.authService.signOut();
   };
 
-  rolesValids = (User: Usuario, roles: any[]): boolean => {
-    return this.authService.rolesValids(User, roles);
+  rolesValids = (User:Usuario, roles: any[]): boolean => {
+    return this.authService.rolesValids( User, roles);
   };
 
 
