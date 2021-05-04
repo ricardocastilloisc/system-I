@@ -12,6 +12,9 @@ import { ValorFiltrarGrupo } from '../validators/opcionesDeFiltroUsuarioAdminini
 AWS.config.update(environment.SESConfig);
 var cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider();
 
+var result = [];
+var objFiltrado = [];
+
 @Injectable({
   providedIn: 'root',
 })
@@ -230,7 +233,6 @@ export class UsuariosService {
 
 
   validacionDeProcesosInsertar = (numeroProcesosComparar, procesos) => {
-
   }
 
   validacionDeProcesosEliminar = (numeroProcesosComparar, procesos) => {
@@ -283,30 +285,16 @@ export class UsuariosService {
   public validarRolUsuario(): boolean {
 
     let flagValidate = false;
-/*
-    if (roles.includes('Soporte')) {
-      flagValidate = true;
-    }*/
-
-    /*if(User.attributes.hasOwnProperty('custom:rol')){
-      return flagValidate;
-    }else {
-      if (roles.includes(User.attributes['custom:rol'])){
-        flagValidate = true;
-      }
-    }*/
-    this.store.select(({ usuario}) => usuario.user).subscribe(({attributes}:any) => {
-     // console.log(attributes);
-      if(!attributes.hasOwnProperty('custom:rol')){
+    this.store.select(({ usuario }) => usuario.user).subscribe(({ attributes }: any) => {
+      // console.log(attributes);
+      if (!attributes.hasOwnProperty('custom:rol')) {
         return flagValidate;
-      }else {
-        if (this.Roles.includes(attributes['custom:rol'])){
+      } else {
+        if (this.Roles.includes(attributes['custom:rol'])) {
           flagValidate = true;
         }
       }
     });
-
-    //console.log('flag: ' + flagValidate);
     return flagValidate;
   }
 
@@ -317,10 +305,7 @@ export class UsuariosService {
 
   callbackAwsDetalle = (err, data) => {
     if (err) console.log(err, err.stack);
-    else {
-      console.log(JSON.stringify(data));
-
-    }
+    else console.log(JSON.stringify(data));
   };
 
   /*
@@ -349,4 +334,50 @@ ayuda de atibutos: {Name: "sub", Value: "42ae1b55-8029-4a09-8c81-8c805c650aaf"}
     });
     return object;
   };
+
+  filtrarUsuarios(usuarios, permiso, negocio, correo): any[] {
+    // filtrado por permiso
+    if (permiso != null) {
+      for (var i = 0; i < usuarios.Users.length; i++) {
+        if (usuarios.Users[i]['Attributes'].find(fruta => fruta.Name === 'custom:rol')) {
+          var atrPermiso = usuarios.Users[i]['Attributes'].find(fruta => fruta.Name === 'custom:rol')['Value'];
+          if (atrPermiso === permiso) {
+            result.push(usuarios.Users[i]);
+          }
+        }
+      }
+    }
+    // filtrado por negocio
+    if (negocio != null) {
+      for (var i = 0; i < usuarios.Users.length; i++) {
+        if (usuarios.Users[i]['Attributes'].find(fruta => fruta.Name === 'custom:negocio')) {
+          var atrNegocio = usuarios.Users[i]['Attributes'].find(fruta => fruta.Name === 'custom:negocio')['Value'];
+          if (atrNegocio === negocio) {
+            result.push(usuarios.Users[i]);
+          }
+        }
+      }
+    }
+    // filtrado por correo
+    if (correo != null) {
+      for (var i = 0; i < usuarios.Users.length; i++) {
+        if (usuarios.Users[i]['Attributes'].find(fruta => fruta.Name === 'email')) {
+          var atrCorreo = usuarios.Users[i]['Attributes'].find(fruta => fruta.Name === 'email')['Value'];
+          if (atrCorreo === correo) {
+            result.push(usuarios.Users[i]);
+          }
+        }
+      }
+    }
+    // distinct array result
+    const map = new Map();
+    for (const item of result) {
+      if (!map.has(item.Username)) {
+        map.set(item.Username, true);  
+        objFiltrado.push(item);
+      }
+    }
+    console.log(JSON.stringify(objFiltrado));
+    return objFiltrado;
+  }
 }
