@@ -5,9 +5,9 @@
 
       <div>
         <form [formGroup]="FiltroUsuarioForm">
-        <select formControlName="grupo" name="grupo" id="grupo" value="area">
-          <option disabled selected value="area">Área</option>
-          <option *ngFor="let Area of Areas" [value]="Area">{{Area}}</option>
+        <select formControlName="rolFiltrar" name=" rolFiltrar" id=" rolFiltrar" value="Permiso">
+          <option disabled selected value="Permiso">Permiso</option>
+          <option *ngFor="let rol of Roles" [value]="rol.value">{{rol.label}}</option>
         </select>
       </form>
       </div>
@@ -23,7 +23,7 @@
   <div class="d-flex col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12 justify-content-center">
 
     <div class="card-lista-design-general" style="overflow-x:auto;">
-      <table class="table  listado-design-general"  *ngIf="ListadoUsuarios$ | async as ListadoUsuarios ">
+      <table class="table  listado-design-general"  *ngIf="ListadoUsuariosPantalla.length > 0 as ListadoUsuarios ">
         <tr>
           <th>Nombre</th>
           <th>Correo</th>
@@ -32,7 +32,7 @@
           <th>Negocio</th>
           <th>Acciones</th>
         </tr>
-        <tr *ngFor="let usuario of ListadoUsuarios | oredenascEmailusurios:'email' ">
+        <tr *ngFor="let usuario of ListadoUsuariosPantalla | oredenascEmailusurios:'email' ">
           <td style="padding-left: 40px;"> {{retornarStringSiexiste(usuario.Attributes, 'given_name')}} {{retornarStringSiexiste(usuario.Attributes, 'family_name')}} </td>
           <td> {{retornarStringSiexiste(usuario.Attributes, 'email')}} </td>
           <td>{{usuario.GrupoQuePertenece}}</td>
