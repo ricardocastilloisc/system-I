@@ -8,6 +8,7 @@ import { setUserRol, setUserArea } from '../ReduxStore/actions/usuario.actions';
 import { ERole, ENegocio, EArea } from '../validators/roles';
 import { ConsultaUsuario } from '../ReduxStore/reducers';
 import { ValorFiltrarGrupo } from '../validators/opcionesDeFiltroUsuarioAdmininistracion';
+import { UsuarioListado } from '../model/usuarioLitsa.model';
 
 AWS.config.update(environment.SESConfig);
 var cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider();
@@ -338,8 +339,25 @@ ayuda de atibutos: {Name: "sub", Value: "42ae1b55-8029-4a09-8c81-8c805c650aaf"}
     return object;
   };
 
+filtrarUsuariosConAtributos = (usuarios: UsuarioListado[], permiso, negocio, correo) => {
+  let Usuarios = [...usuarios];
+  if (permiso != null){
+    Usuarios = Usuarios.filter( e => e.Attributes['custom:rol'] === permiso)
+  }
+  if (negocio != null){
+    Usuarios = Usuarios.filter( e => e.Attributes['custom:negocio'] === negocio)
+  }
+  if (correo != null){
+    Usuarios = Usuarios.filter( e => e.Attributes['email'] === correo)
+  }
+  return Usuarios;
+}
+
+
   filtrarUsuarios(usuarios, permiso, negocio, correo): any[] {
     // filtrado por permiso
+
+    console.log(usuarios)
     if (permiso != null) {
       for (var i = 0; i < usuarios.Users.length; i++) {
         if (
