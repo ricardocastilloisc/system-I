@@ -365,7 +365,7 @@ img.alineadoTextoImagenCentro {
 }
 
 #optionshome {
-  margin-top: 150px;
+  margin-top: 0px;
 }
 
 #optionshome img {
@@ -466,9 +466,25 @@ table.listado-design-general td {
 }
 
 .margin-principal {
-  margin-top: 150px;
+  margin-top: 130px;
 }
 
 .margin-navbar-barra {
   margin-top: 34px;
+}
+
+.tituloInicioPrimerLogin {
+  text-align: center;
+  font: normal normal bold 40px/31px FS Elliot Pro;
+  letter-spacing: 0px;
+  color: #0a8299;
+  opacity: 1;
+}
+
+.descripcionPrimerLogin {
+  text-align: left;
+  font: normal normal normal 20px/28px FS Elliot Pro;
+  letter-spacing: 0px;
+  color: #0a8299;
+  opacity: 1;
 }

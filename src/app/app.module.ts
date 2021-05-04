@@ -22,10 +22,11 @@ import { EffectsModule } from '@ngrx/effects';
 import { EffectsArrays } from './ReduxStore/effects';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
+
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,8 +43,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     NgbModule
   ],
   providers: [
-    AmplifyService 
+    AmplifyService
   ],
+
   bootstrap: [AppComponent]
 })
 export class AppModule { }

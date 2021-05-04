@@ -10,9 +10,9 @@ import { Observable, Subscription } from 'rxjs';
 import { UsuarioListado } from 'src/app/model/usuarioLitsa.model';
 import { retornarStringSiexiste } from '../../../../../helpers/FuncionesUtiles';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ERole } from 'src/app/validators/roles';
+import { ERole, ENegocio } from 'src/app/validators/roles';
 import { ValorFiltrarGrupo } from '../../../../../validators/opcionesDeFiltroUsuarioAdmininistracion';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UsuariosService } from '../../../../../services/usuarios.service';
 import { ProcesoLimpiar } from '../../../../../ReduxStore/actions/loaderProcesoCambios.actions';
 
@@ -25,16 +25,10 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   FiltroUsuarioForm: FormGroup;
   FormCambioPermiso: FormGroup;
 
-  ListadoUsuarios: UsuarioListado[] = [];
-
-  Grupos = [
+  Roles = [
     {
       label: 'Administrador',
       value: ERole.Administrador,
-    },
-    {
-      label: 'Administrador de área',
-      value: ERole.AdministradorArea,
     },
     {
       label: 'Ejecutor',
@@ -46,10 +40,19 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     },
   ];
 
+  Negocios = [
+    ENegocio.Afore,
+    ENegocio.Fondos,
+    ENegocio.Seguros,
+    ENegocio.Afore_Fondos
+  ];
+
   ObjectUsuarioCambiar: UsuarioListado;
 
   EstadoProceso: Subscription;
-  ListadoUsuariosSub$: Subscription;
+  ListadoUsuarios$: Observable<UsuarioListado[]>;
+
+  insertarValores = false;
 
   constructor(
     private store: Store<AppState>,
@@ -60,7 +63,6 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.store.dispatch(UnsetListaUsuarios());
     this.EstadoProceso.unsubscribe();
-    this.ListadoUsuariosSub$.unsubscribe();
   }
 
   openModal(content, ObjectUsuario: UsuarioListado) {
@@ -73,22 +75,44 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       );
     }
 
+    if (!retornarStringSiexiste(ObjectUsuario.Attributes, 'custom:area')) {
+      this.FormCambioPermiso.get('area').setValue('area');
+    } else {
+      if (ObjectUsuario.Attributes['custom:area'] === '') {
+        this.FormCambioPermiso.get('area').setValue('area');
+      } else {
+        this.FormCambioPermiso.get('area').setValue(
+          ObjectUsuario.Attributes['custom:area']
+        );
+      }
+    }
+
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
   }
 
   guardarCambioPermisoUsuario = () => {
-    if (this.FormCambioPermiso.get('grupoCambiar').value === 'Permiso') {
+    if (
+      this.FormCambioPermiso.get('grupoCambiar').value === 'Permiso' &&
+      this.FormCambioPermiso.get('area').value === 'area'
+    ) {
       return;
     }
 
-    if (this.ObjectUsuarioCambiar.GrupoQuePertenece === '') {
-      this.cambiarValorDelPermiso();
-    } else {
-      this.UsuariosService.eliminarUsuarioGrupo(
-        this.ObjectUsuarioCambiar.GrupoQuePertenece,
-        this.ObjectUsuarioCambiar.Username
-      );
-    }
+    let procesos = {
+      Grupo: {
+        GroupName: this.ObjectUsuarioCambiar.GrupoQuePertenece,
+        Username: this.ObjectUsuarioCambiar.Username,
+      },
+    };
+
+    this.UsuariosService.validacionDeProcesosEliminar(1, procesos);
+    //this.UsuariosService.validacionDeProcesos(Object.keys(this.FormCambioPermiso.value).length);
+    /*
+    this.UsuariosService.eliminarUsuarioGrupo(
+      this.ObjectUsuarioCambiar.GrupoQuePertenece,
+      this.ObjectUsuarioCambiar.Username
+    );
+ */
   };
 
   salirYRestablecer = () => {
@@ -102,42 +126,12 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     });
     this.FormCambioPermiso = this.fb.group({
       grupoCambiar: ['Permiso'],
+      area: ['area'],
     });
 
-    this.ListadoUsuariosSub$ = this.store
-      .select(({ ListaUsuarios }) => ListaUsuarios.ListaUsuarios)
-      .subscribe((res) => {
-        let array = [...res];
-        if (array.length > 0) {
-          array.sort((a, b) => {
-            if (
-              !a.Attributes.hasOwnProperty('email') ||
-              !b.Attributes.hasOwnProperty('email')
-            ) {
-              // property doesn't exist on either object
-              return 0;
-            }
-
-            const varA =
-              typeof a.Attributes.email === 'string'
-                ? a.Attributes.email.toUpperCase()
-                : a.Attributes.email;
-            const varB =
-              typeof b.Attributes.email === 'string'
-                ? b.Attributes.email.toUpperCase()
-                : b.Attributes.email;
-
-            let comparison = 0;
-            if (varA > varB) {
-              comparison = 1;
-            } else if (varA < varB) {
-              comparison = -1;
-            }
-            return comparison;
-          });
-          this.ListadoUsuarios = array;
-        }
-      });
+    this.ListadoUsuarios$ = this.store.select(
+      ({ ListaUsuarios }) => ListaUsuarios.ListaUsuarios
+    );
 
     this.store.dispatch(LoadListaUsuarios({ consulta: null }));
 
@@ -148,6 +142,19 @@ export class UsuariosComponent implements OnInit, OnDestroy {
           this.cambiarValorDelPermiso();
           this.store.dispatch(ProcesoLimpiar());
         }
+        /*
+        if (estado && !this.insertarValores) {
+          this.cambiarValorDelPermiso();
+          this.store.dispatch(ProcesoLimpiar());
+          this.insertarValores = true;
+        }
+
+        if (estado && this.insertarValores) {
+          this.cambiarValorDelPermiso();
+          this.store.dispatch(ProcesoLimpiar());
+          this.insertarValores = false;
+        }
+*/
       });
   }
 

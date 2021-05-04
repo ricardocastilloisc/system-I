@@ -1,3 +1,4 @@
+import { UsuariosService } from './../../../services/usuarios.service';
 import { rutasConNombres } from './../../../helpers/rutas';
 import { AfterViewInit, Component, HostListener, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
@@ -21,13 +22,13 @@ export class NavbarComponent implements OnInit, AfterViewInit {
   DataUser$: Observable<Usuario>;
 
   Administrador = ERole.Administrador;
-  AdministradorArea = ERole.AdministradorArea;
   Ejecutor = ERole.Ejecutor;
   Soporte = ERole.Soporte;
 
   constructor(
     private authService: AuthService,
     private store: Store<AppState>,
+    private usuario: UsuariosService
   ) { }
   ngAfterViewInit(): void {
     this.resizeMenuContent();
@@ -56,8 +57,8 @@ export class NavbarComponent implements OnInit, AfterViewInit {
     this.authService.signOut();
   };
 
-  rolesValids = (User: Usuario, roles: any[]): boolean => {
-    return this.authService.rolesValids(User, roles);
+  rolesValids = (User:Usuario, roles: any[]): boolean => {
+    return this.authService.rolesValids( User, roles);
   };
 
 

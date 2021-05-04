@@ -1,8 +1,38 @@
 <section id="optionshome" *ngIf="DataUser$ | async as DataUser">
-  <div class="container-fluid">
+  <div class="container-fluid" *ngIf="!usuario.validarRolUsuario()">
+    <div
+      class="row justify-content-center"
+      style="height: 60vh; width: 100%"
+    >
+
+    <div class=" align-self-center">
+
+
+      <div class="d-flex flex-column" style="width: 504px;">
+        <div class="tituloInicioPrimerLogin">¡Bienvenido!</div>
+        <div class="descripcionPrimerLogin"  style="margin-top:34px">
+
+          <div class="row">
+            <div class="col-2"> <img
+              src="assets/icons/icono-telefono.svg"
+              class="rounded-circle ImgsMenuHome" style="margin-top: -11px !important"
+            /></div>
+            <div class="col-10"><p>Es necesario que contactes con Soporte para que te asignen un rol dentro de la aplicación.</p></div>
+
+          </div>
+         </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="container-fluid" *ngIf="usuario.validarRolUsuario()">
     <div class="d-flex" style="height: 75vh; width: 100%">
       <div class="row contentCards">
-        <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12" *ngIf="rolesValids(DataUser, [Administrador, Ejecutor])">
+        <div
+          class="col-lg-4 col-md-12 col-sm-12 col-xs-12"
+          *ngIf="rolesValids(DataUser, [Administrador, Soporte])"
+        >
           <div class="card">
             <div
               class="aling-items-center text-center headerCardsMenu"
@@ -184,12 +214,10 @@
                         routerLinkActive="active"
                         routerLink="/auditoria/procesos"
                       >
-
                         <img
                           src="assets/imgs/icons/inicio/items/procesos.png"
                           class="itemsTextoImagenCentro"
                         />
-
 
                         Procesos</a
                       >

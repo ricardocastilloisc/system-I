@@ -45,9 +45,9 @@ export class ProcesoComponent implements OnInit, OnDestroy {
     this.store.dispatch(UnsetAUDGENESTADOPROCESO());
   }
 
-  rolesValids = (User: Usuario, roles: any[]): boolean => {
-    return this.authService.rolesValids(User, roles);
-  };
+  /*rolesValids = (roles: any[]): boolean => {
+    return this.authService.rolesValids(roles);
+  };*/
 
   ngOnInit(): void {
     this.DataUser$ = this.store.select(({ usuario }) => usuario.user);

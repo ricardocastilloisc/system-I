@@ -12,7 +12,7 @@ const routes: Routes = [
       import('./pages/content/dashboard/dashboard.module').then(
         (m) => m.DashboardModule
       ),
-    canLoad: [AuthGuard],
+   canLoad: [AuthGuard],
   },
   { path: '**', redirectTo: 'login' },
 ];

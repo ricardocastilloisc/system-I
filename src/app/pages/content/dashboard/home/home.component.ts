@@ -5,8 +5,7 @@ import { Usuario } from 'src/app/model/usuario.model';
 import { Observable } from 'rxjs';
 import { AuthService } from '../../../../services/auth.service';
 import { UsuariosService } from '../../../../services/usuarios.service';
-import { ERole } from '../../../../validators/roles';
-import { Router } from '@angular/router';
+import { ERole } from 'src/app/validators/roles';
 
 @Component({
   selector: 'app-home',
@@ -15,28 +14,23 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
   DataUser$: Observable<Usuario>;
-
   Administrador = ERole.Administrador;
-  AdministradorArea = ERole.AdministradorArea;
   Ejecutor = ERole.Ejecutor;
   Soporte = ERole.Soporte;
 
   constructor(
     private store: Store<AppState>,
-    private router: Router,
-    private authService: AuthService,
-    private usuario: UsuariosService
+    private usuario: UsuariosService,
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
     this.DataUser$ = this.store.select(({ usuario }) => usuario.user);
     this.usuario.obtenerDetalleUsuario();
-    var bandera = this.usuario.validarRolUsuario();
-    console.log("bandera: " + bandera);
+    this.usuario.actualizarAtributosUsuario();
   }
+  rolesValids = (User:Usuario, roles: any[]): boolean => {
+    return this.authService.rolesValids( User, roles);
+  };
 
-
-  rolesValids = (User: Usuario, roles: any[]): boolean => {
-    return this.authService.rolesValids(User, roles);
-  }
 }
