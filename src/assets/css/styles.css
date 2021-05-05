@@ -422,10 +422,11 @@ img.itemsTextoImagenCentro {
 
 .heighImgAuditoria {
   height: 100%;
+
 }
 
 .paddingIzquierdaDerecha {
-  padding-left: 50px;
+  padding-left: 125px;
   padding-right: 50px;
 }
 
