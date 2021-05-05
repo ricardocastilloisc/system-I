@@ -161,6 +161,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       grupo: this.FormCambioPermiso.get('areaCambiar').value,
       usuario: this.ObjectUsuarioCambiar.Username,
     };
+    
 
     /*
     this.UsuariosService.actualizarAtributosUsuario(
