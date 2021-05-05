@@ -1,3 +1,4 @@
+import { ProcesoLimpiar } from './../../../../../ReduxStore/actions/loaderProcesoCambios.actions';
 import { EArea } from './../../../../../validators/roles';
 import { ConsultaUsuario } from './../../../../../ReduxStore/reducers/listaUsuarios.reducer';
 import {
@@ -49,11 +50,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
 
   Permisos = [ERole.Administrador, ERole.Ejecutor, ERole.Soporte];
 
-  Negocios = [
-    ENegocio.Afore,
-    ENegocio.Fondos,
-    ENegocio.Seguros,
-  ];
+  Negocios = [ENegocio.Afore, ENegocio.Fondos, ENegocio.Seguros];
 
   ObjectUsuarioCambiar: UsuarioListado;
 
@@ -65,14 +62,17 @@ export class UsuariosComponent implements OnInit, OnDestroy {
 
   insertarValores = false;
 
-
   grupoPertenece = '';
 
+  dropdownListCambioDeNegocio = [];
 
-  dropdownList = [];
-  selectedItems = [];
-  dropdownSettings:IDropdownSettings = {};
+  SettingsCambioDeNegocio: IDropdownSettings = {};
 
+  ///aqui va ir los inputs que se iniciaran para el modal
+
+  selectedItemsCambioDeNegocio = [];
+  SelectCamabiarPermiso = 'Permiso';
+  SelectCamabiarArea = 'Area';
 
   constructor(
     private store: Store<AppState>,
@@ -104,83 +104,91 @@ export class UsuariosComponent implements OnInit, OnDestroy {
         this.ListadoUsuariosPantalla = ListadoDeUsuarios;
       });
 
+    this.initicializarLosSelects();
+
     this.store.dispatch(LoadListaUsuarios({ consulta: null }));
 
+    this.store.dispatch(LoadListaUsuarios({ consulta: null }));
 
+    this.EstadoProceso = this.store
+      .select(({ ProcesoCambios }) => ProcesoCambios.terminado)
+      .subscribe((estado) => {
+        if (estado) {
+          this.salirYRestablecer();
+          this.store.dispatch(ProcesoLimpiar());
+        }
+      });
+  }
 
-    this.dropdownList = [
-      { item_id: 1, item_text: 'Mumbai' },
-      { item_id: 2, item_text: 'Bangaluru' },
-      { item_id: 3, item_text: 'Pune' },
-      { item_id: 4, item_text: 'Navsari' },
-      { item_id: 5, item_text: 'New Delhi' }
+  initicializarLosSelects = () => {
+    this.dropdownListCambioDeNegocio = [
+      { item_id: ENegocio.Afore, item_text: ENegocio.Afore },
+      { item_id: ENegocio.Fondos, item_text: ENegocio.Fondos },
+      {
+        item_id: ENegocio.Seguros,
+        item_text: ENegocio.Seguros,
+      },
     ];
 
-    this.dropdownSettings = {
+    this.SettingsCambioDeNegocio = {
       singleSelection: false,
       idField: 'item_id',
       textField: 'item_text',
       allowSearchFilter: false,
       enableCheckAll: false,
-      maxHeight:200,
-    }
-
-
-    /*
-
-          limitSelection?: number;
-      searchPlaceholderText?: string;
-      noDataAvailablePlaceholderText?: string;
-      closeDropDownOnSelection?: boolean;
-      showSelectedItemsAtTop?: boolean;
-      defaultOpen?: boolean;
-      allowRemoteDataSearch?: boolean;
-
-    */
-
-  }
-
-
-  onItemSelect(item: any) {
-    console.log(item);
-  }
-  onSelectAll(items: any) {
-    console.log(items);
-  }
-
+      maxHeight: 200,
+    };
+  };
 
   openModal(content, ObjectUsuario: UsuarioListado, grupoPertenece) {
     this.ObjectUsuarioCambiar = ObjectUsuario;
     this.grupoPertenece = grupoPertenece;
+
+    /*
+
+      this.selectedItemsCambioDeNegocio = [
+      { item_id: 3, item_text: 'Pune' },
+      { item_id: 4, item_text: 'Navsari' },
+    ];
+
+
+    */
     if (!retornarStringSiexiste(ObjectUsuario.Attributes, 'custom:rol')) {
-      this.FormCambioPermiso.get('rolCambiar').setValue('Permiso');
+      this.SelectCamabiarPermiso = 'Permiso';
     } else {
       if (ObjectUsuario.Attributes['custom:rol'] === '') {
-        this.FormCambioPermiso.get('rolCambiar').setValue('Permiso');
+        this.SelectCamabiarPermiso = 'Permiso';
       } else {
-        this.FormCambioPermiso.get('rolCambiar').setValue(
-          ObjectUsuario.Attributes['custom:rol']
-        );
+        this.SelectCamabiarPermiso = ObjectUsuario.Attributes['custom:rol'];
       }
     }
 
     if (!retornarStringSiexiste(ObjectUsuario.Attributes, 'custom:negocio')) {
-      this.FormCambioPermiso.get('negocioCambiar').setValue('negocio');
+      this.selectedItemsCambioDeNegocio = [];
     } else {
       if (ObjectUsuario.Attributes['custom:negocio'] === '') {
-        this.FormCambioPermiso.get('negocioCambiar').setValue('negocio');
+        this.selectedItemsCambioDeNegocio = [];
       } else {
-        this.FormCambioPermiso.get('negocioCambiar').setValue(
-          ObjectUsuario.Attributes['custom:negocio']
+        const newObject = Object.assign(
+          {},
+          { negocio: ObjectUsuario.Attributes['custom:negocio'] }
         );
+        let { negocio } = newObject;
+        let tempSelect = [];
+        negocio.split(',').forEach((e) => {
+          tempSelect.push({
+            item_id: e,
+            item_text: e,
+          });
+        });
+
+        this.selectedItemsCambioDeNegocio = tempSelect;
       }
     }
     if (this.grupoPertenece === '') {
-      this.FormCambioPermiso.get('areaCambiar').setValue('area');
+      this.SelectCamabiarArea = 'Area';
     } else {
-      this.FormCambioPermiso.get('areaCambiar').setValue(
-        this.grupoPertenece
-      );
+      this.SelectCamabiarArea = this.grupoPertenece;
     }
 
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
@@ -188,41 +196,42 @@ export class UsuariosComponent implements OnInit, OnDestroy {
 
   guardarCambioPermisoUsuario = () => {
     if (
-      this.FormCambioPermiso.get('rolCambiar').value === 'Permiso' &&
-      this.FormCambioPermiso.get('negocioCambiar').value === 'negocio'
+      this.SelectCamabiarPermiso === 'Permiso' &&
+      this.selectedItemsCambioDeNegocio.length === 0 &&
+      this.SelectCamabiarArea === 'Area'
     ) {
       return;
     }
 
+    let arraySeleccionados = [];
+
+    this.selectedItemsCambioDeNegocio.forEach((e) => {
+      arraySeleccionados.push(e.item_id);
+    });
+
     const UserAttributes = [
       {
         Name: 'custom:negocio',
-        Value: this.FormCambioPermiso.get('negocioCambiar').value,
+        Value: arraySeleccionados.toString(),
       },
       {
         Name: 'custom:rol',
-        Value: this.FormCambioPermiso.get('rolCambiar').value,
+        Value: this.SelectCamabiarPermiso,
       },
     ];
 
-    const Grupo = {
-      grupo: this.FormCambioPermiso.get('areaCambiar').value,
-      usuario: this.ObjectUsuarioCambiar.Username,
+    const Attributos = {
+      UserAttributes: UserAttributes,
+      Username: this.ObjectUsuarioCambiar.Username,
     };
 
+    const Grupo = {
+      Grupo: this.SelectCamabiarArea,
+      Username: this.ObjectUsuarioCambiar.Username,
+      GrupoOriginal: this.grupoPertenece,
+    };
 
-    /*
-    this.UsuariosService.actualizarAtributosUsuario(
-      UserAttributes,
-      this.ObjectUsuarioCambiar.Username
-    )
-      .then(() => {
-        this.salirYRestablecer();
-      })
-      .catch(() => {
-        this.salirYRestablecer();
-      });
-      */
+    this.UsuariosService.validacionDeProcesosInsertar(Attributos, Grupo);
   };
 
   salirYRestablecer = () => {
@@ -230,24 +239,13 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     this.modalService.dismissAll();
   };
 
-  cambiarValorDelPermiso = () => {
-    this.UsuariosService.agregarUsuarioGrupo(
-      this.FormCambioPermiso.get('grupoCambiar').value,
-      this.ObjectUsuarioCambiar.Username
-    )
-      .then(() => {
-        this.salirYRestablecer();
-      })
-      .catch(() => {
-        this.salirYRestablecer();
-      });
-  };
-
   retornarStringSiexiste = (object, attribute) => {
     return retornarStringSiexiste(object, attribute);
   };
 
   filtrar = () => {
+    //console.log(this.selectedItems);
+    /*
     let FiltrarRol =
       this.FiltroUsuarioForm.get('rolFiltrar').value === 'Permiso'
         ? null
@@ -266,6 +264,6 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       FiltrarRol,
       FiltrarArea,
       FiltrarCorreo
-    );
+    );*/
   };
 }

@@ -224,18 +224,111 @@ export class UsuariosService {
       this.numeroDeProcesos++;
     });
   }
-  
 
-  validacionDeProcesosInsertar = (numeroProcesosComparar, procesos) => {
+  /// esta aparte al compoennete de usarios
+  eliminarYAgregarGrupo = (Grupo, Username, GrupoOriginal) => {
+    const params = {
+      GroupName: GrupoOriginal,
+      UserPoolId: environment.UserPoolId,
+      Username: Username,
+    };
+
+    let terminado = null;
+
+    if (GrupoOriginal.trim().length === 0) {
+      terminado = 1;
+    } else {
+      cognitoidentityserviceprovider.adminRemoveUserFromGroup(
+        params,
+        (err, data) => {
+          if (err) {
+            terminado = 1;
+          } else {
+            terminado = 1;
+          }
+        }
+      );
+    }
+
+    new Promise((resolve) => {
+      const intervalo = setInterval(() => {
+        if (terminado) {
+          resolve('ok');
+          clearInterval(intervalo);
+        }
+      }, 100);
+    }).then(() => {
+      this.agregarUsuarioGrupoCallback(Grupo, Username);
+    });
+  };
+  /// esta aparte al compoennete de usarios
+  agregarUsuarioGrupoCallback(grupo, usuario) {
+    const params = {
+      GroupName: grupo,
+      UserPoolId: environment.UserPoolId,
+      Username: usuario,
+    };
+
+    let terminado = null;
+    cognitoidentityserviceprovider.adminAddUserToGroup(params, (err, data) => {
+      if (err) {
+        terminado = 1;
+      } else {
+        terminado = 1;
+      }
+    });
+    new Promise((resolve) => {
+      const intervalo = setInterval(() => {
+        if (terminado) {
+          resolve('ok');
+          clearInterval(intervalo);
+        }
+      }, 100);
+    }).then(() => {
+      this.numeroDeProcesos++;
+    });
   }
-/*
-  validacionDeProcesosEliminar = (numeroProcesosComparar, procesos) => {
 
-    const { Grupo } = procesos;
+  actualizarAtributosUsuarioCallback = (UserAttributes, Username) => {
+    const paramsAtributos = {
+      UserAttributes: UserAttributes,
+      Username: Username /* identificador del usuario en el user pool */,
+      UserPoolId: environment.UserPoolId,
+    };
+    let terminado = null;
+    cognitoidentityserviceprovider.adminUpdateUserAttributes(
+      paramsAtributos,
+      (err, data) => {
+        if (err) {
+          terminado = 1;
+        } else {
+          terminado = 1;
+        }
+      }
+    );
+    new Promise((resolve) => {
+      const intervalo = setInterval(() => {
+        if (terminado) {
+          resolve('ok');
+          clearInterval(intervalo);
+        }
+      }, 100);
+    }).then(() => {
+      this.numeroDeProcesos++;
+    });
+  };
 
-    const { GroupName, Username } = Grupo;
+  /// esta aparte al compoennete de usarios
+  validacionDeProcesosInsertar = (Attributos, paramGrupo) => {
+    let numeroProcesosComparar = 2;
 
-    this.eliminarUsuarioGrupo(GroupName, Username);
+    const { Grupo, Username, GrupoOriginal } = paramGrupo;
+
+    const { UserAttributes } = Attributos;
+
+    this.eliminarYAgregarGrupo(Grupo, Username, GrupoOriginal);
+
+    this.actualizarAtributosUsuarioCallback(UserAttributes, Username);
 
     new Promise((resolve) => {
       const intervalo = setInterval(() => {
@@ -248,8 +341,8 @@ export class UsuariosService {
       this.numeroDeProcesos = 0;
       this.store.dispatch(ProcesoTerminado());
     });
-  }
-*/
+  };
+
   actualizarAtributosUsuario = (UserAttributes, Username) => {
     // metodo para actualizar los valores de los atributos del usuario en el user pool
     /* cognitoidentityserviceprovider.adminUpdateUserAttributes(
@@ -339,25 +432,29 @@ ayuda de atibutos: {Name: "sub", Value: "42ae1b55-8029-4a09-8c81-8c805c650aaf"}
     return object;
   };
 
-filtrarUsuariosConAtributos = (usuarios: UsuarioListado[], permiso, area, correo) => {
-  let Usuarios = [...usuarios];
-  if (permiso != null){
-    Usuarios = Usuarios.filter( e => e.Attributes['custom:rol'] === permiso)
-  }
-  if (area != null){
-    Usuarios = Usuarios.filter( e => e.GrupoQuePertenece === area)
-  }
-  if (correo != null){
-    Usuarios = Usuarios.filter( e => e.Attributes['email'] === correo)
-  }
-  return Usuarios;
-}
-
+  filtrarUsuariosConAtributos = (
+    usuarios: UsuarioListado[],
+    permiso,
+    area,
+    correo
+  ) => {
+    let Usuarios = [...usuarios];
+    if (permiso != null) {
+      Usuarios = Usuarios.filter((e) => e.Attributes['custom:rol'] === permiso);
+    }
+    if (area != null) {
+      Usuarios = Usuarios.filter((e) => e.GrupoQuePertenece === area);
+    }
+    if (correo != null) {
+      Usuarios = Usuarios.filter((e) => e.Attributes['email'] === correo);
+    }
+    return Usuarios;
+  };
 
   filtrarUsuarios(usuarios, permiso, negocio, correo): any[] {
     // filtrado por permiso
 
-    console.log(usuarios)
+    console.log(usuarios);
     if (permiso != null) {
       for (var i = 0; i < usuarios.Users.length; i++) {
         if (
