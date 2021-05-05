@@ -1,77 +1,48 @@
-// import { Injectable } from '@angular/core' 
-// import { LoadAUDGENPROCESOS, UnsetAUDGENPROCESO } from '../ReduxStore/actions/AUDGENPROCESO.actions';
-// import { Component, OnInit, OnDestroy } from '@angular/core';
-// import { ActivatedRoute, ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-// import { Store } from '@ngrx/store';
-// import { AppState } from '../ReduxStore/app.reducers';
-// import { BehaviorSubject, Observable } from 'rxjs';
-// import { AUDGENPROCESO_INERFACE } from '../model/AUDGENPROCESO.model';
-// import { AUDGENESTADOPROCESO_INTERFACE } from '../model/AUDGENESTADOPROCESO.model';
-// import { map } from "rxjs/operators";
-// import { AuthService } from 'src/app/services/auth.service';
-// import { Usuario } from '../model/usuario.model';
-// import { ERole } from '../validators/roles';
-// import { LoadAUDGENESTADOPROCESOS } from 'src/app/ReduxStore/actions';
-// import { APIService } from '../API.service' 
+import { Injectable } from '@angular/core';
+import { v4 as uuidv4 } from 'uuid';
+import { AuthService } from './auth.service';
+import { environment } from '../../environments/environment';
 
-// @Injectable()
-// export class ProcesosService implements Resolve<any>
-// {
-//     detalleProceso: any;
+let uuid = uuidv4();
+@Injectable({
+  providedIn: 'root',
+})
 
-//     onProcesoChanged: BehaviorSubject<any>;
-    
-//     constructor(
-//         private store: Store<AppState>,
-//         private rutaActiva: ActivatedRoute,
-//         private authService: AuthService,
-//         private api: APIService
-//     ){
+export class ProcesosService {
 
-//         this.onProcesoChanged = new BehaviorSubject([]);
-//     }
+  constructor(
+    private authService: AuthService
+  ) { }
 
-//     /**
-//      * Resolver
-//      * 
-//      * @param {ActivatedRouteSnapshot} route
-//      * @param {RouterStateSnapshot} state
-//      * @returns {Observable<any> | Promise<any> | any}
-//      */
+  iniciarProceso(idProceso: string, correoUsuario: string, rolUsuario: string): any {
+    let response;
+    var axios = require('axios');
+    var data = JSON.stringify({
+      "rol": rolUsuario,
+      "correo": correoUsuario,
+      "uuid": uuid
+    });
+    var endpoint = environment.API.endpoints.find((el) => el.name === idProceso)['endpoint'];
+    var config = {
+      method: 'post',
+      url: endpoint,
+      headers: {
+        'Authorization': 'Bearer ' + this.authService.getToken(),
+        'Content-Type': 'application/json'
+      },
+      data: data
+    };
 
-//     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any
-//     {
-//         let responses = [];
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+        response = response.data;
+      })
+      .catch(function (error) {
+        console.log(error);
+        response = error;
+      });
 
-//        responses.push(this.getDetalleProceso());
-       
-//        return Promise.all(responses);
-//     }
-
-//     getDetalleProceso(): Promise<any>
-//     {
-//         return new Promise((resolve, reject) => {
-//             this.store.select(
-//                 ({ AUDGENPROCESOS }) => AUDGENPROCESOS.AUDGENPROCESOS
-//               ).subscribe((response: any) => {
-//                   this.detalleProceso = response;
-
-//                   this.onProcesoChanged.next(this.detalleProceso);
-//                   resolve(this.detalleProceso);
-
-//               }, reject)
-              
-//             //   .pipe(map(res => 
-//             //       {
-//             //         if(res === null) return res
-//             //         else return res.slice().sort(function(a,b)
-//             //         {return new Date(b.FECHA).getTime() - new Date(a.FECHA).getTime()})
-//             //       }
-                
-//             //     ))
-            
-            
-
-//         });
-//     }
-// }
+    return response;
+  }
+}
