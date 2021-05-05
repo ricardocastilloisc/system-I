@@ -96,8 +96,25 @@
 .container-referencias-log{
     margin-top: 30px;
     margin-bottom: 50px;
+    
+    
 }
 
+.show-ejecuciones{
+    visibility: visible;
+    max-height: 2000px;
+    opacity: 1;
+    transition: visibility 0.3s, opacity 0.3s, max-height 0.5s linear;
+}
+
+
+.hide-ejecuciones{
+    visibility: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: visibility 0.3s, opacity 0.3s, max-height 0.3s linear;
+  
+  }
 .container-referencias-log  a {
     font: 20px FS Elliot Pro;
 }
@@ -183,4 +200,20 @@ table.listado-ejecuciones tr:hover td {
     font: normal normal bold 20px/20px FS Elliot Pro;
     letter-spacing: 0px;
     margin-top: 30px;
+}
+
+.show-info{
+    width: 80%;
+    height: 1px;
+    margin-right: 5px;
+    
+    background: #a0a0a0  !important;
+}
+
+.show-info-button:hover {
+    cursor: pointer
+
+}
+.hide-div {
+    margin: 0;
 }

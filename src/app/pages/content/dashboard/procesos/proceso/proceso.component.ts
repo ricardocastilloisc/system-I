@@ -35,6 +35,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
   previousPage: number;
   showPagination: boolean;
   pageSize: number;
+  mostrarEjecucionesProcesos: boolean = true;
 
 
   Administrador = ERole.Administrador;
@@ -183,7 +184,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
     this.store.dispatch(LoadAUDGENEJECUCIONESPROCESO({consult:body}));
     this.store.dispatch(LoadAUDGENPROCESOS({consult:body}));
 
-
+    this.mostrarEjecucionesProcesos = false;
    }
 
    rolesValids = (User:Usuario, roles: any[]): boolean => {
