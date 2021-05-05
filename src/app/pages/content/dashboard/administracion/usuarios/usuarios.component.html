@@ -4,7 +4,7 @@
     <form [formGroup]="FiltroUsuarioForm">
       <section>
         <div class="col2-row2">
-         <!--<input  formControlName="correoFiltrar" type="email" id="email" name="email" placeholder="Correo electrónico" class="selectList">--> 
+         <!--<input  formControlName="correoFiltrar" type="email" id="email" name="email" placeholder="Correo electrónico" class="selectList">-->
 
           <select formControlName="correoFiltrar" name="rolFiltrar" id="rolFiltrar" value="Permiso" class="selectList">
             <option disabled selected value="correo">Correo electrónico</option>
@@ -47,7 +47,7 @@
           <td>{{usuario.GrupoQuePertenece}}</td>
           <td>{{retornarStringSiexiste(usuario.Attributes, 'custom:rol')}} </td>
           <td>{{retornarStringSiexiste(usuario.Attributes, 'custom:negocio')}} </td>
-          <td> <img (click)="openModal(content,usuario)" class="editar-icon"></td>
+          <td> <img (click)="openModal(content,usuario,usuario.GrupoQuePertenece)" class="editar-icon"></td>
         </tr>
       </table>
     </div>
@@ -67,6 +67,15 @@
     </div>
     <div class="modal-body">
       <form [formGroup]="FormCambioPermiso" style="width: 100%">
+        <div class="form-group">
+          <label for="dateOfBirth">Área</label>
+          <div class="input-group">
+            <select formControlName="areaCambiar" class="form-control" name="areaCambiar" id="areaCambiar" value="area">
+              <option disabled selected value="area">Área</option>
+              <option *ngFor="let Area of Areas" [value]="Area">{{Area}}</option>
+            </select>
+          </div>
+        </div>
         <div class="form-group">
           <label for="dateOfBirth">Permiso</label>
           <div class="input-group">

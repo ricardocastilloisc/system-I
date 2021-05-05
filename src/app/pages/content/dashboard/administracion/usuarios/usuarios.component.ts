@@ -15,7 +15,6 @@ import { ERole, ENegocio } from 'src/app/validators/roles';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UsuariosService } from '../../../../../services/usuarios.service';
 
-
 @Component({
   selector: 'app-usuarios',
   templateUrl: './usuarios.component.html',
@@ -66,6 +65,9 @@ export class UsuariosComponent implements OnInit, OnDestroy {
 
   insertarValores = false;
 
+
+  grupoPertenece = '';
+
   constructor(
     private store: Store<AppState>,
     private fb: FormBuilder,
@@ -86,6 +88,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     this.FormCambioPermiso = this.fb.group({
       rolCambiar: ['Permiso'],
       negocioCambiar: ['negocio'],
+      areaCambiar: ['area'],
     });
 
     this.ListadoUsuarios$ = this.store
@@ -98,8 +101,9 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     this.store.dispatch(LoadListaUsuarios({ consulta: null }));
   }
 
-  openModal(content, ObjectUsuario: UsuarioListado) {
+  openModal(content, ObjectUsuario: UsuarioListado, grupoPertenece) {
     this.ObjectUsuarioCambiar = ObjectUsuario;
+    this.grupoPertenece = grupoPertenece;
     if (!retornarStringSiexiste(ObjectUsuario.Attributes, 'custom:rol')) {
       this.FormCambioPermiso.get('rolCambiar').setValue('Permiso');
     } else {
@@ -122,6 +126,13 @@ export class UsuariosComponent implements OnInit, OnDestroy {
           ObjectUsuario.Attributes['custom:negocio']
         );
       }
+    }
+    if (this.grupoPertenece === '') {
+      this.FormCambioPermiso.get('areaCambiar').setValue('area');
+    } else {
+      this.FormCambioPermiso.get('areaCambiar').setValue(
+        this.grupoPertenece
+      );
     }
 
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
@@ -146,6 +157,12 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       },
     ];
 
+    const Grupo = {
+      grupo: this.FormCambioPermiso.get('areaCambiar').value,
+      usuario: this.ObjectUsuarioCambiar.Username,
+    };
+
+    /*
     this.UsuariosService.actualizarAtributosUsuario(
       UserAttributes,
       this.ObjectUsuarioCambiar.Username
@@ -156,6 +173,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       .catch(() => {
         this.salirYRestablecer();
       });
+      */
   };
 
   salirYRestablecer = () => {

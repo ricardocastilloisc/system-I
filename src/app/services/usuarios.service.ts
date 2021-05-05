@@ -224,11 +224,11 @@ export class UsuariosService {
       this.numeroDeProcesos++;
     });
   }
-  /*
+  
 
   validacionDeProcesosInsertar = (numeroProcesosComparar, procesos) => {
   }
-
+/*
   validacionDeProcesosEliminar = (numeroProcesosComparar, procesos) => {
 
     const { Grupo } = procesos;
