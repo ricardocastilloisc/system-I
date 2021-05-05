@@ -470,7 +470,7 @@ table.listado-design-general td {
 }
 
 .margin-navbar-barra {
-  margin-top: 34px;
+  border-top: #e8e8e8 34px solid;
 }
 
 .tituloInicioPrimerLogin {
