@@ -39,10 +39,10 @@
 
     <div class="row justify-content-center container-referencias-log" [ngClass]="{'show-ejecuciones': mostrarEjecucionesProcesos == true, 'hide-ejecuciones': mostrarEjecucionesProcesos == false}" *ngIf="AUDGENESTADOPROCESOS$ | async as AUDGENESTADOPROCESOS"  >
 
-        
+        <form [formGroup]="filtroEjecucionesForm">
         <div class="d-flex col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-6 justify-content-center">
 
-            <form [formGroup]="filtroEjecucionesForm">
+            
                 
 
                 <div class="card-calendario">
@@ -64,12 +64,13 @@
                 </div>
 
         
-            </form>
+            
 
             
   
   
       </div>
+    </form>
     
         <div class="d-flex col-md-9 col-xs-9 col-sm-9 col-lg-9 mr-9 col-9 align-items-left justify-content-left ">
             <span class="title-log-table">Listado de ejecuciones</span>
