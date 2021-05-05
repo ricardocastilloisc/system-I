@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { UsuariosRoutingModule } from './usuarios-routing.module';
 import { UsuariosComponent } from './usuarios.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OredenascEmailusuriosPipe } from '../../../../../pipes/oredenascEmailusurios.pipe';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
@@ -17,6 +17,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     CommonModule,
     UsuariosRoutingModule,
     ReactiveFormsModule,
+    FormsModule,
     NgMultiSelectDropDownModule.forRoot(),
   ]
 })

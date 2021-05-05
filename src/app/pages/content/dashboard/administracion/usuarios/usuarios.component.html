@@ -74,12 +74,12 @@
 
     </div>
     <div class="modal-body">
-      <form [formGroup]="FormCambioPermiso" style="width: 100%">
+
         <div class="form-group">
           <label for="dateOfBirth">Área</label>
           <div class="input-group">
-            <select formControlName="areaCambiar" class="form-control" name="areaCambiar" id="areaCambiar" value="area">
-              <option disabled selected value="area">Área</option>
+            <select  class="form-control" [(ngModel)]="SelectCamabiarArea" >
+              <option disabled selected value="Area">Área</option>
               <option *ngFor="let Area of Areas" [value]="Area">{{Area}}</option>
             </select>
           </div>
@@ -87,8 +87,8 @@
         <div class="form-group">
           <label for="dateOfBirth">Permiso</label>
           <div class="input-group">
-            <select formControlName="rolCambiar" class="form-control" name="grupo" id="grupo" value="Permiso">
-              <option disabled selected>Permiso</option>
+            <select  class="form-control"  [(ngModel)]="SelectCamabiarPermiso">
+              <option disabled selected  value="Permiso">Permiso</option>
               <option *ngFor="let grupo of Roles" [value]="grupo.value">{{grupo.label}}</option>
             </select>
           </div>
@@ -102,11 +102,11 @@
 
 
             <ng-multiselect-dropdown
+            style="width:100%"
             [placeholder]="'Negocio'"
-            [settings]="dropdownSettings"
-            [data]="dropdownList"
-            (onSelect)="onItemSelect($event)"
-            (onDeSelect)="onItemSelect($event)"
+            [settings]="SettingsCambioDeNegocio"
+            [data]="dropdownListCambioDeNegocio"
+            [(ngModel)]="selectedItemsCambioDeNegocio"
           >
           </ng-multiselect-dropdown>
 
@@ -118,7 +118,7 @@
             -->
           </div>
         </div>
-      </form>
+
     </div>
 
     <div class="modal-footer">
