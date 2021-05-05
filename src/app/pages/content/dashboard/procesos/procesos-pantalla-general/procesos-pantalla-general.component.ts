@@ -24,6 +24,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
 
   AUDGENPROCESOS$: Observable<AUDGENPROCESO_INERFACE[]>;
   AUDGENESTADOPROCESOS$: Observable<AUDGENESTADOPROCESO_INTERFACE[]>
+  actualPage: number = 1;
 
   PROCESOS = new Array();
   constructor(

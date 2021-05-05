@@ -129,7 +129,6 @@ table.listado-proceso th {
   background-color: #464E7E;
   font: bold 18px FS Elliot Pro;
   height: 40px;
-  height: 40px;
   font: bold 18px FS Elliot Pro;
 }
 table.listado-proceso td {
@@ -147,4 +146,9 @@ table.listado-proceso td {
 .listado-proceso tr td:last-of-type {
   border-top-right-radius: 25px;
   border-bottom-right-radius: 25px;
+}
+
+.paginator{
+  margin-left: 5%;
+  margin-right: 5%;
 }

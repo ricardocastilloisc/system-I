@@ -59,6 +59,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.store.dispatch(UnsetAUDGENPROCESO());
     this.store.dispatch(UnsetAUDGENESTADOPROCESO());
+    this.store.dispatch(UnsetAUDGENEJECUCIONPROCESO());
   }
 
   /*rolesValids = (roles: any[]): boolean => {
@@ -179,6 +180,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
     this.store.dispatch(LoadAUDGENEJECUCIONESPROCESO({consult:body}));
     this.store.dispatch(LoadAUDGENPROCESOS({consult:body}));
 
+
    }
 
    rolesValids = (User:Usuario, roles: any[]): boolean => {
@@ -192,19 +194,8 @@ export class ProcesoComponent implements OnInit, OnDestroy {
   //   }
   // }
 
-  llenarTabla(page : number): void {
-
-    this.AUDGENESTADOPROCESOS$.subscribe(res => { if(res == null) {
-                                                  this.listaProcesos = []; this.showPagination == false;
-                                                } else {
-                                                  this.listaProcesos = res; this.totalItems = res.length; this.showPagination = true
-                                                }
-                                              }, error => {
-                                                console.log(error)
-                                              })
-
-    console.log('aqui', this.totalItems)
-
-  }
+  public navigateToSection(section: string) {
+    
+}
 
 }
