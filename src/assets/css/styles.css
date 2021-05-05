@@ -214,7 +214,7 @@ a[data-toggle="collapse"] {
 }
 
 #content {
-  width: 100%;
+  width: 85%;
   min-width: 50vh;
   transition: all 0.3;
 }
@@ -470,7 +470,7 @@ table.listado-design-general td {
 }
 
 .margin-navbar-barra {
-  margin-top: 34px;
+  border-top: #e8e8e8 34px solid;
 }
 
 .tituloInicioPrimerLogin {
@@ -509,11 +509,11 @@ table.listado-design-general td {
   display: block;
   width: 10px;
   height: 20px;
-  
+
   cursor: pointer;
 }
 
 .pagination-previous,.pagination-next{
   display: inline-block;
- 
+
 }
