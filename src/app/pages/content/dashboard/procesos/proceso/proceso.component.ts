@@ -228,7 +228,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
         limit: 1000
       }
 
-      
+      this.store.dispatch(LoadAUDGENESTADOPROCESOS({consult:body}));
     }
 
 
