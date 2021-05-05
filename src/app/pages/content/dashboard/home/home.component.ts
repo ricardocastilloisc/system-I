@@ -32,7 +32,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.DataUser$ = this.store.select(({ usuario }) => usuario.user);
     this.usuario.obtenerDetalleUsuario();
-    this.auditoria.enviarMensaje();
+    //this.auditoria.enviarMensaje();
     //this.procesos.iniciarProceso('aims', 'galicia.brenda@principal.com', 'Soporte');
   }
 
