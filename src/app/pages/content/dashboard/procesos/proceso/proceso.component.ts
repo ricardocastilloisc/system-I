@@ -13,16 +13,17 @@ import { ERole } from '../../../../../validators/roles';
 import { LoadAUDGENESTADOPROCESOS, UnsetAUDGENESTADOPROCESO, LoadAUDGENEJECUCIONESPROCESO, UnsetAUDGENEJECUCIONPROCESO } from 'src/app/ReduxStore/actions';
 import { APIService } from '../../../../../API.service';
 import { UsuariosService } from '../../../../../services/usuarios.service';
-import {NgbPaginationConfig} from '@ng-bootstrap/ng-bootstrap';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 
 @Component({
   selector: 'app-proceso',
   templateUrl: './proceso.component.html',
-  styleUrls: ['./proceso.component.css'],
-  providers: [NgbPaginationConfig]
+  styleUrls: ['./proceso.component.css']
 })
 export class ProcesoComponent implements OnInit, OnDestroy {
+
+  filtroEjecucionesForm: FormGroup;
 
   DataUser$: Observable<Usuario>;
   last;
@@ -33,12 +34,13 @@ export class ProcesoComponent implements OnInit, OnDestroy {
   paginaActualEjecucionesProceso: number = 1;
   paginaActualProceso: number = 1;
   mostrarEjecucionesProcesos: boolean = true;
-
-
+  maxDate: Date;
   Administrador = ERole.Administrador;
   Ejecutor = ERole.Ejecutor;
   Soporte = ERole.Soporte;
   DataUser: any;
+  
+  fechaBusqueda: Date;
 
   constructor(
     private store: Store<AppState>,
@@ -46,10 +48,8 @@ export class ProcesoComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private api: APIService,
     private usuario: UsuariosService,
-    private config: NgbPaginationConfig,
-    ) {
-      this.config.boundaryLinks = true;
-    }
+    private fb: FormBuilder,
+    ) {}
 
   AUDGENPROCESOS$: Observable<AUDGENPROCESO_INERFACE[]>;
   AUDGENEJECUCIONPROCESO$: Observable<AUDGENPROCESO_INERFACE[]>;
@@ -61,13 +61,12 @@ export class ProcesoComponent implements OnInit, OnDestroy {
     this.store.dispatch(UnsetAUDGENEJECUCIONPROCESO());
   }
 
-  /*rolesValids = (roles: any[]): boolean => {
-    return this.authService.rolesValids(roles);
-  };*/
-
   ngOnInit(): void {
+    this.filtroEjecucionesForm = this.fb.group({
+      fechaFiltrar: ['Fecha']
+    })
 
-
+    this.maxDate = new Date();
     this.DataUser$ = this.store.select(({ usuario }) => usuario.user);
 
 
@@ -190,4 +189,49 @@ export class ProcesoComponent implements OnInit, OnDestroy {
 
 
 
+  busquedaFiltros(){
+
+    if(this.filtroEjecucionesForm.valid){
+
+      let fechaFiltro = this.filtroEjecucionesForm.get('fechaFiltrar').value;
+
+      console.log(this.filtroEjecucionesForm.get('fechaFiltrar').value)
+
+      this.AUDGENESTADOPROCESOS$ = this.store.select(
+        ({ AUDGENESTADOPROCESOS }) => AUDGENESTADOPROCESOS.AUDGENESTADOPROCESO
+      ).pipe(map(res =>
+        {
+          if(res === null) return res
+          else  return res.slice().sort(function(a,b)
+          {return new Date(b.FECHA_ACTUALIZACION).getTime() - new Date(a.FECHA_ACTUALIZACION).getTime()}).filter((item, i, res) => {
+            return res.indexOf(res.find(t => t.ID_PROCESO === item.ID_PROCESO)) === i
+          }).filter(item => {
+            return item.ETAPA != ""
+          })
+  
+  
+        }
+      ))
+
+      // this.store.select(
+      //   ({ AUDGENEJECUCIONESPROCESO }) => AUDGENEJECUCIONESPROCESO.AUDGENEJECUCIONESPROCESO
+      // ).pipe( map (res => {
+      //   if( res == null) return res
+      //   else
+      //     return res.filter((item, i, res) => {
+      //       return res.indexOf(res.find(t => t.ID_PROCESO === item.ID_PROCESO)) === i
+      //     })
+      // })).subscribe(res => console.log(res))
+
+      let body =   {
+        filter:{​​​​​ FECHA_ACTUALIZACION: {​​​​​ contains: fechaFiltro}​​​​​ }​​​​​,
+        limit: 1000
+      }
+
+      
+    }
+
+
+
+  }
 }
