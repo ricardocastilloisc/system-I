@@ -32,9 +32,6 @@ export class ProcesoComponent implements OnInit, OnDestroy {
   totalItems: number;
   paginaActualEjecucionesProceso: number = 1;
   paginaActualProceso: number = 1;
-  previousPage: number;
-  showPagination: boolean;
-  pageSize: number;
   mostrarEjecucionesProcesos: boolean = true;
 
 
@@ -191,15 +188,6 @@ export class ProcesoComponent implements OnInit, OnDestroy {
     return this.authService.rolesValids( User, roles);
   };
 
-  // loadPage(page: number) {
-  //   if (page !== this.previousPage) {
-  //     this.previousPage = page;
-  //     this.llenarTabla(this.page-1);
-  //   }
-  // }
 
-  public navigateToSection(section: string) {
-    
-}
 
 }

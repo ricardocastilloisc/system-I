@@ -36,8 +36,31 @@
         
     </div> -->
 
-    
     <div class="row justify-content-center container-referencias-log" [ngClass]="{'show-ejecuciones': mostrarEjecucionesProcesos == true, 'hide-ejecuciones': mostrarEjecucionesProcesos == false}" *ngIf="AUDGENESTADOPROCESOS$ | async as AUDGENESTADOPROCESOS"  >
+        <div class="d-flex col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-6 justify-content-center">
+
+
+            <div class="card-calendario">
+            <div>Selecciona una fecha</div>
+            <div>
+                <input type="date" placeholder="Selecciona una fecha" [(ngModel)]="inputFecha" />
+            </div>
+            <div>
+                <!--
+                <select name="cars" id="cars" value="Estado">
+                    <option disabled selected>Estado</option>
+                    <option value="iniciado">En proceso</option>
+                    <option value="detenido">Detenido</option>
+    
+                </select>
+                -->
+            </div>
+            <div><button>Buscar</button></div>
+            </div>
+  
+  
+      </div>
+    
         <div class="d-flex col-md-9 col-xs-9 col-sm-9 col-lg-9 mr-9 col-9 align-items-left justify-content-left ">
             <span class="title-log-table">Listado de ejecuciones</span>
         </div>
@@ -57,7 +80,7 @@
                         <tr *ngFor="let AUDGENESTADOPROCESO of AUDGENESTADOPROCESOS | paginate: {id: 'ejecucionesProceso', itemsPerPage: 10, currentPage: paginaActualEjecucionesProceso} ; index as i" class='clickable' (click)="consultarDetalle(AUDGENESTADOPROCESO.ID_PROCESO)" >
                             
                             <td >{{AUDGENESTADOPROCESO.ID_PROCESO}}</td>
-                            <td >{{AUDGENESTADOPROCESO.FECHA_ACTUALIZACION}}</td>
+                            <td >{{AUDGENESTADOPROCESO.FECHA_ACTUALIZACION | date :'short'}}</td>
                             <td [ngClass]="{'error-log': AUDGENESTADOPROCESO.ESTADO == 'FALLIDO'}">{{AUDGENESTADOPROCESO.ESTADO}}</td>
 
                         </tr>
@@ -91,25 +114,7 @@
         </div>
         
 
-        <!-- <div class="d-flex col-md-9 col-xs-9 col-sm-9 col-lg-9 mr-9 col-9 align-items-center justify-content-center" >
-            <table class="listado-log" *ngIf="AUDGENPROCESOS$ | async as AUDGENPROCESOS">
-                
-                <thead>
-                    <tr>
-                        
-                        <th>Hora</th>
-                        <th colspan="12" >Mensaje</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let AUDGENPROCESO of AUDGENPROCESOS  let last = last ; let first = first" [ngClass]="{first: first, last: last, primero: primero }">
-                        <td >{{AUDGENPROCESO.FECHA}}</td>
-                        <td *ngIf="AUDGENPROCESO.NIVEL === 'FALLIDO'" style="color: #C00000;">{{AUDGENPROCESO.MENSAJE_NEGOCIO}}</td>
-                        <td *ngIf="AUDGENPROCESO.NIVEL !== 'FALLIDO'">{{AUDGENPROCESO.MENSAJE_NEGOCIO}}</td>
-                    </tr>
-                </tbody>
-              </table>
-        </div> -->
+      
 
     
     </div>
@@ -196,10 +201,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let AUDGENPROCESO of AUDGENPROCESOS | paginate: { id: 'detalleEjecucion', itemsPerPage: 10, currentPage: actualPage} ; index as i ">
+                        <tr *ngFor="let AUDGENPROCESO of AUDGENPROCESOS | paginate: { id: 'detalleEjecucion', itemsPerPage: 10, currentPage: paginaActualProceso} ; index as i ">
                             <td>{{i + 1}}</td>
                             <td [ngClass]="{'error-log': AUDGENPROCESO.NIVEL === 'FALLIDO', 'info-log': AUDGENPROCESO.NIVEL === 'INFO' , 'debug-log': AUDGENPROCESO.NIVEL === 'DEBUG' }">{{AUDGENPROCESO.NIVEL}}</td>
-                            <td >{{AUDGENPROCESO.FECHA}}</td>
+                            <td >{{AUDGENPROCESO.FECHA | date :'short'}}</td>
                             <td [ngClass]="{'error-log': AUDGENPROCESO.NIVEL === 'FALLIDO'}">{{AUDGENPROCESO.MENSAJE_SOPORTE}}</td>
                         </tr>
                     </tbody>
@@ -222,7 +227,7 @@
                     <tbody>
                         <tr *ngFor="let AUDGENPROCESO of AUDGENPROCESOS | paginate: { id: 'detalleEjecucion', itemsPerPage: 10, currentPage: paginaActualProceso} ; index as i">
                             <td>{{i + 1 }}</td>
-                            <td >{{AUDGENPROCESO.FECHA}}</td>
+                            <td >{{AUDGENPROCESO.FECHA | date :'short'}}</td>
                             <td [ngClass]="{'error-log': AUDGENPROCESO.NIVEL === 'FALLIDO'}">{{AUDGENPROCESO.MENSAJE_NEGOCIO}}</td>
                         </tr>
                     </tbody>
