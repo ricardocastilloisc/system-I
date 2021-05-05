@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import Amplify from 'aws-amplify';
 import * as AWS from 'aws-sdk';
 import { environment } from '../../environments/environment';
+import { v4 as uuidv4 } from 'uuid';
 
 Amplify.configure(environment.amplifyConfig);
 var sqs = new AWS.SQS();
@@ -69,7 +70,9 @@ var payloadString = JSON.stringify(payload);
 export class AuditoriaService {
   params = {
     MessageBody: payloadString,
-    QueueUrl: "https://sqs.us-east-1.amazonaws.com/335672086802/sia-encolamiento-mensajes-monitoreo-dev"
+    MessageDeduplicationId: uuidv4(),  // Required for FIFO queues
+    MessageGroupId: uuidv4(),  // Required for FIFO queues
+    QueueUrl: environment.API.endpoints.find((el) => el.name === 'sqs-auditoria')['endpoint']
   };
 
   constructor() { }

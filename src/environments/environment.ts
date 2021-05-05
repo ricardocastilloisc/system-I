@@ -21,22 +21,21 @@ export const environment = {
         domain: "sia-app-up.auth.us-east-1.amazoncognito.com",
         scope: ["phone", "email", "openid", "profile"],
         redirectSignIn: "localhost:4200/dashboard",
-        redirectSignOut: "localhost:4200",
+        redirectSignOut: "localhost:4200/",
         responseType: "token"
       },
-    },
-    API: {
-      endpoints: [
-        {
-          name: 'main',
-          endpoint:
-            'https://tnjo8cjoj1.execute-api.us-east-1.amazonaws.com/prod/', // for local test change to something such as 'http://localhost:3001'
-        },
-        {
-          name: 'sqs-dev',
-          endpoint: 'https://sqs.us-east-1.amazonaws.com/335672086802/sia-encolamiento-mensajes-monitoreo-dev'
-        }
-      ],
-    },
+    }
+  },
+  API: {
+    endpoints: [
+      {
+        name: 'sqs-auditoria',
+        endpoint: 'https://sqs.us-east-1.amazonaws.com/335672086802/sia-utileria-encolamiento-mensajes-monitoreo-dev.fifo'
+      },
+      {
+        name: 'aims',
+        endpoint: 'https://25mf3dkpv7.execute-api.us-east-1.amazonaws.com/dev/sia/afore/aimsexcedentes'
+      }
+    ],
   },
 };

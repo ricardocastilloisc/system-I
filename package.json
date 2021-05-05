@@ -30,6 +30,7 @@
     "aws-amplify": "^3.3.27",
     "aws-amplify-angular": "^5.0.56",
     "aws-sdk": "^2.891.0",
+    "axios": "^0.21.1",
     "bootstrap": "^4.5.0",
     "ng-multiselect-dropdown": "^0.3.4",
     "ngx-order-pipe": "^2.1.1",
