@@ -144,7 +144,7 @@
 
 
 
-        <div *ngIf="AUDGENEJECUCIONPROCESO$ | async as AUDGENEJECUCIONPROCESO  " class="d-flex col-md-9 col-xs-9 col-sm-9 col-lg-9 mr-9 col-9 align-items-center justify-content-center container-progeso show-ejecuciones" style="height: 45px;" #detalleProceso>
+        <div *ngIf="AUDGENEJECUCIONPROCESO$ | async as AUDGENEJECUCIONPROCESO  " class="d-flex col-md-9 col-xs-9 col-sm-9 col-lg-9 mr-9 col-9 align-items-center justify-content-center container-progeso show-ejecuciones" style="height: 45px;" #detalleProceso [ngClass]="{'show-ejecuciones': mostrarEjecucionesProcesos == false, 'hide-ejecuciones': mostrarEjecucionesProcesos == true}">
             
             <div [ngClass]="{'step-completado': AUDGENEJECUCIONPROCESO[0]?.ETAPA != 'INICIAL', 'step-incompleto': AUDGENEJECUCIONPROCESO[0]?.ESTADO == 'FALLIDO' && AUDGENEJECUCIONPROCESO[0]?.ETAPA == 'INICIAL'}"  class="step-proceso step-proceso-enabled" style="margin-left: -0px;">
                 <span >
@@ -195,7 +195,7 @@
         </div>
 
         
-        <div class="row justify-content-center container-referencias-log"  *ngIf="AUDGENPROCESOS$ | async as AUDGENPROCESOS">
+        <div class="row justify-content-center container-referencias-log"  *ngIf="AUDGENPROCESOS$ | async as AUDGENPROCESOS" [ngClass]="{'show-ejecuciones': mostrarEjecucionesProcesos == false, 'hide-ejecuciones': mostrarEjecucionesProcesos == true}">
             <div class="d-flex col-md-9 col-xs-9 col-sm-9 col-lg-9 mr-9 col-9 align-items-left justify-content-left ">
                 <span class="title-log-table">Monitoreo de actividades  </span>
             </div>
