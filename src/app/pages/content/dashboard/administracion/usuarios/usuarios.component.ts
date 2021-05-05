@@ -14,6 +14,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ERole, ENegocio } from 'src/app/validators/roles';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UsuariosService } from '../../../../../services/usuarios.service';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
 @Component({
   selector: 'app-usuarios',
@@ -52,7 +53,6 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     ENegocio.Afore,
     ENegocio.Fondos,
     ENegocio.Seguros,
-    ENegocio.Afore_Fondos,
   ];
 
   ObjectUsuarioCambiar: UsuarioListado;
@@ -67,6 +67,12 @@ export class UsuariosComponent implements OnInit, OnDestroy {
 
 
   grupoPertenece = '';
+
+
+  dropdownList = [];
+  selectedItems = [];
+  dropdownSettings:IDropdownSettings = {};
+
 
   constructor(
     private store: Store<AppState>,
@@ -99,7 +105,49 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       });
 
     this.store.dispatch(LoadListaUsuarios({ consulta: null }));
+
+
+
+    this.dropdownList = [
+      { item_id: 1, item_text: 'Mumbai' },
+      { item_id: 2, item_text: 'Bangaluru' },
+      { item_id: 3, item_text: 'Pune' },
+      { item_id: 4, item_text: 'Navsari' },
+      { item_id: 5, item_text: 'New Delhi' }
+    ];
+
+    this.dropdownSettings = {
+      singleSelection: false,
+      idField: 'item_id',
+      textField: 'item_text',
+      allowSearchFilter: false,
+      enableCheckAll: false,
+      maxHeight:200,
+    }
+
+
+    /*
+
+          limitSelection?: number;
+      searchPlaceholderText?: string;
+      noDataAvailablePlaceholderText?: string;
+      closeDropDownOnSelection?: boolean;
+      showSelectedItemsAtTop?: boolean;
+      defaultOpen?: boolean;
+      allowRemoteDataSearch?: boolean;
+
+    */
+
   }
+
+
+  onItemSelect(item: any) {
+    console.log(item);
+  }
+  onSelectAll(items: any) {
+    console.log(items);
+  }
+
 
   openModal(content, ObjectUsuario: UsuarioListado, grupoPertenece) {
     this.ObjectUsuarioCambiar = ObjectUsuario;
@@ -161,7 +209,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       grupo: this.FormCambioPermiso.get('areaCambiar').value,
       usuario: this.ObjectUsuarioCambiar.Username,
     };
-    
+
 
     /*
     this.UsuariosService.actualizarAtributosUsuario(
