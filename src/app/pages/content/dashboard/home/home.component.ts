@@ -7,6 +7,7 @@ import { AuthService } from '../../../../services/auth.service';
 import { UsuariosService } from '../../../../services/usuarios.service';
 import { ERole } from 'src/app/validators/roles';
 import { ProcesosService } from 'src/app/services/procesos.service';
+import { AuditoriaService } from '../../../../services/auditoria.service';
 
 @Component({
   selector: 'app-home',
@@ -24,13 +25,15 @@ export class HomeComponent implements OnInit {
     private store: Store<AppState>,
     private usuario: UsuariosService,
     private authService: AuthService,
+    private auditoria: AuditoriaService,
     private procesos: ProcesosService
   ) { }
 
   ngOnInit(): void {
     this.DataUser$ = this.store.select(({ usuario }) => usuario.user);
     this.usuario.obtenerDetalleUsuario();
-    this.procesos.iniciarProceso('aims', 'galicia.brenda@principal.com', 'Soporte');
+    this.auditoria.enviarMensaje();
+    //this.procesos.iniciarProceso('aims', 'galicia.brenda@principal.com', 'Soporte');
   }
 
   rolesValids = (User:Usuario, roles: any[]): boolean => {
