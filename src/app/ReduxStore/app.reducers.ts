@@ -7,7 +7,8 @@ export interface AppState {
   ListaUsuarios: reducers.ListaUsuariosState,
   ProcesoCambios: reducers.ProcesoCambiosState,
   AUDGENESTADOPROCESOS: reducers.AUDGENESTADOPROCESOtate,
-  AUDGENEJECUCIONESPROCESO: reducers.AUDGENEJECUCIONESPROCESOState
+  AUDGENEJECUCIONESPROCESO: reducers.AUDGENEJECUCIONESPROCESOState,
+  CATPROCESOS: reducers.CATPROCESOState
 }
 
 export const appReducers:ActionReducerMap<AppState> = {
@@ -16,5 +17,6 @@ export const appReducers:ActionReducerMap<AppState> = {
   ListaUsuarios: reducers.ListadoUsuariosReducer,
   ProcesoCambios: reducers.ProcesoCambiosReducer,
   AUDGENESTADOPROCESOS: reducers.AUDGENESTADOPROCESOReducer,
-  AUDGENEJECUCIONESPROCESO: reducers.AUDGENEJECUCIONESPROCESOReducer
+  AUDGENEJECUCIONESPROCESO: reducers.AUDGENEJECUCIONESPROCESOReducer,
+  CATPROCESOS: reducers.CATPROCESOReducer
 }

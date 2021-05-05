@@ -149,3 +149,30 @@ subscription OnDeleteAUDGENESTADOPROCESO(
     TIPO_PROCESO
   }
 }
+subscription OnCreateCATPROCESOS($PROCESO: String) {
+  onCreateCATPROCESOS(PROCESO: $PROCESO) {
+    PROCESO
+    ARRANQUE
+    DESCRIPCION
+    NEGOCIO
+    TIPO
+  }
+}
+subscription OnUpdateCATPROCESOS($PROCESO: String) {
+  onUpdateCATPROCESOS(PROCESO: $PROCESO) {
+    PROCESO
+    ARRANQUE
+    DESCRIPCION
+    NEGOCIO
+    TIPO
+  }
+}
+subscription OnDeleteCATPROCESOS($PROCESO: String) {
+  onDeleteCATPROCESOS(PROCESO: $PROCESO) {
+    PROCESO
+    ARRANQUE
+    DESCRIPCION
+    NEGOCIO
+    TIPO
+  }
+}

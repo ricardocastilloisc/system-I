@@ -46,7 +46,7 @@
                 <tbody>
                     
                     
-                        <tr *ngFor="let AUDGENESTADOPROCESO of AUDGENESTADOPROCESOS | paginate: {id: 'ejecucionesProceso', itemsPerPage: 10, currentPage: actualPage} ; index as i" class='clickable' (click)="consultarDetalle(AUDGENESTADOPROCESO.ID_PROCESO)" >
+                        <tr *ngFor="let AUDGENESTADOPROCESO of AUDGENESTADOPROCESOS | paginate: {id: 'ejecucionesProceso', itemsPerPage: 10, currentPage: paginaActualEjecucionesProceso} ; index as i" class='clickable' (click)="consultarDetalle(AUDGENESTADOPROCESO.ID_PROCESO)" >
                             
                             <td >{{AUDGENESTADOPROCESO.ID_PROCESO}}</td>
                             <td >{{AUDGENESTADOPROCESO.FECHA_ACTUALIZACION}}</td>
@@ -60,7 +60,7 @@
 
         </div>
         <div class="d-flex col-md-9 col-xs-9 col-sm-9 col-lg-9 mr-9 col-9 align-items-left ">
-            <pagination-template id="ejecucionesProceso" #p="paginationApi" (pageChange)="actualPage = $event" class="ngx-pagination">
+            <pagination-template id="ejecucionesProceso" #p="paginationApi" (pageChange)="paginaActualEjecucionesProceso = $event" class="ngx-pagination">
 
                 <div class="custom-pagination">
                     <div class="pagination-previous" [class.disabled]="p.isFirstPage()">
@@ -199,7 +199,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let AUDGENPROCESO of AUDGENPROCESOS | paginate: { id: 'detalleEjecucion', itemsPerPage: 10, currentPage: actualPage} ; index as i">
+                        <tr *ngFor="let AUDGENPROCESO of AUDGENPROCESOS | paginate: { id: 'detalleEjecucion', itemsPerPage: 10, currentPage: paginaActualProceso} ; index as i">
                             <td>{{i + 1 }}</td>
                             <td >{{AUDGENPROCESO.FECHA}}</td>
                             <td [ngClass]="{'error-log': AUDGENPROCESO.NIVEL === 'FALLIDO'}">{{AUDGENPROCESO.MENSAJE_NEGOCIO}}</td>
@@ -208,7 +208,7 @@
                 </table>
             </div> 
 
-            <pagination-template id="detalleEjecucion" #p="paginationApi" (pageChange)="actualPage = $event" class="ngx-pagination">
+            <pagination-template id="detalleEjecucion" #p="paginationApi" (pageChange)="paginaActualProceso = $event" class="ngx-pagination">
 
                 <div class="custom-pagination">
                     <div class="pagination-previous" [class.disabled]="p.isFirstPage()">

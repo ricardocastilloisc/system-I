@@ -97,6 +97,27 @@ export type DeleteAUDGENESTADOPROCESOInput = {
   ID_PROCESO: string;
 };
 
+export type CreateCATPROCESOSInput = {
+  PROCESO: string;
+};
+
+export type CATPROCESOS = {
+  __typename: "CATPROCESOS";
+  PROCESO?: string;
+  ARRANQUE?: string | null;
+  DESCRIPCION?: string | null;
+  NEGOCIO?: string | null;
+  TIPO?: string | null;
+};
+
+export type UpdateCATPROCESOSInput = {
+  PROCESO: string;
+};
+
+export type DeleteCATPROCESOSInput = {
+  PROCESO: string;
+};
+
 export type TableAUDGENUSUARIOSFilterInput = {
   ID?: TableStringFilterInput | null;
 };
@@ -155,6 +176,18 @@ export type TableAUDGENESTADOPROCESOFilterInput = {
 export type AUDGENESTADOPROCESOConnection = {
   __typename: "AUDGENESTADOPROCESOConnection";
   items?: Array<AUDGENESTADOPROCESO | null> | null;
+  nextToken?: string | null;
+};
+
+export type TableCATPROCESOSFilterInput = {
+  PROCESO?: TableStringFilterInput | null;
+  TIPO?: TableStringFilterInput | null;
+  NEGOCIO?: TableStringFilterInput | null;
+};
+
+export type CATPROCESOSConnection = {
+  __typename: "CATPROCESOSConnection";
+  items?: Array<CATPROCESOS | null> | null;
   nextToken?: string | null;
 };
 
@@ -296,6 +329,33 @@ export type DeleteAUDGENESTADOPROCESOMutation = {
   TIPO_PROCESO?: string | null;
 };
 
+export type CreateCATPROCESOSMutation = {
+  __typename: "CATPROCESOS";
+  PROCESO: string;
+  ARRANQUE?: string | null;
+  DESCRIPCION?: string | null;
+  NEGOCIO?: string | null;
+  TIPO?: string | null;
+};
+
+export type UpdateCATPROCESOSMutation = {
+  __typename: "CATPROCESOS";
+  PROCESO: string;
+  ARRANQUE?: string | null;
+  DESCRIPCION?: string | null;
+  NEGOCIO?: string | null;
+  TIPO?: string | null;
+};
+
+export type DeleteCATPROCESOSMutation = {
+  __typename: "CATPROCESOS";
+  PROCESO: string;
+  ARRANQUE?: string | null;
+  DESCRIPCION?: string | null;
+  NEGOCIO?: string | null;
+  TIPO?: string | null;
+};
+
 export type GetAUDGENUSUARIOSQuery = {
   __typename: "AUDGENUSUARIOS";
   ID: string;
@@ -413,6 +473,28 @@ export type QueryAUDGENESTADOPROCESOSByIDREGISTROFECHACREADOIndexQuery = {
     INSUMO?: string | null;
     INTERFAZ?: string | null;
     TIPO_PROCESO?: string | null;
+  } | null> | null;
+  nextToken?: string | null;
+};
+
+export type GetCATPROCESOSQuery = {
+  __typename: "CATPROCESOS";
+  PROCESO: string;
+  ARRANQUE?: string | null;
+  DESCRIPCION?: string | null;
+  NEGOCIO?: string | null;
+  TIPO?: string | null;
+};
+
+export type ListCATPROCESOSQuery = {
+  __typename: "CATPROCESOSConnection";
+  items?: Array<{
+    __typename: "CATPROCESOS";
+    PROCESO: string;
+    ARRANQUE?: string | null;
+    DESCRIPCION?: string | null;
+    NEGOCIO?: string | null;
+    TIPO?: string | null;
   } | null> | null;
   nextToken?: string | null;
 };
@@ -553,6 +635,33 @@ export type OnDeleteAUDGENESTADOPROCESOSubscription = {
   INSUMO?: string | null;
   INTERFAZ?: string | null;
   TIPO_PROCESO?: string | null;
+};
+
+export type OnCreateCATPROCESOSSubscription = {
+  __typename: "CATPROCESOS";
+  PROCESO: string;
+  ARRANQUE?: string | null;
+  DESCRIPCION?: string | null;
+  NEGOCIO?: string | null;
+  TIPO?: string | null;
+};
+
+export type OnUpdateCATPROCESOSSubscription = {
+  __typename: "CATPROCESOS";
+  PROCESO: string;
+  ARRANQUE?: string | null;
+  DESCRIPCION?: string | null;
+  NEGOCIO?: string | null;
+  TIPO?: string | null;
+};
+
+export type OnDeleteCATPROCESOSSubscription = {
+  __typename: "CATPROCESOS";
+  PROCESO: string;
+  ARRANQUE?: string | null;
+  DESCRIPCION?: string | null;
+  NEGOCIO?: string | null;
+  TIPO?: string | null;
 };
 
 @Injectable({
@@ -811,6 +920,69 @@ export class APIService {
       response.data.deleteAUDGENESTADOPROCESO
     );
   }
+  async CreateCATPROCESOS(
+    input: CreateCATPROCESOSInput
+  ): Promise<CreateCATPROCESOSMutation> {
+    const statement = `mutation CreateCATPROCESOS($input: CreateCATPROCESOSInput!) {
+        createCATPROCESOS(input: $input) {
+          __typename
+          PROCESO
+          ARRANQUE
+          DESCRIPCION
+          NEGOCIO
+          TIPO
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {
+      input
+    };
+    const response = (await API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    )) as any;
+    return <CreateCATPROCESOSMutation>response.data.createCATPROCESOS;
+  }
+  async UpdateCATPROCESOS(
+    input: UpdateCATPROCESOSInput
+  ): Promise<UpdateCATPROCESOSMutation> {
+    const statement = `mutation UpdateCATPROCESOS($input: UpdateCATPROCESOSInput!) {
+        updateCATPROCESOS(input: $input) {
+          __typename
+          PROCESO
+          ARRANQUE
+          DESCRIPCION
+          NEGOCIO
+          TIPO
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {
+      input
+    };
+    const response = (await API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    )) as any;
+    return <UpdateCATPROCESOSMutation>response.data.updateCATPROCESOS;
+  }
+  async DeleteCATPROCESOS(
+    input: DeleteCATPROCESOSInput
+  ): Promise<DeleteCATPROCESOSMutation> {
+    const statement = `mutation DeleteCATPROCESOS($input: DeleteCATPROCESOSInput!) {
+        deleteCATPROCESOS(input: $input) {
+          __typename
+          PROCESO
+          ARRANQUE
+          DESCRIPCION
+          NEGOCIO
+          TIPO
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {
+      input
+    };
+    const response = (await API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    )) as any;
+    return <DeleteCATPROCESOSMutation>response.data.deleteCATPROCESOS;
+  }
   async GetAUDGENUSUARIOS(ID: string): Promise<GetAUDGENUSUARIOSQuery> {
     const statement = `query GetAUDGENUSUARIOS($ID: String!) {
         getAUDGENUSUARIOS(ID: $ID) {
@@ -1050,6 +1222,59 @@ export class APIService {
     return <QueryAUDGENESTADOPROCESOSByIDREGISTROFECHACREADOIndexQuery>(
       response.data.queryAUDGENESTADOPROCESOSByIDREGISTROFECHACREADOIndex
     );
+  }
+  async GetCATPROCESOS(PROCESO: string): Promise<GetCATPROCESOSQuery> {
+    const statement = `query GetCATPROCESOS($PROCESO: String!) {
+        getCATPROCESOS(PROCESO: $PROCESO) {
+          __typename
+          PROCESO
+          ARRANQUE
+          DESCRIPCION
+          NEGOCIO
+          TIPO
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {
+      PROCESO
+    };
+    const response = (await API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    )) as any;
+    return <GetCATPROCESOSQuery>response.data.getCATPROCESOS;
+  }
+  async ListCATPROCESOS(
+    filter?: TableCATPROCESOSFilterInput,
+    limit?: number,
+    nextToken?: string
+  ): Promise<ListCATPROCESOSQuery> {
+    const statement = `query ListCATPROCESOS($filter: TableCATPROCESOSFilterInput, $limit: Int, $nextToken: String) {
+        listCATPROCESOS(filter: $filter, limit: $limit, nextToken: $nextToken) {
+          __typename
+          items {
+            __typename
+            PROCESO
+            ARRANQUE
+            DESCRIPCION
+            NEGOCIO
+            TIPO
+          }
+          nextToken
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {};
+    if (filter) {
+      gqlAPIServiceArguments.filter = filter;
+    }
+    if (limit) {
+      gqlAPIServiceArguments.limit = limit;
+    }
+    if (nextToken) {
+      gqlAPIServiceArguments.nextToken = nextToken;
+    }
+    const response = (await API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    )) as any;
+    return <ListCATPROCESOSQuery>response.data.listCATPROCESOS;
   }
   OnCreateAUDGENUSUARIOSListener(
     ID?: string
@@ -1322,5 +1547,71 @@ export class APIService {
     ) as Observable<
       SubscriptionResponse<OnDeleteAUDGENESTADOPROCESOSubscription>
     >;
+  }
+
+  OnCreateCATPROCESOSListener(
+    PROCESO?: string
+  ): Observable<SubscriptionResponse<OnCreateCATPROCESOSSubscription>> {
+    const statement = `subscription OnCreateCATPROCESOS($PROCESO: String) {
+        onCreateCATPROCESOS(PROCESO: $PROCESO) {
+          __typename
+          PROCESO
+          ARRANQUE
+          DESCRIPCION
+          NEGOCIO
+          TIPO
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {};
+    if (PROCESO) {
+      gqlAPIServiceArguments.PROCESO = PROCESO;
+    }
+    return API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    ) as Observable<SubscriptionResponse<OnCreateCATPROCESOSSubscription>>;
+  }
+
+  OnUpdateCATPROCESOSListener(
+    PROCESO?: string
+  ): Observable<SubscriptionResponse<OnUpdateCATPROCESOSSubscription>> {
+    const statement = `subscription OnUpdateCATPROCESOS($PROCESO: String) {
+        onUpdateCATPROCESOS(PROCESO: $PROCESO) {
+          __typename
+          PROCESO
+          ARRANQUE
+          DESCRIPCION
+          NEGOCIO
+          TIPO
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {};
+    if (PROCESO) {
+      gqlAPIServiceArguments.PROCESO = PROCESO;
+    }
+    return API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    ) as Observable<SubscriptionResponse<OnUpdateCATPROCESOSSubscription>>;
+  }
+
+  OnDeleteCATPROCESOSListener(
+    PROCESO?: string
+  ): Observable<SubscriptionResponse<OnDeleteCATPROCESOSSubscription>> {
+    const statement = `subscription OnDeleteCATPROCESOS($PROCESO: String) {
+        onDeleteCATPROCESOS(PROCESO: $PROCESO) {
+          __typename
+          PROCESO
+          ARRANQUE
+          DESCRIPCION
+          NEGOCIO
+          TIPO
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {};
+    if (PROCESO) {
+      gqlAPIServiceArguments.PROCESO = PROCESO;
+    }
+    return API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    ) as Observable<SubscriptionResponse<OnDeleteCATPROCESOSSubscription>>;
   }
 }

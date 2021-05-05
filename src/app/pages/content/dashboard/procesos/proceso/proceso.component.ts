@@ -30,7 +30,8 @@ export class ProcesoComponent implements OnInit, OnDestroy {
 
   listaProcesos: any;
   totalItems: number;
-  actualPage: number = 1;
+  paginaActualEjecucionesProceso: number = 1;
+  paginaActualProceso: number = 1;
   previousPage: number;
   showPagination: boolean;
   pageSize: number;
@@ -74,7 +75,9 @@ export class ProcesoComponent implements OnInit, OnDestroy {
 
     this.DataUser$.subscribe(res => this.DataUser = res).unsubscribe()
 
-    //console.log(this.DataUser)
+
+
+    console.log(this.DataUser.attributes['custom:negocio'])
     this.AUDGENESTADOPROCESOS$ = this.store.select(
       ({ AUDGENESTADOPROCESOS }) => AUDGENESTADOPROCESOS.AUDGENESTADOPROCESO
     ).pipe(map(res =>

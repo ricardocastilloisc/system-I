@@ -136,3 +136,28 @@ query QueryAUDGENESTADOPROCESOSByIDREGISTROFECHACREADOIndex(
     nextToken
   }
 }
+query GetCATPROCESOS($PROCESO: String!) {
+  getCATPROCESOS(PROCESO: $PROCESO) {
+    PROCESO
+    ARRANQUE
+    DESCRIPCION
+    NEGOCIO
+    TIPO
+  }
+}
+query ListCATPROCESOS(
+  $filter: TableCATPROCESOSFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listCATPROCESOS(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      PROCESO
+      ARRANQUE
+      DESCRIPCION
+      NEGOCIO
+      TIPO
+    }
+    nextToken
+  }
+}

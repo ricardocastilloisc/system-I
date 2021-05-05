@@ -17,14 +17,6 @@
           "appId": "d23mbxjbgl0msz",
           "type": "manual"
         }
-      },
-      "auth": {
-        "frontsia9b4c158a": {
-          "userPoolId": "us-east-1_mRG6EmrII",
-          "userPoolName": "ExternalIdPDemoPool78E73338-zYEbIIfaeWus",
-          "webClientId": "jll4ul3pmr6rb37i0fmtmctf",
-          "nativeClientId": "jll4ul3pmr6rb37i0fmtmctf"
-        }
       }
     }
   }

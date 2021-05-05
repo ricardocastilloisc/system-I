@@ -131,3 +131,30 @@ mutation DeleteAUDGENESTADOPROCESO($input: DeleteAUDGENESTADOPROCESOInput!) {
     TIPO_PROCESO
   }
 }
+mutation CreateCATPROCESOS($input: CreateCATPROCESOSInput!) {
+  createCATPROCESOS(input: $input) {
+    PROCESO
+    ARRANQUE
+    DESCRIPCION
+    NEGOCIO
+    TIPO
+  }
+}
+mutation UpdateCATPROCESOS($input: UpdateCATPROCESOSInput!) {
+  updateCATPROCESOS(input: $input) {
+    PROCESO
+    ARRANQUE
+    DESCRIPCION
+    NEGOCIO
+    TIPO
+  }
+}
+mutation DeleteCATPROCESOS($input: DeleteCATPROCESOSInput!) {
+  deleteCATPROCESOS(input: $input) {
+    PROCESO
+    ARRANQUE
+    DESCRIPCION
+    NEGOCIO
+    TIPO
+  }
+}
