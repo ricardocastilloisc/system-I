@@ -12,6 +12,8 @@ import { distinct, filter, map, tap } from 'rxjs/operators';
 import { AUDGENESTADOPROCESO_INTERFACE } from 'src/app/model/AUDGENESTADOPROCESO.model';
 import { LoadAUDGENESTADOPROCESOS, UnsetAUDGENESTADOPROCESO, LoadCATPROCESOS, UnsetCATPROCESO } from 'src/app/ReduxStore/actions';
 import { Usuario } from '../../../../../model/usuario.model';
+import { ProcesosService } from '../../../../../services/procesos.service'
+import {v4 as uuidv4} from 'uuid';
 
 
 @Component({
@@ -37,7 +39,8 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
     private router: Router,
     private store: Store<AppState>,
     private rutaActiva: ActivatedRoute,
-    private api: APIService
+    private api: APIService,
+    private serviciosProcesos: ProcesosService
   ) {
 
     this.rutaActiva.paramMap.subscribe(params => {
@@ -52,7 +55,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
 
     this.DataUser$ = this.store.select(({ usuario }) => usuario.user);
 
-    this.DataUser$.subscribe(res => this.negocio = res.attributes['custom:negocio']).unsubscribe()
+    this.DataUser$.subscribe(res => {this.negocio = res.attributes['custom:negocio']; console.log(res)}).unsubscribe()
     // this.AUDGENPROCESOS$ = this.store.select(
     //   ({ AUDGENPROCESOS }) => AUDGENPROCESOS.AUDGENPROCESOS
     // ).pipe( map (res => {
@@ -120,12 +123,25 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
       : false;
       
   };
-  refreshComponent(){
+  refreshComponent() : void{
     this.router.navigate([this.router.url])
  }
 
-  consultar(idProceso) {
+  consultar(idProceso): void {
     this.router.navigate(['/' + window.location.pathname + '/proceso/' + idProceso]);
+  }
+
+  inciarProceso(nombreProceso: string, correo: string, area: string): void {
+
+    let idEjecucion  = uuidv4();
+    console.log(nombreProceso,correo, area, idEjecucion)
+
+    let response = this.serviciosProcesos.iniciarProceso(nombreProceso, correo, area)
+
+    console.log(response)
+
+
+
   }
 
 }

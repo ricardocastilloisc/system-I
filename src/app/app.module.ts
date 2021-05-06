@@ -23,6 +23,7 @@ import { EffectsArrays } from './ReduxStore/effects';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -35,6 +36,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     NgxPaginationModule,
     CommonModule,
     AppRoutingModule,
+    HttpClientModule,
     /* configure app with AmplifyUIAngularModule */
     AmplifyUIAngularModule,
     NgMultiSelectDropDownModule.forRoot(),

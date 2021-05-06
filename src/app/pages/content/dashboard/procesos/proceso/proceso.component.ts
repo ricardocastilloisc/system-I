@@ -39,7 +39,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
   Ejecutor = ERole.Ejecutor;
   Soporte = ERole.Soporte;
   DataUser: any;
-  
+  ejemplo
   fechaBusqueda: Date;
 
   constructor(
@@ -66,6 +66,8 @@ export class ProcesoComponent implements OnInit, OnDestroy {
       fechaFiltrar: ['Fecha']
     })
 
+    this.api.OnUpdateAUDGENESTADOPROCESOListener().subscribe(res => console.log(res))
+    
     this.maxDate = new Date();
     this.DataUser$ = this.store.select(({ usuario }) => usuario.user);
 
@@ -91,9 +93,9 @@ export class ProcesoComponent implements OnInit, OnDestroy {
       }
     ))
 
-    this.store.select(
-      ({ AUDGENESTADOPROCESOS }) => AUDGENESTADOPROCESOS.AUDGENESTADOPROCESO
-    ).subscribe(res => console.log('que hay',res))
+    // this.store.select(
+    //   ({ AUDGENESTADOPROCESOS }) => AUDGENESTADOPROCESOS.AUDGENESTADOPROCESO
+    // ).subscribe(res => console.log('que hay',res))
 
 
 
