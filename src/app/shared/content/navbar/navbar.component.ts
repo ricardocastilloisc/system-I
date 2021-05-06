@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 import { ERole } from '../../../validators/roles';
 declare var $: any;
 
-let color = '';
+let color = 'verde';
 
 @Component({
   selector: 'app-navbar',
@@ -24,7 +24,7 @@ export class NavbarComponent implements OnInit, AfterViewInit {
     this.resizeMenuContent();
   }
 
-  DataUser$: Observable<Usuario>;  
+  DataUser$: Observable<Usuario>;
 
   Administrador = ERole.Administrador;
   Ejecutor = ERole.Ejecutor;
@@ -58,16 +58,39 @@ export class NavbarComponent implements OnInit, AfterViewInit {
       color = 'morado';
     } else if (nombreRuta.includes('Auditoría')) {
       color = 'azul';
+    } else{
+      color = 'verde';
     }
     //console.log(color);
     return nombreRuta.length > 0 ? nombreRuta : 'Inicio';
   };
 
-  morado = () => {
-    let mor = true;
-    return mor;
+  estiloVerde = () => {
+    let verde = false;
+    if (color === 'verde') {
+      verde = true;
+    }
+    console.log('estilo verde: ' + color);
+    return verde;
   };
 
+  estiloMorado = () => {
+    let morado = false;
+    if (color === 'morado') {
+      morado = true;
+    }
+    console.log('estilo morado: ' + color);
+    return morado;
+  };
+
+  estiloAzul = () => {
+    let azul = false;
+    if (color === 'azul') {
+      azul = true;
+    }
+    console.log('estilo azul: ' + color);
+    return azul;
+  };
   ngOnInit(): void {
     this.DataUser$ = this.store.select(({ usuario }) => usuario.user);
     this.getRuta();

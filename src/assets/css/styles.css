@@ -364,11 +364,39 @@ img.alineadoTextoImagenCentro {
   margin-left: 100px;
   color: #00c4d9;
 }
+.alineadoTextoDerechaAzul {
+  text-align: right;
+  margin-top: 15px;
+  line-height: 5px;
+  margin-left: 100px;
+  color: #0091DA;
+}
+.alineadoTextoDerechaMorado {
+  text-align: right;
+  margin-top: 15px;
+  line-height: 5px;
+  margin-left: 100px;
+  color: #7C69C3;
+}
+
 .alineadoTextoIzquierda {
   text-align: left;
   margin-top: 15px;
   line-height: 5px;
   color: #00c4d9;
+}
+
+.alineadoTextoIzquierdaAzul {
+  text-align: left;
+  margin-top: 15px;
+  line-height: 5px;
+  color: #0091DA;
+}
+.alineadoTextoIzquierdaMorado {
+  text-align: left;
+  margin-top: 15px;
+  line-height: 5px;
+  color: #7C69C3;
 }
 
 #optionshome {
@@ -534,6 +562,14 @@ table.listado-design-general td {
   border-radius: 2px;
   float: left;
   display: flex;
+}
+
+#tabla{  /*padre*/
+	width: 100%;
+}
+#tabla .A, #tabla .B{  /*hijos*/
+	display: table-cell;  
+  padding: 5px;
 }
 
 
