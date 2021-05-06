@@ -84,15 +84,64 @@
   <div id="content">
     <nav id="headernav"
       class=" margin-navbar-barra navbar navbar-expand-lg navbar-light bg-light navbar-fixed-top navbar-slide-nav">
-      <div class="container-fluid">
+      <!-- ESTILO VERDE -->
+      <div class="container-fluid" *ngIf="estiloVerde()">
         <button (click)="toggle()" type="button" id="siderCollapse" class="btn btn-light col-1">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="alineadoTextoIzquierda col-5">
-          <p>{{ getRuta() }}</p>
-          <p *ngIf="morado()">morado</p>
+          <div id="tabla">
+            <div class="A"><img src="assets/icons/nav/inicio.svg" /></div>
+            <div class="B">
+              <p>{{ getRuta() }}</p>
+            </div>
+          </div>
         </div>
         <div class="alineadoTextoDerecha col-5 align-self-end texto-responsivo-usuario">
+          <p>
+            <b>{{ DataUser.attributes.given_name}} {{ DataUser.attributes.family_name}}</b>
+          </p>
+          <p *ngIf="usuario.validarRolUsuario()">{{
+            DataUser.attributes.hasOwnProperty('custom:negocio')?DataUser.attributes['custom:negocio']:'' }} / {{
+            DataUser.attributes.hasOwnProperty('custom:rol')?DataUser.attributes['custom:rol']:'' }}</p>
+        </div>
+      </div>
+      <!-- ESTILO AZUL -->
+      <div class="container-fluid" *ngIf="estiloAzul()">
+        <button (click)="toggle()" type="button" id="siderCollapse" class="btn btn-light col-1">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="alineadoTextoIzquierdaAzul col-5">
+          <div id="tabla">
+            <div class="A"><img src="assets/icons/nav/auditoria.svg" /></div>
+            <div class="B">
+              <p>{{ getRuta() }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="alineadoTextoDerechaAzul col-5 align-self-end texto-responsivo-usuario">
+          <p>
+            <b>{{ DataUser.attributes.given_name}} {{ DataUser.attributes.family_name}}</b>
+          </p>
+          <p *ngIf="usuario.validarRolUsuario()">{{
+            DataUser.attributes.hasOwnProperty('custom:negocio')?DataUser.attributes['custom:negocio']:'' }} / {{
+            DataUser.attributes.hasOwnProperty('custom:rol')?DataUser.attributes['custom:rol']:'' }}</p>
+        </div>
+      </div>
+      <!-- ESTILO MORADO -->
+      <div class="container-fluid" *ngIf="estiloMorado()">
+        <button (click)="toggle()" type="button" id="siderCollapse" class="btn btn-light col-1">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="alineadoTextoIzquierdaMorado col-5">
+          <div id="tabla">
+            <div class="A"><img src="assets/icons/nav/procesos.svg" /></div>
+            <div class="B">
+              <p>{{ getRuta() }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="alineadoTextoDerechaMorado col-5 align-self-end texto-responsivo-usuario">
           <p>
             <b>{{ DataUser.attributes.given_name}} {{ DataUser.attributes.family_name}}</b>
           </p>
