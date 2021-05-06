@@ -35,6 +35,7 @@ div.container-selector-proceso {
   background: white;
   color: #464E7E;
   font: bold 20px FS Elliot Pro;
+  cursor: pointer;
 }
 .selector-proceso > button:focus {
   background-color: #464E7E;

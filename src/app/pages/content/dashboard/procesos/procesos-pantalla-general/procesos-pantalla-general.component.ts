@@ -63,9 +63,11 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
     //     })
     // }))
 
+    
     this.tipo = this.rutaActiva.snapshot.params.tipo;
 
     //console.log( this.rutaActiva.snapshot.params.tipo)
+    console.log( this.negocio)
 
     // this.AUDGENPROCESOS$ = this.store.select(
     //   ({ AUDGENPROCESOS }) => AUDGENPROCESOS.AUDGENPROCESOS

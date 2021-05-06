@@ -312,6 +312,7 @@ a[data-toggle="collapse"] {
   opacity: 1;
   margin: 0 15px;
   padding: 15px;
+  cursor: pointer;
 }
 
 .play-icon {
@@ -322,6 +323,11 @@ a[data-toggle="collapse"] {
   opacity: 1;
   margin: 0 15px;
   padding: 15px;
+  cursor: pointer;
+}
+
+.play-icon :hover{
+  
 }
 
 .stop-icon {
@@ -332,6 +338,7 @@ a[data-toggle="collapse"] {
   opacity: 1;
   margin: 0 15px;
   padding: 15px;
+  cursor: pointer;
 }
 
 .editar-icon {

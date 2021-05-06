@@ -91,6 +91,10 @@ export class ProcesoComponent implements OnInit, OnDestroy {
       }
     ))
 
+    this.store.select(
+      ({ AUDGENESTADOPROCESOS }) => AUDGENESTADOPROCESOS.AUDGENESTADOPROCESO
+    ).subscribe(res => console.log('que hay',res))
+
 
 
     this.store.select(
@@ -213,6 +217,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
         }
       ))
 
+      
       // this.store.select(
       //   ({ AUDGENEJECUCIONESPROCESO }) => AUDGENEJECUCIONESPROCESO.AUDGENEJECUCIONESPROCESO
       // ).pipe( map (res => {
@@ -224,7 +229,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
       // })).subscribe(res => console.log(res))
 
       let body =   {
-        filter:{​​​​​ FECHA_ACTUALIZACION: {​​​​​ contains: fechaFiltro}​​​​​ }​​​​​,
+        filter:{​​​​​ FECHA_ACTUALIZACION: {​​​​​ contains: fechaFiltro}, INTERFAZ: {​​​​​ eq: this.rutaActiva.snapshot.params.id} ​​​​​ }​​​​​,
         limit: 1000
       }
 

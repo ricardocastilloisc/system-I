@@ -43,7 +43,7 @@
             <td>{{CATPROCESO?.PROCESO}}</td>
             <td>
               <img *ngIf="CATPROCESO.ARRANQUE !== 'AUTOMATICO'" class="play-icon">
-              <img *ngIf="CATPROCESO.ARRANQUE !== 'AUTOMATICO'" class="stop-icon" (click)="consultar()">
+              <img *ngIf="CATPROCESO.ARRANQUE !== 'AUTOMATICO'" class="stop-icon">
               <img class="detalle-icon" (click)="consultar(CATPROCESO.PROCESO)">
             </td>
           </tr>
