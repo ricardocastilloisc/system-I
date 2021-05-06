@@ -245,7 +245,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
 
   filtrar = () => {
     //console.log(this.selectedItems);
-    /*
+    
     let FiltrarRol =
       this.FiltroUsuarioForm.get('rolFiltrar').value === 'Permiso'
         ? null
@@ -264,6 +264,6 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       FiltrarRol,
       FiltrarArea,
       FiltrarCorreo
-    );*/
+    );
   };
 }
