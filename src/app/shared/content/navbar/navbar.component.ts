@@ -51,7 +51,7 @@ export class NavbarComponent implements OnInit, AfterViewInit {
       });
     });
     let nombreRuta = ArrayRuta.join('/').toString();
-    console.log(nombreRuta);
+    //console.log(nombreRuta);
     if (nombreRuta.includes('Administración')) {
       color = 'verde';
     } else if (nombreRuta.includes('Procesos')) {
@@ -59,7 +59,7 @@ export class NavbarComponent implements OnInit, AfterViewInit {
     } else if (nombreRuta.includes('Auditoría')) {
       color = 'azul';
     }
-    console.log(color);
+    //console.log(color);
     return nombreRuta.length > 0 ? nombreRuta : 'Inicio';
   };
 

@@ -102,6 +102,7 @@ table.listado-proceso td {
   font: 18px FS Elliot Pro;
   height: 40px;
   margin: 6px 0px;
+  min-width: 210px;
 }
 .listado-proceso tr td:first-of-type {
   border-top-left-radius: 25px;

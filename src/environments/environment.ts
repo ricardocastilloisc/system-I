@@ -33,11 +33,11 @@ export const environment = {
         endpoint: 'https://sqs.us-east-1.amazonaws.com/335672086802/sia-utileria-encolamiento-mensajes-monitoreo-dev.fifo'
       },
       {
-        name: 'aims',
+        name: 'AIMS Y EXCEDENTES',
         endpoint: 'https://yz5n0u7sd7.execute-api.us-east-1.amazonaws.com/dev/sia/afore/aimsexcedentes'
       },
       {
-        name: 'md',
+        name: 'MD',
         endpoint: 'https://yyzloium49.execute-api.us-east-1.amazonaws.com/apis/sia/afore/md/mock'
       }
     ],

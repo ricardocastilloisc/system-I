@@ -40,7 +40,7 @@
             <th>Acción</th>
           </tr>
           <tr *ngFor="let CATPROCESO of CATPROCESOS | paginate: {id: 'listadoInterfaces', itemsPerPage: 10, currentPage: actualPage} ; index as i">
-            <td>{{CATPROCESO?.PROCESO}}</td>
+            <td>{{CATPROCESO?.DESCRIPCION}}</td>
             <td>
               <img *ngIf="CATPROCESO.ARRANQUE !== 'AUTOMATICO'" class="play-icon" (click)="inciarProceso(CATPROCESO.PROCESO, DataUser.email ,DataUser.attributes['custom:rol'])">
               <img *ngIf="CATPROCESO.ARRANQUE !== 'AUTOMATICO'" class="stop-icon">
