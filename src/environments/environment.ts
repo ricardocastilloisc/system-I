@@ -34,7 +34,7 @@ export const environment = {
       },
       {
         name: 'aims',
-        endpoint: 'https://25mf3dkpv7.execute-api.us-east-1.amazonaws.com/dev/sia/afore/aimsexcedentes'
+        endpoint: 'https://yz5n0u7sd7.execute-api.us-east-1.amazonaws.com/dev/sia/afore/aimsexcedentes'
       }
     ],
   },
