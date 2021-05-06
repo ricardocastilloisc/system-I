@@ -146,6 +146,8 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
       }
       
     } catch(e){
+
+      alert('Error al ejecutar proceso')
       console.log(e)
     }
     

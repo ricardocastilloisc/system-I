@@ -584,3 +584,10 @@ table.listado-design-general td {
     display: flex;
     max-width: 130px;
 }
+
+
+.separador-titulos{
+  height: 1px;
+  width: 70%;
+  background: white;
+}

@@ -19,11 +19,7 @@
     box-shadow: 3px 3px 5px #00000033;
     padding: 0px !important;
 }
-.separador-titulos{
-    height: 1px;
-    width: 70%;
-    background: white;
-}
+
 
 .step-incompleto{
     background: #FF9231 !important;
