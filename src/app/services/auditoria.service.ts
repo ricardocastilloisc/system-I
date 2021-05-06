@@ -75,6 +75,19 @@ export class AuditoriaService {
     QueueUrl: environment.API.endpoints.find((el) => el.name === 'sqs-auditoria')['endpoint']
   };
 
+  paramsReceive = {
+    AttributeNames: [
+       "SentTimestamp"
+    ],
+    MaxNumberOfMessages: 10,
+    MessageAttributeNames: [
+       "All"
+    ],
+    QueueUrl: environment.API.endpoints.find((el) => el.name === 'sqs-auditoria')['endpoint'],
+    VisibilityTimeout: 20,
+    WaitTimeSeconds: 0
+   };
+   
   constructor() { }
 
   enviarMensaje(): void {
@@ -83,6 +96,26 @@ export class AuditoriaService {
         console.log("Error.", err);
       } else {
         console.log("Success.", data.MessageId);
+      }
+    });
+  }
+
+  recibirMensaje(): void {
+    sqs.receiveMessage(this.paramsReceive, function(err, data) {
+      if (err) {
+        console.log("Receive Error", err);
+      } else if (data.Messages) {
+        var deleteParams = {
+          QueueUrl: environment.API.endpoints.find((el) => el.name === 'sqs-auditoria')['endpoint'],
+          ReceiptHandle: data.Messages[0].ReceiptHandle
+        };
+        sqs.deleteMessage(deleteParams, function(err, data) {
+          if (err) {
+            console.log("Delete Error", err);
+          } else {
+            console.log("Message Deleted", data);
+          }
+        });
       }
     });
   }

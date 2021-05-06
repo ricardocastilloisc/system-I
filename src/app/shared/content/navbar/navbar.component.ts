@@ -64,7 +64,7 @@ export class NavbarComponent implements OnInit, AfterViewInit {
   };
 
   morado = () => {
-    let mor = false;
+    let mor = true;
     return mor;
   };
 
