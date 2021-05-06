@@ -553,6 +553,10 @@ table.listado-design-general td {
   display: inline-block;
 
 }
+
+.pagination-next,.pagination-previous:hover{
+  cursor: pointer;
+}
 .etiquetaSelecetCustom {
   border: 1px solid #00C4D9;
   margin-right: 4px;
