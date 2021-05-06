@@ -9,17 +9,22 @@ import { Observable } from 'rxjs';
 import { ERole } from '../../../validators/roles';
 declare var $: any;
 
+let color = '';
+
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css'],
 })
+
 export class NavbarComponent implements OnInit, AfterViewInit {
   @HostListener('window:resize', ['$event'])
+
   onResize() {
     this.resizeMenuContent();
   }
-  DataUser$: Observable<Usuario>;
+
+  DataUser$: Observable<Usuario>;  
 
   Administrador = ERole.Administrador;
   Ejecutor = ERole.Ejecutor;
@@ -30,9 +35,10 @@ export class NavbarComponent implements OnInit, AfterViewInit {
     private store: Store<AppState>,
     private usuario: UsuariosService
   ) { }
+
   ngAfterViewInit(): void {
     this.resizeMenuContent();
-    this.getRuta();
+    //this.getRuta();
   }
 
   getRuta = () => {
@@ -45,22 +51,35 @@ export class NavbarComponent implements OnInit, AfterViewInit {
       });
     });
     let nombreRuta = ArrayRuta.join('/').toString();
+    console.log(nombreRuta);
+    if (nombreRuta.includes('Administración')) {
+      color = 'verde';
+    } else if (nombreRuta.includes('Procesos')) {
+      color = 'morado';
+    } else if (nombreRuta.includes('Auditoría')) {
+      color = 'azul';
+    }
+    console.log(color);
     return nombreRuta.length > 0 ? nombreRuta : 'Inicio';
   };
 
+  morado = () => {
+    let mor = true;
+    return mor;
+  };
 
   ngOnInit(): void {
     this.DataUser$ = this.store.select(({ usuario }) => usuario.user);
+    this.getRuta();
   }
 
   signOut = () => {
     this.authService.signOut();
   };
 
-  rolesValids = (User:Usuario, roles: any[]): boolean => {
-    return this.authService.rolesValids( User, roles);
+  rolesValids = (User: Usuario, roles: any[]): boolean => {
+    return this.authService.rolesValids(User, roles);
   };
-
 
   toggle = () => {
     $('#sidebar').toggleClass('active');

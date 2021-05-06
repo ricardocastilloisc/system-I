@@ -84,7 +84,7 @@ export class UsuariosService {
 
   numeroDeProcesos = 0;
 
-  constructor(private store: Store<AppState>) {}
+  constructor(private store: Store<AppState>) { }
 
   consultarGrupos(): void {
     // metodo para consultar todos los grupos del user pool
