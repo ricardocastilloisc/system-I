@@ -84,7 +84,7 @@ export class UsuariosService {
 
   numeroDeProcesos = 0;
 
-  constructor(private store: Store<AppState>) { }
+  constructor(private store: Store<AppState>) {}
 
   consultarGrupos(): void {
     // metodo para consultar todos los grupos del user pool
@@ -435,19 +435,44 @@ ayuda de atibutos: {Name: "sub", Value: "42ae1b55-8029-4a09-8c81-8c805c650aaf"}
   filtrarUsuariosConAtributos = (
     usuarios: UsuarioListado[],
     permiso,
-    area,
+    areas,
     correo
   ) => {
     let Usuarios = [...usuarios];
-    if (permiso != null) {
-      Usuarios = Usuarios.filter((e) => e.Attributes['custom:rol'] === permiso);
-    }
-    if (area != null) {
-      Usuarios = Usuarios.filter((e) => e.GrupoQuePertenece === area);
-    }
+
     if (correo != null) {
       Usuarios = Usuarios.filter((e) => e.Attributes['email'] === correo);
     }
+
+    if (permiso != null) {
+      let arrayTempPermiso = [];
+      permiso.forEach((permiso) => {
+        arrayTempPermiso = [
+          ...arrayTempPermiso,
+          ...Usuarios.filter((e) => e.Attributes['custom:rol'] === permiso),
+        ];
+      });
+      Usuarios = arrayTempPermiso;
+    }
+    if (areas != null) {
+      let arrayTempArea = [];
+
+      areas.forEach((area) => {
+        Usuarios.forEach((usuario) => {
+          let areaArrayAtributoTemp =
+            usuario.GrupoQuePertenece.trim().length === 0
+              ? []
+              : usuario.GrupoQuePertenece.split(',');
+
+          if (areaArrayAtributoTemp.includes(area)) {
+            arrayTempArea = [...arrayTempArea, usuario];
+          }
+        });
+      });
+
+      Usuarios = arrayTempArea;
+    }
+
     return Usuarios;
   };
 

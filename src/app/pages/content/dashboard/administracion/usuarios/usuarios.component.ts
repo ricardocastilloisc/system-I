@@ -1,6 +1,5 @@
 import { ProcesoLimpiar } from './../../../../../ReduxStore/actions/loaderProcesoCambios.actions';
 import { EArea } from './../../../../../validators/roles';
-import { ConsultaUsuario } from './../../../../../ReduxStore/reducers/listaUsuarios.reducer';
 import {
   LoadListaUsuarios,
   UnsetListaUsuarios,
@@ -11,11 +10,13 @@ import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { UsuarioListado } from 'src/app/model/usuarioLitsa.model';
 import { retornarStringSiexiste } from '../../../../../helpers/FuncionesUtiles';
-import { FormBuilder, FormGroup } from '@angular/forms';
+
 import { ERole, ENegocio } from 'src/app/validators/roles';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UsuariosService } from '../../../../../services/usuarios.service';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { NgxSpinnerService } from 'ngx-spinner';
+declare var $: any;
 
 @Component({
   selector: 'app-usuarios',
@@ -23,9 +24,6 @@ import { IDropdownSettings } from 'ng-multiselect-dropdown';
   styleUrls: ['./usuarios.component.css'],
 })
 export class UsuariosComponent implements OnInit, OnDestroy {
-  FiltroUsuarioForm: FormGroup;
-  FormCambioPermiso: FormGroup;
-
   Roles = [
     {
       label: 'Administrador',
@@ -56,6 +54,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
 
   EstadoProceso: Subscription;
   ListadoUsuarios$: Subscription;
+  Loading$: Subscription;
 
   ListadoUsuariosOriginal: UsuarioListado[] = [];
   ListadoUsuariosPantalla: UsuarioListado[] = [];
@@ -66,47 +65,115 @@ export class UsuariosComponent implements OnInit, OnDestroy {
 
   dropdownListCambioDeNegocio = [];
 
+  dropdownListFiltroCorreos = [];
+
+  dropdownListFiltroPermisos = [];
+
+  dropdownListFiltroAreas = [];
+
   SettingsCambioDeNegocio: IDropdownSettings = {};
 
+  SettingsFiltroDeCorreos: IDropdownSettings = {};
+
+  SettingsFiltroDePermisos: IDropdownSettings = {};
+
+  SettingsFiltroDeArea: IDropdownSettings = {};
+
   ///aqui va ir los inputs que se iniciaran para el modal
+
+  selectedItemsFiltroAreas = [];
+
+  selectedItemsFiltroCorreos = [];
+
+  selectedItemsFiltroaPermisos = [];
 
   selectedItemsCambioDeNegocio = [];
   SelectCamabiarPermiso = 'Permiso';
   SelectCamabiarArea = 'Area';
 
+  paginaActualUsuarios: number = 1;
+
+  loading = true;
+
+  filtroActivo = false;
+
   constructor(
     private store: Store<AppState>,
-    private fb: FormBuilder,
     private modalService: NgbModal,
-    private UsuariosService: UsuariosService
+    private UsuariosService: UsuariosService,
+    private spinner: NgxSpinnerService
   ) {}
   ngOnDestroy(): void {
     this.store.dispatch(UnsetListaUsuarios());
     this.ListadoUsuarios$.unsubscribe();
+    this.EstadoProceso.unsubscribe();
+    this.Loading$.unsubscribe();
   }
 
+  cambiarEtiquetaSeleccionada() {
+    setTimeout(() => {
+      $('#correo')
+        .find('.selected-item')
+        .attr('class', 'etiquetaSelecetCustom');
+    }, 1);
+  }
+
+  cambiarEtiquetaSeleccionadaGeneral(elemento) {
+    setTimeout(() => {
+      $('#'+elemento)
+        .find('.selected-item')
+        .attr('class', 'etiquetasUsuarios');
+    }, 1);
+  }
+
+
+
   ngOnInit(): void {
-    this.FiltroUsuarioForm = this.fb.group({
-      rolFiltrar: ['Permiso'],
-      areaFiltrar: ['area'],
-      correoFiltrar: ['correo'],
-    });
-    this.FormCambioPermiso = this.fb.group({
-      rolCambiar: ['Permiso'],
-      negocioCambiar: ['negocio'],
-      areaCambiar: ['area'],
-    });
+    this.initicializarLosSelects();
+
+    this.Loading$ = this.store
+      .select(({ ListaUsuarios }) => ListaUsuarios.loading)
+      .subscribe((res) => {
+        this.loading = res;
+
+        if (res) {
+          this.spinner.show();
+        } else {
+          this.spinner.hide();
+        }
+      });
 
     this.ListadoUsuarios$ = this.store
       .select(({ ListaUsuarios }) => ListaUsuarios.ListaUsuarios)
       .subscribe((ListadoDeUsuarios) => {
         this.ListadoUsuariosOriginal = ListadoDeUsuarios;
+
+        let arrayCorreos = [];
+        if (this.ListadoUsuariosOriginal) {
+          this.ListadoUsuariosOriginal.forEach((e) => {
+            if (
+              this.dropdownListFiltroCorreos.filter(
+                (f) => f.item_id === e.Attributes.email
+              ).length === 0
+            ) {
+              arrayCorreos.push({
+                item_id: e.Attributes.email,
+                item_text: e.Attributes.email,
+              });
+            }
+          });
+          if(this.dropdownListFiltroCorreos.length === 0){
+            this.dropdownListFiltroCorreos = arrayCorreos;
+          }
+
+        }
+
         this.ListadoUsuariosPantalla = ListadoDeUsuarios;
+
+        if(this.filtroActivo){
+          this.filtrar();
+        }
       });
-
-    this.initicializarLosSelects();
-
-    this.store.dispatch(LoadListaUsuarios({ consulta: null }));
 
     this.store.dispatch(LoadListaUsuarios({ consulta: null }));
 
@@ -129,14 +196,87 @@ export class UsuariosComponent implements OnInit, OnDestroy {
         item_text: ENegocio.Seguros,
       },
     ];
+    this.dropdownListFiltroPermisos = [
+      { item_id: ERole.Administrador, item_text: ERole.Administrador },
+      { item_id: ERole.Ejecutor, item_text: ERole.Ejecutor },
+      {
+        item_id: ERole.Soporte,
+        item_text: ERole.Soporte,
+      },
+    ];
 
+    this.dropdownListFiltroAreas = [
+      { item_id: EArea.Contabilidad, item_text: EArea.Contabilidad },
+      { item_id: EArea.Custodia, item_text: EArea.Custodia },
+      {
+        item_id: EArea.Inversiones_Riesgos,
+        item_text: EArea.Inversiones_Riesgos,
+      },
+      {
+        item_id: EArea.Tesoreria,
+        item_text: EArea.Tesoreria,
+      },
+    ];
+
+    this.SettingsFiltroDePermisos = {
+      singleSelection: false,
+      idField: 'item_id',
+      textField: 'item_text',
+      allowSearchFilter: false,
+      clearSearchFilter: false,
+      enableCheckAll: false,
+      maxHeight: 200,
+      itemsShowLimit: 3,
+    };
+
+    this.SettingsFiltroDeArea = {
+      singleSelection: false,
+      idField: 'item_id',
+      textField: 'item_text',
+      allowSearchFilter: false,
+      clearSearchFilter: false,
+      enableCheckAll: false,
+      maxHeight: 200,
+    };
+
+    this.SettingsFiltroDeCorreos = {
+      singleSelection: true,
+      idField: 'item_id',
+      textField: 'item_text',
+      allowSearchFilter: true,
+      clearSearchFilter: true,
+      maxHeight: 200,
+      itemsShowLimit: 1,
+      searchPlaceholderText: 'Buscar Correo electrónico',
+    };
+    /*
+    singleSelection?: boolean;
+    idField?: string;
+    textField?: string;
+    disabledField?: string;
+    enableCheckAll?: boolean;
+    selectAllText?: string;
+    unSelectAllText?: string;
+    allowSearchFilter?: boolean;
+    clearSearchFilter?: boolean;
+    maxHeight?: number;
+    itemsShowLimit?: number;
+    limitSelection?: number;
+    searchPlaceholderText?: string;
+    noDataAvailablePlaceholderText?: string;
+    closeDropDownOnSelection?: boolean;
+    showSelectedItemsAtTop?: boolean;
+    defaultOpen?: boolean;
+    allowRemoteDataSearch?: boolean;
+
+*/
     this.SettingsCambioDeNegocio = {
       singleSelection: false,
       idField: 'item_id',
       textField: 'item_text',
       allowSearchFilter: false,
       enableCheckAll: false,
-      maxHeight: 200,
+      maxHeight: 150,
     };
   };
 
@@ -144,15 +284,9 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     this.ObjectUsuarioCambiar = ObjectUsuario;
     this.grupoPertenece = grupoPertenece;
 
-    /*
 
-      this.selectedItemsCambioDeNegocio = [
-      { item_id: 3, item_text: 'Pune' },
-      { item_id: 4, item_text: 'Navsari' },
-    ];
-
-
-    */
+    this.cambiarEtiquetaSeleccionadaGeneral('cambiarnegocio');
+    
     if (!retornarStringSiexiste(ObjectUsuario.Attributes, 'custom:rol')) {
       this.SelectCamabiarPermiso = 'Permiso';
     } else {
@@ -193,6 +327,25 @@ export class UsuariosComponent implements OnInit, OnDestroy {
 
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
   }
+
+  limpirarFiltro = () => {
+    this.spinner.show();
+
+    this.filtroActivo = false;
+    this.ListadoUsuariosPantalla = this.ListadoUsuariosOriginal;
+
+    this.selectedItemsFiltroAreas = [];
+
+    this.selectedItemsFiltroCorreos = [];
+
+    this.selectedItemsFiltroaPermisos = [];
+
+    this.selectedItemsCambioDeNegocio = [];
+
+    setTimeout(() => {
+      this.spinner.hide();
+    }, 300);
+  };
 
   guardarCambioPermisoUsuario = () => {
     if (
@@ -243,21 +396,50 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     return retornarStringSiexiste(object, attribute);
   };
 
+  verPaginado = () => {
+    if (this.ListadoUsuariosPantalla) {
+      if (this.ListadoUsuariosPantalla.length > 10) {
+        return true;
+      } else {
+        false;
+      }
+    } else {
+      return false;
+    }
+  };
+
   filtrar = () => {
-    //console.log(this.selectedItems);
-    
-    let FiltrarRol =
-      this.FiltroUsuarioForm.get('rolFiltrar').value === 'Permiso'
-        ? null
-        : this.FiltroUsuarioForm.get('rolFiltrar').value;
-    let FiltrarArea =
-      this.FiltroUsuarioForm.get('areaFiltrar').value === 'area'
-        ? null
-        : this.FiltroUsuarioForm.get('areaFiltrar').value;
+    this.spinner.show();
+
+    this.paginaActualUsuarios= 1
+
+    this.filtroActivo = true;
+    let FiltrarRol = null;
+
+    let FiltrarArea = null;
+
+    if (this.selectedItemsFiltroaPermisos.length !== 0) {
+      let arrayFiltroRol = [];
+      this.selectedItemsFiltroaPermisos.forEach((e) => {
+        arrayFiltroRol.push(e.item_id);
+      });
+
+      FiltrarRol = arrayFiltroRol;
+    }
+
+    if (this.selectedItemsFiltroAreas.length !== 0) {
+      let arrayFiltroArea = [];
+      this.selectedItemsFiltroAreas.forEach((e) => {
+        arrayFiltroArea.push(e.item_id);
+      });
+
+      FiltrarArea = arrayFiltroArea;
+    }
+
     let FiltrarCorreo =
-      this.FiltroUsuarioForm.get('correoFiltrar').value === 'correo'
+      this.selectedItemsFiltroCorreos.length === 0
         ? null
-        : this.FiltroUsuarioForm.get('correoFiltrar').value;
+        : this.selectedItemsFiltroCorreos[0].item_id;
 
     this.ListadoUsuariosPantalla = this.UsuariosService.filtrarUsuariosConAtributos(
       this.ListadoUsuariosOriginal,
@@ -265,5 +447,8 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       FiltrarArea,
       FiltrarCorreo
     );
+    setTimeout(() => {
+      this.spinner.hide();
+    }, 300);
   };
 }

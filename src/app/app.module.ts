@@ -23,16 +23,21 @@ import { EffectsArrays } from './ReduxStore/effects';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+
+
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
     NgxPaginationModule,
+    BrowserAnimationsModule,
     CommonModule,
     AppRoutingModule,
     /* configure app with AmplifyUIAngularModule */
