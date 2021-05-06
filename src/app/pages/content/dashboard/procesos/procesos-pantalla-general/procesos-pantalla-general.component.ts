@@ -131,14 +131,28 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
     this.router.navigate(['/' + window.location.pathname + '/proceso/' + idProceso]);
   }
 
-  inciarProceso(nombreProceso: string, correo: string, area: string): void {
+  async inciarProceso(nombreProceso: string, correo: string, area: string) {
 
+    var response;
     let idEjecucion  = uuidv4();
     console.log(nombreProceso,correo, area, idEjecucion)
 
-    let response = this.serviciosProcesos.iniciarProceso(nombreProceso, correo, area)
+    try{
+      const response = await this.serviciosProcesos.iniciarProceso(nombreProceso, correo, area)
+      console.log(response)
 
-    console.log(response)
+      if(response.codigo == 'EXITO'){
+        alert('Se inicio el proceso')
+      }
+      
+    } catch(e){
+      console.log(e)
+    }
+    
+
+   
+
+    
 
 
 

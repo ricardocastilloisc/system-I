@@ -144,6 +144,18 @@ export class ProcesoComponent implements OnInit, OnDestroy {
         })
     })).subscribe(res => console.log(res))
 
+
+    this.store.select(
+      ({ AUDGENPROCESOS }) => AUDGENPROCESOS.AUDGENPROCESOS
+    ).pipe(map(res =>
+        {
+          if(res === null) return res
+          else return res.slice().sort(function(a,b)
+          {return new Date(b.FECHA).getTime() - new Date(a.FECHA).getTime()})
+        }
+
+      )).subscribe(res => console.log(res))
+
     if(this.rolesValids(this.DataUser, [this.Administrador]))
     {
       console.log('entre al admin')
@@ -220,15 +232,15 @@ export class ProcesoComponent implements OnInit, OnDestroy {
       ))
 
       
-      // this.store.select(
-      //   ({ AUDGENEJECUCIONESPROCESO }) => AUDGENEJECUCIONESPROCESO.AUDGENEJECUCIONESPROCESO
-      // ).pipe( map (res => {
-      //   if( res == null) return res
-      //   else
-      //     return res.filter((item, i, res) => {
-      //       return res.indexOf(res.find(t => t.ID_PROCESO === item.ID_PROCESO)) === i
-      //     })
-      // })).subscribe(res => console.log(res))
+      this.store.select(
+        ({ AUDGENEJECUCIONESPROCESO }) => AUDGENEJECUCIONESPROCESO.AUDGENEJECUCIONESPROCESO
+      ).pipe( map (res => {
+        if( res == null) return res
+        else
+          return res.filter((item, i, res) => {
+            return res.indexOf(res.find(t => t.ID_PROCESO === item.ID_PROCESO)) === i
+          })
+      })).subscribe(res => console.log(res))
 
       let body =   {
         filter:{​​​​​ FECHA_ACTUALIZACION: {​​​​​ contains: fechaFiltro}, INTERFAZ: {​​​​​ eq: this.rutaActiva.snapshot.params.id} ​​​​​ }​​​​​,

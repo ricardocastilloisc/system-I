@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProcesoComponent } from '../proceso/proceso.component'
 import { OrderModule } from 'ngx-order-pipe';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { ProcesosService } from './../../../../../services/procesos.service'
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
     ReactiveFormsModule,
     FormsModule,
     OrderModule,
-  ]
+  ],
+  providers: [ProcesosService]
 })
 export class ProcesosPantallaGeneralModule { }
