@@ -28,7 +28,7 @@ export class ProcesosService {
       method: 'post',
       url: endpoint,
       headers: {
-        'Authorization': 'Bearer ' + this.authService.getToken(),
+        'Authorization': 'Bearder ' + this.authService.getToken(),
         'Content-Type': 'application/json'
       },
       data: data
@@ -36,12 +36,24 @@ export class ProcesosService {
 
     axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
-        response = response.data;
+        //console.log(JSON.stringify(response.data));
+        /*
+        {"message":"AIMS y EXCEDENTES start"}
+         */
+        //response = response.data;
+        response = {
+          codigo: 'EXITO',
+          descripcion: 'La solicitud fue exitosa.'
+        };
       })
       .catch(function (error) {
-        console.log(error);
-        response = error;
+        //console.log(JSON.stringify(error));
+        //response = error;
+        response = {
+          codigo: 'FALLO',
+          descripcion: error.message
+        };
+        //console.log(response);
       });
 
     return response;
