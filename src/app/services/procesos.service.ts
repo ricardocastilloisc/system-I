@@ -28,7 +28,7 @@ export class ProcesosService {
       method: 'post',
       url: endpoint,
       headers: {
-        'Authorization': 'Bearder ' + this.authService.getToken(),
+        'Authorization': 'Bearer ' + this.authService.getToken(),
         'Content-Type': 'application/json'
       },
       data: data
