@@ -35,6 +35,10 @@ export const environment = {
       {
         name: 'aims',
         endpoint: 'https://yz5n0u7sd7.execute-api.us-east-1.amazonaws.com/dev/sia/afore/aimsexcedentes'
+      },
+      {
+        name: 'md',
+        endpoint: 'https://yyzloium49.execute-api.us-east-1.amazonaws.com/apis/sia/afore/md/mock'
       }
     ],
   },
