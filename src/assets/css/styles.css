@@ -525,3 +525,26 @@ table.listado-design-general td {
   display: inline-block;
 
 }
+.etiquetaSelecetCustom {
+  border: 1px solid #00C4D9;
+  margin-right: 4px;
+  background: #00C4D9;
+  padding: 0 5px;
+  color: #fff;
+  border-radius: 2px;
+  float: left;
+  display: flex;
+}
+
+
+.etiquetasUsuarios{
+  border: 1px solid #00C4D9;
+    margin-right: 4px;
+    background: #00C4D9;
+    padding: 0 5px;
+    color: #fff;
+    border-radius: 2px;
+    float: left;
+    display: flex;
+    max-width: 130px;
+}

@@ -6,18 +6,25 @@ import { UsuariosComponent } from './usuarios.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OredenascEmailusuriosPipe } from '../../../../../pipes/oredenascEmailusurios.pipe';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import {NgxPaginationModule} from 'ngx-pagination';
+import { NgxSpinnerModule } from "ngx-spinner";
+import { QuitarcomaPipe } from '../../../../../pipes/quitarcoma.pipe';
+
 
 
 @NgModule({
   declarations: [
     UsuariosComponent,
-    OredenascEmailusuriosPipe
+    OredenascEmailusuriosPipe,
+    QuitarcomaPipe,
   ],
   imports: [
     CommonModule,
     UsuariosRoutingModule,
     ReactiveFormsModule,
     FormsModule,
+    NgxSpinnerModule,
+    NgxPaginationModule,
     NgMultiSelectDropDownModule.forRoot(),
   ]
 })

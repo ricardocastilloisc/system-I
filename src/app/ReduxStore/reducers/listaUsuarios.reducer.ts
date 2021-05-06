@@ -15,33 +15,39 @@ export interface ListaUsuariosState {
   ListaUsuarios: UsuarioListado[];
   consulta: ConsultaUsuario;
   error: any;
+  loading: boolean;
 }
 export const ListaUsuariosState: ListaUsuariosState = {
   ListaUsuarios: [],
   consulta: null,
   error: null,
+  loading: false,
 };
 
 const _ListadoUsuariosReducer = createReducer(
   ListaUsuariosState,
   on(LoadListaUsuarios, (state, { consulta }) => ({
     ...state,
+    loading: true,
     consulta: consulta,
   })),
   on(LoadListaUsuariosSuccess, (state, { ListaUsuarios }) => ({
     ...state,
     ListaUsuarios: [...ListaUsuarios],
+    loading: false,
     error: null,
   })),
   on(UnsetListaUsuarios, (state) => ({
     ...state,
     ListaUsuarios: null,
+    loading: false,
     consulta: null,
     error: null,
   })),
 
   on(LoadListaUsuariosError, (state, { payload }) => ({
     ...state,
+    loading: false,
     error: payload,
   }))
 );
