@@ -143,6 +143,10 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
 
       if(response.codigo == 'EXITO'){
         alert('Se inicio el proceso')
+      } else {
+
+        alert('Error al ejecutar proceso')
+       
       }
       
     } catch(e){
@@ -151,11 +155,6 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
       console.log(e)
     }
     
-
-   
-
-    
-
 
 
   }

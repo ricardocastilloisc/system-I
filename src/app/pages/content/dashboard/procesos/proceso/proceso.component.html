@@ -42,7 +42,7 @@
                 <div class="card-calendario">
                     <div>Selecciona una fecha</div>
                     <div>
-                        <input type="date" formControlName="fechaFiltrar" id="fechaFiltrar" name="fechaFiltrar" max="{{ maxDate| date:'yyyy-MM-dd'}}" />
+                        <input type="date" placeholder="dd-MM-yyyy" onfocus="(this.type='date')" formControlName="fechaFiltrar" id="fechaFiltrar" name="fechaFiltrar" [value]="maxDate" max="{{ maxDate| date:'yyyy-MM-dd'}}" />
                     </div>
                     <!-- <div>
                         
