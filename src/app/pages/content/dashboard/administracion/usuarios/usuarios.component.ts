@@ -240,13 +240,14 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     };
 
     this.SettingsFiltroDeCorreos = {
-      singleSelection: true,
+      singleSelection: false,
       idField: 'item_id',
       textField: 'item_text',
       allowSearchFilter: true,
       clearSearchFilter: true,
+      enableCheckAll: false,
       maxHeight: 200,
-      itemsShowLimit: 1,
+      itemsShowLimit: 3,
       searchPlaceholderText: 'Buscar Correo electrónico',
     };
     /*
@@ -286,7 +287,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
 
 
     this.cambiarEtiquetaSeleccionadaGeneral('cambiarnegocio');
-    
+
     if (!retornarStringSiexiste(ObjectUsuario.Attributes, 'custom:rol')) {
       this.SelectCamabiarPermiso = 'Permiso';
     } else {
@@ -329,6 +330,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   }
 
   limpirarFiltro = () => {
+
     this.spinner.show();
 
     this.filtroActivo = false;
@@ -436,10 +438,16 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       FiltrarArea = arrayFiltroArea;
     }
 
-    let FiltrarCorreo =
-      this.selectedItemsFiltroCorreos.length === 0
-        ? null
-        : this.selectedItemsFiltroCorreos[0].item_id;
+    let FiltrarCorreo = null;
+
+    if (this.selectedItemsFiltroCorreos.length !== 0) {
+      let arrayFiltroCorreo = [];
+      this.selectedItemsFiltroCorreos.forEach((e) => {
+        arrayFiltroCorreo.push(e.item_id);
+      });
+
+      FiltrarCorreo = arrayFiltroCorreo;
+    }
 
     this.ListadoUsuariosPantalla = this.UsuariosService.filtrarUsuariosConAtributos(
       this.ListadoUsuariosOriginal,

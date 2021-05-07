@@ -436,12 +436,19 @@ ayuda de atibutos: {Name: "sub", Value: "42ae1b55-8029-4a09-8c81-8c805c650aaf"}
     usuarios: UsuarioListado[],
     permiso,
     areas,
-    correo
+    Correo
   ) => {
     let Usuarios = [...usuarios];
 
-    if (correo != null) {
-      Usuarios = Usuarios.filter((e) => e.Attributes['email'] === correo);
+    if (Correo != null) {
+      let arrayTempCorreo = [];
+      Correo.forEach((Correo) => {
+        arrayTempCorreo = [
+          ...arrayTempCorreo,
+          ...Usuarios.filter((e) => e.Attributes['email'] === Correo),
+        ];
+      });
+      Usuarios = arrayTempCorreo;
     }
 
     if (permiso != null) {

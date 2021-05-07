@@ -97,7 +97,7 @@
             </div>
           </div>
         </div>
-        <div class="alineadoTextoDerecha col-5 align-self-end texto-responsivo-usuario">
+        <div class="alineadoTextoDerecha col-3 align-self-end texto-responsivo-usuario">
           <p>
             <b>{{ DataUser.attributes.given_name}} {{ DataUser.attributes.family_name}}</b>
           </p>
@@ -105,6 +105,44 @@
             DataUser.attributes.hasOwnProperty('custom:negocio')?DataUser.attributes['custom:negocio']:'' }} / {{
             DataUser.attributes.hasOwnProperty('custom:rol')?DataUser.attributes['custom:rol']:'' }}</p>
         </div>
+        <div  class="col-2 "> <div style="background-color:#00c4d9;" class="cuadroNotificaciones dropdown" id="dLabel" role="button" data-toggle="dropdown" data-target="#">
+
+          <a id="dLabel" role="button" data-toggle="dropdown" data-target="#" >
+            <img class="imagenNotificaciones" src="assets/icons/bell.png" /> <span style="color:#00c4d9">17</span>
+          </a>
+
+
+          <ul class="dropdown-menu notifications" role="menu" aria-labelledby="dLabel">
+
+            <div class="notification-heading"><h4 class="menu-title">Notificaciones</h4>
+            </div>
+            <li class="divider"></li>
+           <div class="notifications-wrapper">
+             <a class="content">
+               <div class="notification-item">
+                <h4 class="item-title">Movimiento de Operaciones</h4>
+                <p class="item-info">Empezado con exito</p>
+              </div>
+            </a>
+             <a class="content">
+               <div class="notification-item">
+                <h4 class="item-title">Movimiento de Operaciones</h4>
+                <p class="item-info">Empezado con exito</p>
+              </div>
+            </a>
+             <a class="content">
+               <div class="notification-item">
+                <h4 class="item-title">Movimiento de Operaciones</h4>
+                <p class="item-info">Empezado con exito</p>
+              </div>
+            </a>
+
+
+           </div>
+            <li class="divider"></li>
+          </ul>
+          </div> </div>
+
       </div>
       <!-- ESTILO AZUL -->
       <div class="container-fluid" *ngIf="estiloAzul()">
