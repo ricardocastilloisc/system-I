@@ -122,6 +122,33 @@ export class ProcesoComponent implements OnInit, OnDestroy {
 
   }
 
+  recargarEjecuciones(){
+
+    this.AUDGENESTADOPROCESOS$ = this.store.select(
+      ({ AUDGENESTADOPROCESOS }) => AUDGENESTADOPROCESOS.AUDGENESTADOPROCESO
+    ).pipe(map(res => {
+      if (res === null) return res
+      else return res.slice().sort(function (a, b) { return new Date(b.FECHA_ACTUALIZACION).getTime() - new Date(a.FECHA_ACTUALIZACION).getTime() }).filter((item, i, res) => {
+        return res.indexOf(res.find(t => t.ID_PROCESO === item.ID_PROCESO)) === i
+      }).filter(item => {
+        return item.ETAPA != ""
+      })
+
+
+    }
+    ))
+
+    
+
+    let body = {
+      filter: { INTERFAZ: { eq: this.rutaActiva.snapshot.params.id } },
+      limit: 999999999
+    }
+
+    this.store.dispatch(LoadAUDGENESTADOPROCESOS({ consult: body }));
+
+  }
+
   consultarDetalle(idProceso) {
 
     this.paginaActualProceso = 1;

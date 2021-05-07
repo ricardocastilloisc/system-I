@@ -80,7 +80,7 @@
                             <tr *ngFor="let AUDGENESTADOPROCESO of AUDGENESTADOPROCESOS | paginate: {id: 'ejecucionesProceso', itemsPerPage: 10, currentPage: paginaActualEjecucionesProceso} ; index as i" class='clickable' (click)="consultarDetalle(AUDGENESTADOPROCESO.ID_PROCESO)" >
                                 
                                 <td >{{AUDGENESTADOPROCESO.ID_PROCESO}}</td>
-                                <td >{{AUDGENESTADOPROCESO.FECHA_ACTUALIZACION | date :'dd/MM/yyyy'}}  </td>
+                                <td >{{AUDGENESTADOPROCESO.FECHA_ACTUALIZACION | date :'dd/MM/yyyy'}} {{AUDGENESTADOPROCESO.FECHA_ACTUALIZACION | date:'mediumTime'}}  </td>
                                 <td [ngClass]="{'error-log': AUDGENESTADOPROCESO.ESTADO == 'FALLIDO'}">{{AUDGENESTADOPROCESO.ESTADO}}</td>
 
                             </tr>
@@ -206,7 +206,7 @@
                         <tr *ngFor="let AUDGENPROCESO of AUDGENPROCESOS | paginate: { id: 'detalleEjecucion', itemsPerPage: 10, currentPage: paginaActualProceso} ; index as i ">
                             <td>{{i + 1}}</td>
                             <td [ngClass]="{'error-log': AUDGENPROCESO.NIVEL === 'FALLIDO', 'info-log': AUDGENPROCESO.NIVEL === 'INFO' , 'debug-log': AUDGENPROCESO.NIVEL === 'DEBUG' }">{{AUDGENPROCESO.NIVEL}}</td>
-                            <td >{{AUDGENPROCESO.FECHA | date :'short'}}  </td>
+                            <td >{{AUDGENPROCESO.FECHA | date :'dd/MM/yyyy'}} {{AUDGENPROCESO.FECHA | date:'mediumTime'}} </td>
                             <td [ngClass]="{'error-log': AUDGENPROCESO.NIVEL === 'FALLIDO'}">{{AUDGENPROCESO.MENSAJE_SOPORTE}}</td>
                         </tr>
                     </tbody>
@@ -229,7 +229,7 @@
                         <tbody>
                             <tr *ngFor="let AUDGENPROCESO of AUDGENPROCESOS | paginate: { id: 'detalleEjecucion', itemsPerPage: 10, currentPage: paginaActualProceso} ; index as i">
                                 <td>{{i + 1 }}</td>
-                                <td >{{AUDGENPROCESO.FECHA | date :'short'}} </td>
+                                <td >{{AUDGENPROCESO.FECHA | date :'dd/MM/yyyy'}} {{AUDGENPROCESO.FECHA | date:'mediumTime'}} </td>
                                 <td [ngClass]="{'error-log': AUDGENPROCESO.NIVEL === 'FALLIDO'}">{{AUDGENPROCESO.MENSAJE_NEGOCIO}}</td>
                             </tr>
                         </tbody>
