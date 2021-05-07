@@ -49,7 +49,7 @@
           </tr>
         </table>
         <div class="paginator align-items-left ">
-          <pagination-template id="listadoInterfaces" #p="paginationApi" (pageChange)="actualPage = $event" class="ngx-pagination" *ngIf="actualPage > 1">
+          <pagination-template id="listadoInterfaces" #p="paginationApi" (pageChange)="actualPage = $event" class="ngx-pagination" >
     
             <div class="custom-pagination">
                 <div class="pagination-previous" [class.disabled]="p.isFirstPage()">
