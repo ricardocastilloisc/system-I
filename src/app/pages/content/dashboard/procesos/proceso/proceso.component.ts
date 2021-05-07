@@ -111,7 +111,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
 
     let body = {
       filter: { INTERFAZ: { eq: this.rutaActiva.snapshot.params.id } },
-      limit: 1000
+      limit: 999999999
     }
 
 
@@ -185,7 +185,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
 
     let body = {
       filter: { ID_PROCESO: { eq: idProceso } },
-      limit: 1000
+      limit: 999999999
     }
 
     this.store.dispatch(LoadAUDGENEJECUCIONESPROCESO({ consult: body }));
@@ -227,7 +227,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
 
       let body = {
         filter: { FECHA_ACTUALIZACION: { contains: fechaFiltro }, INTERFAZ: { eq: this.rutaActiva.snapshot.params.id } },
-        limit: 1000
+        limit: 999999999
       }
 
       this.store.dispatch(LoadAUDGENESTADOPROCESOS({ consult: body }));
