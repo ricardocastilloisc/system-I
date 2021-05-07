@@ -119,3 +119,7 @@ section {
   height:12px;
   margin-top: -4px;
 }
+
+.modal-content{
+  background-color: red !important;
+}

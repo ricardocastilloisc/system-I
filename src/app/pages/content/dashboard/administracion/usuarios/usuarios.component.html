@@ -55,7 +55,7 @@
         </ng-multiselect-dropdown>
       </div>
       <div class="col2-row2">
-        <button style="cursor:pointer" (click)="filtrar()">Buscar</button>
+        <button style="cursor: pointer" (click)="filtrar()">Buscar</button>
       </div>
     </section>
   </div>
@@ -106,10 +106,16 @@
           <td style="padding-left: 40px; max-width: 300px">
             {{ retornarStringSiexiste(usuario.Attributes, "email") }}
           </td>
-          <td style="padding-left: 40px; max-width: 150px" *ngIf="usuario.GrupoQuePertenece == 'InversionesyRiesgos'">
+          <td
+            style="padding-left: 40px; max-width: 150px"
+            *ngIf="usuario.GrupoQuePertenece == 'InversionesyRiesgos'"
+          >
             Inversiones y Riesgos
           </td>
-          <td style="padding-left: 40px; max-width: 150px" *ngIf="usuario.GrupoQuePertenece != 'InversionesyRiesgos'">
+          <td
+            style="padding-left: 40px; max-width: 150px"
+            *ngIf="usuario.GrupoQuePertenece != 'InversionesyRiesgos'"
+          >
             {{ usuario.GrupoQuePertenece }}
           </td>
           <td style="padding-left: 40px; max-width: 150px">
@@ -125,9 +131,16 @@
           </td>
           <td style="padding-left: 40px; max-width: 150px">
             <img
-            style="cursor:pointer"
+              style="cursor: pointer"
               (click)="openModal(content, usuario, usuario.GrupoQuePertenece)"
               class="editar-icon"
+            />
+            <img
+              style="cursor: pointer"
+              (click)="
+              openModalConfirmacionBaja(confrimacion, usuario, usuario.GrupoQuePertenece)
+              "
+              class="eliminar-icon"
             />
           </td>
         </tr>
@@ -226,8 +239,9 @@
       <button
         type="button"
         class="btn btn-primary"
-        style="background-color:  #00C4D9;"
-        (click)="guardarCambioPermisoUsuario()"
+        style="background-color: #00c4d9"
+        (click)="openModalConfirmacionEdicion(confrimacionEditar)"
+
       >
         Guardar cambio
       </button>
@@ -239,6 +253,65 @@
       >
         Cerrar
       </button>
+    </div>
+
+    <!--
+          <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Save</button>
+    </div>
+    -->
+  </ng-template>
+
+  <ng-template #confrimacion let-modal id="confirmacion">
+    <div class="modal-body">
+      <div class="row justify-content-center">
+        <div class="col-12 row justify-content-center align-items-center" style="height:120px;">
+          <div class="textoConfirmacionModalUsuarios">Cofirmar baja de usuario</div></div>
+        <div class="col-12 row">
+          <div class="col-12 descripcionConfirmacionModalUsuarios" >Se dara de baja al usuario</div>
+          <div class="col-12 descripcionConfirmacionModalUsuarios">
+            {{ObjectUsuarioCambiar.Attributes.given_name}} {{ObjectUsuarioCambiar.Attributes.family_name}}
+
+          </div>
+        </div>
+        <div class="col-12 row justify-content-center align-items-center" style="height:120px;">
+          <div>
+
+            <button  class="btn bottonCancelarModalUsuario" (click)="modal.close()">Cancelar</button>
+            <button  class="btn bottonConfirmar" (click)="darDeBajaUsuario()">Continuar</button>
+          </div></div>
+      </div>
+    </div>
+
+    <!--
+          <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Save</button>
+    </div>
+    -->
+  </ng-template>
+
+  <ng-template #confrimacionEditar let-modal>
+    <div class="modal-body">
+      <div class="row justify-content-center">
+        <div class="col-12 row justify-content-center align-items-center" style="height:120px;">
+          <div class="textoConfirmacionModalUsuarios">Cofirmar edición de usuario</div></div>
+        <div class="col-12 row">
+          <div class="col-12 descripcionConfirmacionModalUsuarios" >Se editara el usuario usuario</div>
+          <div class="col-12 descripcionConfirmacionModalUsuarios">
+            {{ObjectUsuarioCambiar.Attributes.given_name}} {{ObjectUsuarioCambiar.Attributes.family_name}}
+
+          </div>
+        </div>
+        <div class="col-12 row justify-content-center align-items-center" style="height:120px;">
+          <div>
+
+            <button   class="btn bottonCancelarModalUsuario" (click)="modal.close()">Cancelar</button>
+            <button class="btn bottonConfirmar"  (click)="guardarCambioPermisoUsuario()">Continuar</button>
+
+
+          </div></div>
+
+      </div>
     </div>
 
     <!--

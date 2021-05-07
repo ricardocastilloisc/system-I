@@ -281,6 +281,19 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     };
   };
 
+  openModalConfirmacionBaja(content, ObjectUsuario: UsuarioListado, grupoPertenece){
+    this.ObjectUsuarioCambiar = ObjectUsuario;
+    this.grupoPertenece = grupoPertenece;
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
+  }
+
+  cerrarModal = (modal) =>{
+    modal.close();
+  }
+  openModalConfirmacionEdicion = (modal) => {
+    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' });
+  }
+
   openModal(content, ObjectUsuario: UsuarioListado, grupoPertenece) {
     this.ObjectUsuarioCambiar = ObjectUsuario;
     this.grupoPertenece = grupoPertenece;
@@ -354,7 +367,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       this.SelectCamabiarPermiso === 'Permiso' &&
       this.selectedItemsCambioDeNegocio.length === 0 &&
       this.SelectCamabiarArea === 'Area'
-      
+
     ) {
       return;
     }
@@ -398,6 +411,10 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     this.store.dispatch(LoadListaUsuarios({ consulta: null }));
     this.modalService.dismissAll();
   };
+
+  cerrarModales = () =>{
+    this.modalService.dismissAll();
+  }
 
   retornarStringSiexiste = (object, attribute) => {
     return retornarStringSiexiste(object, attribute);
@@ -464,4 +481,12 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       this.spinner.hide();
     }, 300);
   };
+
+
+  darDeBajaUsuario = () =>{
+    this.UsuariosService.eliminarUsuarioPromesa(this.ObjectUsuarioCambiar.Username).then( () => {
+      this.cerrarModales();
+      this.store.dispatch(LoadListaUsuarios({ consulta: null }));
+    })
+  }
 }

@@ -349,6 +349,15 @@ a[data-toggle="collapse"] {
   margin: 0 15px;
   padding: 15px;
 }
+.eliminar-icon {
+  background: transparent url("../icons/azulEliminar.svg") 0% 0% no-repeat
+    padding-box;
+  width: 30px;
+  height: 30px;
+  opacity: 1;
+  margin: 0 15px;
+  padding: 15px;
+}
 
 img.alineadoTextoImagenCentro {
   vertical-align: middle;
@@ -673,11 +682,9 @@ table.listado-design-general td {
 .cuadroNotificaciones .notifications a.content {
   height: 49px;
   width: 100%;
-
-
 }
 
-.notification-item:hover{
+.notification-item:hover {
   background: #ccc !important;
 }
 .cuadroNotificaciones .item-info {
@@ -688,7 +695,6 @@ table.listado-design-general td {
   opacity: 1;
 }
 
-
 .notification-item {
   padding-left: 15px;
   padding-right: 15px;
@@ -696,7 +702,55 @@ table.listado-design-general td {
   padding-bottom: 8px;
   /*background: #ccc;*/
   border-radius: 4px;
-
-
 }
 
+.confirmacionUsuariosModal {
+  background: #e8e8e8 0% 0% no-repeat padding-box;
+  box-shadow: 2px 2px 3px #00000029;
+  border-radius: 30px;
+  opacity: 1;
+  display: flex;
+  -ms-flex-align: start;
+  align-items: flex-start;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+.textoConfirmacionModalUsuarios {
+  text-align: center;
+  font: normal normal bold 20px/45px FS Elliot Pro;
+  letter-spacing: 0px;
+  color: #707070;
+  opacity: 1;
+}
+
+.descripcionConfirmacionModalUsuarios {
+  text-align: center;
+  font: normal normal normal 16px/22px FS Elliot Pro;
+  letter-spacing: 0px;
+  color: #707070;
+  opacity: 1;
+}
+
+.bottonCancelarModalUsuario {
+  border: 2px solid #00c4d9;
+  border-radius: 30px;
+  opacity: 1;
+  width: 184px;
+  text-decoration: none;
+  height: 48px;
+  color: #00c4d9;
+  margin-right: 22px;
+  font: normal normal bold 20px/25px Helvetica Neue;
+}
+.bottonConfirmar {
+  background: #00c4d9 0% 0% no-repeat padding-box;
+  border-radius: 30px;
+  opacity: 1;
+  width: 184px;
+  text-decoration: none;
+  height: 48px;
+  color: #fff;
+  font: normal normal bold 20px/25px Helvetica Neue;
+}

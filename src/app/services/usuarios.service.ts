@@ -92,8 +92,16 @@ export class UsuariosService {
   constructor(private store: Store<AppState>) { }
 
   eliminarUsuario(): void {
-    // metodo para eliminar un usuario del user pool    
+    // metodo para eliminar un usuario del user pool
     cognitoidentityserviceprovider.adminDeleteUser(this.paramsDeleteUser, this.callbackAws);
+  }
+  eliminarUsuarioPromesa = (Username) => {
+    // metodo para eliminar un usuario del user pool
+    const paramsDeleteUser = {
+      Username: Username,
+      UserPoolId: environment.UserPoolId,
+    };
+    return cognitoidentityserviceprovider.adminDeleteUser(paramsDeleteUser).promise();
   }
 
   consultarGrupos(): void {
