@@ -82,9 +82,19 @@ export class UsuariosService {
     UserPoolId: environment.UserPoolId,
   };
 
+  paramsDeleteUser = {
+    Username:
+      'azure_hgjelpfjjwxffms6_5oti6ydqcjh7jhjdxn9706cxf0' /* identificador del usuario en el user pool */,
+    UserPoolId: environment.UserPoolId,
+  };
   numeroDeProcesos = 0;
 
-  constructor(private store: Store<AppState>) {}
+  constructor(private store: Store<AppState>) { }
+
+  eliminarUsuario(): void {
+    // metodo para eliminar un usuario del user pool    
+    cognitoidentityserviceprovider.adminDeleteUser(this.paramsDeleteUser, this.callbackAws);
+  }
 
   consultarGrupos(): void {
     // metodo para consultar todos los grupos del user pool
@@ -548,4 +558,5 @@ ayuda de atibutos: {Name: "sub", Value: "42ae1b55-8029-4a09-8c81-8c805c650aaf"}
     console.log(JSON.stringify(objFiltrado));
     return objFiltrado;
   }
+
 }
