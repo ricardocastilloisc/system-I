@@ -42,7 +42,7 @@
                 <div class="card-calendario">
                     <div>Selecciona una fecha</div>
                     <div>
-                        <input type="date" placeholder="dd-MM-yyyy" onfocus="(this.type='date')" formControlName="fechaFiltrar" id="fechaFiltrar" name="fechaFiltrar" [value]="maxDate" max="{{ maxDate| date:'yyyy-MM-dd'}}" />
+                        <input type="date" placeholder="dd-MM-yyyy" onfocus="(this.type='date')" formControlName="fechaFiltrar" id="fechaFiltrar" name="fechaFiltrar" [value]="maxDate" max="{{ maxDate| date:'yyyy-MM-dd'}}" required/>
                     </div>
                     <!-- <div>
                         
@@ -80,7 +80,7 @@
                             <tr *ngFor="let AUDGENESTADOPROCESO of AUDGENESTADOPROCESOS | paginate: {id: 'ejecucionesProceso', itemsPerPage: 10, currentPage: paginaActualEjecucionesProceso} ; index as i" class='clickable' (click)="consultarDetalle(AUDGENESTADOPROCESO.ID_PROCESO)" >
                                 
                                 <td >{{AUDGENESTADOPROCESO.ID_PROCESO}}</td>
-                                <td >{{AUDGENESTADOPROCESO.FECHA_ACTUALIZACION | date :'dd/MM/yyyy'}}  {{AUDGENESTADOPROCESO.FECHA_ACTUALIZACION | date:'mediumTime'}}</td>
+                                <td >{{AUDGENESTADOPROCESO.FECHA_ACTUALIZACION | date :'dd/MM/yyyy'}}  </td>
                                 <td [ngClass]="{'error-log': AUDGENESTADOPROCESO.ESTADO == 'FALLIDO'}">{{AUDGENESTADOPROCESO.ESTADO}}</td>
 
                             </tr>
@@ -90,12 +90,12 @@
                 </table>
 
             </div>
-            <div class="d-flex col-md-9 col-xs-9 col-sm-9 col-lg-9 mr-9 col-9 align-items-left ">
+            <div class="d-flex col-md-9 col-xs-9 col-sm-9 col-lg-9 mr-9 col-9 align-items-left " *ngIf="paginaActualEjecucionesProceso > 1">
                 <pagination-template id="ejecucionesProceso" #p="paginationApi" (pageChange)="paginaActualEjecucionesProceso = $event" class="ngx-pagination">
 
                     <div class="custom-pagination">
                         <div class="pagination-previous" [class.disabled]="p.isFirstPage()">
-                        <span (click)="p.previous()"><<</span> 
+                        <span *ngIf="!p.isFirstPage()" (click)="p.previous()"><<</span> 
                         </div> 
                         <div class="page-number" *ngFor="let page of p.pages" [class.current]="p.getCurrent() === page.value">
                                 <span (click)="p.setCurrent(page.value)" *ngIf="p.getCurrent() !== page.value">{{ page.label }}</span>
@@ -104,7 +104,8 @@
                             </div>
                         </div>
                         <div class="pagination-next" [class.disabled]="p.isLastPage()">
-                            <span  (click)="p.next()"> >> </span>
+                            <span *ngIf="!p.isLastPage()" (click)="p.next()"> >> </span>
+                            
                         </div>
                     </div>
 
@@ -122,7 +123,7 @@
 
         </div>
     
-        <div [ngClass]="{'show-ejecuciones': mostrarEjecucionesProcesos == false, 'hide-ejecuciones': mostrarEjecucionesProcesos == true}" class="row justify-content-center .hide-div ">
+        <div [ngClass]="{'show-ejecuciones': mostrarEjecucionesProcesos == false, 'hide-ejecuciones': mostrarEjecucionesProcesos == true}" (click)="ngOnInit()" class="row justify-content-center .hide-div ">
             <div class="d-flex col-md-9 col-xs-9 col-sm-9 col-lg-9 mr-9 col-9 align-items-center justify-content-center" >
                 <div class="show-info"> </div>
                 <span *ngIf="mostrarEjecucionesProcesos" class="show-info-button" (click)="mostrarEjecucionesProcesos = !mostrarEjecucionesProcesos">Ocultar Ejecuciones</span>
@@ -205,7 +206,7 @@
                         <tr *ngFor="let AUDGENPROCESO of AUDGENPROCESOS | paginate: { id: 'detalleEjecucion', itemsPerPage: 10, currentPage: paginaActualProceso} ; index as i ">
                             <td>{{i + 1}}</td>
                             <td [ngClass]="{'error-log': AUDGENPROCESO.NIVEL === 'FALLIDO', 'info-log': AUDGENPROCESO.NIVEL === 'INFO' , 'debug-log': AUDGENPROCESO.NIVEL === 'DEBUG' }">{{AUDGENPROCESO.NIVEL}}</td>
-                            <td >{{AUDGENPROCESO.FECHA | date :'short'}}  {{AUDGENPROCESO.FECHA | date:'mediumTime'}} </td>
+                            <td >{{AUDGENPROCESO.FECHA | date :'short'}}  </td>
                             <td [ngClass]="{'error-log': AUDGENPROCESO.NIVEL === 'FALLIDO'}">{{AUDGENPROCESO.MENSAJE_SOPORTE}}</td>
                         </tr>
                     </tbody>
@@ -228,18 +229,18 @@
                         <tbody>
                             <tr *ngFor="let AUDGENPROCESO of AUDGENPROCESOS | paginate: { id: 'detalleEjecucion', itemsPerPage: 10, currentPage: paginaActualProceso} ; index as i">
                                 <td>{{i + 1 }}</td>
-                                <td >{{AUDGENPROCESO.FECHA | date :'short'}}  {{AUDGENPROCESO.FECHA | date:'mediumTime'}}</td>
+                                <td >{{AUDGENPROCESO.FECHA | date :'short'}} </td>
                                 <td [ngClass]="{'error-log': AUDGENPROCESO.NIVEL === 'FALLIDO'}">{{AUDGENPROCESO.MENSAJE_NEGOCIO}}</td>
                             </tr>
                         </tbody>
                     </table>
                 </div> 
 
-                <pagination-template id="detalleEjecucion" #p="paginationApi" (pageChange)="paginaActualProceso = $event" class="ngx-pagination">
+                <pagination-template id="detalleEjecucion" #p="paginationApi" (pageChange)="paginaActualProceso = $event" class="ngx-pagination" *ngIf="paginaActualProceso > 1">
 
                     <div class="custom-pagination">
                         <div class="pagination-previous" [class.disabled]="p.isFirstPage()">
-                            <span (click)="p.previous()"><<</span> 
+                            <span *ngIf="!p.isFirstPage()" (click)="p.previous()"><<</span> 
                         </div> 
                         <div class="page-number" *ngFor="let page of p.pages" [class.current]="p.getCurrent() === page.value">
                                 <span (click)="p.setCurrent(page.value)" *ngIf="p.getCurrent() !== page.value">{{ page.label }}</span>
@@ -248,7 +249,8 @@
                             </div>
                         </div>
                         <div class="pagination-next" [class.disabled]="p.isLastPage()">
-                            <span  (click)="p.next()"> >> </span>
+                            <span *ngIf="!p.isLastPage()"  (click)="p.next()"> >> </span>
+                            
                         </div>
                     </div>
 
