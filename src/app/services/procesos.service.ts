@@ -5,7 +5,6 @@ import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-let uuid = uuidv4();
 
 @Injectable({
   providedIn: 'root',
@@ -20,6 +19,7 @@ export class ProcesosService {
 
   iniciarProceso(idProceso: string, correoUsuario: string, rolUsuario: string): any {
     let response;
+    let uuid = uuidv4();
     var axios = require('axios');
     var data = JSON.stringify({
       "rol": rolUsuario,
@@ -63,28 +63,6 @@ export class ProcesosService {
     });
 ;
 
-    axios(config)
-      .then(function (response) {
-        //console.log(JSON.stringify(response.data));
-        /*
-        {"message":"AIMS y EXCEDENTES start"}
-         */
-        //response = response.data;
-        response = {
-          codigo: 'EXITO',
-          descripcion: 'La solicitud fue exitosa.'
-        };
-      })
-      .catch(function (error) {
-        //console.log(JSON.stringify(error));
-        //response = error;
-        response = {
-          codigo: 'FALLO',
-          descripcion: error.message
-        };
-        //console.log(response);
-      });
-
-    return response;
+   
   }
 }
