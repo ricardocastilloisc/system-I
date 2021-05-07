@@ -91,7 +91,7 @@
 
             </div>
             <div class="d-flex col-md-9 col-xs-9 col-sm-9 col-lg-9 mr-9 col-9 align-items-left " >
-                <pagination-template id="ejecucionesProceso" #p="paginationApi" (pageChange)="paginaActualEjecucionesProceso = $event" class="ngx-pagination">
+                <pagination-template id="ejecucionesProceso" #p="paginationApi" (pageChange)="paginaActualEjecucionesProceso = $event" class="ngx-pagination" *ngIf="AUDGENESTADOPROCESOS.length > 10">
 
                     <div class="custom-pagination">
                         <div class="pagination-previous" [class.disabled]="p.isFirstPage()">
@@ -236,7 +236,7 @@
                     </table>
                 </div> 
 
-                <pagination-template id="detalleEjecucion" #p="paginationApi" (pageChange)="paginaActualProceso = $event" class="ngx-pagination" >
+                <pagination-template id="detalleEjecucion" #p="paginationApi" (pageChange)="paginaActualProceso = $event" class="ngx-pagination" *ngIf="AUDGENPROCESOS.length > 10" >
 
                     <div class="custom-pagination">
                         <div class="pagination-previous" [class.disabled]="p.isFirstPage()">

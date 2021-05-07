@@ -62,6 +62,8 @@ export class ProcesoComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.paginaActualProceso = 1;
+    this.paginaActualEjecucionesProceso = 1;
     this.filtroEjecucionesForm = this.fb.group({
       fechaFiltrar: ['Fecha']
     })
@@ -121,6 +123,8 @@ export class ProcesoComponent implements OnInit, OnDestroy {
   }
 
   consultarDetalle(idProceso) {
+
+    this.paginaActualProceso = 1;
 
     this.AUDGENEJECUCIONPROCESO$ = this.store.select(
       ({ AUDGENEJECUCIONESPROCESO }) => AUDGENEJECUCIONESPROCESO.AUDGENEJECUCIONESPROCESO

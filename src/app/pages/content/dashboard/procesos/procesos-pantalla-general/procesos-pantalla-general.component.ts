@@ -63,7 +63,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
 
   ngOnInit(): void {
     
-
+    this.actualPage = 1;
     this.DataUser$ = this.store.select(({ usuario }) => usuario.user);
 
     this.DataUser$.subscribe(res => {this.negocio = res.attributes['custom:negocio']; console.log(res)}).unsubscribe()
