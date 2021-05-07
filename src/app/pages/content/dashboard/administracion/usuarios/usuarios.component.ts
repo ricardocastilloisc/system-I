@@ -284,14 +284,14 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   openModalConfirmacionBaja(content, ObjectUsuario: UsuarioListado, grupoPertenece){
     this.ObjectUsuarioCambiar = ObjectUsuario;
     this.grupoPertenece = grupoPertenece;
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', windowClass:'confirmacionUsuariosModal' });
   }
 
   cerrarModal = (modal) =>{
     modal.close();
   }
   openModalConfirmacionEdicion = (modal) => {
-    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' });
+    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title', windowClass:'confirmacionUsuariosModal' });
   }
 
   openModal(content, ObjectUsuario: UsuarioListado, grupoPertenece) {
