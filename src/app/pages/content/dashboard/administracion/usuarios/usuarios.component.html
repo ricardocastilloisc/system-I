@@ -106,7 +106,10 @@
           <td style="padding-left: 40px; max-width: 300px">
             {{ retornarStringSiexiste(usuario.Attributes, "email") }}
           </td>
-          <td style="padding-left: 40px; max-width: 150px">
+          <td style="padding-left: 40px; max-width: 150px" *ngIf="usuario.GrupoQuePertenece == 'InversionesyRiesgos'">
+            Inversiones y Riesgos
+          </td>
+          <td style="padding-left: 40px; max-width: 150px" *ngIf="usuario.GrupoQuePertenece != 'InversionesyRiesgos'">
             {{ usuario.GrupoQuePertenece }}
           </td>
           <td style="padding-left: 40px; max-width: 150px">

@@ -42,7 +42,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   Areas = [
     EArea.Contabilidad,
     EArea.Custodia,
-    EArea.Inversiones_Riesgos,
+    EArea.InversionesRiesgos,
     EArea.Tesoreria,
   ];
 
@@ -354,6 +354,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       this.SelectCamabiarPermiso === 'Permiso' &&
       this.selectedItemsCambioDeNegocio.length === 0 &&
       this.SelectCamabiarArea === 'Area'
+      
     ) {
       return;
     }
@@ -379,7 +380,11 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       UserAttributes: UserAttributes,
       Username: this.ObjectUsuarioCambiar.Username,
     };
-
+    //console.log('AREA', this.SelectCamabiarArea);
+    if(this.SelectCamabiarArea === 'Inversiones y Riesgos'){
+      this.SelectCamabiarArea = 'InversionesyRiesgos';
+    }
+    //console.log('AREA CHANGE', this.SelectCamabiarArea);
     const Grupo = {
       Grupo: this.SelectCamabiarArea,
       Username: this.ObjectUsuarioCambiar.Username,
