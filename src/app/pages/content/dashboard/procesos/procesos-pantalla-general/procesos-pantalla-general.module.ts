@@ -8,6 +8,7 @@ import { ProcesoComponent } from '../proceso/proceso.component'
 import { OrderModule } from 'ngx-order-pipe';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ProcesosService } from './../../../../../services/procesos.service'
+import { NgxSpinnerModule } from "ngx-spinner";
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { ProcesosService } from './../../../../../services/procesos.service'
     ReactiveFormsModule,
     FormsModule,
     OrderModule,
+    NgxSpinnerModule,
   ],
   providers: [ProcesosService]
 })

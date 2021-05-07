@@ -70,7 +70,7 @@ export class NavbarComponent implements OnInit, AfterViewInit {
     if (color === 'verde') {
       verde = true;
     }
-    console.log('estilo verde: ' + color);
+    //console.log('estilo verde: ' + color);
     return verde;
   };
 
@@ -79,7 +79,7 @@ export class NavbarComponent implements OnInit, AfterViewInit {
     if (color === 'morado') {
       morado = true;
     }
-    console.log('estilo morado: ' + color);
+    //console.log('estilo morado: ' + color);
     return morado;
   };
 
@@ -88,7 +88,7 @@ export class NavbarComponent implements OnInit, AfterViewInit {
     if (color === 'azul') {
       azul = true;
     }
-    console.log('estilo azul: ' + color);
+    //console.log('estilo azul: ' + color);
     return azul;
   };
   ngOnInit(): void {

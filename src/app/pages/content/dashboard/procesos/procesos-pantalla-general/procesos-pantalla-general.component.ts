@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { formatDate } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../../ReduxStore/app.reducers';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { AUDGENPROCESO_INERFACE } from '../../../../../model/AUDGENPROCESO.model';
 import { CATPROCESOS_INTERFACE } from '../../../../../model/CATPROCESOS.model';
 import { APIService } from '../../../../../API.service';
@@ -14,6 +14,7 @@ import { LoadAUDGENESTADOPROCESOS, UnsetAUDGENESTADOPROCESO, LoadCATPROCESOS, Un
 import { Usuario } from '../../../../../model/usuario.model';
 import { ProcesosService } from '../../../../../services/procesos.service'
 import {v4 as uuidv4} from 'uuid';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 
 @Component({
@@ -26,6 +27,8 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
 
   inputFecha = formatDate(new Date(), 'yyyy-MM-dd', 'en-US');
 
+  Loading$: Subscription;
+
   DataUser$: Observable<Usuario>;
   AUDGENPROCESOS$: Observable<AUDGENPROCESO_INERFACE[]>;
   CATPROCESOS$: Observable<CATPROCESOS_INTERFACE[]>
@@ -33,6 +36,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
   actualPage: number = 1;
   negocio: string;
   tipo: String;
+  loading = true;
 
   PROCESOS = new Array();
   constructor(
@@ -40,8 +44,13 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
     private store: Store<AppState>,
     private rutaActiva: ActivatedRoute,
     private api: APIService,
-    private serviciosProcesos: ProcesosService
+    private serviciosProcesos: ProcesosService,
+    private spinner: NgxSpinnerService
   ) {
+    this.spinner.show();
+    setTimeout(() => {
+      this.spinner.hide();
+    }, 1000);
 
     this.rutaActiva.paramMap.subscribe(params => {
       this.ngOnInit();
@@ -49,9 +58,11 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
   }
   ngOnDestroy(): void {
     this.store.dispatch(UnsetCATPROCESO());
+    //this.Loading$.unsubscribe();
   }
 
   ngOnInit(): void {
+    
 
     this.DataUser$ = this.store.select(({ usuario }) => usuario.user);
 
@@ -117,6 +128,8 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
     //this.store.dispatch(LoadAUDGENESTADOPROCESOS({consult:null}));
   }
 
+  
+
   botonActivado = (parametocomparar: string): boolean => {
     return this.rutaActiva.snapshot.params.tipo === parametocomparar
       ? true
@@ -133,6 +146,8 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
 
   async inciarProceso(nombreProceso: string, correo: string, area: string) {
 
+    this.spinner.show();
+
     var response;
     let idEjecucion  = uuidv4();
     console.log(nombreProceso,correo, area, idEjecucion)
@@ -142,9 +157,11 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
       console.log(response)
 
       if(response.codigo == 'EXITO'){
+        this.spinner.hide();
         alert('Se inicio el proceso')
       } else {
 
+        this.spinner.hide();
         alert('Error al ejecutar proceso')
        
       }
@@ -154,9 +171,14 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
       alert('Error al ejecutar proceso')
       console.log(e)
     }
+
+    setTimeout(() => {
+      this.spinner.hide();
+    }, 300);
     
 
 
   }
+
 
 }
