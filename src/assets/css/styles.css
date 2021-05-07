@@ -741,7 +741,7 @@ table.listado-design-general td {
   height: 48px;
   color: #00c4d9;
   margin-right: 22px;
-  font: normal normal bold 20px/25px Helvetica Neue;
+  font: normal normal bold 20px/25px FS Elliot Pro;
 }
 .bottonConfirmar {
   background: #00c4d9 0% 0% no-repeat padding-box;
@@ -751,5 +751,5 @@ table.listado-design-general td {
   text-decoration: none;
   height: 48px;
   color: #fff;
-  font: normal normal bold 20px/25px Helvetica Neue;
+  font: normal normal bold 20px/25px FS Elliot Pro;
 }
