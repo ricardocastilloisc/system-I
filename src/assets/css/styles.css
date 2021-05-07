@@ -326,8 +326,7 @@ a[data-toggle="collapse"] {
   cursor: pointer;
 }
 
-.play-icon :hover{
-  
+.play-icon :hover {
 }
 
 .stop-icon {
@@ -369,14 +368,14 @@ img.alineadoTextoImagenCentro {
   margin-top: 15px;
   line-height: 5px;
   margin-left: 100px;
-  color: #0091DA;
+  color: #0091da;
 }
 .alineadoTextoDerechaMorado {
   text-align: right;
   margin-top: 15px;
   line-height: 5px;
   margin-left: 100px;
-  color: #7C69C3;
+  color: #7c69c3;
 }
 
 .alineadoTextoIzquierda {
@@ -390,13 +389,13 @@ img.alineadoTextoImagenCentro {
   text-align: left;
   margin-top: 15px;
   line-height: 5px;
-  color: #0091DA;
+  color: #0091da;
 }
 .alineadoTextoIzquierdaMorado {
   text-align: left;
   margin-top: 15px;
   line-height: 5px;
-  color: #7C69C3;
+  color: #7c69c3;
 }
 
 #optionshome {
@@ -457,7 +456,6 @@ img.itemsTextoImagenCentro {
 
 .heighImgAuditoria {
   height: 100%;
-
 }
 
 .paddingIzquierdaDerecha {
@@ -471,7 +469,7 @@ img.itemsTextoImagenCentro {
 }
 
 .botonActivado {
-  background-color: #464E7E !important;
+  background-color: #464e7e !important;
   color: white !important;
 }
 
@@ -525,9 +523,7 @@ table.listado-design-general td {
   opacity: 1;
 }
 
-
-
-.custom-pagination .page-number{
+.custom-pagination .page-number {
   display: inline-block;
   font: normal normal bold 18px/45px FS Elliot Pro;
   background: none;
@@ -535,13 +531,13 @@ table.listado-design-general td {
   text-align: right;
 }
 
-.page-number.current{
+.page-number.current {
   background: none !important;
   text-decoration: underline;
-  color: #464E7E;
+  color: #464e7e;
 }
 
-.page-number span{
+.page-number span {
   display: block;
   width: 10px;
   height: 20px;
@@ -549,49 +545,158 @@ table.listado-design-general td {
   cursor: pointer;
 }
 
-.pagination-previous,.pagination-next{
+.pagination-previous,
+.pagination-next {
   display: inline-block;
-
 }
 
-.pagination-next,.pagination-previous:hover{
+.pagination-next,
+.pagination-previous:hover {
   cursor: pointer;
 }
 .etiquetaSelecetCustom {
-  border: 1px solid #00C4D9;
+  border: 1px solid #00c4d9;
   margin-right: 4px;
-  background: #00C4D9;
+  background: #00c4d9;
   padding: 0 5px;
   color: #fff;
   border-radius: 2px;
   float: left;
   display: flex;
+  max-width: 130px;
 }
 
-#tabla{  /*padre*/
-	width: 100%;
+#tabla {
+  /*padre*/
+  width: 100%;
 }
-#tabla .A, #tabla .B{  /*hijos*/
-	display: table-cell;  
+#tabla .A,
+#tabla .B {
+  /*hijos*/
+  display: table-cell;
   padding: 5px;
 }
 
-
-.etiquetasUsuarios{
-  border: 1px solid #00C4D9;
-    margin-right: 4px;
-    background: #00C4D9;
-    padding: 0 5px;
-    color: #fff;
-    border-radius: 2px;
-    float: left;
-    display: flex;
-    max-width: 130px;
+.etiquetasUsuarios {
+  border: 1px solid #00c4d9;
+  margin-right: 4px;
+  background: #00c4d9;
+  padding: 0 5px;
+  color: #fff;
+  border-radius: 2px;
+  float: left;
+  display: flex;
+  max-width: 130px;
 }
 
-
-.separador-titulos{
+.separador-titulos {
   height: 1px;
   width: 70%;
   background: white;
 }
+
+.cuadroNotificaciones {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #00c4d9 0% 0% no-repeat padding-box;
+  border-radius: 10px;
+}
+.cuadroNotificaciones:hover {
+  cursor: pointer;
+}
+
+.imagenNotificaciones {
+  width: 30px;
+  height: 30px;
+}
+
+.cuadroNotificaciones span {
+  background: #fff;
+  padding: 2px;
+  border-radius: 50%;
+  color: #fff;
+  vertical-align: top;
+  margin-left: -14px;
+  margin-top: -11px;
+  font-size: 9px;
+}
+
+.cuadroNotificaciones .notifications {
+  margin-left: -130%;
+  width: 210px;
+  height: 547px;
+  background: #ffffff;
+  box-shadow: -3px 3px 6px #00000029;
+  border-radius: 17px;
+  opacity: 1;
+}
+
+.cuadroNotificaciones .notifications-wrapper {
+  overflow: auto;
+  max-height: 450px;
+}
+
+.cuadroNotificaciones .menu-title {
+  font: normal normal bold 15px/20px FS Elliot Pro;
+  letter-spacing: 0px;
+  color: #707070;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 55px;
+  opacity: 1;
+}
+
+.cuadroNotificaciones .glyphicon-circle-arrow-right {
+  margin-left: 10px;
+}
+
+.cuadroNotificaciones .notification-heading,
+.notification-footer {
+  padding: 2px 10px;
+}
+
+.cuadroNotificaciones .dropdown-menu.divider {
+  margin: 5px 0;
+}
+
+.cuadroNotificaciones .item-title {
+  text-align: left;
+  font: normal normal bold 12px/15px FS Elliot Pro;
+  letter-spacing: 0px;
+  color: #707070;
+}
+
+.cuadroNotificaciones .notifications a.content {
+  height: 49px;
+  width: 100%;
+
+
+}
+
+.notification-item:hover{
+  background: #ccc !important;
+}
+.cuadroNotificaciones .item-info {
+  text-align: left;
+  font: normal normal normal 12px/15px FS Elliot Pro;
+  letter-spacing: 0px;
+  color: #707070;
+  opacity: 1;
+}
+
+
+.notification-item {
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 12px;
+  padding-bottom: 8px;
+  /*background: #ccc;*/
+  border-radius: 4px;
+
+
+}
+

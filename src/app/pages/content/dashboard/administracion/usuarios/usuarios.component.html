@@ -55,7 +55,7 @@
         </ng-multiselect-dropdown>
       </div>
       <div class="col2-row2">
-        <button (click)="filtrar()">Buscar</button>
+        <button style="cursor:pointer" (click)="filtrar()">Buscar</button>
       </div>
     </section>
   </div>
@@ -122,6 +122,7 @@
           </td>
           <td style="padding-left: 40px; max-width: 150px">
             <img
+            style="cursor:pointer"
               (click)="openModal(content, usuario, usuario.GrupoQuePertenece)"
               class="editar-icon"
             />
@@ -140,7 +141,7 @@
   >
     <div class="custom-pagination">
       <div class="pagination-previous" [class.disabled]="p.isFirstPage()">
-        <span *ngIf="!p.isFirstPage()" (click)="p.previous()">< </span>
+        <span *ngIf="!p.isFirstPage()" (click)="p.previous()"><< </span>
       </div>
       <div
         class="page-number"
@@ -157,7 +158,7 @@
         </div>
       </div>
       <div class="pagination-next" [class.disabled]="p.isLastPage()">
-        <span *ngIf="!p.isLastPage()" (click)="p.next()"> > </span>
+        <span *ngIf="!p.isLastPage()" (click)="p.next()"> >> </span>
       </div>
     </div>
   </pagination-template>
