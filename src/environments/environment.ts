@@ -25,7 +25,7 @@ export const environment = {
         responseType: "token"
       },
     }
-  },
+  },//https://dev.d23mbxjbgl0msz.amplifyapp.com/
   API: {
     endpoints: [
       {
