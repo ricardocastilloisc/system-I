@@ -30,6 +30,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
   DataUser$: Observable<Usuario>;
   last;
   PROCESOS = new Array();
+  ocultarbusqueda = false;
 
   listaProcesos: any;
   totalItems: number;
@@ -65,10 +66,11 @@ export class ProcesoComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.ocultarbusqueda = false
     this.paginaActualProceso = 1;
     this.paginaActualEjecucionesProceso = 1;
     this.filtroEjecucionesForm = this.fb.group({
-      fechaFiltrar: ['Fecha'],
+      fechaFiltrar: [],
       idProceso: []
     })
 
@@ -127,6 +129,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
   }
 
   recargarEjecuciones(){
+    this.ocultarbusqueda = false;
 
     this.AUDGENESTADOPROCESOS$ = this.store.select(
       ({ AUDGENESTADOPROCESOS }) => AUDGENESTADOPROCESOS.AUDGENESTADOPROCESO
@@ -154,6 +157,8 @@ export class ProcesoComponent implements OnInit, OnDestroy {
   }
 
   consultarDetalle(idProceso, fecha) {
+
+    this.ocultarbusqueda = true;
 
     console.log(fecha)
 
@@ -273,18 +278,18 @@ export class ProcesoComponent implements OnInit, OnDestroy {
           })
       })).subscribe(res => console.log(res))
 
-      if(fechaFiltro === "Fecha" && idProceso === null){
+      if(fechaFiltro === null && idProceso === null){
 
         alert("Ingresa un valor para buscar")
 
-      }else if( fechaFiltro === "Fecha" && idProceso !== null){
+      }else if( fechaFiltro === null && idProceso !== null){
 
         let body = {
           filter: { ID_PROCESO: { eq: idProceso } },
           limit: 999999999
         }
         this.store.dispatch(LoadAUDGENESTADOPROCESOS({ consult: body }));
-      }else if( fechaFiltro !== "Fecha" && idProceso === null){
+      }else if( fechaFiltro !== null && idProceso === null){
         let body = {
           filter: { FECHA_ACTUALIZACION: { contains: fechaFiltro }, INTERFAZ: { eq: this.rutaActiva.snapshot.params.id } },
           limit: 999999999
@@ -300,7 +305,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
         this.store.dispatch(LoadAUDGENESTADOPROCESOS({ consult: body }));
       }
 
-      
+      this.filtroEjecucionesForm.reset()
       
 
       

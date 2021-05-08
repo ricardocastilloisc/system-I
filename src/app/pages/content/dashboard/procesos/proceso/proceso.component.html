@@ -32,7 +32,8 @@
             </div>
             
         </div> -->
-        <div class="row justify-content-center container-referencias-log">
+
+        <div class="row justify-content-center container-referencias-log" *ngIf="!ocultarbusqueda">
             <form [formGroup]="filtroEjecucionesForm">
                 <div class="d-flex col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12 justify-content-center">
 
@@ -64,8 +65,10 @@
                 </div>
             </form>
         </div>
+
         <div class="row justify-content-center container-referencias-log" [ngClass]="{'show-ejecuciones': mostrarEjecucionesProcesos == true, 'hide-ejecuciones': mostrarEjecucionesProcesos == false}" *ngIf=" AUDGENESTADOPROCESOS.length !== 0"  >
 
+            
             
         
             <div class="d-flex col-md-9 col-xs-9 col-sm-9 col-lg-9 mr-9 col-9 align-items-left justify-content-left ">
@@ -123,6 +126,8 @@
         </div>
 
         <div class="row justify-content-center container-referencias-log" *ngIf=" AUDGENESTADOPROCESOS.length === 0"  >
+
+           
 
           <div>
               No existen registros de ejecución para este proceso.
