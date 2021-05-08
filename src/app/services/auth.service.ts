@@ -76,11 +76,16 @@ export class AuthService {
   }
 
 
-  rolesValids = (User: Usuario, roles: any[]): boolean => {
+  rolesValids = (User: Usuario, roles: any[], Area?): boolean => {
     let flagValidate = false;
     if(!User.attributes.hasOwnProperty('custom:rol')){
       return flagValidate;
     }else {
+      if (Area){
+        if(roles.includes(User.attributes['custom:rol']) && Area == 'SOPORTE')
+          console.log('entre al area')
+          flagValidate = true;  
+      }else 
       if (roles.includes(User.attributes['custom:rol'])){
         flagValidate = true;
       }

@@ -233,7 +233,7 @@
             <div class="d-flex col-md-9 col-xs-9 col-sm-9 col-lg-9 mr-9 col-9 align-items-left justify-content-left ">
                 <span class="title-log-table">Monitoreo de actividades  </span>
             </div>
-            <div class="d-flex col-md-9 col-xs-9 col-sm-9 col-lg-9 mr-9 col-9 align-items-center justify-content-center" *ngIf="usuario.validarRolUsuario() && rolesValids(DataUser, [Soporte])">
+            <div class="d-flex col-md-9 col-xs-9 col-sm-9 col-lg-9 mr-9 col-9 align-items-center justify-content-center" *ngIf="usuario.validarRolUsuario() && rolesValids(DataUser, [Soporte])  || rolesValids(DataUser, [Administrador], area)">
                 <table class="listado-log" >
                     
                     <thead>
@@ -258,7 +258,7 @@
             
                 
 
-                <div class="d-flex col-md-9 col-xs-9 col-sm-9 col-lg-9 mr-9 col-9 align-items-center justify-content-center" *ngIf="usuario.validarRolUsuario() && rolesValids(DataUser, [Administrador])">
+                <div class="d-flex col-md-9 col-xs-9 col-sm-9 col-lg-9 mr-9 col-9 align-items-center justify-content-center" *ngIf="usuario.validarRolUsuario() && rolesValids(DataUser, [Administrador]) && area != 'SOPORTE' ">
                     <table class="listado-log" >
                         
                         <thead>
@@ -272,8 +272,9 @@
                             <tr *ngFor="let AUDGENPROCESO of AUDGENPROCESOS | paginate: { id: 'detalleEjecucion', itemsPerPage: 10, currentPage: paginaActualProceso} ; index as i">
                                 <td>{{i + 1 }}</td>
                                 <td >{{AUDGENPROCESO.FECHA | date :'dd/MM/yyyy'}} {{AUDGENPROCESO.FECHA | date:'mediumTime'}} </td>
-                                <td [ngClass]="{'error-log': AUDGENPROCESO.NIVEL === 'FALLIDO'} " *ngIf="area != 'SOPORTE'">{{AUDGENPROCESO.MENSAJE_NEGOCIO}}</td>
-                                <td  [ngClass]="{'error-log': AUDGENPROCESO.NIVEL === 'FALLIDO'}" *ngIf="area == 'SOPORTE' ">{{AUDGENPROCESO.MENSAJE_SOPORTE}}</td>
+                                <td [ngClass]="{'error-log': AUDGENPROCESO.NIVEL === 'FALLIDO'} ">{{AUDGENPROCESO.MENSAJE_NEGOCIO}}</td>
+                                
+                                <!-- <td  [ngClass]="{'error-log': AUDGENPROCESO.NIVEL === 'FALLIDO'}" *ngIf="area == 'SOPORTE' ">{{AUDGENPROCESO.MENSAJE_SOPORTE}}</td> -->
                             </tr>
                         </tbody>
                     </table>
