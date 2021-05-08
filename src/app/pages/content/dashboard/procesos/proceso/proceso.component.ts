@@ -215,8 +215,12 @@ export class ProcesoComponent implements OnInit, OnDestroy {
       limit: 999999999
     }
 
+    let bodyProcesos = {
+      ID_PROCESO: idProceso
+    }
+
     this.store.dispatch(LoadAUDGENEJECUCIONESPROCESO({ consult: body }));
-    this.store.dispatch(LoadAUDGENPROCESOS({ consult: body }));
+    this.store.dispatch(LoadAUDGENPROCESOS({ consult: bodyProcesos }));
 
     this.mostrarEjecucionesProcesos = false;
   }

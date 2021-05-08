@@ -194,26 +194,6 @@ export type AUDGENUSUARIOSConnection = {
   nextToken?: string | null;
 };
 
-export type TableAUDGENPROCESOSFilterInput = {
-  FECHA?: TableStringFilterInput | null;
-  ESTADO?: TableStringFilterInput | null;
-  ID_PROCESO?: TableStringFilterInput | null;
-  INTERFAZ?: TableIDFilterInput | null;
-};
-
-export type TableIDFilterInput = {
-  ne?: string | null;
-  eq?: string | null;
-  le?: string | null;
-  lt?: string | null;
-  ge?: string | null;
-  gt?: string | null;
-  contains?: string | null;
-  notContains?: string | null;
-  between?: Array<string | null> | null;
-  beginsWith?: string | null;
-};
-
 export type AUDGENPROCESOSConnection = {
   __typename: "AUDGENPROCESOSConnection";
   items?: Array<AUDGENPROCESOS | null> | null;
@@ -1536,12 +1516,11 @@ export class APIService {
     return <GetAUDGENPROCESOSQuery>response.data.getAUDGENPROCESOS;
   }
   async ListAUDGENPROCESOS(
-    filter?: TableAUDGENPROCESOSFilterInput,
-    limit?: number,
-    nextToken?: string
+    ID_PROCESO?: string,
+    FECHA?: string
   ): Promise<ListAUDGENPROCESOSQuery> {
-    const statement = `query ListAUDGENPROCESOS($filter: TableAUDGENPROCESOSFilterInput, $limit: Int, $nextToken: String) {
-        listAUDGENPROCESOS(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    const statement = `query ListAUDGENPROCESOS($ID_PROCESO: String, $FECHA: String) {
+        listAUDGENPROCESOS(ID_PROCESO: $ID_PROCESO, FECHA: $FECHA) {
           __typename
           items {
             __typename
@@ -1574,14 +1553,11 @@ export class APIService {
         }
       }`;
     const gqlAPIServiceArguments: any = {};
-    if (filter) {
-      gqlAPIServiceArguments.filter = filter;
+    if (ID_PROCESO) {
+      gqlAPIServiceArguments.ID_PROCESO = ID_PROCESO;
     }
-    if (limit) {
-      gqlAPIServiceArguments.limit = limit;
-    }
-    if (nextToken) {
-      gqlAPIServiceArguments.nextToken = nextToken;
+    if (FECHA) {
+      gqlAPIServiceArguments.FECHA = FECHA;
     }
     const response = (await API.graphql(
       graphqlOperation(statement, gqlAPIServiceArguments)

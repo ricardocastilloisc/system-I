@@ -42,12 +42,8 @@ query GetAUDGENPROCESOS($ID_PROCESO: String!) {
     STEP
   }
 }
-query ListAUDGENPROCESOS(
-  $filter: TableAUDGENPROCESOSFilterInput
-  $limit: Int
-  $nextToken: String
-) {
-  listAUDGENPROCESOS(filter: $filter, limit: $limit, nextToken: $nextToken) {
+query ListAUDGENPROCESOS($ID_PROCESO: String, $FECHA: String) {
+  listAUDGENPROCESOS(ID_PROCESO: $ID_PROCESO, FECHA: $FECHA) {
     items {
       DESTINO
       ETAPA
