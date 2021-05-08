@@ -232,6 +232,20 @@ export class ProcesoComponent implements OnInit, OnDestroy {
 
     )).subscribe(res => console.log(res))
 
+
+
+    if(this.rolesValids(this.DataUser, [this.Administrador] ) && this.area == 'SOPORTE'){
+
+      this.AUDGENPROCESOS$ = this.store.select(
+        ({ AUDGENPROCESOS }) => AUDGENPROCESOS.AUDGENPROCESOS
+      ).pipe(map(res => {
+        if (res === null) return res
+        else return res.slice().sort(function (a, b) { return new Date(b.FECHA).getTime() - new Date(a.FECHA).getTime() })
+      }
+
+      ))
+
+    }else 
     if (this.rolesValids(this.DataUser, [this.Administrador])) {
       console.log('entre al admin')
       this.AUDGENPROCESOS$ = this.store.select(
