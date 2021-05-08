@@ -25,6 +25,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DatePipe } from '@angular/common'
 
 
 
@@ -55,7 +56,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
   ],
   providers: [
-    AmplifyService
+    AmplifyService,
+    DatePipe
   ],
 
   bootstrap: [AppComponent]

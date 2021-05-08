@@ -10,6 +10,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { ProcesosService } from './../../../../../services/procesos.service'
 import { NgxSpinnerModule } from "ngx-spinner";
 
+
+
 @NgModule({
   declarations: [
     ProcesosPantallaGeneralComponent,
@@ -23,6 +25,7 @@ import { NgxSpinnerModule } from "ngx-spinner";
     FormsModule,
     OrderModule,
     NgxSpinnerModule,
+    
   ],
   providers: [ProcesosService]
 })

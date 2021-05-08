@@ -14,6 +14,7 @@ import { LoadAUDGENESTADOPROCESOS, UnsetAUDGENESTADOPROCESO, LoadAUDGENEJECUCION
 import { APIService } from '../../../../../API.service';
 import { UsuariosService } from '../../../../../services/usuarios.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { DatePipe } from '@angular/common'
 
 
 @Component({
@@ -49,6 +50,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
     private api: APIService,
     private usuario: UsuariosService,
     private fb: FormBuilder,
+    private datepipe: DatePipe
   ) { }
 
   AUDGENPROCESOS$: Observable<AUDGENPROCESO_INERFACE[]>;
@@ -149,9 +151,16 @@ export class ProcesoComponent implements OnInit, OnDestroy {
 
   }
 
-  consultarDetalle(idProceso) {
+  consultarDetalle(idProceso, fecha) {
 
+    console.log(fecha)
+
+    let format = this.datepipe.transform(fecha, 'yyyy-MM-dd')
+
+    console.log(format)
     this.paginaActualProceso = 1;
+
+    this.api.ListAUDGENPROCESOS(idProceso, format).then(res => console.log('Resultado', res))
 
     this.AUDGENEJECUCIONPROCESO$ = this.store.select(
       ({ AUDGENEJECUCIONESPROCESO }) => AUDGENEJECUCIONESPROCESO.AUDGENEJECUCIONESPROCESO
@@ -216,7 +225,8 @@ export class ProcesoComponent implements OnInit, OnDestroy {
     }
 
     let bodyProcesos = {
-      ID_PROCESO: idProceso
+      ID_PROCESO: idProceso,
+      FECHA: format
     }
 
     this.store.dispatch(LoadAUDGENEJECUCIONESPROCESO({ consult: body }));
@@ -264,6 +274,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
       this.store.dispatch(LoadAUDGENESTADOPROCESOS({ consult: body }));
     }
   }
+
 
 
   obtenerNotificaciones(fechaInicioSesion) {
