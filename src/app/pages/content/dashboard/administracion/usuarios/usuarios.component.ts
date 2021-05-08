@@ -32,22 +32,18 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     {
       label: 'Ejecutor',
       value: ERole.Ejecutor,
-    },
-    {
-      label: 'Soporte',
-      value: ERole.Soporte,
-    },
+    }
   ];
 
   Areas = [
     EArea.Contabilidad,
     EArea.Custodia,
-    EArea.InversionesRiesgos,
+    EArea.Inversiones_Riesgos,
     EArea.Tesoreria,
     EArea.Soporte,
   ];
 
-  Permisos = [ERole.Administrador, ERole.Ejecutor, ERole.Soporte];
+  Permisos = [ERole.Administrador, ERole.Ejecutor];
 
   Negocios = [ENegocio.Afore, ENegocio.Fondos, ENegocio.Seguros];
 
@@ -199,11 +195,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     ];
     this.dropdownListFiltroPermisos = [
       { item_id: ERole.Administrador, item_text: ERole.Administrador },
-      { item_id: ERole.Ejecutor, item_text: ERole.Ejecutor },
-      {
-        item_id: ERole.Soporte,
-        item_text: ERole.Soporte,
-      },
+      { item_id: ERole.Ejecutor, item_text: ERole.Ejecutor }
     ];
 
     this.dropdownListFiltroAreas = [

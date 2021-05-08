@@ -21,7 +21,7 @@
               <img src="../assets/imgs/icons/catalogo.svg" class="alineadoTextoImagenCentro" />
               Catálogos</a>
           </li>
-          <li *ngIf="rolesValids(DataUser, [Soporte])">
+          <li *ngIf="rolesValids(DataUser, [Administrador])">
             <a routerLinkActive="active" routerLink="/administracion/usuarios">
               <img src="../assets/imgs/icons/usuarios.svg" class="alineadoTextoImagenCentro" />
               Usuarios</a>

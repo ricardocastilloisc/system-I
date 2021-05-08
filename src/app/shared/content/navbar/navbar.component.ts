@@ -28,7 +28,6 @@ export class NavbarComponent implements OnInit, AfterViewInit {
 
   Administrador = ERole.Administrador;
   Ejecutor = ERole.Ejecutor;
-  Soporte = ERole.Soporte;
 
   constructor(
     private authService: AuthService,

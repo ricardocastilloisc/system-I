@@ -30,7 +30,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
   Areas = [
     EArea.Contabilidad,
     EArea.Custodia,
-    EArea.InversionesRiesgos,
+    EArea.Inversiones_Riesgos,
     EArea.Tesoreria,
     EArea.Soporte
   ];
@@ -49,7 +49,6 @@ export class ProcesoComponent implements OnInit, OnDestroy {
   maxDate: Date;
   Administrador = ERole.Administrador;
   Ejecutor = ERole.Ejecutor;
-  Soporte = ERole.Soporte;
   DataUser: any;
   ejemplo
   fechaBusqueda: Date;

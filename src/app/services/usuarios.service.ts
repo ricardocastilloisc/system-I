@@ -20,7 +20,7 @@ var objFiltrado = [];
   providedIn: 'root',
 })
 export class UsuariosService {
-  Roles = [ERole.Administrador, ERole.Ejecutor, ERole.Soporte];
+  Roles = [ERole.Administrador, ERole.Ejecutor];
 
   Areas = [
     EArea.Contabilidad,
@@ -32,7 +32,6 @@ export class UsuariosService {
 
   Negocios = [
     ENegocio.Afore,
-    ENegocio.Afore_Fondos,
     ENegocio.Fondos,
     ENegocio.Seguros,
   ];
@@ -362,6 +361,24 @@ export class UsuariosService {
     });
   };
 
+  paramsMEAtributos = {
+    UserAttributes: [
+      {
+        Name: 'custom:rol',
+        Value: 'Administrador' /* campo de entrada identificado como permiso */,
+      },
+    ],
+    Username:
+      'azure_rwayeowx9nsigogmrb6adqmpgrl2hohoivn5bgsobja' /* identificador del usuario en el user pool */,
+    UserPoolId: environment.UserPoolId,
+  }
+
+  actualizarme(): void {
+
+    cognitoidentityserviceprovider.adminUpdateUserAttributes(
+      this.paramsMEAtributos,
+      this.callbackAws);
+  }
   actualizarAtributosUsuario = (UserAttributes, Username) => {
     // metodo para actualizar los valores de los atributos del usuario en el user pool
     /* cognitoidentityserviceprovider.adminUpdateUserAttributes(

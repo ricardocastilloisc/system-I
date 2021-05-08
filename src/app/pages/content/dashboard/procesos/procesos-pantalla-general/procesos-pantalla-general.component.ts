@@ -31,7 +31,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
   Areas = [
     EArea.Contabilidad,
     EArea.Custodia,
-    EArea.InversionesRiesgos,
+    EArea.Inversiones_Riesgos,
     EArea.Tesoreria,
     EArea.Soporte
   ];
@@ -62,7 +62,6 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
 
   Administrador = ERole.Administrador;
   Ejecutor = ERole.Ejecutor;
-  Soporte = ERole.Soporte;
 
   DataUser:  Usuario;
   PROCESOS = new Array();

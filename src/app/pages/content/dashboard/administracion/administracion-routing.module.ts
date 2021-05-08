@@ -20,7 +20,7 @@ const routes: Routes = [
         path: 'usuarios',
         loadChildren: () => import('./usuarios/usuarios.module').then(m => m.UsuariosModule),
         canActivate: [GuardRolesGuard],
-        data: { roles: [ERole.Soporte] },
+        data: { roles: [ERole.Administrador] },
       },
     ],
   },
