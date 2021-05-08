@@ -272,7 +272,8 @@
                             <tr *ngFor="let AUDGENPROCESO of AUDGENPROCESOS | paginate: { id: 'detalleEjecucion', itemsPerPage: 10, currentPage: paginaActualProceso} ; index as i">
                                 <td>{{i + 1 }}</td>
                                 <td >{{AUDGENPROCESO.FECHA | date :'dd/MM/yyyy'}} {{AUDGENPROCESO.FECHA | date:'mediumTime'}} </td>
-                                <td [ngClass]="{'error-log': AUDGENPROCESO.NIVEL === 'FALLIDO'}">{{AUDGENPROCESO.MENSAJE_NEGOCIO}}</td>
+                                <td [ngClass]="{'error-log': AUDGENPROCESO.NIVEL === 'FALLIDO'} " *ngIf="area != 'SOPORTE'">{{AUDGENPROCESO.MENSAJE_NEGOCIO}}</td>
+                                <td  [ngClass]="{'error-log': AUDGENPROCESO.NIVEL === 'FALLIDO'}" *ngIf="area == 'SOPORTE' ">{{AUDGENPROCESO.MENSAJE_SOPORTE}}</td>
                             </tr>
                         </tbody>
                     </table>

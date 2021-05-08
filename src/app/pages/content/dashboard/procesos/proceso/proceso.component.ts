@@ -9,7 +9,7 @@ import { AUDGENESTADOPROCESO_INTERFACE } from '../../../../../model/AUDGENESTADO
 import { map } from "rxjs/operators";
 import { AuthService } from 'src/app/services/auth.service';
 import { Usuario } from '../../../../../model/usuario.model';
-import { ERole } from '../../../../../validators/roles';
+import { EArea, ERole } from '../../../../../validators/roles';
 import { LoadAUDGENESTADOPROCESOS, UnsetAUDGENESTADOPROCESO, LoadAUDGENEJECUCIONESPROCESO, UnsetAUDGENEJECUCIONPROCESO } from 'src/app/ReduxStore/actions';
 import { APIService } from '../../../../../API.service';
 import { UsuariosService } from '../../../../../services/usuarios.service';
@@ -27,11 +27,20 @@ export class ProcesoComponent implements OnInit, OnDestroy {
 
   filtroEjecucionesForm: FormGroup;
 
+  Areas = [
+    EArea.Contabilidad,
+    EArea.Custodia,
+    EArea.InversionesRiesgos,
+    EArea.Tesoreria,
+    EArea.Soporte
+  ];
+
   DataUser$: Observable<Usuario>;
   last;
   PROCESOS = new Array();
   ocultarbusqueda = false;
 
+  area: string;
   listaProcesos: any;
   totalItems: number;
   paginaActualEjecucionesProceso: number = 1;
@@ -128,6 +137,27 @@ export class ProcesoComponent implements OnInit, OnDestroy {
 
   }
 
+
+  obtenerArea(): string{
+    let arrayTempArea = [];
+
+    this.DataUser.groups.forEach((area) => {
+        
+        this.Areas.forEach(areaDef =>
+          {
+            if(area === areaDef){
+              arrayTempArea.push(area);
+            }            
+          })
+
+    })
+    if(arrayTempArea.length > 0)
+      return arrayTempArea[0].toUpperCase()
+    else "N/D"
+
+
+  }
+
   recargarEjecuciones(){
     this.ocultarbusqueda = false;
 
@@ -157,6 +187,9 @@ export class ProcesoComponent implements OnInit, OnDestroy {
   }
 
   consultarDetalle(idProceso, fecha) {
+
+    this.area= this.obtenerArea();
+    console.log(this.area)
 
     this.ocultarbusqueda = true;
 
@@ -243,6 +276,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
   }
 
   rolesValids = (User: Usuario, roles: any[]): boolean => {
+
     return this.authService.rolesValids(User, roles);
   };
 
