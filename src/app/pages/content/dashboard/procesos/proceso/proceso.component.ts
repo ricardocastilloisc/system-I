@@ -15,6 +15,7 @@ import { APIService } from '../../../../../API.service';
 import { UsuariosService } from '../../../../../services/usuarios.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DatePipe } from '@angular/common'
+import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 
 
 @Component({
@@ -67,7 +68,8 @@ export class ProcesoComponent implements OnInit, OnDestroy {
     this.paginaActualProceso = 1;
     this.paginaActualEjecucionesProceso = 1;
     this.filtroEjecucionesForm = this.fb.group({
-      fechaFiltrar: ['Fecha']
+      fechaFiltrar: ['Fecha'],
+      idProceso: []
     })
 
     this.api.OnUpdateAUDGENESTADOPROCESOListener().subscribe(res => console.log(res))
@@ -243,8 +245,13 @@ export class ProcesoComponent implements OnInit, OnDestroy {
 
   busquedaFiltros() {
     if (this.filtroEjecucionesForm.valid) {
+
       let fechaFiltro = this.filtroEjecucionesForm.get('fechaFiltrar').value;
       console.log(this.filtroEjecucionesForm.get('fechaFiltrar').value)
+
+      let idProceso = this.filtroEjecucionesForm.get('idProceso').value;
+      console.log(this.filtroEjecucionesForm.get('idProceso').value)
+
       this.AUDGENESTADOPROCESOS$ = this.store.select(
         ({ AUDGENESTADOPROCESOS }) => AUDGENESTADOPROCESOS.AUDGENESTADOPROCESO
       ).pipe(map(res => {
@@ -266,12 +273,37 @@ export class ProcesoComponent implements OnInit, OnDestroy {
           })
       })).subscribe(res => console.log(res))
 
-      let body = {
-        filter: { FECHA_ACTUALIZACION: { contains: fechaFiltro }, INTERFAZ: { eq: this.rutaActiva.snapshot.params.id } },
-        limit: 999999999
+      if(fechaFiltro === "Fecha" && idProceso === null){
+
+        alert("Ingresa un valor para buscar")
+
+      }else if( fechaFiltro === "Fecha" && idProceso !== null){
+
+        let body = {
+          filter: { ID_PROCESO: { eq: idProceso } },
+          limit: 999999999
+        }
+        this.store.dispatch(LoadAUDGENESTADOPROCESOS({ consult: body }));
+      }else if( fechaFiltro !== "Fecha" && idProceso === null){
+        let body = {
+          filter: { FECHA_ACTUALIZACION: { contains: fechaFiltro }, INTERFAZ: { eq: this.rutaActiva.snapshot.params.id } },
+          limit: 999999999
+        }
+        this.store.dispatch(LoadAUDGENESTADOPROCESOS({ consult: body }));
+      }else {
+        console.log('else')
+        console.log(idProceso)
+        let body = {
+          filter: { FECHA_ACTUALIZACION: { contains: fechaFiltro }, ID_PROCESO: { eq:  idProceso } },
+          limit: 999999999
+        }
+        this.store.dispatch(LoadAUDGENESTADOPROCESOS({ consult: body }));
       }
 
-      this.store.dispatch(LoadAUDGENESTADOPROCESOS({ consult: body }));
+      
+      
+
+      
     }
   }
 

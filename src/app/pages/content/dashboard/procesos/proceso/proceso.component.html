@@ -32,34 +32,41 @@
             </div>
             
         </div> -->
-    
+        <div class="row justify-content-center container-referencias-log">
+            <form [formGroup]="filtroEjecucionesForm">
+                <div class="d-flex col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12 justify-content-center">
 
+                    
+                    <div class="card-calendario">
+                        
+                        <div>Selecciona una fecha</div>
+                        <div>
+                            <input type="date" placeholder="dd-MM-yyyy" onfocus="(this.type='date')" formControlName="fechaFiltrar" id="fechaFiltrar" name="fechaFiltrar" [value]="maxDate" max="{{ maxDate| date:'yyyy-MM-dd'}}"/>
+                        </div>
+                        <div>
+                            <input type="text" placeholder="ID de ejecución" formControlName="idProceso" id="idProceso" name="">
+                        </div>
+                        <!-- <div>
+                            
+                            <select name="estados" id="estados" value="Estado">
+                                <option disabled selected>Estado</option>
+                                <option value="iniciado">En proceso</option>
+                                <option value="detenido">Detenido</option>
+                
+                            </select>
+                        
+                        </div> -->
+                        
+                        <div><button (click)="busquedaFiltros()" >Buscar</button> </div>
+                    </div>
+
+        
+                </div>
+            </form>
+        </div>
         <div class="row justify-content-center container-referencias-log" [ngClass]="{'show-ejecuciones': mostrarEjecucionesProcesos == true, 'hide-ejecuciones': mostrarEjecucionesProcesos == false}" *ngIf=" AUDGENESTADOPROCESOS.length !== 0"  >
 
-            <form [formGroup]="filtroEjecucionesForm">
-            <div class="d-flex col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12 justify-content-center">
-
-                <div class="card-calendario">
-                    <div>Selecciona una fecha</div>
-                    <div>
-                        <input type="date" placeholder="dd-MM-yyyy" onfocus="(this.type='date')" formControlName="fechaFiltrar" id="fechaFiltrar" name="fechaFiltrar" [value]="maxDate" max="{{ maxDate| date:'yyyy-MM-dd'}}" required/>
-                    </div>
-                    <!-- <div>
-                        
-                        <select name="estados" id="estados" value="Estado">
-                            <option disabled selected>Estado</option>
-                            <option value="iniciado">En proceso</option>
-                            <option value="detenido">Detenido</option>
             
-                        </select>
-                       
-                    </div> -->
-                    <div><button (click)="busquedaFiltros()" >Buscar</button></div>
-                </div>
-
-    
-            </div>
-            </form>
         
             <div class="d-flex col-md-9 col-xs-9 col-sm-9 col-lg-9 mr-9 col-9 align-items-left justify-content-left ">
                 <span class="title-log-table">Listado de ejecuciones</span>
