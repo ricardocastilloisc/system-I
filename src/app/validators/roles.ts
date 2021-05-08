@@ -17,5 +17,6 @@ export enum EArea {
   Inversiones_Riesgos = 'InversionesyRiesgos',
   InversionesRiesgos = 'Inversiones y Riesgos',
   Contabilidad = 'Contabilidad',
-  Custodia = 'Custodia'
+  Custodia = 'Custodia',
+  Soporte = 'Soporte'
 }

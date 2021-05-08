@@ -27,6 +27,7 @@ export class UsuariosService {
     EArea.Custodia,
     EArea.Inversiones_Riesgos,
     EArea.Tesoreria,
+    EArea.Soporte,
   ];
 
   Negocios = [

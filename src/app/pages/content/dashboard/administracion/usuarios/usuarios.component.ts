@@ -44,6 +44,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     EArea.Custodia,
     EArea.InversionesRiesgos,
     EArea.Tesoreria,
+    EArea.Soporte,
   ];
 
   Permisos = [ERole.Administrador, ERole.Ejecutor, ERole.Soporte];
@@ -215,6 +216,10 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       {
         item_id: EArea.Tesoreria,
         item_text: EArea.Tesoreria,
+      },
+      {
+        item_id: EArea.Soporte,
+        item_text: EArea.Soporte,
       },
     ];
 
