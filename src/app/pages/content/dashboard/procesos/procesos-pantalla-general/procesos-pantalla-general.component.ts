@@ -33,6 +33,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
     EArea.Custodia,
     EArea.InversionesRiesgos,
     EArea.Tesoreria,
+    EArea.Soporte
   ];
 
 
