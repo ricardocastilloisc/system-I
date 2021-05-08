@@ -161,3 +161,68 @@ query ListCATPROCESOS(
     nextToken
   }
 }
+query GetCATPERMISOS($ID: String!) {
+  getCATPERMISOS(ID: $ID) {
+    ID
+    AREA
+    AUDITORIA {
+      ARCHIVOS
+      CATALOGOS
+      PROCESOS
+    }
+    CATALOGOS {
+      ACTUALIZAR
+      BORRAR
+      CONSULTAR
+      CREAR
+    }
+    FLUJO
+    PROCESOS {
+      DETENER
+      INICIAR
+      MONITOREAR
+    }
+    ROL
+    USUARIOS {
+      ACTUALIZAR
+      BORRAR
+      CONSULTAR
+    }
+  }
+}
+query ListCATPERMISOS(
+  $filter: TableCATPERMISOSFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listCATPERMISOS(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      ID
+      AREA
+      AUDITORIA {
+        ARCHIVOS
+        CATALOGOS
+        PROCESOS
+      }
+      CATALOGOS {
+        ACTUALIZAR
+        BORRAR
+        CONSULTAR
+        CREAR
+      }
+      FLUJO
+      PROCESOS {
+        DETENER
+        INICIAR
+        MONITOREAR
+      }
+      ROL
+      USUARIOS {
+        ACTUALIZAR
+        BORRAR
+        CONSULTAR
+      }
+    }
+    nextToken
+  }
+}

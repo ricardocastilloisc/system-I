@@ -118,6 +118,59 @@ export type DeleteCATPROCESOSInput = {
   PROCESO: string;
 };
 
+export type CreateCATPERMISOSInput = {
+  ID: string;
+};
+
+export type CATPERMISOS = {
+  __typename: "CATPERMISOS";
+  ID?: string;
+  AREA?: string | null;
+  AUDITORIA?: AUDITORIA;
+  CATALOGOS?: CATALOGOS;
+  FLUJO?: string | null;
+  PROCESOS?: PROCESOS;
+  ROL?: string | null;
+  USUARIOS?: USUARIOS;
+};
+
+export type AUDITORIA = {
+  __typename: "AUDITORIA";
+  ARCHIVOS?: boolean | null;
+  CATALOGOS?: boolean | null;
+  PROCESOS?: boolean | null;
+};
+
+export type CATALOGOS = {
+  __typename: "CATALOGOS";
+  ACTUALIZAR?: boolean | null;
+  BORRAR?: boolean | null;
+  CONSULTAR?: boolean | null;
+  CREAR?: boolean | null;
+};
+
+export type PROCESOS = {
+  __typename: "PROCESOS";
+  DETENER?: boolean | null;
+  INICIAR?: boolean | null;
+  MONITOREAR?: boolean | null;
+};
+
+export type USUARIOS = {
+  __typename: "USUARIOS";
+  ACTUALIZAR?: boolean | null;
+  BORRAR?: boolean | null;
+  CONSULTAR?: boolean | null;
+};
+
+export type UpdateCATPERMISOSInput = {
+  ID: string;
+};
+
+export type DeleteCATPERMISOSInput = {
+  ID: string;
+};
+
 export type TableAUDGENUSUARIOSFilterInput = {
   ID?: TableStringFilterInput | null;
 };
@@ -189,6 +242,18 @@ export type TableCATPROCESOSFilterInput = {
 export type CATPROCESOSConnection = {
   __typename: "CATPROCESOSConnection";
   items?: Array<CATPROCESOS | null> | null;
+  nextToken?: string | null;
+};
+
+export type TableCATPERMISOSFilterInput = {
+  ID?: TableStringFilterInput | null;
+  AREA?: TableStringFilterInput | null;
+  ROL?: TableStringFilterInput | null;
+};
+
+export type CATPERMISOSConnection = {
+  __typename: "CATPERMISOSConnection";
+  items?: Array<CATPERMISOS | null> | null;
   nextToken?: string | null;
 };
 
@@ -357,6 +422,105 @@ export type DeleteCATPROCESOSMutation = {
   TIPO?: string | null;
 };
 
+export type CreateCATPERMISOSMutation = {
+  __typename: "CATPERMISOS";
+  ID: string;
+  AREA?: string | null;
+  AUDITORIA?: {
+    __typename: "AUDITORIA";
+    ARCHIVOS?: boolean | null;
+    CATALOGOS?: boolean | null;
+    PROCESOS?: boolean | null;
+  } | null;
+  CATALOGOS?: {
+    __typename: "CATALOGOS";
+    ACTUALIZAR?: boolean | null;
+    BORRAR?: boolean | null;
+    CONSULTAR?: boolean | null;
+    CREAR?: boolean | null;
+  } | null;
+  FLUJO?: string | null;
+  PROCESOS?: {
+    __typename: "PROCESOS";
+    DETENER?: boolean | null;
+    INICIAR?: boolean | null;
+    MONITOREAR?: boolean | null;
+  } | null;
+  ROL?: string | null;
+  USUARIOS?: {
+    __typename: "USUARIOS";
+    ACTUALIZAR?: boolean | null;
+    BORRAR?: boolean | null;
+    CONSULTAR?: boolean | null;
+  } | null;
+};
+
+export type UpdateCATPERMISOSMutation = {
+  __typename: "CATPERMISOS";
+  ID: string;
+  AREA?: string | null;
+  AUDITORIA?: {
+    __typename: "AUDITORIA";
+    ARCHIVOS?: boolean | null;
+    CATALOGOS?: boolean | null;
+    PROCESOS?: boolean | null;
+  } | null;
+  CATALOGOS?: {
+    __typename: "CATALOGOS";
+    ACTUALIZAR?: boolean | null;
+    BORRAR?: boolean | null;
+    CONSULTAR?: boolean | null;
+    CREAR?: boolean | null;
+  } | null;
+  FLUJO?: string | null;
+  PROCESOS?: {
+    __typename: "PROCESOS";
+    DETENER?: boolean | null;
+    INICIAR?: boolean | null;
+    MONITOREAR?: boolean | null;
+  } | null;
+  ROL?: string | null;
+  USUARIOS?: {
+    __typename: "USUARIOS";
+    ACTUALIZAR?: boolean | null;
+    BORRAR?: boolean | null;
+    CONSULTAR?: boolean | null;
+  } | null;
+};
+
+export type DeleteCATPERMISOSMutation = {
+  __typename: "CATPERMISOS";
+  ID: string;
+  AREA?: string | null;
+  AUDITORIA?: {
+    __typename: "AUDITORIA";
+    ARCHIVOS?: boolean | null;
+    CATALOGOS?: boolean | null;
+    PROCESOS?: boolean | null;
+  } | null;
+  CATALOGOS?: {
+    __typename: "CATALOGOS";
+    ACTUALIZAR?: boolean | null;
+    BORRAR?: boolean | null;
+    CONSULTAR?: boolean | null;
+    CREAR?: boolean | null;
+  } | null;
+  FLUJO?: string | null;
+  PROCESOS?: {
+    __typename: "PROCESOS";
+    DETENER?: boolean | null;
+    INICIAR?: boolean | null;
+    MONITOREAR?: boolean | null;
+  } | null;
+  ROL?: string | null;
+  USUARIOS?: {
+    __typename: "USUARIOS";
+    ACTUALIZAR?: boolean | null;
+    BORRAR?: boolean | null;
+    CONSULTAR?: boolean | null;
+  } | null;
+};
+
 export type GetAUDGENUSUARIOSQuery = {
   __typename: "AUDGENUSUARIOS";
   ID: string;
@@ -496,6 +660,76 @@ export type ListCATPROCESOSQuery = {
     DESCRIPCION?: string | null;
     NEGOCIO?: string | null;
     TIPO?: string | null;
+  } | null> | null;
+  nextToken?: string | null;
+};
+
+export type GetCATPERMISOSQuery = {
+  __typename: "CATPERMISOS";
+  ID: string;
+  AREA?: string | null;
+  AUDITORIA?: {
+    __typename: "AUDITORIA";
+    ARCHIVOS?: boolean | null;
+    CATALOGOS?: boolean | null;
+    PROCESOS?: boolean | null;
+  } | null;
+  CATALOGOS?: {
+    __typename: "CATALOGOS";
+    ACTUALIZAR?: boolean | null;
+    BORRAR?: boolean | null;
+    CONSULTAR?: boolean | null;
+    CREAR?: boolean | null;
+  } | null;
+  FLUJO?: string | null;
+  PROCESOS?: {
+    __typename: "PROCESOS";
+    DETENER?: boolean | null;
+    INICIAR?: boolean | null;
+    MONITOREAR?: boolean | null;
+  } | null;
+  ROL?: string | null;
+  USUARIOS?: {
+    __typename: "USUARIOS";
+    ACTUALIZAR?: boolean | null;
+    BORRAR?: boolean | null;
+    CONSULTAR?: boolean | null;
+  } | null;
+};
+
+export type ListCATPERMISOSQuery = {
+  __typename: "CATPERMISOSConnection";
+  items?: Array<{
+    __typename: "CATPERMISOS";
+    ID: string;
+    AREA?: string | null;
+    AUDITORIA?: {
+      __typename: "AUDITORIA";
+      ARCHIVOS?: boolean | null;
+      CATALOGOS?: boolean | null;
+      PROCESOS?: boolean | null;
+    } | null;
+    CATALOGOS?: {
+      __typename: "CATALOGOS";
+      ACTUALIZAR?: boolean | null;
+      BORRAR?: boolean | null;
+      CONSULTAR?: boolean | null;
+      CREAR?: boolean | null;
+    } | null;
+    FLUJO?: string | null;
+    PROCESOS?: {
+      __typename: "PROCESOS";
+      DETENER?: boolean | null;
+      INICIAR?: boolean | null;
+      MONITOREAR?: boolean | null;
+    } | null;
+    ROL?: string | null;
+    USUARIOS?: {
+      __typename: "USUARIOS";
+      ACTUALIZAR?: boolean | null;
+      BORRAR?: boolean | null;
+      CONSULTAR?: boolean | null;
+    } | null;
   } | null> | null;
   nextToken?: string | null;
 };
@@ -663,6 +897,105 @@ export type OnDeleteCATPROCESOSSubscription = {
   DESCRIPCION?: string | null;
   NEGOCIO?: string | null;
   TIPO?: string | null;
+};
+
+export type OnCreateCATPERMISOSSubscription = {
+  __typename: "CATPERMISOS";
+  ID: string;
+  AREA?: string | null;
+  AUDITORIA?: {
+    __typename: "AUDITORIA";
+    ARCHIVOS?: boolean | null;
+    CATALOGOS?: boolean | null;
+    PROCESOS?: boolean | null;
+  } | null;
+  CATALOGOS?: {
+    __typename: "CATALOGOS";
+    ACTUALIZAR?: boolean | null;
+    BORRAR?: boolean | null;
+    CONSULTAR?: boolean | null;
+    CREAR?: boolean | null;
+  } | null;
+  FLUJO?: string | null;
+  PROCESOS?: {
+    __typename: "PROCESOS";
+    DETENER?: boolean | null;
+    INICIAR?: boolean | null;
+    MONITOREAR?: boolean | null;
+  } | null;
+  ROL?: string | null;
+  USUARIOS?: {
+    __typename: "USUARIOS";
+    ACTUALIZAR?: boolean | null;
+    BORRAR?: boolean | null;
+    CONSULTAR?: boolean | null;
+  } | null;
+};
+
+export type OnUpdateCATPERMISOSSubscription = {
+  __typename: "CATPERMISOS";
+  ID: string;
+  AREA?: string | null;
+  AUDITORIA?: {
+    __typename: "AUDITORIA";
+    ARCHIVOS?: boolean | null;
+    CATALOGOS?: boolean | null;
+    PROCESOS?: boolean | null;
+  } | null;
+  CATALOGOS?: {
+    __typename: "CATALOGOS";
+    ACTUALIZAR?: boolean | null;
+    BORRAR?: boolean | null;
+    CONSULTAR?: boolean | null;
+    CREAR?: boolean | null;
+  } | null;
+  FLUJO?: string | null;
+  PROCESOS?: {
+    __typename: "PROCESOS";
+    DETENER?: boolean | null;
+    INICIAR?: boolean | null;
+    MONITOREAR?: boolean | null;
+  } | null;
+  ROL?: string | null;
+  USUARIOS?: {
+    __typename: "USUARIOS";
+    ACTUALIZAR?: boolean | null;
+    BORRAR?: boolean | null;
+    CONSULTAR?: boolean | null;
+  } | null;
+};
+
+export type OnDeleteCATPERMISOSSubscription = {
+  __typename: "CATPERMISOS";
+  ID: string;
+  AREA?: string | null;
+  AUDITORIA?: {
+    __typename: "AUDITORIA";
+    ARCHIVOS?: boolean | null;
+    CATALOGOS?: boolean | null;
+    PROCESOS?: boolean | null;
+  } | null;
+  CATALOGOS?: {
+    __typename: "CATALOGOS";
+    ACTUALIZAR?: boolean | null;
+    BORRAR?: boolean | null;
+    CONSULTAR?: boolean | null;
+    CREAR?: boolean | null;
+  } | null;
+  FLUJO?: string | null;
+  PROCESOS?: {
+    __typename: "PROCESOS";
+    DETENER?: boolean | null;
+    INICIAR?: boolean | null;
+    MONITOREAR?: boolean | null;
+  } | null;
+  ROL?: string | null;
+  USUARIOS?: {
+    __typename: "USUARIOS";
+    ACTUALIZAR?: boolean | null;
+    BORRAR?: boolean | null;
+    CONSULTAR?: boolean | null;
+  } | null;
 };
 
 @Injectable({
@@ -984,6 +1317,141 @@ export class APIService {
     )) as any;
     return <DeleteCATPROCESOSMutation>response.data.deleteCATPROCESOS;
   }
+  async CreateCATPERMISOS(
+    input: CreateCATPERMISOSInput
+  ): Promise<CreateCATPERMISOSMutation> {
+    const statement = `mutation CreateCATPERMISOS($input: CreateCATPERMISOSInput!) {
+        createCATPERMISOS(input: $input) {
+          __typename
+          ID
+          AREA
+          AUDITORIA {
+            __typename
+            ARCHIVOS
+            CATALOGOS
+            PROCESOS
+          }
+          CATALOGOS {
+            __typename
+            ACTUALIZAR
+            BORRAR
+            CONSULTAR
+            CREAR
+          }
+          FLUJO
+          PROCESOS {
+            __typename
+            DETENER
+            INICIAR
+            MONITOREAR
+          }
+          ROL
+          USUARIOS {
+            __typename
+            ACTUALIZAR
+            BORRAR
+            CONSULTAR
+          }
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {
+      input
+    };
+    const response = (await API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    )) as any;
+    return <CreateCATPERMISOSMutation>response.data.createCATPERMISOS;
+  }
+  async UpdateCATPERMISOS(
+    input: UpdateCATPERMISOSInput
+  ): Promise<UpdateCATPERMISOSMutation> {
+    const statement = `mutation UpdateCATPERMISOS($input: UpdateCATPERMISOSInput!) {
+        updateCATPERMISOS(input: $input) {
+          __typename
+          ID
+          AREA
+          AUDITORIA {
+            __typename
+            ARCHIVOS
+            CATALOGOS
+            PROCESOS
+          }
+          CATALOGOS {
+            __typename
+            ACTUALIZAR
+            BORRAR
+            CONSULTAR
+            CREAR
+          }
+          FLUJO
+          PROCESOS {
+            __typename
+            DETENER
+            INICIAR
+            MONITOREAR
+          }
+          ROL
+          USUARIOS {
+            __typename
+            ACTUALIZAR
+            BORRAR
+            CONSULTAR
+          }
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {
+      input
+    };
+    const response = (await API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    )) as any;
+    return <UpdateCATPERMISOSMutation>response.data.updateCATPERMISOS;
+  }
+  async DeleteCATPERMISOS(
+    input: DeleteCATPERMISOSInput
+  ): Promise<DeleteCATPERMISOSMutation> {
+    const statement = `mutation DeleteCATPERMISOS($input: DeleteCATPERMISOSInput!) {
+        deleteCATPERMISOS(input: $input) {
+          __typename
+          ID
+          AREA
+          AUDITORIA {
+            __typename
+            ARCHIVOS
+            CATALOGOS
+            PROCESOS
+          }
+          CATALOGOS {
+            __typename
+            ACTUALIZAR
+            BORRAR
+            CONSULTAR
+            CREAR
+          }
+          FLUJO
+          PROCESOS {
+            __typename
+            DETENER
+            INICIAR
+            MONITOREAR
+          }
+          ROL
+          USUARIOS {
+            __typename
+            ACTUALIZAR
+            BORRAR
+            CONSULTAR
+          }
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {
+      input
+    };
+    const response = (await API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    )) as any;
+    return <DeleteCATPERMISOSMutation>response.data.deleteCATPERMISOS;
+  }
   async GetAUDGENUSUARIOS(ID: string): Promise<GetAUDGENUSUARIOSQuery> {
     const statement = `query GetAUDGENUSUARIOS($ID: String!) {
         getAUDGENUSUARIOS(ID: $ID) {
@@ -1276,6 +1744,107 @@ export class APIService {
       graphqlOperation(statement, gqlAPIServiceArguments)
     )) as any;
     return <ListCATPROCESOSQuery>response.data.listCATPROCESOS;
+  }
+  async GetCATPERMISOS(ID: string): Promise<GetCATPERMISOSQuery> {
+    const statement = `query GetCATPERMISOS($ID: String!) {
+        getCATPERMISOS(ID: $ID) {
+          __typename
+          ID
+          AREA
+          AUDITORIA {
+            __typename
+            ARCHIVOS
+            CATALOGOS
+            PROCESOS
+          }
+          CATALOGOS {
+            __typename
+            ACTUALIZAR
+            BORRAR
+            CONSULTAR
+            CREAR
+          }
+          FLUJO
+          PROCESOS {
+            __typename
+            DETENER
+            INICIAR
+            MONITOREAR
+          }
+          ROL
+          USUARIOS {
+            __typename
+            ACTUALIZAR
+            BORRAR
+            CONSULTAR
+          }
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {
+      ID
+    };
+    const response = (await API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    )) as any;
+    return <GetCATPERMISOSQuery>response.data.getCATPERMISOS;
+  }
+  async ListCATPERMISOS(
+    filter?: TableCATPERMISOSFilterInput,
+    limit?: number,
+    nextToken?: string
+  ): Promise<ListCATPERMISOSQuery> {
+    const statement = `query ListCATPERMISOS($filter: TableCATPERMISOSFilterInput, $limit: Int, $nextToken: String) {
+        listCATPERMISOS(filter: $filter, limit: $limit, nextToken: $nextToken) {
+          __typename
+          items {
+            __typename
+            ID
+            AREA
+            AUDITORIA {
+              __typename
+              ARCHIVOS
+              CATALOGOS
+              PROCESOS
+            }
+            CATALOGOS {
+              __typename
+              ACTUALIZAR
+              BORRAR
+              CONSULTAR
+              CREAR
+            }
+            FLUJO
+            PROCESOS {
+              __typename
+              DETENER
+              INICIAR
+              MONITOREAR
+            }
+            ROL
+            USUARIOS {
+              __typename
+              ACTUALIZAR
+              BORRAR
+              CONSULTAR
+            }
+          }
+          nextToken
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {};
+    if (filter) {
+      gqlAPIServiceArguments.filter = filter;
+    }
+    if (limit) {
+      gqlAPIServiceArguments.limit = limit;
+    }
+    if (nextToken) {
+      gqlAPIServiceArguments.nextToken = nextToken;
+    }
+    const response = (await API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    )) as any;
+    return <ListCATPERMISOSQuery>response.data.listCATPERMISOS;
   }
   OnCreateAUDGENUSUARIOSListener(
     ID?: string
@@ -1614,5 +2183,143 @@ export class APIService {
     return API.graphql(
       graphqlOperation(statement, gqlAPIServiceArguments)
     ) as Observable<SubscriptionResponse<OnDeleteCATPROCESOSSubscription>>;
+  }
+
+  OnCreateCATPERMISOSListener(
+    ID?: string
+  ): Observable<SubscriptionResponse<OnCreateCATPERMISOSSubscription>> {
+    const statement = `subscription OnCreateCATPERMISOS($ID: String) {
+        onCreateCATPERMISOS(ID: $ID) {
+          __typename
+          ID
+          AREA
+          AUDITORIA {
+            __typename
+            ARCHIVOS
+            CATALOGOS
+            PROCESOS
+          }
+          CATALOGOS {
+            __typename
+            ACTUALIZAR
+            BORRAR
+            CONSULTAR
+            CREAR
+          }
+          FLUJO
+          PROCESOS {
+            __typename
+            DETENER
+            INICIAR
+            MONITOREAR
+          }
+          ROL
+          USUARIOS {
+            __typename
+            ACTUALIZAR
+            BORRAR
+            CONSULTAR
+          }
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {};
+    if (ID) {
+      gqlAPIServiceArguments.ID = ID;
+    }
+    return API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    ) as Observable<SubscriptionResponse<OnCreateCATPERMISOSSubscription>>;
+  }
+
+  OnUpdateCATPERMISOSListener(
+    ID?: string
+  ): Observable<SubscriptionResponse<OnUpdateCATPERMISOSSubscription>> {
+    const statement = `subscription OnUpdateCATPERMISOS($ID: String) {
+        onUpdateCATPERMISOS(ID: $ID) {
+          __typename
+          ID
+          AREA
+          AUDITORIA {
+            __typename
+            ARCHIVOS
+            CATALOGOS
+            PROCESOS
+          }
+          CATALOGOS {
+            __typename
+            ACTUALIZAR
+            BORRAR
+            CONSULTAR
+            CREAR
+          }
+          FLUJO
+          PROCESOS {
+            __typename
+            DETENER
+            INICIAR
+            MONITOREAR
+          }
+          ROL
+          USUARIOS {
+            __typename
+            ACTUALIZAR
+            BORRAR
+            CONSULTAR
+          }
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {};
+    if (ID) {
+      gqlAPIServiceArguments.ID = ID;
+    }
+    return API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    ) as Observable<SubscriptionResponse<OnUpdateCATPERMISOSSubscription>>;
+  }
+
+  OnDeleteCATPERMISOSListener(
+    ID?: string
+  ): Observable<SubscriptionResponse<OnDeleteCATPERMISOSSubscription>> {
+    const statement = `subscription OnDeleteCATPERMISOS($ID: String) {
+        onDeleteCATPERMISOS(ID: $ID) {
+          __typename
+          ID
+          AREA
+          AUDITORIA {
+            __typename
+            ARCHIVOS
+            CATALOGOS
+            PROCESOS
+          }
+          CATALOGOS {
+            __typename
+            ACTUALIZAR
+            BORRAR
+            CONSULTAR
+            CREAR
+          }
+          FLUJO
+          PROCESOS {
+            __typename
+            DETENER
+            INICIAR
+            MONITOREAR
+          }
+          ROL
+          USUARIOS {
+            __typename
+            ACTUALIZAR
+            BORRAR
+            CONSULTAR
+          }
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {};
+    if (ID) {
+      gqlAPIServiceArguments.ID = ID;
+    }
+    return API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    ) as Observable<SubscriptionResponse<OnDeleteCATPERMISOSSubscription>>;
   }
 }

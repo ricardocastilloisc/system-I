@@ -158,3 +158,90 @@ mutation DeleteCATPROCESOS($input: DeleteCATPROCESOSInput!) {
     TIPO
   }
 }
+mutation CreateCATPERMISOS($input: CreateCATPERMISOSInput!) {
+  createCATPERMISOS(input: $input) {
+    ID
+    AREA
+    AUDITORIA {
+      ARCHIVOS
+      CATALOGOS
+      PROCESOS
+    }
+    CATALOGOS {
+      ACTUALIZAR
+      BORRAR
+      CONSULTAR
+      CREAR
+    }
+    FLUJO
+    PROCESOS {
+      DETENER
+      INICIAR
+      MONITOREAR
+    }
+    ROL
+    USUARIOS {
+      ACTUALIZAR
+      BORRAR
+      CONSULTAR
+    }
+  }
+}
+mutation UpdateCATPERMISOS($input: UpdateCATPERMISOSInput!) {
+  updateCATPERMISOS(input: $input) {
+    ID
+    AREA
+    AUDITORIA {
+      ARCHIVOS
+      CATALOGOS
+      PROCESOS
+    }
+    CATALOGOS {
+      ACTUALIZAR
+      BORRAR
+      CONSULTAR
+      CREAR
+    }
+    FLUJO
+    PROCESOS {
+      DETENER
+      INICIAR
+      MONITOREAR
+    }
+    ROL
+    USUARIOS {
+      ACTUALIZAR
+      BORRAR
+      CONSULTAR
+    }
+  }
+}
+mutation DeleteCATPERMISOS($input: DeleteCATPERMISOSInput!) {
+  deleteCATPERMISOS(input: $input) {
+    ID
+    AREA
+    AUDITORIA {
+      ARCHIVOS
+      CATALOGOS
+      PROCESOS
+    }
+    CATALOGOS {
+      ACTUALIZAR
+      BORRAR
+      CONSULTAR
+      CREAR
+    }
+    FLUJO
+    PROCESOS {
+      DETENER
+      INICIAR
+      MONITOREAR
+    }
+    ROL
+    USUARIOS {
+      ACTUALIZAR
+      BORRAR
+      CONSULTAR
+    }
+  }
+}

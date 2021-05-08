@@ -8,7 +8,8 @@ export interface AppState {
   ProcesoCambios: reducers.ProcesoCambiosState,
   AUDGENESTADOPROCESOS: reducers.AUDGENESTADOPROCESOtate,
   AUDGENEJECUCIONESPROCESO: reducers.AUDGENEJECUCIONESPROCESOState,
-  CATPROCESOS: reducers.CATPROCESOState
+  CATPROCESOS: reducers.CATPROCESOState,
+  CATPERMISOS: reducers.CATPERMISOState
 }
 
 export const appReducers:ActionReducerMap<AppState> = {
@@ -18,5 +19,6 @@ export const appReducers:ActionReducerMap<AppState> = {
   ProcesoCambios: reducers.ProcesoCambiosReducer,
   AUDGENESTADOPROCESOS: reducers.AUDGENESTADOPROCESOReducer,
   AUDGENEJECUCIONESPROCESO: reducers.AUDGENEJECUCIONESPROCESOReducer,
-  CATPROCESOS: reducers.CATPROCESOReducer
+  CATPROCESOS: reducers.CATPROCESOReducer,
+  CATPERMISOS: reducers.CATPERMISOReducer
 }

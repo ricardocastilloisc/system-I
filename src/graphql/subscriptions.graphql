@@ -176,3 +176,90 @@ subscription OnDeleteCATPROCESOS($PROCESO: String) {
     TIPO
   }
 }
+subscription OnCreateCATPERMISOS($ID: String) {
+  onCreateCATPERMISOS(ID: $ID) {
+    ID
+    AREA
+    AUDITORIA {
+      ARCHIVOS
+      CATALOGOS
+      PROCESOS
+    }
+    CATALOGOS {
+      ACTUALIZAR
+      BORRAR
+      CONSULTAR
+      CREAR
+    }
+    FLUJO
+    PROCESOS {
+      DETENER
+      INICIAR
+      MONITOREAR
+    }
+    ROL
+    USUARIOS {
+      ACTUALIZAR
+      BORRAR
+      CONSULTAR
+    }
+  }
+}
+subscription OnUpdateCATPERMISOS($ID: String) {
+  onUpdateCATPERMISOS(ID: $ID) {
+    ID
+    AREA
+    AUDITORIA {
+      ARCHIVOS
+      CATALOGOS
+      PROCESOS
+    }
+    CATALOGOS {
+      ACTUALIZAR
+      BORRAR
+      CONSULTAR
+      CREAR
+    }
+    FLUJO
+    PROCESOS {
+      DETENER
+      INICIAR
+      MONITOREAR
+    }
+    ROL
+    USUARIOS {
+      ACTUALIZAR
+      BORRAR
+      CONSULTAR
+    }
+  }
+}
+subscription OnDeleteCATPERMISOS($ID: String) {
+  onDeleteCATPERMISOS(ID: $ID) {
+    ID
+    AREA
+    AUDITORIA {
+      ARCHIVOS
+      CATALOGOS
+      PROCESOS
+    }
+    CATALOGOS {
+      ACTUALIZAR
+      BORRAR
+      CONSULTAR
+      CREAR
+    }
+    FLUJO
+    PROCESOS {
+      DETENER
+      INICIAR
+      MONITOREAR
+    }
+    ROL
+    USUARIOS {
+      ACTUALIZAR
+      BORRAR
+      CONSULTAR
+    }
+  }
+}
