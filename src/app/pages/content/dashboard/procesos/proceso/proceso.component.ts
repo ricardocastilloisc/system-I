@@ -249,6 +249,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
 
 
   busquedaFiltros() {
+    this.paginaActualEjecucionesProceso = 1;
     if (this.filtroEjecucionesForm.valid) {
 
       let fechaFiltro = this.filtroEjecucionesForm.get('fechaFiltrar').value;
