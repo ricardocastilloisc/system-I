@@ -50,7 +50,7 @@
             <tr *ngFor="let PROCESO of PROCESOS | paginate: {id: 'listadoInterfaces', itemsPerPage: 10, currentPage: actualPage} ; index as i">
               <td>{{PROCESO?.DESCRIPCION}}</td>
               <td>
-                <img *ngIf="PROCESO.INICIAR" class="play-icon" (click)="inciarProceso(CATPROCESO.FLUJO, DataUser.email ,DataUser.attributes['custom:rol'])">
+                <img *ngIf="PROCESO.INICIAR" class="play-icon" (click)="inciarProceso(PROCESO.PROCESO, DataUser.email ,DataUser.attributes['custom:rol'])">
                 <img *ngIf="PROCESO.DETENER" class="stop-icon">
                 <img *ngIf="PROCESO.MONITOREAR"  class="detalle-icon" (click)="consultar(PROCESO.PROCESO)">
               </td>
