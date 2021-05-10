@@ -15,7 +15,7 @@ export class NotificacionesService {
   obtenerListadoDeNotificaciones = () => {
     let body = {
       FECHA_ACTUALIZACION: {
-        gt: moment('8:00', 'HH:mm').subtract(3, 'days').format().toString(),
+        gt: moment('8:00', 'HH:mm').format().toString(),
       },
     };
 
