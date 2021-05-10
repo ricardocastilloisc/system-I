@@ -65,7 +65,7 @@ export class AuthService {
   };
 
   cleanStates = () => {
-    this.store.dispatch(authActions.unSetUser());
+    //this.store.dispatch(authActions.unSetUser());
   }
 
   getToken = (): String => {
