@@ -10,6 +10,7 @@ import * as authActions from '../ReduxStore/actions/usuario.actions';
 import { User } from '../model/user';
 import { Usuario } from '../model/usuario.model';
 import { Router } from '@angular/router';
+import { EArea, ERole } from '../validators/roles';
 
 Amplify.configure(environment.amplifyConfig);
 
@@ -78,37 +79,59 @@ export class AuthService {
 
   rolesValids = (User: Usuario, roles: any[], Area?): boolean => {
     let flagValidate = false;
-    if(!User.attributes.hasOwnProperty('custom:rol')){
+    if (!User.attributes.hasOwnProperty('custom:rol')) {
       return flagValidate;
-    }else {
-      if (Area){
-        if(roles.includes(User.attributes['custom:rol']) && Area == 'SOPORTE')
+    } else {
+      if (Area) {
+        if (roles.includes(User.attributes['custom:rol']) && Area == 'SOPORTE')
           console.log('entre al area')
-          flagValidate = true;  
-      }else 
-      if (roles.includes(User.attributes['custom:rol'])){
         flagValidate = true;
-      }
+      } else
+        if (roles.includes(User.attributes['custom:rol'])) {
+          flagValidate = true;
+        }
     }
     return flagValidate;
   }
 
 
-    perfilValido = (User: Usuario, roles: any[], Area?): boolean => {
-      let flagValidate = false;
-      if(!User.attributes.hasOwnProperty('custom:rol')){
-        return flagValidate;
-      }else {
-        if (Area){
-          if(roles.includes(User.attributes['custom:rol']) && Area == 'SOPORTE')
-            console.log('entre al area')
-            flagValidate = true;  
-        }else 
-        if (roles.includes(User.attributes['custom:rol'])){
-          flagValidate = true;
+  perfilValido = (User: Usuario, roles: any[]): boolean => {
+    //console.log("perfilValido");
+    let flagValidate = false;
+    let arrayTempArea = [];
+    let Areas = [
+      EArea.Contabilidad,
+      EArea.Custodia,
+      EArea.Inversiones_Riesgos,
+      EArea.Tesoreria,
+      EArea.Soporte
+    ];
+    User.groups.forEach((area) => {
+      Areas.forEach(areaDef => {
+        if (area === areaDef) {
+          arrayTempArea.push(area);
         }
-      }
-      return flagValidate;
+      })
+    })
+    if (arrayTempArea.length > 0) {
+      //console.log(arrayTempArea[0]);
+      if(arrayTempArea[0] === 'Soporte'){
+        flagValidate = true;
+      } else {
+        if (!User.attributes.hasOwnProperty('custom:rol')) {
+          flagValidate = false;
+        } else {
+  
+          if (roles.includes(User.attributes['custom:rol'])) {
+            flagValidate = true;
+          }
+        }
+      }      
+    }
+    else {
+      flagValidate = false;
+    }
+    return flagValidate;
   }
 
 }

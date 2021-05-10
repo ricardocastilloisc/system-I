@@ -1,57 +1,35 @@
 <div class="card-busqueda">
   <div class="mt-4">Buscar usuario por</div>
-  <div
-    style="
+  <div style="
       text-align: right;
       width: 100%;
       justify-content: flex-end;
       direction: rtl;
-    "
-  >
+    ">
     <div style="margin-right: 10%">
-      <a *ngIf="filtroActivo" (click)="limpirarFiltro()" class="limpiarFiltro"
-        >Eliminar Filtro
-        <img src="assets/icons/Eliminar.svg" class="tamanioFiltroIcono"
-      /></a>
+      <a *ngIf="filtroActivo" (click)="limpirarFiltro()" class="limpiarFiltro">Eliminar Filtro
+        <img src="assets/icons/Eliminar.svg" class="tamanioFiltroIcono" /></a>
     </div>
   </div>
 
   <div>
     <section class="mt-3">
       <div class="col2-row2">
-        <ng-multiselect-dropdown
-          style="width: 100%"
-          id="correo"
-          [placeholder]="'Correo electrónico'"
-          [settings]="SettingsFiltroDeCorreos"
-          [data]="dropdownListFiltroCorreos"
-          [(ngModel)]="selectedItemsFiltroCorreos"
-          (onSelect)="cambiarEtiquetaSeleccionada()"
-        >
+        <ng-multiselect-dropdown style="width: 100%" id="correo" [placeholder]="'Correo electrónico'"
+          [settings]="SettingsFiltroDeCorreos" [data]="dropdownListFiltroCorreos"
+          [(ngModel)]="selectedItemsFiltroCorreos" (onSelect)="cambiarEtiquetaSeleccionada()">
         </ng-multiselect-dropdown>
       </div>
       <div class="col2-row2">
-        <ng-multiselect-dropdown
-          style="width: 100%; padding-left: 10px"
-          [placeholder]="'Permiso'"
-          id="filtroPermiso"
-          [settings]="SettingsFiltroDePermisos"
-          [data]="dropdownListFiltroPermisos"
-          [(ngModel)]="selectedItemsFiltroaPermisos"
-          (onSelect)="cambiarEtiquetaSeleccionadaGeneral('filtroPermiso')"
-        >
+        <ng-multiselect-dropdown style="width: 100%; padding-left: 10px" [placeholder]="'Permiso'" id="filtroPermiso"
+          [settings]="SettingsFiltroDePermisos" [data]="dropdownListFiltroPermisos"
+          [(ngModel)]="selectedItemsFiltroaPermisos" (onSelect)="cambiarEtiquetaSeleccionadaGeneral('filtroPermiso')">
         </ng-multiselect-dropdown>
       </div>
       <div class="col2-row2">
-        <ng-multiselect-dropdown
-          style="width: 100%"
-          [placeholder]="'Area'"
-          [settings]="SettingsFiltroDeArea"
-          [data]="dropdownListFiltroAreas"
-          [(ngModel)]="selectedItemsFiltroAreas"
-          id="filtroArea"
-          (onSelect)="cambiarEtiquetaSeleccionadaGeneral('filtroArea')"
-        >
+        <ng-multiselect-dropdown style="width: 100%" [placeholder]="'Area'" [settings]="SettingsFiltroDeArea"
+          [data]="dropdownListFiltroAreas" [(ngModel)]="selectedItemsFiltroAreas" id="filtroArea"
+          (onSelect)="cambiarEtiquetaSeleccionadaGeneral('filtroArea')">
         </ng-multiselect-dropdown>
       </div>
       <div class="col2-row2">
@@ -61,23 +39,13 @@
   </div>
 </div>
 <div class="row justify-content-center">
-  <div
-    class="d-flex col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12 justify-content-center"
-  >
+  <div class="d-flex col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12 justify-content-center">
     <div class="card-lista-design-general" style="overflow-x: auto">
-      <ngx-spinner
-        bdColor="rgba(0, 0, 0, 0.8)"
-        size="large"
-        color="#fff"
-        type="ball-climbing-dot"
-        [fullScreen]="true"
-        ><p style="color: white">Cargando...</p></ngx-spinner
-      >
+      <ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="large" color="#fff" type="ball-climbing-dot" [fullScreen]="true">
+        <p style="color: white">Cargando...</p>
+      </ngx-spinner>
 
-      <table
-        class="table listado-design-general"
-        *ngIf="ListadoUsuariosPantalla as ListadoUsuarios"
-      >
+      <table class="table listado-design-general" *ngIf="ListadoUsuariosPantalla as ListadoUsuarios">
         <tr>
           <th style="padding-left: 40px; max-width: 300px">Nombre</th>
           <th style="padding-left: 40px; max-width: 300px">Correo</th>
@@ -86,8 +54,7 @@
           <th style="padding-left: 40px; max-width: 150px">Negocio</th>
           <th style="padding-left: 40px; max-width: 150px">Acciones</th>
         </tr>
-        <tr
-          *ngFor="
+        <tr *ngFor="
             let usuario of ListadoUsuariosPantalla
               | oredenascEmailusurios: 'email'
               | paginate
@@ -97,8 +64,7 @@
                     currentPage: paginaActualUsuarios
                   };
             index as i
-          "
-        >
+          ">
           <td style="padding-left: 40px; max-width: 300px">
             {{ retornarStringSiexiste(usuario.Attributes, "given_name") }}
             {{ retornarStringSiexiste(usuario.Attributes, "family_name") }}
@@ -106,16 +72,7 @@
           <td style="padding-left: 40px; max-width: 300px">
             {{ retornarStringSiexiste(usuario.Attributes, "email") }}
           </td>
-          <td
-            style="padding-left: 40px; max-width: 150px"
-            *ngIf="usuario.GrupoQuePertenece == 'InversionesyRiesgos'"
-          >
-            Inversiones y Riesgos
-          </td>
-          <td
-            style="padding-left: 40px; max-width: 150px"
-            *ngIf="usuario.GrupoQuePertenece != 'InversionesyRiesgos'"
-          >
+          <td style="padding-left: 40px; max-width: 150px">
             {{ usuario.GrupoQuePertenece }}
           </td>
           <td style="padding-left: 40px; max-width: 150px">
@@ -124,51 +81,32 @@
           <td style="padding-left: 40px; max-width: 150px">
             <p>
               {{
-                retornarStringSiexiste(usuario.Attributes, "custom:negocio")
-                  | quitarcoma
+              retornarStringSiexiste(usuario.Attributes, "custom:negocio")
+              | quitarcoma
               }}
             </p>
           </td>
           <td style="width: 200px">
-            <img
-              style="cursor: pointer"
-              (click)="openModal(content, usuario, usuario.GrupoQuePertenece)"
-              class="editar-icon"
-            />
-            <img
-              style="cursor: pointer"
-              (click)="
+            <img style="cursor: pointer" (click)="openModal(content, usuario, usuario.GrupoQuePertenece)"
+              class="editar-icon" />
+            <img style="cursor: pointer" (click)="
               openModalConfirmacionBaja(confrimacion, usuario, usuario.GrupoQuePertenece)
-              "
-              class="eliminar-icon"
-            />
+              " class="eliminar-icon" />
           </td>
         </tr>
       </table>
     </div>
   </div>
 
-  <pagination-template
-    id="Usuarios"
-    #p="paginationApi"
-    *ngIf="verPaginado()"
-    (pageChange)="paginaActualUsuarios = $event"
-    class="ngx-pagination"
-  >
+  <pagination-template id="Usuarios" #p="paginationApi" *ngIf="verPaginado()"
+    (pageChange)="paginaActualUsuarios = $event" class="ngx-pagination">
     <div class="custom-pagination">
       <div class="pagination-previous" [class.disabled]="p.isFirstPage()">
-        <span *ngIf="!p.isFirstPage()" (click)="p.previous()"><< </span>
+        <span *ngIf="!p.isFirstPage()" (click)="p.previous()">
+          << </span>
       </div>
-      <div
-        class="page-number"
-        *ngFor="let page of p.pages"
-        [class.current]="p.getCurrent() === page.value"
-      >
-        <span
-          (click)="p.setCurrent(page.value)"
-          *ngIf="p.getCurrent() !== page.value"
-          >{{ page.label }}</span
-        >
+      <div class="page-number" *ngFor="let page of p.pages" [class.current]="p.getCurrent() === page.value">
+        <span (click)="p.setCurrent(page.value)" *ngIf="p.getCurrent() !== page.value">{{ page.label }}</span>
         <div *ngIf="p.getCurrent() === page.value">
           <span>{{ page.label }}</span>
         </div>
@@ -205,24 +143,17 @@
         <div class="input-group">
           <select class="form-control" [(ngModel)]="SelectCamabiarPermiso">
             <option disabled selected value="Permiso">Permiso</option>
-            <option *ngFor="let grupo of Roles" [value]="grupo.value">
-              {{ grupo.label }}
-            </option>
+            <option value="Administrador">Administrador</option>
+            <option value="Monitor">Monitor</option>
           </select>
         </div>
       </div>
       <div class="form-group">
         <label for="dateOfBirth">Negocio</label>
         <div class="input-group">
-          <ng-multiselect-dropdown
-            style="width: 100%"
-            [placeholder]="'Negocio'"
-            [settings]="SettingsCambioDeNegocio"
-            [data]="dropdownListCambioDeNegocio"
-            [(ngModel)]="selectedItemsCambioDeNegocio"
-            id="cambiarnegocio"
-            (onSelect)="cambiarEtiquetaSeleccionadaGeneral('cambiarnegocio')"
-          >
+          <ng-multiselect-dropdown style="width: 100%" [placeholder]="'Negocio'" [settings]="SettingsCambioDeNegocio"
+            [data]="dropdownListCambioDeNegocio" [(ngModel)]="selectedItemsCambioDeNegocio" id="cambiarnegocio"
+            (onSelect)="cambiarEtiquetaSeleccionadaGeneral('cambiarnegocio')">
           </ng-multiselect-dropdown>
 
           <!--
@@ -236,21 +167,11 @@
     </div>
 
     <div class="modal-footer">
-      <button
-        type="button"
-        class="btn btn-primary"
-        style="background-color: #00c4d9"
-        (click)="openModalConfirmacionEdicion(confrimacionEditar)"
-
-      >
+      <button type="button" class="btn btn-primary" style="background-color: #00c4d9"
+        (click)="openModalConfirmacionEdicion(confrimacionEditar)">
         Guardar cambio
       </button>
-      <button
-        type="button"
-        class="btn btn-secondary"
-        data-dismiss="modal"
-        (click)="modal.close()"
-      >
+      <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="modal.close()">
         Cerrar
       </button>
     </div>
@@ -266,9 +187,10 @@
     <div class="modal-body">
       <div class="row justify-content-center">
         <div class="col-12 row justify-content-center align-items-center" style="height:120px;">
-          <div class="textoConfirmacionModalUsuarios">Cofirmar baja de usuario</div></div>
+          <div class="textoConfirmacionModalUsuarios">Cofirmar baja de usuario</div>
+        </div>
         <div class="col-12 row">
-          <div class="col-12 descripcionConfirmacionModalUsuarios" >Se eliminará el usuario:</div>
+          <div class="col-12 descripcionConfirmacionModalUsuarios">Se eliminará el usuario:</div>
           <div class="col-12 descripcionConfirmacionModalUsuarios">
             {{ObjectUsuarioCambiar.Attributes.given_name}} {{ObjectUsuarioCambiar.Attributes.family_name}}
 
@@ -277,9 +199,10 @@
         <div class="col-12 row justify-content-center align-items-center" style="height:120px;">
           <div>
 
-            <button  class="btn bottonCancelarModalUsuario" (click)="modal.close()">Cancelar</button>
-            <button  class="btn bottonConfirmar" (click)="darDeBajaUsuario()">Continuar</button>
-          </div></div>
+            <button class="btn bottonCancelarModalUsuario" (click)="modal.close()">Cancelar</button>
+            <button class="btn bottonConfirmar" (click)="darDeBajaUsuario()">Continuar</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -294,23 +217,20 @@
     <div class="modal-body">
       <div class="row justify-content-center">
         <div class="col-12 row justify-content-center align-items-center" style="height:120px;">
-          <div class="textoConfirmacionModalUsuarios">Cofirmar edición de usuario</div></div>
+          <div class="textoConfirmacionModalUsuarios">Cofirmar edición de usuario</div>
+        </div>
         <div class="col-12 row">
-          <div class="col-12 descripcionConfirmacionModalUsuarios" >Se editará el usuario:</div>
+          <div class="col-12 descripcionConfirmacionModalUsuarios">Se editará el usuario:</div>
           <div class="col-12 descripcionConfirmacionModalUsuarios">
             {{ObjectUsuarioCambiar.Attributes.given_name}} {{ObjectUsuarioCambiar.Attributes.family_name}}
-
           </div>
         </div>
         <div class="col-12 row justify-content-center align-items-center" style="height:120px;">
           <div>
-
-            <button   class="btn bottonCancelarModalUsuario" (click)="modal.close()">Cancelar</button>
-            <button class="btn bottonConfirmar"  (click)="guardarCambioPermisoUsuario()">Continuar</button>
-
-
-          </div></div>
-
+            <button class="btn bottonCancelarModalUsuario" (click)="modal.close()">Cancelar</button>
+            <button class="btn bottonConfirmar" (click)="guardarCambioPermisoUsuario()">Continuar</button>
+          </div>
+        </div>
       </div>
     </div>
 

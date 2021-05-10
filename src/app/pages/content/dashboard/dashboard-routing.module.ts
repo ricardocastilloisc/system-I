@@ -21,7 +21,7 @@ const routes: Routes = [
           import('./procesos/procesos.module').then((m) => m.ProcesosModule),
       canActivate: [GuardRolesGuard],
         data: {
-          roles: [ERole.Administrador, ERole.Ejecutor],
+          roles: [ERole.Administrador, ERole.Monitor],
         }, ///aqui se ponen los roles autorizados
       },
       {
@@ -31,7 +31,7 @@ const routes: Routes = [
             (m) => m.AdministracionModule
           ),
         canActivate: [GuardRolesGuard],
-        data: { roles: [ERole.Administrador, ERole.Ejecutor] },
+        data: { roles: [ERole.Administrador, ERole.Monitor] },
       },
       {
         path: 'auditoria',

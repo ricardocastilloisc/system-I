@@ -48,7 +48,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
   mostrarEjecucionesProcesos: boolean = true;
   maxDate: Date;
   Administrador = ERole.Administrador;
-  Ejecutor = ERole.Ejecutor;
+  Ejecutor = ERole.Monitor;
   DataUser: any;
   ejemplo
   fechaBusqueda: Date;
@@ -82,7 +82,9 @@ export class ProcesoComponent implements OnInit, OnDestroy {
       idProceso: []
     })
 
-    this.api.OnUpdateAUDGENESTADOPROCESOListener().subscribe(res => console.log(res))
+    this.api.OnUpdateAUDGENESTADOPROCESOListener().subscribe(res => 
+      //console.log(res)
+      )
 
     this.maxDate = new Date();
     this.DataUser$ = this.store.select(({ usuario }) => usuario.user);
@@ -188,18 +190,20 @@ export class ProcesoComponent implements OnInit, OnDestroy {
   consultarDetalle(idProceso, fecha) {
 
     this.area= this.obtenerArea();
-    console.log(this.area)
+    //console.log(this.area)
 
     this.ocultarbusqueda = true;
 
-    console.log(fecha)
+    //console.log(fecha)
 
     let format = this.datepipe.transform(fecha, 'yyyy-MM-dd')
 
-    console.log(format)
+   // console.log(format)
     this.paginaActualProceso = 1;
 
-    this.api.ListAUDGENPROCESOS(idProceso, format).then(res => console.log('Resultado', res))
+    this.api.ListAUDGENPROCESOS(idProceso, format).then(res => 
+      //console.log('Resultado', res)
+      )
 
     this.AUDGENEJECUCIONPROCESO$ = this.store.select(
       ({ AUDGENEJECUCIONESPROCESO }) => AUDGENEJECUCIONESPROCESO.AUDGENEJECUCIONESPROCESO

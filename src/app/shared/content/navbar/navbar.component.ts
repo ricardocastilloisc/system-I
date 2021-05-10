@@ -27,7 +27,9 @@ export class NavbarComponent implements OnInit, AfterViewInit {
   DataUser$: Observable<Usuario>;
 
   Administrador = ERole.Administrador;
-  Ejecutor = ERole.Ejecutor;
+  Monitor = ERole.Monitor;
+  Soporte = ERole.Soporte;
+  
 
   constructor(
     private authService: AuthService,
@@ -102,6 +104,12 @@ export class NavbarComponent implements OnInit, AfterViewInit {
   rolesValids = (User: Usuario, roles: any[]): boolean => {
     return this.authService.rolesValids(User, roles);
   };
+
+
+  perfilValido= (User:Usuario, roles: any[]): boolean => {
+    return this.authService.perfilValido( User, roles);
+  };
+
 
   toggle = () => {
     $('#sidebar').toggleClass('active');

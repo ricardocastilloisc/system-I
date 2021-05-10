@@ -61,7 +61,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
   loading = true;
 
   Administrador = ERole.Administrador;
-  Ejecutor = ERole.Ejecutor;
+  Ejecutor = ERole.Monitor;
 
   DataUser:  Usuario;
   PROCESOS = new Array();

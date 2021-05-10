@@ -30,8 +30,8 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       value: ERole.Administrador,
     },
     {
-      label: 'Ejecutor',
-      value: ERole.Ejecutor,
+      label: 'Monitor',
+      value: ERole.Monitor,
     }
   ];
 
@@ -43,7 +43,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     EArea.Soporte,
   ];
 
-  Permisos = [ERole.Administrador, ERole.Ejecutor];
+  Permisos = [ERole.Administrador, ERole.Monitor];
 
   Negocios = [ENegocio.Afore, ENegocio.Fondos, ENegocio.Seguros];
 
@@ -195,7 +195,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     ];
     this.dropdownListFiltroPermisos = [
       { item_id: ERole.Administrador, item_text: ERole.Administrador },
-      { item_id: ERole.Ejecutor, item_text: ERole.Ejecutor }
+      { item_id: ERole.Monitor, item_text: ERole.Monitor }
     ];
 
     this.dropdownListFiltroAreas = [
@@ -375,6 +375,9 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       arraySeleccionados.push(e.item_id);
     });
 
+    if (this.SelectCamabiarArea === 'Soporte'){
+      this.SelectCamabiarPermiso = 'Administrador';
+    }
     const UserAttributes = [
       {
         Name: 'custom:negocio',

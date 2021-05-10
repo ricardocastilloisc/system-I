@@ -18,7 +18,8 @@ import { AuditoriaService } from '../../../../services/auditoria.service';
 export class HomeComponent implements OnInit {
   DataUser$: Observable<Usuario>;
   Administrador = ERole.Administrador;
-  Ejecutor = ERole.Ejecutor;
+  Monitor = ERole.Monitor;
+  Soporte = ERole.Soporte;
 
   constructor(
     private store: Store<AppState>,
@@ -30,7 +31,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.DataUser$ = this.store.select(({ usuario }) => usuario.user);
-    this.usuario.obtenerDetalleUsuario();
+    //this.usuario.obtenerDetalleUsuario();
     //this.usuario.actualizarme();
     //this.auditoria.enviarMensaje();
     //this.procesos.iniciarProceso('aims', 'galicia.brenda@principal.com', 'Soporte');
@@ -40,4 +41,8 @@ export class HomeComponent implements OnInit {
     return this.authService.rolesValids( User, roles);
   };
 
+  perfilValido= (User:Usuario, roles: any[]): boolean => {
+    return this.authService.perfilValido( User, roles);
+  };
+  
 }

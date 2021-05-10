@@ -9,18 +9,18 @@ import { APIService } from '../../../API.service';
   styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent implements OnInit, AfterViewInit {
-  constructor(private api: APIService) {}
+  constructor(private api: APIService) { }
 
   ngAfterViewInit(): void {
     window.history.replaceState(null, null, window.location.pathname);
   }
   ngOnInit(): void {
-    console.log('estoy en dash');
+
 
     this.api.OnDeleteCATPROCESOSListener().subscribe((res) => {
-      console.log('OnDeleteCATPROCESOSListener');
-      console.log('se elimino');
-      console.log(res);
+      //console.log('OnDeleteCATPROCESOSListener');
+      //console.log('se elimino');
+      //console.log(res);
     });
   }
 }

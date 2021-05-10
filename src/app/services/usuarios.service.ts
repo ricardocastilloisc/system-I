@@ -20,7 +20,7 @@ var objFiltrado = [];
   providedIn: 'root',
 })
 export class UsuariosService {
-  Roles = [ERole.Administrador, ERole.Ejecutor];
+  Roles = [ERole.Administrador, ERole.Monitor];
 
   Areas = [
     EArea.Contabilidad,

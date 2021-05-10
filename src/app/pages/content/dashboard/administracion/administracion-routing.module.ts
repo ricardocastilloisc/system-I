@@ -14,7 +14,7 @@ const routes: Routes = [
         loadChildren: () =>
           import('./catalogos/catalogos.module').then((m) => m.CatalogosModule),
           canActivate: [GuardRolesGuard],
-          data: { roles: [ERole.Administrador, ERole.Ejecutor] },
+          data: { roles: [ERole.Administrador, ERole.Monitor] },
       },
       {
         path: 'usuarios',

@@ -21,7 +21,7 @@
   <div class="container-fluid" *ngIf="usuario.validarRolUsuario()">
     <div class="d-flex" style="height: 75vh; width: 100%">
       <div class="row contentCards">
-        <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12" *ngIf="rolesValids(DataUser, [Administrador])">
+        <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12" *ngIf="perfilValido(DataUser, [Administrador, Monitor, Soporte])">
           <div class="card">
             <div class="aling-items-center text-center headerCardsMenu" style="background-color: #0a8299">
               <img src="assets/imgs/icons/inicio/administracion.svg" class="rounded-circle ImgsMenuHome" />
@@ -33,7 +33,7 @@
             <div class="card-body">
               <div class="d-flex flex-column align-items-center justify-content-center">
                 <div>
-                  <div *ngIf="rolesValids(DataUser, [Administrador, Ejecutor])"
+                  <div *ngIf="perfilValido(DataUser, [Administrador, Monitor, Soporte])"
                     class="elementsMenus d-flex flex-column justify-content-center">
                     <div>
                       <a routerLinkActive="active" routerLink="/administracion/catalogos">
@@ -41,7 +41,7 @@
                         Catálogos</a>
                     </div>
                   </div>
-                  <div *ngIf="rolesValids(DataUser, [Administrador])"
+                  <div *ngIf="perfilValido(DataUser, [Soporte])"
                     class="elementsMenus d-flex flex-column justify-content-center">
                     <div>
                       <a routerLinkActive="active" routerLink="/administracion/usuarios">
@@ -85,7 +85,7 @@
             </div>
           </div>
         </div>
-        <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12 marginResponsibe">
+        <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12 marginResponsibe" *ngIf="perfilValido(DataUser, [Administrador, Soporte])">
           <div class="card">
             <div class="aling-items-center text-center headerCardsMenu" style="background-color: #035fa4">
               <img src="assets/imgs/icons/inicio/auditoria.svg" class="rounded-circle ImgsMenuHome" />

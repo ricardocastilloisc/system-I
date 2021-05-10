@@ -16,19 +16,19 @@
           Administración
         </a>
         <ul class="collapse lisst-unstyled" id="administracion">
-          <li *ngIf="rolesValids(DataUser, [Administrador, Ejecutor])">
+          <li *ngIf="perfilValido(DataUser, [Administrador, Monitor, Soporte])">
             <a routerLinkActive="active" routerLink="/administracion/catalogos">
               <img src="../assets/imgs/icons/catalogo.svg" class="alineadoTextoImagenCentro" />
               Catálogos</a>
           </li>
-          <li *ngIf="rolesValids(DataUser, [Administrador])">
+          <li *ngIf="perfilValido(DataUser, [Soporte])">
             <a routerLinkActive="active" routerLink="/administracion/usuarios">
               <img src="../assets/imgs/icons/usuarios.svg" class="alineadoTextoImagenCentro" />
               Usuarios</a>
           </li>
         </ul>
       </li>
-      <li class="active" *ngIf="usuario.validarRolUsuario()">
+      <li class="active" *ngIf="perfilValido(DataUser, [Administrador, Soporte])">
         <a href="#auditoria" class="dropdown-toggle" data-toggle="collapse" data-target="#auditoria"
           aria-expanded="false" routerLink="/auditoria/">
           <img src="../assets/imgs/auditoria.svg" class="alineadoTextoImagenCentro" />Auditoria
@@ -101,8 +101,8 @@
           <p>
             <b>{{ DataUser.attributes.given_name}} {{ DataUser.attributes.family_name}}</b>
           </p>
-          <p *ngIf="usuario.validarRolUsuario()">{{
-            DataUser.attributes.hasOwnProperty('custom:negocio')?DataUser.attributes['custom:negocio']:'' }} / {{
+          <p *ngIf="usuario.validarRolUsuario()">
+            {{ DataUser.groups[1]}} / {{
             DataUser.attributes.hasOwnProperty('custom:rol')?DataUser.attributes['custom:rol']:'' }}</p>
         </div>
         <div  class="col-2 "> <div style="background-color:#00c4d9;" class="cuadroNotificaciones dropdown" id="dLabel" role="button" data-toggle="dropdown" data-target="#">
