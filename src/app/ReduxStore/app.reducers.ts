@@ -9,7 +9,8 @@ export interface AppState {
   AUDGENESTADOPROCESOS: reducers.AUDGENESTADOPROCESOtate,
   AUDGENEJECUCIONESPROCESO: reducers.AUDGENEJECUCIONESPROCESOState,
   CATPROCESOS: reducers.CATPROCESOState,
-  CATPERMISOS: reducers.CATPERMISOState
+  CATPERMISOS: reducers.CATPERMISOState,
+  notificaciones: reducers.NotificacionesState
 }
 
 export const appReducers:ActionReducerMap<AppState> = {
@@ -20,5 +21,6 @@ export const appReducers:ActionReducerMap<AppState> = {
   AUDGENESTADOPROCESOS: reducers.AUDGENESTADOPROCESOReducer,
   AUDGENEJECUCIONESPROCESO: reducers.AUDGENEJECUCIONESPROCESOReducer,
   CATPROCESOS: reducers.CATPROCESOReducer,
-  CATPERMISOS: reducers.CATPERMISOReducer
+  CATPERMISOS: reducers.CATPERMISOReducer,
+  notificaciones: reducers.NotificacionesReducer
 }

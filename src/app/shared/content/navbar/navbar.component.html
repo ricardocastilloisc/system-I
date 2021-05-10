@@ -84,6 +84,7 @@
   <!-- INICIO  HEADER -->
   <div id="content">
     <nav id="headernav"
+    *ngIf="Notificaciones$ | async as Notificaciones"
       class=" margin-navbar-barra navbar navbar-expand-lg navbar-light bg-light navbar-fixed-top navbar-slide-nav">
       <!-- ESTILO VERDE -->
       <div class="container-fluid" *ngIf="estiloVerde()">
@@ -107,42 +108,53 @@
               {{ DataUser.attributes.hasOwnProperty('custom:rol')?DataUser.attributes['custom:rol']:'' }}</p>
           </div>
         </div>
-        <div class="col-2 ">
-          <div style="background-color:#00c4d9;" class="cuadroNotificaciones dropdown" id="dLabel" role="button"
-            data-toggle="dropdown" data-target="#">
+        <div class="col-2">
+          <div
+            style="background-color: #00c4d9"
+            class="cuadroNotificaciones dropdown"
+            id="dLabel"
+            role="button"
+            data-toggle="dropdown"
+            data-target="#"
+          >
+            <img class="imagenNotificaciones" src="assets/icons/bell.png" />
+            <span style="color: #00c4d9" *ngIf="Notificaciones.length > 0">{{
+              Notificaciones.length
+            }}</span>
 
-            <a id="dLabel" role="button" data-toggle="dropdown" data-target="#">
-              <img class="imagenNotificaciones" src="assets/icons/bell.png" /> <span style="color:#00c4d9">17</span>
-            </a>
-
-
-            <ul class="dropdown-menu notifications" role="menu" aria-labelledby="dLabel">
-
-              <div class="notification-heading">
+            <ul
+              class="dropdown-menu notifications"
+              role="menu"
+              aria-labelledby="dLabel"
+            >
+              <div class="notification-heading dropdown-item">
                 <h4 class="menu-title">Notificaciones</h4>
               </div>
               <li class="divider"></li>
               <div class="notifications-wrapper">
-                <a class="content">
+                <div
+                  class="content"
+                  *ngFor="
+                    let Notificacion of Notificaciones
+                      | ordenarNotificacionesFecha
+                  "
+                >
                   <div class="notification-item">
-                    <h4 class="item-title">Movimiento de Operaciones</h4>
-                    <p class="item-info">Empezado con exito</p>
-                  </div>
-                </a>
-                <a class="content">
-                  <div class="notification-item">
-                    <h4 class="item-title">Movimiento de Operaciones</h4>
-                    <p class="item-info">Empezado con exito</p>
-                  </div>
-                </a>
-                <a class="content">
-                  <div class="notification-item">
-                    <h4 class="item-title">Movimiento de Operaciones</h4>
-                    <p class="item-info">Empezado con exito</p>
-                  </div>
-                </a>
+                    <div class="item-title">
+                      <div>{{ Notificacion.ESTADO }}</div>
+                      <button type="button" class="close" (click)="eliminarNotificacion(Notificacion.ID_PROCESO)">
+                        <span style="font-size: 15px; color: black; background-color: transparent;" >&times;</span>
+                      </button>
+                    </div>
+
+                    <div class="item-info">
+                      {{ Notificacion.INTERFAZ }}
 
 
+                    </div>
+                    <div class="item-info">         {{ Notificacion.FECHA_ACTUALIZACION | date: "medium" }}</div>
+                  </div>
+                </div>
               </div>
               <li class="divider"></li>
             </ul>
@@ -163,7 +175,7 @@
             </div>
           </div>
         </div>
-        <div class="alineadoTextoDerechaAzul col-5 align-self-end texto-responsivo-usuario">
+        <div class="alineadoTextoDerechaAzul col-3 align-self-end texto-responsivo-usuario">
           <div class="centrado">
           <strong><b>{{ DataUser.attributes.given_name}} {{ DataUser.attributes.family_name}}</b></strong>
           <div class="linea-azul"></div>
@@ -171,6 +183,59 @@
             {{ obtenerArea() }} /
             {{ DataUser.attributes.hasOwnProperty('custom:rol')?DataUser.attributes['custom:rol']:'' }}</p>
         </div>
+
+        </div>
+        <div class="col-2">
+          <div
+            style="background-color: #0091da"
+            class="cuadroNotificaciones dropdown"
+            id="dLabel"
+            role="button"
+            data-toggle="dropdown"
+            data-target="#"
+          >
+            <img class="imagenNotificaciones" src="assets/icons/bell.png" />
+            <span style="color: #0091da" *ngIf="Notificaciones.length > 0">{{
+              Notificaciones.length
+            }}</span>
+
+            <ul
+              class="dropdown-menu notifications"
+              role="menu"
+              aria-labelledby="dLabel"
+            >
+              <div class="notification-heading dropdown-item">
+                <h4 class="menu-title">Notificaciones</h4>
+              </div>
+              <li class="divider"></li>
+              <div class="notifications-wrapper">
+                <div
+                  class="content"
+                  *ngFor="
+                    let Notificacion of Notificaciones
+                      | ordenarNotificacionesFecha
+                  "
+                >
+                  <div class="notification-item">
+                    <div class="item-title">
+                      <div>{{ Notificacion.ESTADO }}</div>
+                      <button type="button" class="close" (click)="eliminarNotificacion(Notificacion.ID_PROCESO)">
+                        <span style="font-size: 15px; color: black; background-color: transparent;" >&times;</span>
+                      </button>
+                    </div>
+
+                    <div class="item-info">
+                      {{ Notificacion.INTERFAZ }}
+
+
+                    </div>
+                    <div class="item-info">         {{ Notificacion.FECHA_ACTUALIZACION | date: "medium" }}</div>
+                  </div>
+                </div>
+              </div>
+              <li class="divider"></li>
+            </ul>
+          </div>
         </div>
       </div>
       <!-- ESTILO MORADO -->
@@ -186,13 +251,66 @@
             </div>
           </div>
         </div>
-        <div class="alineadoTextoDerechaMorado col-5 align-self-end texto-responsivo-usuario">
+        <div class="alineadoTextoDerechaMorado col-3 align-self-end texto-responsivo-usuario">
           <div class="centrado">
             <strong><b>{{ DataUser.attributes.given_name}} {{ DataUser.attributes.family_name}}</b></strong>
             <div class="linea-morado"></div>
             <p *ngIf="usuario.validarRolUsuario()">
               {{ obtenerArea() }} /
               {{ DataUser.attributes.hasOwnProperty('custom:rol')?DataUser.attributes['custom:rol']:'' }}</p>
+          </div>
+
+        </div>
+        <div class="col-2">
+          <div
+            style="background-color: #7c69c3"
+            class="cuadroNotificaciones dropdown"
+            id="dLabel"
+            role="button"
+            data-toggle="dropdown"
+            data-target="#"
+          >
+            <img class="imagenNotificaciones" src="assets/icons/bell.png" />
+            <span style="color: #7c69c3" *ngIf="Notificaciones.length > 0">{{
+              Notificaciones.length
+            }}</span>
+
+            <ul
+              class="dropdown-menu notifications"
+              role="menu"
+              aria-labelledby="dLabel"
+            >
+              <div class="notification-heading dropdown-item">
+                <h4 class="menu-title">Notificaciones</h4>
+              </div>
+              <li class="divider"></li>
+              <div class="notifications-wrapper">
+                <div
+                  class="content"
+                  *ngFor="
+                    let Notificacion of Notificaciones
+                      | ordenarNotificacionesFecha
+                  "
+                >
+                  <div class="notification-item">
+                    <div class="item-title">
+                      <div>{{ Notificacion.ESTADO }}</div>
+                      <button type="button" class="close" (click)="eliminarNotificacion(Notificacion.ID_PROCESO)">
+                        <span style="font-size: 15px; color: black; background-color: transparent;" >&times;</span>
+                      </button>
+                    </div>
+
+                    <div class="item-info">
+                      {{ Notificacion.INTERFAZ }}
+
+
+                    </div>
+                    <div class="item-info">         {{ Notificacion.FECHA_ACTUALIZACION | date: "medium" }}</div>
+                  </div>
+                </div>
+              </div>
+              <li class="divider"></li>
+            </ul>
           </div>
         </div>
       </div>

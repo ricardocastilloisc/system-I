@@ -624,12 +624,16 @@ table.listado-design-general td {
 .cuadroNotificaciones span {
   background: #fff;
   padding: 2px;
+  padding-left: 6px;
+  padding-right: 6px;
   border-radius: 50%;
   color: #fff;
   vertical-align: top;
   margin-left: -14px;
   margin-top: -11px;
   font-size: 9px;
+  /* width: 13px; */
+  /* text-align: center;*/
 }
 
 .cuadroNotificaciones .notifications {
@@ -760,7 +764,7 @@ table.listado-design-general td {
   max-width: 100%;
   padding: 0;
   margin: 15px auto 10px auto;
-  
+
 }
 
 .linea-azul {
@@ -769,7 +773,7 @@ table.listado-design-general td {
   max-width: 100%;
   padding: 0;
   margin: 15px auto 10px auto;
-  
+
 }
 
 .linea-morado {
@@ -778,9 +782,9 @@ table.listado-design-general td {
   max-width: 100%;
   padding: 0;
   margin: 15px auto 10px auto;
-  
+
 }
 
-.centrado{	
+.centrado{
   float: right;
 }
