@@ -123,8 +123,7 @@ export class UsuariosService {
   };
 
   consultarUsuarios = () => {
-    // metodo para consultar todos los usuarios del user pool
-    //return cognitoidentityserviceprovider.listUsers(this.paramsGroups,this.callbackAws);
+    // metodo para consultar todos los usuarios del user pool   
     return cognitoidentityserviceprovider.listUsers(this.paramsGroups);
   };
 
@@ -243,7 +242,6 @@ export class UsuariosService {
     });
   }
 
-  /// esta aparte al compoennete de usarios
   eliminarYAgregarGrupo = (Grupo, Username, GrupoOriginal) => {
     const params = {
       GroupName: GrupoOriginal,
@@ -279,7 +277,7 @@ export class UsuariosService {
       this.agregarUsuarioGrupoCallback(Grupo, Username);
     });
   };
-  /// esta aparte al compoennete de usarios
+  
   agregarUsuarioGrupoCallback(grupo, usuario) {
     const params = {
       GroupName: grupo,
@@ -335,8 +333,7 @@ export class UsuariosService {
       this.numeroDeProcesos++;
     });
   };
-
-  /// esta aparte al compoennete de usarios
+  
   validacionDeProcesosInsertar = (Attributos, paramGrupo) => {
     let numeroProcesosComparar = 2;
 
@@ -361,24 +358,6 @@ export class UsuariosService {
     });
   };
 
-  paramsMEAtributos = {
-    UserAttributes: [
-      {
-        Name: 'custom:rol',
-        Value: 'Administrador' /* campo de entrada identificado como permiso */,
-      },
-    ],
-    Username:
-      'azure_rwayeowx9nsigogmrb6adqmpgrl2hohoivn5bgsobja' /* identificador del usuario en el user pool */,
-    UserPoolId: environment.UserPoolId,
-  }
-
-  actualizarme(): void {
-
-    cognitoidentityserviceprovider.adminUpdateUserAttributes(
-      this.paramsMEAtributos,
-      this.callbackAws);
-  }
   actualizarAtributosUsuario = (UserAttributes, Username) => {
     // metodo para actualizar los valores de los atributos del usuario en el user pool
     /* cognitoidentityserviceprovider.adminUpdateUserAttributes(
@@ -584,5 +563,12 @@ ayuda de atibutos: {Name: "sub", Value: "42ae1b55-8029-4a09-8c81-8c805c650aaf"}
     console.log(JSON.stringify(objFiltrado));
     return objFiltrado;
   }
-
+  /*
+  obtenerDepartamento ():void{
+    var area = 'AREA-DEPARTAMENTO';
+    this.store.dispatch(setUserArea({
+      area:area
+    }))
+    this.store.select(({ usuario }) => usuario.area).subscribe(res => {console.log(res)});
+  }*/
 }

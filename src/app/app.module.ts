@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 
@@ -25,17 +25,16 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DatePipe } from '@angular/common'
+import { DatePipe } from '@angular/common';
+import { registerLocaleData } from '@angular/common';
 
-
-
-
+// importar locales
+import localeMX from '@angular/common/locales/es-MX';
+// registrar los locales con el nombre que quieras utilizar a la hora de proveer
+registerLocaleData(localeMX, 'es-MX');
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    LoginComponent
-  ],
+  declarations: [AppComponent, LoginComponent],
   imports: [
     BrowserModule,
     NgxPaginationModule,
@@ -49,17 +48,17 @@ import { DatePipe } from '@angular/common'
     StoreModule.forRoot(appReducers),
     EffectsModule.forRoot(EffectsArrays),
     StoreDevtoolsModule.instrument({
-      maxAge:25,
-      logOnly: environment.production
+      maxAge: 25,
+      logOnly: environment.production,
     }),
     NgbModule,
-
   ],
   providers: [
     AmplifyService,
-    DatePipe
+    DatePipe,
+    { provide: LOCALE_ID, useValue: 'es-MX' },
   ],
 
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

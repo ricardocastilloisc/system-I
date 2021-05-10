@@ -11,6 +11,7 @@ import { User } from '../model/user';
 import { Usuario } from '../model/usuario.model';
 import { Router } from '@angular/router';
 import { EArea, ERole } from '../validators/roles';
+import { setUserArea } from '../ReduxStore/actions/usuario.actions';
 
 Amplify.configure(environment.amplifyConfig);
 
@@ -27,8 +28,14 @@ export class AuthService {
           const user = Usuario.fromAmplify(
             new User(result)
           );
-          if (!this.getToken()) localStorage.setItem('access', (await Auth.currentSession()).getAccessToken().getJwtToken().toString());
+          if (!this.getToken()) {
+            localStorage.setItem('access', (await Auth.currentSession()).getAccessToken().getJwtToken().toString());
+          }
           this.store.dispatch(authActions.setUser({ user }));
+          let area = this.obtenerArea();
+          this.store.dispatch(setUserArea({
+            area: area
+          }))
         } else {
           this.store.dispatch(authActions.unSetUser());
         }
@@ -115,18 +122,17 @@ export class AuthService {
     })
     if (arrayTempArea.length > 0) {
       //console.log(arrayTempArea[0]);
-      if(arrayTempArea[0] === 'Soporte'){
+      if (arrayTempArea[0] === 'Soporte') {
         flagValidate = true;
       } else {
         if (!User.attributes.hasOwnProperty('custom:rol')) {
           flagValidate = false;
         } else {
-  
           if (roles.includes(User.attributes['custom:rol'])) {
             flagValidate = true;
           }
         }
-      }      
+      }
     }
     else {
       flagValidate = false;
@@ -134,4 +140,22 @@ export class AuthService {
     return flagValidate;
   }
 
+  obtenerArea(): any {
+    let area = '';
+    let arrayTempArea = [];
+    let areas = [    EArea.Contabilidad,
+      EArea.Custodia,
+      EArea.Inversiones_Riesgos,
+      EArea.Tesoreria,
+      EArea.Soporte,];
+    this.store.select(({ usuario }) => usuario.user.groups).subscribe(res => {
+      res.forEach(item => {
+        if (areas.includes(item)) {
+          arrayTempArea.push(item);
+        }
+      })
+    });
+    area = arrayTempArea.join(', ');
+    return area;
+  }
 }

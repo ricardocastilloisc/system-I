@@ -624,12 +624,16 @@ table.listado-design-general td {
 .cuadroNotificaciones span {
   background: #fff;
   padding: 2px;
+  padding-left: 6px;
+  padding-right: 6px;
   border-radius: 50%;
   color: #fff;
   vertical-align: top;
   margin-left: -14px;
   margin-top: -11px;
   font-size: 9px;
+  /* width: 13px; */
+  /* text-align: center;*/
 }
 
 .cuadroNotificaciones .notifications {
@@ -788,4 +792,34 @@ table.listado-design-general td {
   height: 48px;
   color: #fff;
   font: normal normal bold 20px/25px FS Elliot Pro;
+}
+.linea {
+  border-top: 1px solid #00c4d9;
+  height: 2px;
+  max-width: 100%;
+  padding: 0;
+  margin: 15px auto 10px auto;
+
+}
+
+.linea-azul {
+  border-top: 1px solid #0091da;
+  height: 2px;
+  max-width: 100%;
+  padding: 0;
+  margin: 15px auto 10px auto;
+
+}
+
+.linea-morado {
+  border-top: 1px solid #7c69c3;
+  height: 2px;
+  max-width: 100%;
+  padding: 0;
+  margin: 15px auto 10px auto;
+
+}
+
+.centrado{
+  float: right;
 }

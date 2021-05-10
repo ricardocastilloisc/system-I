@@ -7,6 +7,10 @@ import { AppState } from '../../../ReduxStore/app.reducers';
 import { Usuario } from '../../../model/usuario.model';
 import { Observable } from 'rxjs';
 import { ERole } from '../../../validators/roles';
+import { NotificacionesService } from '../../../services/notificaciones.service';
+import { map } from 'rxjs/operators';
+import { NOTIFICACION_INTERFACE } from './../../../model/notificacion.model';
+
 declare var $: any;
 
 let color = 'verde';
@@ -29,12 +33,13 @@ export class NavbarComponent implements OnInit, AfterViewInit {
   Administrador = ERole.Administrador;
   Monitor = ERole.Monitor;
   Soporte = ERole.Soporte;
-  
+  Notificaciones$: Observable<NOTIFICACION_INTERFACE[]>;
 
   constructor(
     private authService: AuthService,
     private store: Store<AppState>,
-    private usuario: UsuariosService
+    private usuario: UsuariosService,
+    private NotificacionesService: NotificacionesService
   ) { }
 
   ngAfterViewInit(): void {
@@ -92,8 +97,19 @@ export class NavbarComponent implements OnInit, AfterViewInit {
     //console.log('estilo azul: ' + color);
     return azul;
   };
+
+  eliminarNotificacion = (ID_PROCESO: string) => {
+    this.NotificacionesService.eliminarNoticiaciones(ID_PROCESO);
+    $('#dLabel').click();
+  };
+
   ngOnInit(): void {
     this.DataUser$ = this.store.select(({ usuario }) => usuario.user);
+    this.Notificaciones$ = this.store
+    .select(({ notificaciones }) => notificaciones.notificaciones)
+    .pipe(map((e) => e.filter((fl) => fl.LEIDO === false)));
+
+  this.getRuta();
     this.getRuta();
   }
 
@@ -134,5 +150,16 @@ export class NavbarComponent implements OnInit, AfterViewInit {
         $('#headernav').css('width', window.innerWidth - 253 + 'px');
       }
     }
+  };
+
+
+  obtenerArea(): any {
+    console.log('obtenerArea');
+    let area:String = '';
+    this.store.select(({ usuario }) => usuario.area).subscribe(res => {
+      console.log(res);
+      area = res;
+    });
+    return area;
   };
 }

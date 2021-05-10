@@ -1,3 +1,4 @@
+import { OrdenarNotificacionesFechaPipe } from './../../../pipes/ordenar-notificaciones-fecha.pipe';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -10,6 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   declarations: [
     DashboardComponent,
     NavbarComponent,
+    OrdenarNotificacionesFechaPipe
   ],
   imports: [
     CommonModule,
