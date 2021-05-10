@@ -154,10 +154,10 @@ export class NavbarComponent implements OnInit, AfterViewInit {
 
 
   obtenerArea(): any {
-    console.log('obtenerArea');
+    //console.log('obtenerArea');
     let area:String = '';
     this.store.select(({ usuario }) => usuario.area).subscribe(res => {
-      console.log(res);
+      //console.log(res);
       area = res;
     });
     return area;
