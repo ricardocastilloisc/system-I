@@ -50,7 +50,7 @@
             <tr *ngFor="let PROCESO of PROCESOS | paginate: {id: 'listadoInterfaces', itemsPerPage: 10, currentPage: actualPage} ; index as i">
               <td>{{PROCESO?.DESCRIPCION}}</td>
               <td>
-                <img *ngIf="PROCESO.INICIAR" class="play-icon" (click)="inciarProceso(PROCESO.PROCESO, DataUser.email ,DataUser.attributes['custom:rol'])">
+                <img *ngIf="PROCESO.INICIAR" class="play-icon" (click)="openModal(confirmacion, PROCESO.PROCESO)" >
                 <img *ngIf="PROCESO.DETENER" class="stop-icon">
                 <img *ngIf="PROCESO.MONITOREAR"  class="detalle-icon" (click)="consultar(PROCESO.PROCESO)">
               </td>
@@ -135,7 +135,36 @@
       >
       
 
-      
+      <ng-template #confirmacion let-modal id="confirmacion">
+        <div class="modal-body">
+          <div class="row justify-content-center">
+            <div class="col-12 row justify-content-center align-items-center" style="height:120px;">
+              <div class="textoConfirmacionModalUsuarios">Confirmar ejecución de proceso</div>
+            </div>
+            <div class="col-12 row">
+              <div class="col-12 descripcionConfirmacionEjecucionProceso">Se ejecutara el proceso:</div>
+              <div class="col-12 descripcionConfirmacionEjecucionProceso">
+                
+                {{procesoEjecutar}}
+    
+              </div>
+            </div>
+            <div class="col-12 row justify-content-center align-items-center" style="height:120px;">
+              <div>
+    
+                <button class="btn bottonCancelarEjecucionProceso" (click)="modal.close()">Cancelar</button>
+                <button class="btn bottonConfirmarEjecucionProceso" (click)="inciarProceso(DataUser.email ,DataUser.attributes['custom:rol'])">Continuar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    
+        <!--
+              <div class="modal-footer">
+          <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Save</button>
+        </div>
+        -->
+      </ng-template>
 
 
     </div>

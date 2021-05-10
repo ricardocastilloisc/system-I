@@ -9,17 +9,18 @@ import { AUDGENPROCESO_INERFACE } from '../../../../../model/AUDGENPROCESO.model
 import { CATPROCESOS_INTERFACE } from '../../../../../model/CATPROCESOS.model';
 import { APIService } from '../../../../../API.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { distinct, filter, map, tap } from 'rxjs/operators';
+import { distinct, filter, first, map, tap } from 'rxjs/operators';
 import { AUDGENESTADOPROCESO_INTERFACE } from 'src/app/model/AUDGENESTADOPROCESO.model';
 import { CATPERMISOS_INTERFACE } from 'src/app/model/CATPERMISOS.model'
-import { LoadCATPROCESOS, UnsetCATPROCESO, LoadCATPERMISOS, UnsetCATPERMISO } from 'src/app/ReduxStore/actions';
+import { LoadCATPROCESOS, UnsetCATPROCESO, LoadCATPERMISOS, UnsetCATPERMISO, LoadAUDGENESTADOPROCESOS } from 'src/app/ReduxStore/actions';
 import { Usuario } from '../../../../../model/usuario.model';
 import { ProcesosService } from '../../../../../services/procesos.service'
 import {v4 as uuidv4} from 'uuid';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { EArea, ERole } from './../../../../../validators/roles';
 import { UsuariosService } from 'src/app/services/usuarios.service';
-
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-procesos-pantalla-general',
@@ -51,9 +52,11 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
 
   CATPROCESOS: CATPROCESOS_INTERFACE[];
   CATPERMISOS: CATPERMISOS_INTERFACE[];
+  CATESTADOS: AUDGENESTADOPROCESO_INTERFACE[];
 
   PROCESOS$: Observable<any>;
 
+  procesoEjecutar: string;
   actualPage: number = 1;
   negocio: string;
   area: string;
@@ -74,6 +77,8 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
     private spinner: NgxSpinnerService,
     private authService: AuthService,
     private usuario: UsuariosService,
+    private modalService: NgbModal,
+    private datePipe: DatePipe
   ) {
     this.spinner.show();
     setTimeout(() => {
@@ -143,6 +148,16 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
     
     //console.log(this.area)
 
+    let todayDate = new Date()
+    
+    console.log(this.datePipe.transform(todayDate, "dd-MM-yyyy"))
+
+    this.procesoEjecutar = 'AIMS Y EXCEDENTES'
+    let reponse = this.api.ListAUDGENESTADOPROCESOS({ INTERFAZ: { eq: this.procesoEjecutar} , FECHA_ACTUALIZACION: { contains: this.datePipe.transform(todayDate, "yyyy-MM-dd") }}, 1000000).then(res => {
+
+      console.log(res )
+
+    })
   }
 
   obtenerProcesos(catProcesos: Array<CATPROCESOS_INTERFACE>, catPermisos: Array<CATPERMISOS_INTERFACE>){
@@ -175,19 +190,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
     return true
   }
 
-  validarBoton(Proceso){
-    let negocio = this.DataUser.attributes["custom:negocio"].toUpperCase().trim()
-    
-    let area = this.obtenerArea()
-    
-    //console.log(area)
 
-    if( area === Proceso.ARRANQUE){
-      return true
-
-    }else return false
-
-  }
 
   
   obtenerArea(): string{
@@ -225,39 +228,78 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
     this.router.navigate(['/' + window.location.pathname + '/proceso/' + idProceso]);
   }
 
-  async inciarProceso(nombreProceso: string, correo: string, area: string) {
+  openModal(content, nombreProceso){
+    this.procesoEjecutar = nombreProceso;
+    
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
+  }
+
+
+  async inciarProceso( correo: string, area: string) {
+
+    console.log(this.procesoEjecutar)
+    let CATESTADOS;
+    let todayDate = new Date()
+    
+    console.log(this.datePipe.transform(todayDate, "dd-MM-yyyy"))
 
     this.spinner.show();
 
-    var response;
-    let idEjecucion  = uuidv4();
-    console.log(nombreProceso,correo, area, idEjecucion)
-
-    try{
-      const response = await this.serviciosProcesos.iniciarProceso(nombreProceso, correo, area)
-      console.log(response)
-
-      if(response.codigo == 'EXITO'){
-        this.spinner.hide();
-        alert('Se inicio el proceso')
-      } else {
-
-        this.spinner.hide();
-        alert('Error al ejecutar proceso')
-       
-      }
-      
-    } catch(e){
-
-      alert('Error al ejecutar proceso')
-      console.log(e)
+    let body = {
+      filter:{​​​​​ INTERFAZ: { eq: this.procesoEjecutar}, FECHA_ACTUALIZACION: { contains: this.datePipe.transform(todayDate,"yyyy-MM-dd") } }​​​​​,
+      limit: 10000000
     }
+
+    
+    await this.api.ListAUDGENESTADOPROCESOS(body.filter, body.limit).then(res => {
+
+      this.CATESTADOS = res.items.slice().sort(function (a, b) { return new Date(b.FECHA_ACTUALIZACION).getTime() - new Date(a.FECHA_ACTUALIZACION).getTime() })
+      //console.log(res)
+
+      
+
+    })
+
+    
+
+    console.log('que hay aqui ', this.CATESTADOS)
+
+
+
+    if(this.CATESTADOS[0].ESTADO == 'FALLIDO'  || this.CATESTADOS[0].ESTADO == 'EXISTOSO' ){
+
+      let idEjecucion  = uuidv4();
+      console.log(this.procesoEjecutar,correo, area, idEjecucion)
+
+      try{
+        const response = await this.serviciosProcesos.iniciarProceso(this.procesoEjecutar, correo, area)
+        console.log(response)
+
+        if(response.codigo == 'EXITO'){
+          this.spinner.hide();
+          //alert('Se inicio el proceso')
+        } else {
+
+          this.spinner.hide();
+          //alert('Error al ejecutar proceso')
+        
+        }
+        
+      } catch(e){
+
+        //alert('Error al ejecutar proceso')
+        console.log(e)
+      }
+
+    }else ( alert("El proceso se encuentra en ejecución"))
+      
 
     setTimeout(() => {
       this.spinner.hide();
     }, 300);
     
 
+    this.modalService.dismissAll();
 
   }
 

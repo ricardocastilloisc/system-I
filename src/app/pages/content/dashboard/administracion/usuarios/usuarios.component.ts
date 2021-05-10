@@ -292,6 +292,8 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   }
 
   openModal(content, ObjectUsuario: UsuarioListado, grupoPertenece) {
+
+    console.log(content);
     this.ObjectUsuarioCambiar = ObjectUsuario;
     this.grupoPertenece = grupoPertenece;
 
