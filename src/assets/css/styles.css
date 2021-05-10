@@ -753,3 +753,34 @@ table.listado-design-general td {
   color: #fff;
   font: normal normal bold 20px/25px FS Elliot Pro;
 }
+
+.linea {
+  border-top: 1px solid #00c4d9;
+  height: 2px;
+  max-width: 100%;
+  padding: 0;
+  margin: 15px auto 10px auto;
+  
+}
+
+.linea-azul {
+  border-top: 1px solid #0091da;
+  height: 2px;
+  max-width: 100%;
+  padding: 0;
+  margin: 15px auto 10px auto;
+  
+}
+
+.linea-morado {
+  border-top: 1px solid #7c69c3;
+  height: 2px;
+  max-width: 100%;
+  padding: 0;
+  margin: 15px auto 10px auto;
+  
+}
+
+.centrado{	
+  float: right;
+}

@@ -75,7 +75,8 @@
         </ul>
       </li>
       <li>
-        <a (click)="signOut()" style="cursor: pointer"><img src="../assets/imgs/cerrar-sesion.svg" class="alineadoTextoImagenCentro" />Cerrar
+        <a (click)="signOut()" style="cursor: pointer"><img src="../assets/imgs/cerrar-sesion.svg"
+            class="alineadoTextoImagenCentro" />Cerrar
           sesión</a>
       </li>
     </ul>
@@ -98,50 +99,55 @@
           </div>
         </div>
         <div class="alineadoTextoDerecha col-3 align-self-end texto-responsivo-usuario">
-          <p>
-            <b>{{ DataUser.attributes.given_name}} {{ DataUser.attributes.family_name}}</b>
-          </p>
-          <p *ngIf="usuario.validarRolUsuario()">
-            {{ DataUser.groups[1]}} / {{
-            DataUser.attributes.hasOwnProperty('custom:rol')?DataUser.attributes['custom:rol']:'' }}</p>
+          <div class="centrado">
+            <strong><b>{{ DataUser.attributes.given_name}} {{ DataUser.attributes.family_name}}</b></strong>
+            <div class="linea"></div>
+            <p *ngIf="usuario.validarRolUsuario()">
+              {{ obtenerArea() }} /
+              {{ DataUser.attributes.hasOwnProperty('custom:rol')?DataUser.attributes['custom:rol']:'' }}</p>
+          </div>
         </div>
-        <div  class="col-2 "> <div style="background-color:#00c4d9;" class="cuadroNotificaciones dropdown" id="dLabel" role="button" data-toggle="dropdown" data-target="#">
+        <div class="col-2 ">
+          <div style="background-color:#00c4d9;" class="cuadroNotificaciones dropdown" id="dLabel" role="button"
+            data-toggle="dropdown" data-target="#">
 
-          <a id="dLabel" role="button" data-toggle="dropdown" data-target="#" >
-            <img class="imagenNotificaciones" src="assets/icons/bell.png" /> <span style="color:#00c4d9">17</span>
-          </a>
-
-
-          <ul class="dropdown-menu notifications" role="menu" aria-labelledby="dLabel">
-
-            <div class="notification-heading"><h4 class="menu-title">Notificaciones</h4>
-            </div>
-            <li class="divider"></li>
-           <div class="notifications-wrapper">
-             <a class="content">
-               <div class="notification-item">
-                <h4 class="item-title">Movimiento de Operaciones</h4>
-                <p class="item-info">Empezado con exito</p>
-              </div>
-            </a>
-             <a class="content">
-               <div class="notification-item">
-                <h4 class="item-title">Movimiento de Operaciones</h4>
-                <p class="item-info">Empezado con exito</p>
-              </div>
-            </a>
-             <a class="content">
-               <div class="notification-item">
-                <h4 class="item-title">Movimiento de Operaciones</h4>
-                <p class="item-info">Empezado con exito</p>
-              </div>
+            <a id="dLabel" role="button" data-toggle="dropdown" data-target="#">
+              <img class="imagenNotificaciones" src="assets/icons/bell.png" /> <span style="color:#00c4d9">17</span>
             </a>
 
 
-           </div>
-            <li class="divider"></li>
-          </ul>
-          </div> </div>
+            <ul class="dropdown-menu notifications" role="menu" aria-labelledby="dLabel">
+
+              <div class="notification-heading">
+                <h4 class="menu-title">Notificaciones</h4>
+              </div>
+              <li class="divider"></li>
+              <div class="notifications-wrapper">
+                <a class="content">
+                  <div class="notification-item">
+                    <h4 class="item-title">Movimiento de Operaciones</h4>
+                    <p class="item-info">Empezado con exito</p>
+                  </div>
+                </a>
+                <a class="content">
+                  <div class="notification-item">
+                    <h4 class="item-title">Movimiento de Operaciones</h4>
+                    <p class="item-info">Empezado con exito</p>
+                  </div>
+                </a>
+                <a class="content">
+                  <div class="notification-item">
+                    <h4 class="item-title">Movimiento de Operaciones</h4>
+                    <p class="item-info">Empezado con exito</p>
+                  </div>
+                </a>
+
+
+              </div>
+              <li class="divider"></li>
+            </ul>
+          </div>
+        </div>
 
       </div>
       <!-- ESTILO AZUL -->
@@ -158,12 +164,13 @@
           </div>
         </div>
         <div class="alineadoTextoDerechaAzul col-5 align-self-end texto-responsivo-usuario">
-          <p>
-            <b>{{ DataUser.attributes.given_name}} {{ DataUser.attributes.family_name}}</b>
-          </p>
-          <p *ngIf="usuario.validarRolUsuario()">{{
-            DataUser.attributes.hasOwnProperty('custom:negocio')?DataUser.attributes['custom:negocio']:'' }} / {{
-            DataUser.attributes.hasOwnProperty('custom:rol')?DataUser.attributes['custom:rol']:'' }}</p>
+          <div class="centrado">
+          <strong><b>{{ DataUser.attributes.given_name}} {{ DataUser.attributes.family_name}}</b></strong>
+          <div class="linea-azul"></div>
+          <p *ngIf="usuario.validarRolUsuario()">
+            {{ obtenerArea() }} /
+            {{ DataUser.attributes.hasOwnProperty('custom:rol')?DataUser.attributes['custom:rol']:'' }}</p>
+        </div>
         </div>
       </div>
       <!-- ESTILO MORADO -->
@@ -180,12 +187,13 @@
           </div>
         </div>
         <div class="alineadoTextoDerechaMorado col-5 align-self-end texto-responsivo-usuario">
-          <p>
-            <b>{{ DataUser.attributes.given_name}} {{ DataUser.attributes.family_name}}</b>
-          </p>
-          <p *ngIf="usuario.validarRolUsuario()">
-            {{ DataUser.groups[1] }} / 
-            {{ DataUser.attributes.hasOwnProperty('custom:rol')?DataUser.attributes['custom:rol']:'' }}</p>
+          <div class="centrado">
+            <strong><b>{{ DataUser.attributes.given_name}} {{ DataUser.attributes.family_name}}</b></strong>
+            <div class="linea-morado"></div>
+            <p *ngIf="usuario.validarRolUsuario()">
+              {{ obtenerArea() }} /
+              {{ DataUser.attributes.hasOwnProperty('custom:rol')?DataUser.attributes['custom:rol']:'' }}</p>
+          </div>
         </div>
       </div>
     </nav>

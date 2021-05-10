@@ -31,17 +31,13 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.DataUser$ = this.store.select(({ usuario }) => usuario.user);
-    //this.usuario.obtenerDetalleUsuario();
-    //this.usuario.actualizarme();
-    //this.auditoria.enviarMensaje();
-    //this.procesos.iniciarProceso('aims', 'galicia.brenda@principal.com', 'Soporte');
   }
 
   rolesValids = (User:Usuario, roles: any[]): boolean => {
     return this.authService.rolesValids( User, roles);
   };
 
-  perfilValido= (User:Usuario, roles: any[]): boolean => {
+  perfilValido = (User:Usuario, roles: any[]): boolean => {
     return this.authService.perfilValido( User, roles);
   };
   
