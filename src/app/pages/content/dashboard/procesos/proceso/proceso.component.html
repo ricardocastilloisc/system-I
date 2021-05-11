@@ -302,6 +302,33 @@
             </div>
   
 
+
+
         </div>
     </div>
+
+    <ng-template #modalEstado let-modal id="modalFiltro">
+        <div class="modal-body">
+          <div class="row justify-content-center">
+            <div class="col-12 row justify-content-center align-items-center" style="height:120px;">
+              <div class="textoConfirmacionModalUsuarios">Busqueda por filtro</div>
+            </div>
+            <div class="col-12 row">
+              <div class="col-12 descripcionConfirmacionEjecucionProceso">Ingresa un valor para realizar la busqueda</div>
+              
+            </div>
+            <div class="col-12 row justify-content-center align-items-center" style="height:120px;">
+              <div>
+                <button class="btn bottonConfirmarEjecucionProceso" (click)="cerrarModales()">Aceptar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    
+        <!--
+              <div class="modal-footer">
+          <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Save</button>
+        </div>
+        -->
+      </ng-template>
 </div>

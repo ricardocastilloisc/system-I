@@ -252,7 +252,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
     this.spinner.show();
 
     let body = {
-      filter:{​​​​​ INTERFAZ: { eq: this.procesoEjecutar}, FECHA_ACTUALIZACION: { contains: this.datePipe.transform(todayDate,"yyyy-MM-dd") } }​​​​​,
+      filter:{​​​​​ INTERFAZ: { eq: this.procesoEjecutar} }​​​​​,
       limit: 10000000
     }
 
@@ -265,7 +265,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
 
     
 
-    //console.log('que hay aqui ', this.CATESTADOS)
+    console.log('que hay aqui ', this.CATESTADOS)
 
 
 
@@ -295,9 +295,13 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
         console.log(e)
       }
 
-    }else ( 
+    }else if( this.CATESTADOS[0]?.ESTADO === 'INICIADO') {
       this.modalMensaje("modalEstado","El proceso se encuentra en ejecución")
     
+    }else (
+
+
+      this.modalMensaje("modalEstado","Error al ejecutar proceso")
     )
       
 

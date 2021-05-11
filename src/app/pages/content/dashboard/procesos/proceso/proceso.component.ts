@@ -1,5 +1,5 @@
 import { LoadAUDGENPROCESOS, UnsetAUDGENPROCESO } from './../../../../../ReduxStore/actions/AUDGENPROCESO.actions';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../../ReduxStore/app.reducers';
@@ -15,7 +15,7 @@ import { APIService } from '../../../../../API.service';
 import { UsuariosService } from '../../../../../services/usuarios.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DatePipe } from '@angular/common'
-import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -24,7 +24,7 @@ import { connectableObservableDescriptor } from 'rxjs/internal/observable/Connec
   styleUrls: ['./proceso.component.css']
 })
 export class ProcesoComponent implements OnInit, OnDestroy {
-
+  @ViewChild('modalEstado') templateRef: TemplateRef<any>;
   filtroEjecucionesForm: FormGroup;
 
   Areas = [
@@ -60,6 +60,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
     private api: APIService,
     private usuario: UsuariosService,
     private fb: FormBuilder,
+    private modalService: NgbModal,
     private datepipe: DatePipe
   ) { }
 
@@ -135,6 +136,12 @@ export class ProcesoComponent implements OnInit, OnDestroy {
     this.store.dispatch(LoadAUDGENESTADOPROCESOS({ consult: body }));
 
     // this.llenarTabla(this.page);
+
+  }
+
+  openModal(){
+
+    this.modalService.open(this.templateRef, { ariaLabelledBy: 'modal-basic-title' });
 
   }
 
@@ -330,7 +337,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
 
       if(fechaFiltro === null && idProceso === null){
 
-        alert("Ingresa un valor para buscar")
+        this.openModal()
 
       }else if( fechaFiltro === null && idProceso !== null){
 
@@ -360,6 +367,10 @@ export class ProcesoComponent implements OnInit, OnDestroy {
 
       
     }
+  }
+
+  cerrarModales = () =>{
+    this.modalService.dismissAll();
   }
 
 
