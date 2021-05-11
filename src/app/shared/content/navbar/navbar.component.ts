@@ -62,7 +62,9 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
       });
 
       if (!coincidencia && elementoRuta !== '') {
-        ArrayRuta.push(elementoRuta);
+
+        ArrayRuta.push(elementoRuta.split('%20').join(' ').toString());
+        
       }
     });
 
