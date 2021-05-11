@@ -157,7 +157,9 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   signOut = () => {
+    localStorage.setItem("SIA", "false");
     this.authService.signOut();
+    this.usuario.logout();
   };
 
   rolesValids = (User: Usuario, roles: any[]): boolean => {

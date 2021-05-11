@@ -10,8 +10,9 @@ import * as authActions from '../ReduxStore/actions/usuario.actions';
 import { User } from '../model/user';
 import { Usuario } from '../model/usuario.model';
 import { Router } from '@angular/router';
-import { EArea, ERole } from '../validators/roles';
+import { EArea } from '../validators/roles';
 import { setUserArea } from '../ReduxStore/actions/usuario.actions';
+import * as cognitoidentityserviceprovider from 'aws-sdk/clients/cognitoidentityserviceprovider';
 
 Amplify.configure(environment.amplifyConfig);
 
@@ -24,6 +25,8 @@ export class AuthService {
   initAuthData = () => {
     Auth.currentAuthenticatedUser()
       .then(async (result: CognitoUser) => {
+        //console.log("AUTH SERVICE");
+        //console.log(JSON.stringify(result));
         if (result.getSignInUserSession().isValid()) {
           const user = Usuario.fromAmplify(
             new User(result)
@@ -43,7 +46,7 @@ export class AuthService {
       .catch(() => this.store.dispatch(authActions.unSetUser()));
   };
 
-  goLogin = () => {
+  goLogin = () => {    
     window.location.assign(environment.urlExternalLogin);
   };
 
@@ -65,7 +68,7 @@ export class AuthService {
     });
   };
 
-  signOut = () => {
+  signOut = () => {    
     localStorage.clear();
     this.cleanStates();
     this.router.navigate(['/login']);

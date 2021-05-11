@@ -823,3 +823,9 @@ table.listado-design-general td {
 .centrado{
   float: right;
 }
+
+.mesa-ayuda{
+  text-align: center;;
+  font: normal normal bold 18px FS Elliot Pro;
+  color: #0091da;
+}

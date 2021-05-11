@@ -9,6 +9,7 @@ import { ERole, ENegocio, EArea } from '../validators/roles';
 import { ConsultaUsuario } from '../ReduxStore/reducers';
 import { ValorFiltrarGrupo } from '../validators/opcionesDeFiltroUsuarioAdmininistracion';
 import { UsuarioListado } from '../model/usuarioLitsa.model';
+import { AuthService } from './auth.service';
 
 AWS.config.update(environment.SESConfig);
 var cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider();
@@ -89,12 +90,22 @@ export class UsuariosService {
   };
   numeroDeProcesos = 0;
 
-  constructor(private store: Store<AppState>) { }
+  constructor(private store: Store<AppState>, private authService: AuthService) { }
+
+  paramSignOut = {
+    Username: this.authService.getToken() as string,
+    UserPoolId: environment.UserPoolId,
+  };
+
+  logout(): void {
+    cognitoidentityserviceprovider.adminUserGlobalSignOut(this.paramSignOut, this.callbackAws);
+  }
 
   eliminarUsuario(): void {
     // metodo para eliminar un usuario del user pool
     cognitoidentityserviceprovider.adminDeleteUser(this.paramsDeleteUser, this.callbackAws);
   }
+  
   eliminarUsuarioPromesa = (Username) => {
     // metodo para eliminar un usuario del user pool
     const paramsDeleteUser = {
@@ -137,6 +148,8 @@ export class UsuariosService {
     }
     return promesa.promise();
   };
+
+
 
   consultaUsuariosMultipleFactor = (parametro) => {
     return new Promise((resolve) => {
@@ -277,7 +290,7 @@ export class UsuariosService {
       this.agregarUsuarioGrupoCallback(Grupo, Username);
     });
   };
-  
+
   agregarUsuarioGrupoCallback(grupo, usuario) {
     const params = {
       GroupName: grupo,
@@ -333,7 +346,7 @@ export class UsuariosService {
       this.numeroDeProcesos++;
     });
   };
-  
+
   validacionDeProcesosInsertar = (Attributos, paramGrupo) => {
     let numeroProcesosComparar = 2;
 
