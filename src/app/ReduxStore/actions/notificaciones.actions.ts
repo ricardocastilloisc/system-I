@@ -9,3 +9,6 @@ export const setnotificaciones = createAction(
 );
 
 export const crearnotificacione = createAction('[notificaciones] Crearnotificaciones', props<{notificacion:NOTIFICACION_INTERFACE}>());
+
+
+export const unSetnotificaciones = createAction('[notificaciones] unSetnotificaciones');
