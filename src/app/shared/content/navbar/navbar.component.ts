@@ -116,6 +116,20 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   };
 
+  retornarClaseCorrectaLinea = () => {
+    if (this.retornarColor(this.arrayRuta()) === 'verde') {
+      return 'linea';
+    }
+
+    if (this.retornarColor(this.arrayRuta()) === 'morado') {
+      return 'linea-morado';
+    }
+
+    if (this.retornarColor(this.arrayRuta()) === 'azul') {
+      return 'linea-azul';
+    }
+  };
+
   retornarIconoCorrecto = () => {
     if (this.retornarColor(this.arrayRuta()) === 'verde') {
       return 'assets/icons/nav/inicio.svg';

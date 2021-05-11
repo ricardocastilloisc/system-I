@@ -133,7 +133,7 @@
           <div class="centrado">
             <strong><b>{{ DataUser.attributes.given_name }}
                 {{ DataUser.attributes.family_name }}</b></strong>
-            <div class="linea"></div>
+            <div [ngClass]="retornarClaseCorrectaLinea()"></div>
             <p *ngIf="usuario.validarRolUsuario()">
               {{ obtenerArea() }} /
               {{
