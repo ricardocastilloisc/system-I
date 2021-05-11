@@ -161,8 +161,7 @@
         navbar-fixed-top navbar-slide-nav
       "
     >
-      <!-- ESTILO VERDE -->
-      <div class="container-fluid" *ngIf="estiloVerde()">
+      <div class="container-fluid">
         <button
           (click)="toggle()"
           type="button"
@@ -171,20 +170,27 @@
         >
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="alineadoTextoIzquierda col-5">
+        <div [ngClass]="retornarClaseCorrecta()" class="col-5">
           <div id="tabla">
-            <div class="A"><img src="assets/icons/nav/inicio.svg" /></div>
+            <div class="A"><img [src]="retornarIconoCorrecto()" /></div>
             <div class="B">
               <p>
-                <a
-                  style="cursor: pointer"
-                  *ngFor="let ruta of arrayRuta(); index as i"
-                  (click)="irRutaDeStringRuta(i)"
-                  >{{ ruta }}/</a
-                >
-
-                <span *ngIf="arrayRuta().length === 0" > Inicio</span>
-
+                <span *ngFor="let ruta of arrayRuta(); index as i">
+                  <a
+                    *ngIf="
+                      arrayRuta().length > 2 && i !== arrayRuta().length - 1
+                    "
+                    style="cursor: pointer"
+                    (click)="irRutaDeStringRuta(i)"
+                    >{{ arrayRuta()[i] }}/</a
+                  >
+                  <span
+                    *ngIf="
+                      arrayRuta().length < 3 || i === arrayRuta().length - 1
+                    "
+                  >{{ arrayRuta()[i] }}/</span>
+                </span>
+                <span *ngIf="arrayRuta().length === 0">Inicio</span>
               </p>
             </div>
           </div>
@@ -217,7 +223,7 @@
         </div>
         <div class="col-2">
           <div
-            style="background-color: #00c4d9"
+            [ngStyle]="{ 'background-color': colorCamppanaCorrecto() }"
             class="cuadroNotificaciones dropdown"
             id="dLabel"
             role="button"
@@ -225,239 +231,11 @@
             data-target="#"
           >
             <img class="imagenNotificaciones" src="assets/icons/bell.png" />
-            <span style="color: #00c4d9" *ngIf="Notificaciones.length > 0">{{
-              Notificaciones.length
-            }}</span>
-
-            <ul
-              class="dropdown-menu notifications"
-              role="menu"
-              aria-labelledby="dLabel"
+            <span
+              [ngStyle]="{ color: colorCamppanaCorrecto() }"
+              *ngIf="Notificaciones.length > 0"
+              >{{ Notificaciones.length }}</span
             >
-              <div class="notification-heading dropdown-item">
-                <h4 class="menu-title">Notificaciones</h4>
-              </div>
-              <li class="divider"></li>
-              <div class="notifications-wrapper">
-                <div
-                  class="content"
-                  *ngFor="
-                    let Notificacion of Notificaciones
-                      | ordenarNotificacionesFecha
-                  "
-                >
-                  <div class="notification-item">
-                    <div class="item-title">
-                      <div>{{ Notificacion.ESTADO }}</div>
-                      <button
-                        type="button"
-                        class="close"
-                        (click)="eliminarNotificacion(Notificacion.ID_PROCESO)"
-                      >
-                        <span
-                          style="
-                            font-size: 15px;
-                            color: black;
-                            background-color: transparent;
-                          "
-                          >&times;</span
-                        >
-                      </button>
-                    </div>
-
-                    <div class="item-info">
-                      {{ Notificacion.INTERFAZ }}
-                    </div>
-                    <div class="item-info">
-                      {{ Notificacion.FECHA_ACTUALIZACION | date: "medium" }}
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <li class="divider"></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <!-- ESTILO AZUL -->
-      <div class="container-fluid" *ngIf="estiloAzul()">
-        <button
-          (click)="toggle()"
-          type="button"
-          id="siderCollapse"
-          class="btn btn-light col-1"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="alineadoTextoIzquierdaAzul col-5">
-          <div id="tabla">
-            <div class="A"><img src="assets/icons/nav/auditoria.svg" /></div>
-            <div class="B">
-              <p>
-                <a
-                  style="cursor: pointer"
-                  *ngFor="let ruta of arrayRuta(); index as i"
-                  (click)="irRutaDeStringRuta(i)"
-                  >{{ ruta }}/</a
-                >
-              </p>
-            </div>
-          </div>
-        </div>
-        <div
-          class="
-            alineadoTextoDerechaAzul
-            col-3
-            align-self-end
-            texto-responsivo-usuario
-          "
-        >
-          <div class="centrado">
-            <strong
-              ><b
-                >{{ DataUser.attributes.given_name }}
-                {{ DataUser.attributes.family_name }}</b
-              ></strong
-            >
-            <div class="linea-azul"></div>
-            <p *ngIf="usuario.validarRolUsuario()">
-              {{ obtenerArea() }} /
-              {{
-                DataUser.attributes.hasOwnProperty("custom:rol")
-                  ? DataUser.attributes["custom:rol"]
-                  : ""
-              }}
-            </p>
-          </div>
-        </div>
-        <div class="col-2">
-          <div
-            style="background-color: #0091da"
-            class="cuadroNotificaciones dropdown"
-            id="dLabel"
-            role="button"
-            data-toggle="dropdown"
-            data-target="#"
-          >
-            <img class="imagenNotificaciones" src="assets/icons/bell.png" />
-            <span style="color: #0091da" *ngIf="Notificaciones.length > 0">{{
-              Notificaciones.length
-            }}</span>
-
-            <ul
-              class="dropdown-menu notifications"
-              role="menu"
-              aria-labelledby="dLabel"
-            >
-              <div class="notification-heading dropdown-item">
-                <h4 class="menu-title">Notificaciones</h4>
-              </div>
-              <li class="divider"></li>
-              <div class="notifications-wrapper">
-                <div
-                  class="content"
-                  *ngFor="
-                    let Notificacion of Notificaciones
-                      | ordenarNotificacionesFecha
-                  "
-                >
-                  <div class="notification-item">
-                    <div class="item-title">
-                      <div>{{ Notificacion.ESTADO }}</div>
-                      <button
-                        type="button"
-                        class="close"
-                        (click)="eliminarNotificacion(Notificacion.ID_PROCESO)"
-                      >
-                        <span
-                          style="
-                            font-size: 15px;
-                            color: black;
-                            background-color: transparent;
-                          "
-                          >&times;</span
-                        >
-                      </button>
-                    </div>
-
-                    <div class="item-info">
-                      {{ Notificacion.INTERFAZ }}
-                    </div>
-                    <div class="item-info">
-                      {{ Notificacion.FECHA_ACTUALIZACION | date: "medium" }}
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <li class="divider"></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <!-- ESTILO MORADO -->
-      <div class="container-fluid" *ngIf="estiloMorado()">
-        <button
-          (click)="toggle()"
-          type="button"
-          id="siderCollapse"
-          class="btn btn-light col-1"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="alineadoTextoIzquierdaMorado col-5">
-          <div id="tabla">
-            <div class="A"><img src="assets/icons/nav/procesos.svg" /></div>
-            <div class="B">
-              <p>
-                <a
-                  style="cursor: pointer"
-                  *ngFor="let ruta of arrayRuta(); index as i"
-                  (click)="irRutaDeStringRuta(i)"
-                  >{{ ruta }}/</a
-                >
-              </p>
-            </div>
-          </div>
-        </div>
-        <div
-          class="
-            alineadoTextoDerechaMorado
-            col-3
-            align-self-end
-            texto-responsivo-usuario
-          "
-        >
-          <div class="centrado">
-            <strong
-              ><b
-                >{{ DataUser.attributes.given_name }}
-                {{ DataUser.attributes.family_name }}</b
-              ></strong
-            >
-            <div class="linea-morado"></div>
-            <p *ngIf="usuario.validarRolUsuario()">
-              {{ obtenerArea() }} /
-              {{
-                DataUser.attributes.hasOwnProperty("custom:rol")
-                  ? DataUser.attributes["custom:rol"]
-                  : ""
-              }}
-            </p>
-          </div>
-        </div>
-        <div class="col-2">
-          <div
-            style="background-color: #7c69c3"
-            class="cuadroNotificaciones dropdown"
-            id="dLabel"
-            role="button"
-            data-toggle="dropdown"
-            data-target="#"
-          >
-            <img class="imagenNotificaciones" src="assets/icons/bell.png" />
-            <span style="color: #7c69c3" *ngIf="Notificaciones.length > 0">{{
-              Notificaciones.length
-            }}</span>
 
             <ul
               class="dropdown-menu notifications"

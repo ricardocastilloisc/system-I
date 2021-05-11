@@ -1,24 +1,30 @@
 import { NOTIFICACION_INTERFACE } from './../../model/notificacion.model';
 import { createReducer, on } from '@ngrx/store';
-import { crearnotificacione, setnotificaciones } from '../actions/notificaciones.actions';
+import {
+  crearnotificacione,
+  setnotificaciones,
+  unSetnotificaciones,
+} from '../actions/notificaciones.actions';
 
-
-export interface NotificacionesState{
+export interface NotificacionesState {
   notificaciones: NOTIFICACION_INTERFACE[];
 }
 
-
-
 export const estadoInicial: NotificacionesState = {
-  notificaciones: []
-}
-
+  notificaciones: [],
+};
 
 const _NotificacionesReducer = createReducer(
   estadoInicial,
-  on(crearnotificacione, (state, { notificacion }) => ({ ...state, notificaciones: [...state.notificaciones, notificacion ] })),
-  on(setnotificaciones, (state, { notificaciones }) => ({ ...state, notificaciones: notificaciones})),
-
+  on(crearnotificacione, (state, { notificacion }) => ({
+    ...state,
+    notificaciones: [...state.notificaciones, notificacion],
+  })),
+  on(setnotificaciones, (state, { notificaciones }) => ({
+    ...state,
+    notificaciones: notificaciones,
+  })),
+  on(unSetnotificaciones, (state) => ({ ...state, notificaciones: null }))
 );
 
 export let NotificacionesReducer = (state, action) => {

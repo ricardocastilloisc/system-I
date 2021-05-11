@@ -1,6 +1,7 @@
+import { unSetnotificaciones } from './../../../ReduxStore/actions/notificaciones.actions';
 import { UsuariosService } from './../../../services/usuarios.service';
 import { rutasConNombres } from './../../../helpers/rutas';
-import { AfterViewInit, Component, HostListener, OnInit } from '@angular/core';
+import { AfterViewInit, Component, HostListener, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AuthService } from 'src/app/services/auth.service';
 import { AppState } from '../../../ReduxStore/app.reducers';
@@ -14,17 +15,13 @@ import { Router } from '@angular/router';
 
 declare var $: any;
 
-let color = 'verde';
-
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css'],
 })
-
-export class NavbarComponent implements OnInit, AfterViewInit {
+export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   @HostListener('window:resize', ['$event'])
-
   onResize() {
     this.resizeMenuContent();
   }
@@ -41,111 +38,110 @@ export class NavbarComponent implements OnInit, AfterViewInit {
     private store: Store<AppState>,
     private usuario: UsuariosService,
     private NotificacionesService: NotificacionesService,
-    private router: Router,
-  ) { }
+    private router: Router
+  ) {}
+  ngOnDestroy(): void {
+   this.store.dispatch(unSetnotificaciones())
+  }
 
   ngAfterViewInit(): void {
     this.resizeMenuContent();
     //this.getRuta();
   }
 
-  arrayRuta =  () => {
+  arrayRuta = () => {
     let ArrayRuta = [];
 
     window.location.pathname.split('/').forEach((elementoRuta) => {
+      let coincidencia = false;
       rutasConNombres.forEach((elementoValidar) => {
         if (elementoRuta === elementoValidar.rutaAngular) {
-          ArrayRuta.push(
-            elementoValidar.ValorEsp
-            );
+          coincidencia = true;
+          ArrayRuta.push(elementoValidar.ValorEsp);
         }
       });
+
+      if (!coincidencia && elementoRuta !== '') {
+        ArrayRuta.push(elementoRuta);
+      }
     });
 
+    return ArrayRuta;
+  };
 
-
+  retornarColor = (ArrayRuta) => {
     let nombreRuta = ArrayRuta.join('/').toString();
+
+    let returnColor = '';
     //console.log(nombreRuta);
     if (nombreRuta.includes('Administración')) {
-      color = 'verde';
+      returnColor = 'verde';
     } else if (nombreRuta.includes('Procesos')) {
-      color = 'morado';
+      returnColor = 'morado';
     } else if (nombreRuta.includes('Auditoría')) {
-      color = 'azul';
-    } else{
-      color = 'verde';
+      returnColor = 'azul';
+    } else {
+      returnColor = 'verde';
+    }
+    return returnColor;
+  };
+
+  retornarClaseCorrecta = () => {
+    if (this.retornarColor(this.arrayRuta()) === 'verde') {
+      return 'alineadoTextoIzquierda';
     }
 
-    return ArrayRuta
-  }
+    if (this.retornarColor(this.arrayRuta()) === 'morado') {
+      return 'alineadoTextoIzquierdaMorado';
+    }
 
+    if (this.retornarColor(this.arrayRuta()) === 'azul') {
+      return 'alineadoTextoIzquierdaAzul';
+    }
+  };
+
+  retornarIconoCorrecto = () => {
+    if (this.retornarColor(this.arrayRuta()) === 'verde') {
+      return 'assets/icons/nav/inicio.svg';
+    }
+
+    if (this.retornarColor(this.arrayRuta()) === 'morado') {
+      return 'assets/icons/nav/procesos.svg';
+    }
+
+    if (this.retornarColor(this.arrayRuta()) === 'azul') {
+      return 'assets/icons/nav/auditoria.svg';
+    }
+  };
+
+  colorCamppanaCorrecto = () => {
+    if (this.retornarColor(this.arrayRuta()) === 'verde') {
+      return '#00c4d9';
+    }
+
+    if (this.retornarColor(this.arrayRuta()) === 'morado') {
+      return '#7c69c3';
+    }
+
+    if (this.retornarColor(this.arrayRuta()) === 'azul') {
+      return '#0091da';
+    }
+  };
   irRutaDeStringRuta = (index) => {
-
     const ArrayUrl = window.location.pathname.split('/');
 
     let url = '';
 
-    if(index === 0){
-      for (let i = 1; i < index+3; i++) {
-        url = url + '/' + ArrayUrl[i]
+    if (index === 0) {
+      for (let i = 1; i < index + 3; i++) {
+        url = url + '/' + ArrayUrl[i];
       }
-    }else{
-      for (let i = 1; i < index+2; i++) {
-        url = url + '/' + ArrayUrl[i]
+    } else {
+      for (let i = 1; i < index + 2; i++) {
+        url = url + '/' + ArrayUrl[i];
       }
     }
-    this.router.navigateByUrl(url)
-  }
-
-  getRuta = () => {
-    let ArrayRuta = [];
-    window.location.pathname.split('/').map((elementoRuta) => {
-      rutasConNombres.forEach((elementoValidar) => {
-        if (elementoRuta === elementoValidar.rutaAngular) {
-          ArrayRuta.push(elementoValidar.ValorEsp);
-        }
-      });
-    });
-    let nombreRuta = ArrayRuta.join('/').toString();
-    //console.log(nombreRuta);
-    if (nombreRuta.includes('Administración')) {
-      color = 'verde';
-    } else if (nombreRuta.includes('Procesos')) {
-      color = 'morado';
-    } else if (nombreRuta.includes('Auditoría')) {
-      color = 'azul';
-    } else{
-      color = 'verde';
-    }
-    //console.log(color);
-    return nombreRuta.length > 0 ? nombreRuta : 'Inicio';
-  };
-
-  estiloVerde = () => {
-    let verde = false;
-    if (color === 'verde') {
-      verde = true;
-    }
-    //console.log('estilo verde: ' + color);
-    return verde;
-  };
-
-  estiloMorado = () => {
-    let morado = false;
-    if (color === 'morado') {
-      morado = true;
-    }
-    //console.log('estilo morado: ' + color);
-    return morado;
-  };
-
-  estiloAzul = () => {
-    let azul = false;
-    if (color === 'azul') {
-      azul = true;
-    }
-    //console.log('estilo azul: ' + color);
-    return azul;
+    this.router.navigateByUrl(url);
   };
 
   eliminarNotificacion = (ID_PROCESO: string) => {
@@ -156,11 +152,8 @@ export class NavbarComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.DataUser$ = this.store.select(({ usuario }) => usuario.user);
     this.Notificaciones$ = this.store
-    .select(({ notificaciones }) => notificaciones.notificaciones)
-    .pipe(map((e) => e.filter((fl) => fl.LEIDO === false)));
-
-  this.getRuta();
-    this.getRuta();
+      .select(({ notificaciones }) => notificaciones.notificaciones)
+      .pipe(map((e) => e.filter((fl) => fl.LEIDO === false)));
   }
 
   signOut = () => {
@@ -171,11 +164,9 @@ export class NavbarComponent implements OnInit, AfterViewInit {
     return this.authService.rolesValids(User, roles);
   };
 
-
-  perfilValido= (User:Usuario, roles: any[]): boolean => {
-    return this.authService.perfilValido( User, roles);
+  perfilValido = (User: Usuario, roles: any[]): boolean => {
+    return this.authService.perfilValido(User, roles);
   };
-
 
   toggle = () => {
     $('#sidebar').toggleClass('active');
@@ -202,14 +193,15 @@ export class NavbarComponent implements OnInit, AfterViewInit {
     }
   };
 
-
   obtenerArea(): any {
     //console.log('obtenerArea');
-    let area:String = '';
-    this.store.select(({ usuario }) => usuario.area).subscribe(res => {
-      //console.log(res);
-      area = res;
-    });
+    let area: String = '';
+    this.store
+      .select(({ usuario }) => usuario.area)
+      .subscribe((res) => {
+        //console.log(res);
+        area = res;
+      });
     return area;
-  };
+  }
 }
