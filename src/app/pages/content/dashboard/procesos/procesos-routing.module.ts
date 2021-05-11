@@ -17,7 +17,8 @@ const routes: Routes = [
       },
       {
         path: 'proceso/:id',component:   ProcesoComponent
-      }
+      },
+      { path: 'procesos',   redirectTo: '', pathMatch: 'full' }
     ],
   },
 

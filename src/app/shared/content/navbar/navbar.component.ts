@@ -10,6 +10,7 @@ import { ERole } from '../../../validators/roles';
 import { NotificacionesService } from '../../../services/notificaciones.service';
 import { map } from 'rxjs/operators';
 import { NOTIFICACION_INTERFACE } from './../../../model/notificacion.model';
+import { Router } from '@angular/router';
 
 declare var $: any;
 
@@ -39,12 +40,61 @@ export class NavbarComponent implements OnInit, AfterViewInit {
     private authService: AuthService,
     private store: Store<AppState>,
     private usuario: UsuariosService,
-    private NotificacionesService: NotificacionesService
+    private NotificacionesService: NotificacionesService,
+    private router: Router,
   ) { }
 
   ngAfterViewInit(): void {
     this.resizeMenuContent();
     //this.getRuta();
+  }
+
+  arrayRuta =  () => {
+    let ArrayRuta = [];
+
+    window.location.pathname.split('/').forEach((elementoRuta) => {
+      rutasConNombres.forEach((elementoValidar) => {
+        if (elementoRuta === elementoValidar.rutaAngular) {
+          ArrayRuta.push(
+            elementoValidar.ValorEsp
+            );
+        }
+      });
+    });
+
+
+
+    let nombreRuta = ArrayRuta.join('/').toString();
+    //console.log(nombreRuta);
+    if (nombreRuta.includes('Administración')) {
+      color = 'verde';
+    } else if (nombreRuta.includes('Procesos')) {
+      color = 'morado';
+    } else if (nombreRuta.includes('Auditoría')) {
+      color = 'azul';
+    } else{
+      color = 'verde';
+    }
+
+    return ArrayRuta
+  }
+
+  irRutaDeStringRuta = (index) => {
+
+    const ArrayUrl = window.location.pathname.split('/');
+
+    let url = '';
+
+    if(index === 0){
+      for (let i = 1; i < index+3; i++) {
+        url = url + '/' + ArrayUrl[i]
+      }
+    }else{
+      for (let i = 1; i < index+2; i++) {
+        url = url + '/' + ArrayUrl[i]
+      }
+    }
+    this.router.navigateByUrl(url)
   }
 
   getRuta = () => {
