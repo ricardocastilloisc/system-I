@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { formatDate } from '@angular/common';
@@ -27,8 +27,12 @@ import { DatePipe } from '@angular/common';
   templateUrl: './procesos-pantalla-general.component.html',
   styleUrls: ['./procesos-pantalla-general.component.css'],
 })
+
 export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
 
+
+  @ViewChild('modalEstado') templateRef: TemplateRef<any>;
+  
   Areas = [
     EArea.Contabilidad,
     EArea.Custodia,
@@ -57,8 +61,9 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
   PROCESOS$: Observable<any>;
 
   procesoEjecutar: string;
+  mensajeEjecucion: string;
   actualPage: number = 1;
-  negocio: string;
+  negocios = [];
   area: string;
   tipo: String;
   loading = true;
@@ -104,17 +109,21 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
     
     this.area = this.obtenerArea();
 
+    //console.log("Negocios", this.DataUser.attributes["custom:negocio"].split(','))
     this.tipo = this.rutaActiva.snapshot.params.tipo;
 
+    this.negocios = this.DataUser.attributes["custom:negocio"].split(',')
  
+    this.negocios = this.negocios.map(negocio => {return negocio.toUpperCase()})
+
+
     let bodyProcesos =   {
       filter:{​​​​​ TIPO: {​​​​​ eq: this.tipo.toUpperCase()}}​​​​​,
       limit: 1000
     }
 
     let bodyPermisos = {
-      filter:{​​​​​ AREA: {​​​​​ eq: this.area}, ROL: { eq: this.DataUser.attributes["custom:rol"].toUpperCase() }}​​​​​,
-      limit: 1000
+      NEGOCIOS: this.negocios, AREA: this.area, ROL: this.DataUser.attributes["custom:rol"].toUpperCase()
     }
 
 
@@ -122,22 +131,19 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
       ({ CATPERMISOS }) => CATPERMISOS.CATPERMISOS
     )
 
-    this.store.select(
-      ({ CATPERMISOS }) => CATPERMISOS.CATPERMISOS
-    ).subscribe(res => this.CATPERMISOS = res)
-    
     // this.store.select(
     //   ({ CATPERMISOS }) => CATPERMISOS.CATPERMISOS
-    // ).subscribe(res => console.log(res))
+    // ).subscribe(res => this.CATPERMISOS = res)
 
-    this.api.ListCATPERMISOS({​​​​​ AREA: {​​​​​ eq: this.area}, ROL: { eq: this.DataUser.attributes["custom:rol"].toUpperCase() }}).then(res => console.log(res))
+
+    this.api.ListCATPERMISOS(this.negocios ,this.area, this.DataUser.attributes["custom:rol"].toUpperCase()).then(res => console.log('resultado',res))
     this.store.dispatch(LoadCATPROCESOS({consult:bodyProcesos}));
     
-    //this.store.dispatch(LoadAUDGENESTADOPROCESOS({consult:null}));
 
-    this.store.select(
-      ({ CATPROCESOS }) => CATPROCESOS.CATPROCESOS
-    ).subscribe( res => this.CATPROCESOS = res)
+
+    // this.store.select(
+    //   ({ CATPROCESOS }) => CATPROCESOS.CATPROCESOS
+    // ).subscribe( res => this.CATPROCESOS = res)
 
     this.CATPROCESOS$ = this.store.select(
       ({ CATPROCESOS }) => CATPROCESOS.CATPROCESOS
@@ -146,25 +152,13 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
 
     this.store.dispatch(LoadCATPERMISOS({consult:bodyPermisos}));
     
-    //console.log(this.area)
-
-    let todayDate = new Date()
-    
-    console.log(this.datePipe.transform(todayDate, "dd-MM-yyyy"))
-
-    this.procesoEjecutar = 'AIMS Y EXCEDENTES'
-    let reponse = this.api.ListAUDGENESTADOPROCESOS({ INTERFAZ: { eq: this.procesoEjecutar} , FECHA_ACTUALIZACION: { contains: this.datePipe.transform(todayDate, "yyyy-MM-dd") }}, 1000000).then(res => {
-
-      console.log(res )
-
-    })
   }
 
   obtenerProcesos(catProcesos: Array<CATPROCESOS_INTERFACE>, catPermisos: Array<CATPERMISOS_INTERFACE>){
 
     let tempArray = new Array()
-    // console.log(catProcesos)
-    // console.log(catPermisos)
+     //console.log(catProcesos)
+     //console.log(catPermisos)
 
     catProcesos.forEach(proceso => {
 
@@ -234,6 +228,18 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
   }
 
+  modalMensaje(content, mensajeEjecucion){
+
+    this.mensajeEjecucion = mensajeEjecucion;
+
+
+    
+    
+
+    this.modalService.open(this.templateRef, { ariaLabelledBy: 'modal-basic-title' });
+
+  }
+
 
   async inciarProceso( correo: string, area: string) {
 
@@ -253,45 +259,46 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
     
     await this.api.ListAUDGENESTADOPROCESOS(body.filter, body.limit).then(res => {
 
-      this.CATESTADOS = res.items.slice().sort(function (a, b) { return new Date(b.FECHA_ACTUALIZACION).getTime() - new Date(a.FECHA_ACTUALIZACION).getTime() })
-      //console.log(res)
-
-      
+      this.CATESTADOS = res.items.slice().sort(function (a, b) { return new Date(b.FECHA_ACTUALIZACION).getTime() - new Date(a.FECHA_ACTUALIZACION).getTime() })     
 
     })
 
     
 
-    console.log('que hay aqui ', this.CATESTADOS)
+    //console.log('que hay aqui ', this.CATESTADOS)
 
 
 
-    if(this.CATESTADOS[0].ESTADO == 'FALLIDO'  || this.CATESTADOS[0].ESTADO == 'EXISTOSO' ){
+    if(this.CATESTADOS[0]?.ESTADO === 'FALLIDO'  || this.CATESTADOS[0]?.ESTADO === 'EXITOSO'  || this.CATESTADOS === [] ){
 
       let idEjecucion  = uuidv4();
       console.log(this.procesoEjecutar,correo, area, idEjecucion)
 
       try{
         const response = await this.serviciosProcesos.iniciarProceso(this.procesoEjecutar, correo, area)
-        console.log(response)
+        //console.log(response)
 
         if(response.codigo == 'EXITO'){
           this.spinner.hide();
-          //alert('Se inicio el proceso')
+          this.modalMensaje("modalEstado","Se inicio el proceso")
+
         } else {
 
           this.spinner.hide();
-          //alert('Error al ejecutar proceso')
+          this.modalMensaje("modalEstado","Error al ejecutar proceso")
         
         }
         
       } catch(e){
 
-        //alert('Error al ejecutar proceso')
+        this.modalMensaje("modalEstado","Error al ejecutar proceso")
         console.log(e)
       }
 
-    }else ( alert("El proceso se encuentra en ejecución"))
+    }else ( 
+      this.modalMensaje("modalEstado","El proceso se encuentra en ejecución")
+    
+    )
       
 
     setTimeout(() => {
@@ -299,8 +306,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
     }, 300);
     
 
-    this.modalService.dismissAll();
-
+    
   }
 
   rolesValids = (User: Usuario, roles: any[]): boolean => {
@@ -308,5 +314,8 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
   };
 
 
+  cerrarModales = () =>{
+    this.modalService.dismissAll();
+  }
 
 }

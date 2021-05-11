@@ -166,6 +166,35 @@
         -->
       </ng-template>
 
+      <ng-template #modalEstado let-modal id="modalEstado">
+        <div class="modal-body">
+          <div class="row justify-content-center">
+            <div class="col-12 row justify-content-center align-items-center" style="height:120px;">
+              <div class="textoConfirmacionModalUsuarios">Ejecución de proceso</div>
+            </div>
+            <div class="col-12 row">
+              <div class="col-12 descripcionConfirmacionEjecucionProceso">Resultado de ejecución:</div>
+              <div class="col-12 descripcionConfirmacionEjecucionProceso">
+                
+                {{mensajeEjecucion}}
+    
+              </div>
+            </div>
+            <div class="col-12 row justify-content-center align-items-center" style="height:120px;">
+              <div>
+                <button class="btn bottonConfirmarEjecucionProceso" (click)="cerrarModales()">Continuar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    
+        <!--
+              <div class="modal-footer">
+          <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Save</button>
+        </div>
+        -->
+      </ng-template>
+
 
     </div>
     

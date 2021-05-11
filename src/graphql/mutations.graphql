@@ -185,6 +185,7 @@ mutation CreateCATPERMISOS($input: CreateCATPERMISOSInput!) {
       BORRAR
       CONSULTAR
     }
+    NEGOCIO
   }
 }
 mutation UpdateCATPERMISOS($input: UpdateCATPERMISOSInput!) {
@@ -214,6 +215,7 @@ mutation UpdateCATPERMISOS($input: UpdateCATPERMISOSInput!) {
       BORRAR
       CONSULTAR
     }
+    NEGOCIO
   }
 }
 mutation DeleteCATPERMISOS($input: DeleteCATPERMISOSInput!) {
@@ -243,5 +245,6 @@ mutation DeleteCATPERMISOS($input: DeleteCATPERMISOSInput!) {
       BORRAR
       CONSULTAR
     }
+    NEGOCIO
   }
 }

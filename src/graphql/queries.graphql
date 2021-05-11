@@ -184,14 +184,11 @@ query GetCATPERMISOS($ID: String!) {
       BORRAR
       CONSULTAR
     }
+    NEGOCIO
   }
 }
-query ListCATPERMISOS(
-  $filter: TableCATPERMISOSFilterInput
-  $limit: Int
-  $nextToken: String
-) {
-  listCATPERMISOS(filter: $filter, limit: $limit, nextToken: $nextToken) {
+query ListCATPERMISOS($NEGOCIOS: [String], $AREA: String, $ROL: String) {
+  listCATPERMISOS(NEGOCIOS: $NEGOCIOS, AREA: $AREA, ROL: $ROL) {
     items {
       ID
       AREA
@@ -218,6 +215,7 @@ query ListCATPERMISOS(
         BORRAR
         CONSULTAR
       }
+      NEGOCIO
     }
     nextToken
   }

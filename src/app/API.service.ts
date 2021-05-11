@@ -132,6 +132,7 @@ export type CATPERMISOS = {
   PROCESOS?: PROCESOS;
   ROL?: string | null;
   USUARIOS?: USUARIOS;
+  NEGOCIO?: string | null;
 };
 
 export type AUDITORIA = {
@@ -223,12 +224,6 @@ export type CATPROCESOSConnection = {
   __typename: "CATPROCESOSConnection";
   items?: Array<CATPROCESOS | null> | null;
   nextToken?: string | null;
-};
-
-export type TableCATPERMISOSFilterInput = {
-  ID?: TableStringFilterInput | null;
-  AREA?: TableStringFilterInput | null;
-  ROL?: TableStringFilterInput | null;
 };
 
 export type CATPERMISOSConnection = {
@@ -433,6 +428,7 @@ export type CreateCATPERMISOSMutation = {
     BORRAR?: boolean | null;
     CONSULTAR?: boolean | null;
   } | null;
+  NEGOCIO?: string | null;
 };
 
 export type UpdateCATPERMISOSMutation = {
@@ -466,6 +462,7 @@ export type UpdateCATPERMISOSMutation = {
     BORRAR?: boolean | null;
     CONSULTAR?: boolean | null;
   } | null;
+  NEGOCIO?: string | null;
 };
 
 export type DeleteCATPERMISOSMutation = {
@@ -499,6 +496,7 @@ export type DeleteCATPERMISOSMutation = {
     BORRAR?: boolean | null;
     CONSULTAR?: boolean | null;
   } | null;
+  NEGOCIO?: string | null;
 };
 
 export type GetAUDGENUSUARIOSQuery = {
@@ -675,6 +673,7 @@ export type GetCATPERMISOSQuery = {
     BORRAR?: boolean | null;
     CONSULTAR?: boolean | null;
   } | null;
+  NEGOCIO?: string | null;
 };
 
 export type ListCATPERMISOSQuery = {
@@ -710,6 +709,7 @@ export type ListCATPERMISOSQuery = {
       BORRAR?: boolean | null;
       CONSULTAR?: boolean | null;
     } | null;
+    NEGOCIO?: string | null;
   } | null> | null;
   nextToken?: string | null;
 };
@@ -910,6 +910,7 @@ export type OnCreateCATPERMISOSSubscription = {
     BORRAR?: boolean | null;
     CONSULTAR?: boolean | null;
   } | null;
+  NEGOCIO?: string | null;
 };
 
 export type OnUpdateCATPERMISOSSubscription = {
@@ -943,6 +944,7 @@ export type OnUpdateCATPERMISOSSubscription = {
     BORRAR?: boolean | null;
     CONSULTAR?: boolean | null;
   } | null;
+  NEGOCIO?: string | null;
 };
 
 export type OnDeleteCATPERMISOSSubscription = {
@@ -976,6 +978,7 @@ export type OnDeleteCATPERMISOSSubscription = {
     BORRAR?: boolean | null;
     CONSULTAR?: boolean | null;
   } | null;
+  NEGOCIO?: string | null;
 };
 
 @Injectable({
@@ -1332,6 +1335,7 @@ export class APIService {
             BORRAR
             CONSULTAR
           }
+          NEGOCIO
         }
       }`;
     const gqlAPIServiceArguments: any = {
@@ -1377,6 +1381,7 @@ export class APIService {
             BORRAR
             CONSULTAR
           }
+          NEGOCIO
         }
       }`;
     const gqlAPIServiceArguments: any = {
@@ -1422,6 +1427,7 @@ export class APIService {
             BORRAR
             CONSULTAR
           }
+          NEGOCIO
         }
       }`;
     const gqlAPIServiceArguments: any = {
@@ -1754,6 +1760,7 @@ export class APIService {
             BORRAR
             CONSULTAR
           }
+          NEGOCIO
         }
       }`;
     const gqlAPIServiceArguments: any = {
@@ -1765,12 +1772,12 @@ export class APIService {
     return <GetCATPERMISOSQuery>response.data.getCATPERMISOS;
   }
   async ListCATPERMISOS(
-    filter?: TableCATPERMISOSFilterInput,
-    limit?: number,
-    nextToken?: string
+    NEGOCIOS?: Array<string | null>,
+    AREA?: string,
+    ROL?: string
   ): Promise<ListCATPERMISOSQuery> {
-    const statement = `query ListCATPERMISOS($filter: TableCATPERMISOSFilterInput, $limit: Int, $nextToken: String) {
-        listCATPERMISOS(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    const statement = `query ListCATPERMISOS($NEGOCIOS: [String], $AREA: String, $ROL: String) {
+        listCATPERMISOS(NEGOCIOS: $NEGOCIOS, AREA: $AREA, ROL: $ROL) {
           __typename
           items {
             __typename
@@ -1803,19 +1810,20 @@ export class APIService {
               BORRAR
               CONSULTAR
             }
+            NEGOCIO
           }
           nextToken
         }
       }`;
     const gqlAPIServiceArguments: any = {};
-    if (filter) {
-      gqlAPIServiceArguments.filter = filter;
+    if (NEGOCIOS) {
+      gqlAPIServiceArguments.NEGOCIOS = NEGOCIOS;
     }
-    if (limit) {
-      gqlAPIServiceArguments.limit = limit;
+    if (AREA) {
+      gqlAPIServiceArguments.AREA = AREA;
     }
-    if (nextToken) {
-      gqlAPIServiceArguments.nextToken = nextToken;
+    if (ROL) {
+      gqlAPIServiceArguments.ROL = ROL;
     }
     const response = (await API.graphql(
       graphqlOperation(statement, gqlAPIServiceArguments)
@@ -2196,6 +2204,7 @@ export class APIService {
             BORRAR
             CONSULTAR
           }
+          NEGOCIO
         }
       }`;
     const gqlAPIServiceArguments: any = {};
@@ -2242,6 +2251,7 @@ export class APIService {
             BORRAR
             CONSULTAR
           }
+          NEGOCIO
         }
       }`;
     const gqlAPIServiceArguments: any = {};
@@ -2288,6 +2298,7 @@ export class APIService {
             BORRAR
             CONSULTAR
           }
+          NEGOCIO
         }
       }`;
     const gqlAPIServiceArguments: any = {};

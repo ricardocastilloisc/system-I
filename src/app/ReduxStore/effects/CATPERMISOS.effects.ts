@@ -16,7 +16,7 @@ export class CATPERMISOSEfffects {
       ofType(CATPERMISOSActions.LoadCATPERMISOS),
       mergeMap(({ consult }) => {
         if (consult) {
-          return fromPromise(this.api.ListCATPERMISOS(consult.filter, consult.limit)).pipe(
+          return fromPromise(this.api.ListCATPERMISOS(consult.NEGOCIOS, consult.AREA, consult.ROL)).pipe(
             map(({ items }: any) =>
                 CATPERMISOSActions.LoadCATPERMISOSuccess({
                     CATPERMISOS: items,

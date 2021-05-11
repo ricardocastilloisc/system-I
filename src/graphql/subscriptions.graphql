@@ -203,6 +203,7 @@ subscription OnCreateCATPERMISOS($ID: String) {
       BORRAR
       CONSULTAR
     }
+    NEGOCIO
   }
 }
 subscription OnUpdateCATPERMISOS($ID: String) {
@@ -232,6 +233,7 @@ subscription OnUpdateCATPERMISOS($ID: String) {
       BORRAR
       CONSULTAR
     }
+    NEGOCIO
   }
 }
 subscription OnDeleteCATPERMISOS($ID: String) {
@@ -261,5 +263,6 @@ subscription OnDeleteCATPERMISOS($ID: String) {
       BORRAR
       CONSULTAR
     }
+    NEGOCIO
   }
 }
