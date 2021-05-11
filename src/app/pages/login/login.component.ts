@@ -10,26 +10,40 @@ import { AppState } from '../../ReduxStore/app.reducers';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
+
 export class LoginComponent implements OnInit {
   constructor(private auth: AuthService, private store: Store<AppState>) { }
 
   ngOnInit(): void {
-    var end, start;
-    start = new Date();
-    end = new Date();
-    console.log('Operation: ' + (end.getTime() - start.getTime()) + ' msec');
+    if (localStorage.getItem("SIA")) {
+      let start, end;
+      start = localStorage.getItem("SIA");
+      end = new Date().getTime();
+      start = parseInt(localStorage.getItem("SIA"));
+      const time = end - start;
+      console.log(time);
+      if (localStorage.getItem("SIA").length > 0 && time > 180000) {
+        localStorage.removeItem("SIA");
+      }
+    }
   }
 
   login = () => {
     //this.auth.signIn();
-    localStorage.setItem("SIA","true");
+    const time = new Date().getTime();
+    localStorage.setItem("SIA", time.toString());
     this.auth.goLogin();
   };
 
   validarInicioSesion(): any {
     let flag = false;
     if (localStorage.getItem("SIA")) {
-      if (localStorage.getItem("SIA").length > 0) {
+      let start, end;
+      start = localStorage.getItem("SIA");
+      end = new Date().getTime();
+      start = parseInt(localStorage.getItem("SIA"));
+      const time = end - start;
+      if (localStorage.getItem("SIA").length > 0 && time > 1000) {
         flag = true;
       }
     }

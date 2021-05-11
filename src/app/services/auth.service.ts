@@ -12,9 +12,12 @@ import { Usuario } from '../model/usuario.model';
 import { Router } from '@angular/router';
 import { EArea } from '../validators/roles';
 import { setUserArea } from '../ReduxStore/actions/usuario.actions';
-import * as cognitoidentityserviceprovider from 'aws-sdk/clients/cognitoidentityserviceprovider';
 
-Amplify.configure(environment.amplifyConfig);
+try{
+  Amplify.configure(environment.amplifyConfig);
+} catch (e){
+  console.log('Error Amplify Configuration: ', e);
+}
 
 @Injectable({
   providedIn: 'root',
