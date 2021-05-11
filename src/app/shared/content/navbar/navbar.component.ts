@@ -1,6 +1,6 @@
 import { UsuariosService } from './../../../services/usuarios.service';
 import { rutasConNombres } from './../../../helpers/rutas';
-import { AfterViewInit, Component, HostListener, OnInit } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, HostListener, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AuthService } from 'src/app/services/auth.service';
 import { AppState } from '../../../ReduxStore/app.reducers';
@@ -44,6 +44,8 @@ export class NavbarComponent implements OnInit, AfterViewInit {
     private router: Router,
   ) { }
 
+
+
   ngAfterViewInit(): void {
     this.resizeMenuContent();
     //this.getRuta();
@@ -53,17 +55,20 @@ export class NavbarComponent implements OnInit, AfterViewInit {
     let ArrayRuta = [];
 
     window.location.pathname.split('/').forEach((elementoRuta) => {
+      let coincidencia = false;
       rutasConNombres.forEach((elementoValidar) => {
         if (elementoRuta === elementoValidar.rutaAngular) {
+          coincidencia = true;
           ArrayRuta.push(
             elementoValidar.ValorEsp
             );
         }
       });
+
+      if(!coincidencia && elementoRuta !== ''){
+        ArrayRuta.push(elementoRuta)
+      }
     });
-
-
-
     let nombreRuta = ArrayRuta.join('/').toString();
     //console.log(nombreRuta);
     if (nombreRuta.includes('Administración')) {
@@ -75,10 +80,52 @@ export class NavbarComponent implements OnInit, AfterViewInit {
     } else{
       color = 'verde';
     }
-
     return ArrayRuta
   }
 
+
+  retornarClaseCorrecta = () => {
+    if(color === 'verde'){
+      return 'alineadoTextoIzquierda'
+    }
+
+    if( color === 'morado'){
+      return 'alineadoTextoIzquierdaMorado'
+    }
+
+    if(color === 'azul'){
+      return 'alineadoTextoIzquierdaAzul'
+    }
+  }
+
+
+  retornarIconoCorrecto = () => {
+    if(color === 'verde'){
+      return 'assets/icons/nav/inicio.svg'
+    }
+
+    if(color === 'morado'){
+      return 'assets/icons/nav/procesos.svg'
+    }
+
+    if(color === 'azul'){
+      return 'assets/icons/nav/auditoria.svg'
+    }
+  }
+
+  colorCamppanaCorrecto = () => {
+    if(color === 'verde'){
+      return '#00c4d9'
+    }
+
+    if(color === 'morado'){
+      return '#7c69c3'
+    }
+
+    if(color === 'azul'){
+      return '#0091da'
+    }
+  }
   irRutaDeStringRuta = (index) => {
 
     const ArrayUrl = window.location.pathname.split('/');

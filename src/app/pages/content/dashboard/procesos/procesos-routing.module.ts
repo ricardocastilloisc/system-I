@@ -16,9 +16,8 @@ const routes: Routes = [
           ).then((m) => m.ProcesosPantallaGeneralModule),
       },
       {
-        path: 'proceso/:id',component:   ProcesoComponent
+        path: ':id',component:   ProcesoComponent
       },
-      { path: 'procesos',   redirectTo: '', pathMatch: 'full' }
     ],
   },
 

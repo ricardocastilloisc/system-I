@@ -32,7 +32,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
 
 
   @ViewChild('modalEstado') templateRef: TemplateRef<any>;
-  
+
   Areas = [
     EArea.Contabilidad,
     EArea.Custodia,
@@ -100,20 +100,20 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
 
   ngOnInit(): void {
 
-    
+
     this.actualPage = 1;
     this.DataUser$ = this.store.select(({ usuario }) => usuario.user);
 
 
     this.store.select(({ usuario }) => usuario.user).subscribe(res => {this.DataUser = res});
-    
+
     this.area = this.obtenerArea();
 
     //console.log("Negocios", this.DataUser.attributes["custom:negocio"].split(','))
     this.tipo = this.rutaActiva.snapshot.params.tipo;
 
     this.negocios = this.DataUser.attributes["custom:negocio"].split(',')
- 
+
     this.negocios = this.negocios.map(negocio => {return negocio.toUpperCase()})
 
 
@@ -138,7 +138,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
 
     this.api.ListCATPERMISOS(this.negocios ,this.area, this.DataUser.attributes["custom:rol"].toUpperCase()).then(res => console.log('resultado',res))
     this.store.dispatch(LoadCATPROCESOS({consult:bodyProcesos}));
-    
+
 
 
     // this.store.select(
@@ -151,7 +151,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
 
 
     this.store.dispatch(LoadCATPERMISOS({consult:bodyPermisos}));
-    
+
   }
 
   obtenerProcesos(catProcesos: Array<CATPROCESOS_INTERFACE>, catPermisos: Array<CATPERMISOS_INTERFACE>){
@@ -164,11 +164,11 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
 
       catPermisos.forEach( permiso => {
         if(permiso.FLUJO == proceso.PROCESO)
-        
-        tempArray.push({"DESCRIPCION": proceso.DESCRIPCION, 
-                        "PROCESO": proceso.PROCESO, 
-                        "DETENER": permiso.PROCESOS.DETENER, 
-                        "INICIAR": permiso.PROCESOS.INICIAR, 
+
+        tempArray.push({"DESCRIPCION": proceso.DESCRIPCION,
+                        "PROCESO": proceso.PROCESO,
+                        "DETENER": permiso.PROCESOS.DETENER,
+                        "INICIAR": permiso.PROCESOS.INICIAR,
                         "MONITOREAR": permiso.PROCESOS.MONITOREAR })
       }
 
@@ -186,17 +186,17 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
 
 
 
-  
+
   obtenerArea(): string{
     let arrayTempArea = [];
 
     this.DataUser.groups.forEach((area) => {
-        
+
         this.Areas.forEach(areaDef =>
           {
             if(area === areaDef){
               arrayTempArea.push(area);
-            }            
+            }
           })
 
     })
@@ -212,19 +212,19 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
     return this.rutaActiva.snapshot.params.tipo === parametocomparar
       ? true
       : false;
-      
+
   };
   refreshComponent() : void{
     this.router.navigate([this.router.url])
  }
 
   consultar(idProceso): void {
-    this.router.navigate(['/' + window.location.pathname + '/proceso/' + idProceso]);
+    this.router.navigate(['/' + window.location.pathname + '/' + idProceso]);
   }
 
   openModal(content, nombreProceso){
     this.procesoEjecutar = nombreProceso;
-    
+
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
   }
 
@@ -233,8 +233,8 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
     this.mensajeEjecucion = mensajeEjecucion;
 
 
-    
-    
+
+
 
     this.modalService.open(this.templateRef, { ariaLabelledBy: 'modal-basic-title' });
 
@@ -246,7 +246,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
     console.log(this.procesoEjecutar)
     let CATESTADOS;
     let todayDate = new Date()
-    
+
     console.log(this.datePipe.transform(todayDate, "dd-MM-yyyy"))
 
     this.spinner.show();
@@ -256,14 +256,14 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
       limit: 10000000
     }
 
-    
+
     await this.api.ListAUDGENESTADOPROCESOS(body.filter, body.limit).then(res => {
 
-      this.CATESTADOS = res.items.slice().sort(function (a, b) { return new Date(b.FECHA_ACTUALIZACION).getTime() - new Date(a.FECHA_ACTUALIZACION).getTime() })     
+      this.CATESTADOS = res.items.slice().sort(function (a, b) { return new Date(b.FECHA_ACTUALIZACION).getTime() - new Date(a.FECHA_ACTUALIZACION).getTime() })
 
     })
 
-    
+
 
     //console.log('que hay aqui ', this.CATESTADOS)
 
@@ -286,27 +286,27 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
 
           this.spinner.hide();
           this.modalMensaje("modalEstado","Error al ejecutar proceso")
-        
+
         }
-        
+
       } catch(e){
 
         this.modalMensaje("modalEstado","Error al ejecutar proceso")
         console.log(e)
       }
 
-    }else ( 
+    }else (
       this.modalMensaje("modalEstado","El proceso se encuentra en ejecución")
-    
+
     )
-      
+
 
     setTimeout(() => {
       this.spinner.hide();
     }, 300);
-    
 
-    
+
+
   }
 
   rolesValids = (User: Usuario, roles: any[]): boolean => {
