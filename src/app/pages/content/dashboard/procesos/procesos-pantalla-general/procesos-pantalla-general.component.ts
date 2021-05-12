@@ -265,7 +265,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
 
 
 
-    console.log('que hay aqui ', this.CATESTADOS)
+    //console.log('que hay aqui ', this.CATESTADOS)
 
 
 
