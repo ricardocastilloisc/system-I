@@ -1,5 +1,5 @@
 export interface AUDGENESTADOPROCESO_INTERFACE {
-    __typename: "AUDGENESTADOPROCESO";
+    __typename: "SiaGenAudEstadoProcesosDev";
     ESTADO?: string | null;
     ESTADO_EJECUCION?: string | null;
     ETAPA?: string | null;

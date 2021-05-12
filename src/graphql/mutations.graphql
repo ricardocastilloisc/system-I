@@ -92,45 +92,6 @@ mutation DeleteAUDGENPROCESOS($input: DeleteAUDGENPROCESOSInput!) {
     STEP
   }
 }
-mutation CreateAUDGENESTADOPROCESO($input: CreateAUDGENESTADOPROCESOInput!) {
-  createAUDGENESTADOPROCESO(input: $input) {
-    ESTADO
-    ESTADO_EJECUCION
-    ETAPA
-    FECHA_ACTUALIZACION
-    FECHA_CREADO
-    ID_PROCESO
-    INSUMO
-    INTERFAZ
-    TIPO_PROCESO
-  }
-}
-mutation UpdateAUDGENESTADOPROCESO($input: UpdateAUDGENESTADOPROCESOInput!) {
-  updateAUDGENESTADOPROCESO(input: $input) {
-    ESTADO
-    ESTADO_EJECUCION
-    ETAPA
-    FECHA_ACTUALIZACION
-    FECHA_CREADO
-    ID_PROCESO
-    INSUMO
-    INTERFAZ
-    TIPO_PROCESO
-  }
-}
-mutation DeleteAUDGENESTADOPROCESO($input: DeleteAUDGENESTADOPROCESOInput!) {
-  deleteAUDGENESTADOPROCESO(input: $input) {
-    ESTADO
-    ESTADO_EJECUCION
-    ETAPA
-    FECHA_ACTUALIZACION
-    FECHA_CREADO
-    ID_PROCESO
-    INSUMO
-    INTERFAZ
-    TIPO_PROCESO
-  }
-}
 mutation CreateCATPROCESOS($input: CreateCATPROCESOSInput!) {
   createCATPROCESOS(input: $input) {
     PROCESO
@@ -246,5 +207,50 @@ mutation DeleteCATPERMISOS($input: DeleteCATPERMISOSInput!) {
       CONSULTAR
     }
     NEGOCIO
+  }
+}
+mutation CreateSiaGenAudEstadoProcesosDev(
+  $input: CreateSiaGenAudEstadoProcesosDevInput!
+) {
+  createSiaGenAudEstadoProcesosDev(input: $input) {
+    ESTADO
+    ESTADO_EJECUCION
+    ETAPA
+    FECHA_ACTUALIZACION
+    FECHA_CREADO
+    ID_PROCESO
+    INSUMO
+    INTERFAZ
+    TIPO_PROCESO
+  }
+}
+mutation UpdateSiaGenAudEstadoProcesosDev(
+  $input: UpdateSiaGenAudEstadoProcesosDevInput!
+) {
+  updateSiaGenAudEstadoProcesosDev(input: $input) {
+    ESTADO
+    ESTADO_EJECUCION
+    ETAPA
+    FECHA_ACTUALIZACION
+    FECHA_CREADO
+    ID_PROCESO
+    INSUMO
+    INTERFAZ
+    TIPO_PROCESO
+  }
+}
+mutation DeleteSiaGenAudEstadoProcesosDev(
+  $input: DeleteSiaGenAudEstadoProcesosDevInput!
+) {
+  deleteSiaGenAudEstadoProcesosDev(input: $input) {
+    ESTADO
+    ESTADO_EJECUCION
+    ETAPA
+    FECHA_ACTUALIZACION
+    FECHA_CREADO
+    ID_PROCESO
+    INSUMO
+    INTERFAZ
+    TIPO_PROCESO
   }
 }

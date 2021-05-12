@@ -71,67 +71,6 @@ query ListAUDGENPROCESOS($ID_PROCESO: String, $FECHA: String) {
     nextToken
   }
 }
-query GetAUDGENESTADOPROCESO($ID_PROCESO: String!) {
-  getAUDGENESTADOPROCESO(ID_PROCESO: $ID_PROCESO) {
-    ESTADO
-    ESTADO_EJECUCION
-    ETAPA
-    FECHA_ACTUALIZACION
-    FECHA_CREADO
-    ID_PROCESO
-    INSUMO
-    INTERFAZ
-    TIPO_PROCESO
-  }
-}
-query ListAUDGENESTADOPROCESOS(
-  $filter: TableAUDGENESTADOPROCESOFilterInput
-  $limit: Int
-  $nextToken: String
-) {
-  listAUDGENESTADOPROCESOS(
-    filter: $filter
-    limit: $limit
-    nextToken: $nextToken
-  ) {
-    items {
-      ESTADO
-      ESTADO_EJECUCION
-      ETAPA
-      FECHA_ACTUALIZACION
-      FECHA_CREADO
-      ID_PROCESO
-      INSUMO
-      INTERFAZ
-      TIPO_PROCESO
-    }
-    nextToken
-  }
-}
-query QueryAUDGENESTADOPROCESOSByIDREGISTROFECHACREADOIndex(
-  $ID_REGISTRO: String!
-  $first: Int
-  $after: String
-) {
-  queryAUDGENESTADOPROCESOSByIDREGISTROFECHACREADOIndex(
-    ID_REGISTRO: $ID_REGISTRO
-    first: $first
-    after: $after
-  ) {
-    items {
-      ESTADO
-      ESTADO_EJECUCION
-      ETAPA
-      FECHA_ACTUALIZACION
-      FECHA_CREADO
-      ID_PROCESO
-      INSUMO
-      INTERFAZ
-      TIPO_PROCESO
-    }
-    nextToken
-  }
-}
 query GetCATPROCESOS($PROCESO: String!) {
   getCATPROCESOS(PROCESO: $PROCESO) {
     PROCESO
@@ -216,6 +155,67 @@ query ListCATPERMISOS($NEGOCIOS: [String], $AREA: String, $ROL: String) {
         CONSULTAR
       }
       NEGOCIO
+    }
+    nextToken
+  }
+}
+query GetSiaGenAudEstadoProcesosDev($ID_PROCESO: String!) {
+  getSiaGenAudEstadoProcesosDev(ID_PROCESO: $ID_PROCESO) {
+    ESTADO
+    ESTADO_EJECUCION
+    ETAPA
+    FECHA_ACTUALIZACION
+    FECHA_CREADO
+    ID_PROCESO
+    INSUMO
+    INTERFAZ
+    TIPO_PROCESO
+  }
+}
+query ListSiaGenAudEstadoProcesosDevs(
+  $filter: TableSiaGenAudEstadoProcesosDevFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listSiaGenAudEstadoProcesosDevs(
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      ESTADO
+      ESTADO_EJECUCION
+      ETAPA
+      FECHA_ACTUALIZACION
+      FECHA_CREADO
+      ID_PROCESO
+      INSUMO
+      INTERFAZ
+      TIPO_PROCESO
+    }
+    nextToken
+  }
+}
+query QuerySiaGenAudEstadoProcesosDevsByINTERFAZIndex(
+  $INTERFAZ: String!
+  $first: Int
+  $after: String
+) {
+  querySiaGenAudEstadoProcesosDevsByINTERFAZIndex(
+    INTERFAZ: $INTERFAZ
+    first: $first
+    after: $after
+  ) {
+    items {
+      ESTADO
+      ESTADO_EJECUCION
+      ETAPA
+      FECHA_ACTUALIZACION
+      FECHA_CREADO
+      ID_PROCESO
+      INSUMO
+      INTERFAZ
+      TIPO_PROCESO
     }
     nextToken
   }

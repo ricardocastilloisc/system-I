@@ -211,21 +211,17 @@ table.listado-ejecuciones tr:hover td {
     margin: 0;
 }
 
-div.card-calendario {
-    background: white;
-    display: flex;
+div.card-calendario{
     width: 100%;
-    height: 285px;
-    min-width: 420px;
-    max-width: 500px;
-    
-    margin-right: 5%;
-    margin-left: 5%;
+    background: #ffffff 0% 0% no-repeat padding-box;
+    border-radius: 30px;
+    opacity: 1;
+    display: flex;
+    margin: 25px 0;
     flex-direction: column;
-    color: white;
     align-items: center;
     border-radius: 25px;
-    border-left: 10px solid #7C69C3;
+    border-left: 10px solid #464E7E;
     box-shadow: 4px 4px 10px #00000033;
   }
   
@@ -244,8 +240,12 @@ div.card-calendario {
     background-color: #7C69C3;
     color: white;
     width: 296px;
-    height: 50px;
+    height: 45px;
     border-radius: 25px;
     font: bold 20px FS Elliot Pro;
     border: none;
+  }
+
+  .inputs-busqueda {
+    margin-bottom: 25px;
   }

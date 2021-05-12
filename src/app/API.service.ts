@@ -70,33 +70,6 @@ export type DeleteAUDGENPROCESOSInput = {
   ID_REGISTRO: string;
 };
 
-export type CreateAUDGENESTADOPROCESOInput = {
-  ID_PROCESO: string;
-  FECHA_CREADO?: string | null;
-};
-
-export type AUDGENESTADOPROCESO = {
-  __typename: "AUDGENESTADOPROCESO";
-  ESTADO?: string | null;
-  ESTADO_EJECUCION?: string | null;
-  ETAPA?: string | null;
-  FECHA_ACTUALIZACION?: string | null;
-  FECHA_CREADO?: string | null;
-  ID_PROCESO?: string;
-  INSUMO?: string | null;
-  INTERFAZ?: string | null;
-  TIPO_PROCESO?: string | null;
-};
-
-export type UpdateAUDGENESTADOPROCESOInput = {
-  ID_PROCESO: string;
-  FECHA_CREADO?: string | null;
-};
-
-export type DeleteAUDGENESTADOPROCESOInput = {
-  ID_PROCESO: string;
-};
-
 export type CreateCATPROCESOSInput = {
   PROCESO: string;
 };
@@ -172,6 +145,33 @@ export type DeleteCATPERMISOSInput = {
   ID: string;
 };
 
+export type CreateSiaGenAudEstadoProcesosDevInput = {
+  ID_PROCESO: string;
+  INTERFAZ?: string | null;
+};
+
+export type SiaGenAudEstadoProcesosDev = {
+  __typename: "SiaGenAudEstadoProcesosDev";
+  ESTADO?: string | null;
+  ESTADO_EJECUCION?: string | null;
+  ETAPA?: string | null;
+  FECHA_ACTUALIZACION?: string | null;
+  FECHA_CREADO?: string | null;
+  ID_PROCESO?: string;
+  INSUMO?: string | null;
+  INTERFAZ?: string | null;
+  TIPO_PROCESO?: string | null;
+};
+
+export type UpdateSiaGenAudEstadoProcesosDevInput = {
+  ID_PROCESO: string;
+  INTERFAZ?: string | null;
+};
+
+export type DeleteSiaGenAudEstadoProcesosDevInput = {
+  ID_PROCESO: string;
+};
+
 export type TableAUDGENUSUARIOSFilterInput = {
   ID?: TableStringFilterInput | null;
 };
@@ -201,19 +201,6 @@ export type AUDGENPROCESOSConnection = {
   nextToken?: string | null;
 };
 
-export type TableAUDGENESTADOPROCESOFilterInput = {
-  FECHA_CREADO?: TableStringFilterInput | null;
-  ID_PROCESO?: TableStringFilterInput | null;
-  INTERFAZ?: TableStringFilterInput | null;
-  FECHA_ACTUALIZACION?: TableStringFilterInput | null;
-};
-
-export type AUDGENESTADOPROCESOConnection = {
-  __typename: "AUDGENESTADOPROCESOConnection";
-  items?: Array<AUDGENESTADOPROCESO | null> | null;
-  nextToken?: string | null;
-};
-
 export type TableCATPROCESOSFilterInput = {
   PROCESO?: TableStringFilterInput | null;
   TIPO?: TableStringFilterInput | null;
@@ -229,6 +216,19 @@ export type CATPROCESOSConnection = {
 export type CATPERMISOSConnection = {
   __typename: "CATPERMISOSConnection";
   items?: Array<CATPERMISOS | null> | null;
+  nextToken?: string | null;
+};
+
+export type TableSiaGenAudEstadoProcesosDevFilterInput = {
+  FECHA_CREADO?: TableStringFilterInput | null;
+  ID_PROCESO?: TableStringFilterInput | null;
+  INTERFAZ?: TableStringFilterInput | null;
+  FECHA_ACTUALIZACION?: TableStringFilterInput | null;
+};
+
+export type SiaGenAudEstadoProcesosDevConnection = {
+  __typename: "SiaGenAudEstadoProcesosDevConnection";
+  items?: Array<SiaGenAudEstadoProcesosDev | null> | null;
   nextToken?: string | null;
 };
 
@@ -329,45 +329,6 @@ export type DeleteAUDGENPROCESOSMutation = {
   TIPO?: string | null;
   NIVEL?: string | null;
   STEP?: string | null;
-};
-
-export type CreateAUDGENESTADOPROCESOMutation = {
-  __typename: "AUDGENESTADOPROCESO";
-  ESTADO?: string | null;
-  ESTADO_EJECUCION?: string | null;
-  ETAPA?: string | null;
-  FECHA_ACTUALIZACION?: string | null;
-  FECHA_CREADO?: string | null;
-  ID_PROCESO: string;
-  INSUMO?: string | null;
-  INTERFAZ?: string | null;
-  TIPO_PROCESO?: string | null;
-};
-
-export type UpdateAUDGENESTADOPROCESOMutation = {
-  __typename: "AUDGENESTADOPROCESO";
-  ESTADO?: string | null;
-  ESTADO_EJECUCION?: string | null;
-  ETAPA?: string | null;
-  FECHA_ACTUALIZACION?: string | null;
-  FECHA_CREADO?: string | null;
-  ID_PROCESO: string;
-  INSUMO?: string | null;
-  INTERFAZ?: string | null;
-  TIPO_PROCESO?: string | null;
-};
-
-export type DeleteAUDGENESTADOPROCESOMutation = {
-  __typename: "AUDGENESTADOPROCESO";
-  ESTADO?: string | null;
-  ESTADO_EJECUCION?: string | null;
-  ETAPA?: string | null;
-  FECHA_ACTUALIZACION?: string | null;
-  FECHA_CREADO?: string | null;
-  ID_PROCESO: string;
-  INSUMO?: string | null;
-  INTERFAZ?: string | null;
-  TIPO_PROCESO?: string | null;
 };
 
 export type CreateCATPROCESOSMutation = {
@@ -499,6 +460,45 @@ export type DeleteCATPERMISOSMutation = {
   NEGOCIO?: string | null;
 };
 
+export type CreateSiaGenAudEstadoProcesosDevMutation = {
+  __typename: "SiaGenAudEstadoProcesosDev";
+  ESTADO?: string | null;
+  ESTADO_EJECUCION?: string | null;
+  ETAPA?: string | null;
+  FECHA_ACTUALIZACION?: string | null;
+  FECHA_CREADO?: string | null;
+  ID_PROCESO: string;
+  INSUMO?: string | null;
+  INTERFAZ?: string | null;
+  TIPO_PROCESO?: string | null;
+};
+
+export type UpdateSiaGenAudEstadoProcesosDevMutation = {
+  __typename: "SiaGenAudEstadoProcesosDev";
+  ESTADO?: string | null;
+  ESTADO_EJECUCION?: string | null;
+  ETAPA?: string | null;
+  FECHA_ACTUALIZACION?: string | null;
+  FECHA_CREADO?: string | null;
+  ID_PROCESO: string;
+  INSUMO?: string | null;
+  INTERFAZ?: string | null;
+  TIPO_PROCESO?: string | null;
+};
+
+export type DeleteSiaGenAudEstadoProcesosDevMutation = {
+  __typename: "SiaGenAudEstadoProcesosDev";
+  ESTADO?: string | null;
+  ESTADO_EJECUCION?: string | null;
+  ETAPA?: string | null;
+  FECHA_ACTUALIZACION?: string | null;
+  FECHA_CREADO?: string | null;
+  ID_PROCESO: string;
+  INSUMO?: string | null;
+  INTERFAZ?: string | null;
+  TIPO_PROCESO?: string | null;
+};
+
 export type GetAUDGENUSUARIOSQuery = {
   __typename: "AUDGENUSUARIOS";
   ID: string;
@@ -569,53 +569,6 @@ export type ListAUDGENPROCESOSQuery = {
     TIPO?: string | null;
     NIVEL?: string | null;
     STEP?: string | null;
-  } | null> | null;
-  nextToken?: string | null;
-};
-
-export type GetAUDGENESTADOPROCESOQuery = {
-  __typename: "AUDGENESTADOPROCESO";
-  ESTADO?: string | null;
-  ESTADO_EJECUCION?: string | null;
-  ETAPA?: string | null;
-  FECHA_ACTUALIZACION?: string | null;
-  FECHA_CREADO?: string | null;
-  ID_PROCESO: string;
-  INSUMO?: string | null;
-  INTERFAZ?: string | null;
-  TIPO_PROCESO?: string | null;
-};
-
-export type ListAUDGENESTADOPROCESOSQuery = {
-  __typename: "AUDGENESTADOPROCESOConnection";
-  items?: Array<{
-    __typename: "AUDGENESTADOPROCESO";
-    ESTADO?: string | null;
-    ESTADO_EJECUCION?: string | null;
-    ETAPA?: string | null;
-    FECHA_ACTUALIZACION?: string | null;
-    FECHA_CREADO?: string | null;
-    ID_PROCESO: string;
-    INSUMO?: string | null;
-    INTERFAZ?: string | null;
-    TIPO_PROCESO?: string | null;
-  } | null> | null;
-  nextToken?: string | null;
-};
-
-export type QueryAUDGENESTADOPROCESOSByIDREGISTROFECHACREADOIndexQuery = {
-  __typename: "AUDGENESTADOPROCESOConnection";
-  items?: Array<{
-    __typename: "AUDGENESTADOPROCESO";
-    ESTADO?: string | null;
-    ESTADO_EJECUCION?: string | null;
-    ETAPA?: string | null;
-    FECHA_ACTUALIZACION?: string | null;
-    FECHA_CREADO?: string | null;
-    ID_PROCESO: string;
-    INSUMO?: string | null;
-    INTERFAZ?: string | null;
-    TIPO_PROCESO?: string | null;
   } | null> | null;
   nextToken?: string | null;
 };
@@ -710,6 +663,53 @@ export type ListCATPERMISOSQuery = {
       CONSULTAR?: boolean | null;
     } | null;
     NEGOCIO?: string | null;
+  } | null> | null;
+  nextToken?: string | null;
+};
+
+export type GetSiaGenAudEstadoProcesosDevQuery = {
+  __typename: "SiaGenAudEstadoProcesosDev";
+  ESTADO?: string | null;
+  ESTADO_EJECUCION?: string | null;
+  ETAPA?: string | null;
+  FECHA_ACTUALIZACION?: string | null;
+  FECHA_CREADO?: string | null;
+  ID_PROCESO: string;
+  INSUMO?: string | null;
+  INTERFAZ?: string | null;
+  TIPO_PROCESO?: string | null;
+};
+
+export type ListSiaGenAudEstadoProcesosDevsQuery = {
+  __typename: "SiaGenAudEstadoProcesosDevConnection";
+  items?: Array<{
+    __typename: "SiaGenAudEstadoProcesosDev";
+    ESTADO?: string | null;
+    ESTADO_EJECUCION?: string | null;
+    ETAPA?: string | null;
+    FECHA_ACTUALIZACION?: string | null;
+    FECHA_CREADO?: string | null;
+    ID_PROCESO: string;
+    INSUMO?: string | null;
+    INTERFAZ?: string | null;
+    TIPO_PROCESO?: string | null;
+  } | null> | null;
+  nextToken?: string | null;
+};
+
+export type QuerySiaGenAudEstadoProcesosDevsByINTERFAZIndexQuery = {
+  __typename: "SiaGenAudEstadoProcesosDevConnection";
+  items?: Array<{
+    __typename: "SiaGenAudEstadoProcesosDev";
+    ESTADO?: string | null;
+    ESTADO_EJECUCION?: string | null;
+    ETAPA?: string | null;
+    FECHA_ACTUALIZACION?: string | null;
+    FECHA_CREADO?: string | null;
+    ID_PROCESO: string;
+    INSUMO?: string | null;
+    INTERFAZ?: string | null;
+    TIPO_PROCESO?: string | null;
   } | null> | null;
   nextToken?: string | null;
 };
@@ -811,45 +811,6 @@ export type OnDeleteAUDGENPROCESOSSubscription = {
   TIPO?: string | null;
   NIVEL?: string | null;
   STEP?: string | null;
-};
-
-export type OnCreateAUDGENESTADOPROCESOSubscription = {
-  __typename: "AUDGENESTADOPROCESO";
-  ESTADO?: string | null;
-  ESTADO_EJECUCION?: string | null;
-  ETAPA?: string | null;
-  FECHA_ACTUALIZACION?: string | null;
-  FECHA_CREADO?: string | null;
-  ID_PROCESO: string;
-  INSUMO?: string | null;
-  INTERFAZ?: string | null;
-  TIPO_PROCESO?: string | null;
-};
-
-export type OnUpdateAUDGENESTADOPROCESOSubscription = {
-  __typename: "AUDGENESTADOPROCESO";
-  ESTADO?: string | null;
-  ESTADO_EJECUCION?: string | null;
-  ETAPA?: string | null;
-  FECHA_ACTUALIZACION?: string | null;
-  FECHA_CREADO?: string | null;
-  ID_PROCESO: string;
-  INSUMO?: string | null;
-  INTERFAZ?: string | null;
-  TIPO_PROCESO?: string | null;
-};
-
-export type OnDeleteAUDGENESTADOPROCESOSubscription = {
-  __typename: "AUDGENESTADOPROCESO";
-  ESTADO?: string | null;
-  ESTADO_EJECUCION?: string | null;
-  ETAPA?: string | null;
-  FECHA_ACTUALIZACION?: string | null;
-  FECHA_CREADO?: string | null;
-  ID_PROCESO: string;
-  INSUMO?: string | null;
-  INTERFAZ?: string | null;
-  TIPO_PROCESO?: string | null;
 };
 
 export type OnCreateCATPROCESOSSubscription = {
@@ -979,6 +940,45 @@ export type OnDeleteCATPERMISOSSubscription = {
     CONSULTAR?: boolean | null;
   } | null;
   NEGOCIO?: string | null;
+};
+
+export type OnCreateSiaGenAudEstadoProcesosDevSubscription = {
+  __typename: "SiaGenAudEstadoProcesosDev";
+  ESTADO?: string | null;
+  ESTADO_EJECUCION?: string | null;
+  ETAPA?: string | null;
+  FECHA_ACTUALIZACION?: string | null;
+  FECHA_CREADO?: string | null;
+  ID_PROCESO: string;
+  INSUMO?: string | null;
+  INTERFAZ?: string | null;
+  TIPO_PROCESO?: string | null;
+};
+
+export type OnUpdateSiaGenAudEstadoProcesosDevSubscription = {
+  __typename: "SiaGenAudEstadoProcesosDev";
+  ESTADO?: string | null;
+  ESTADO_EJECUCION?: string | null;
+  ETAPA?: string | null;
+  FECHA_ACTUALIZACION?: string | null;
+  FECHA_CREADO?: string | null;
+  ID_PROCESO: string;
+  INSUMO?: string | null;
+  INTERFAZ?: string | null;
+  TIPO_PROCESO?: string | null;
+};
+
+export type OnDeleteSiaGenAudEstadoProcesosDevSubscription = {
+  __typename: "SiaGenAudEstadoProcesosDev";
+  ESTADO?: string | null;
+  ESTADO_EJECUCION?: string | null;
+  ETAPA?: string | null;
+  FECHA_ACTUALIZACION?: string | null;
+  FECHA_CREADO?: string | null;
+  ID_PROCESO: string;
+  INSUMO?: string | null;
+  INTERFAZ?: string | null;
+  TIPO_PROCESO?: string | null;
 };
 
 @Injectable({
@@ -1155,87 +1155,6 @@ export class APIService {
       graphqlOperation(statement, gqlAPIServiceArguments)
     )) as any;
     return <DeleteAUDGENPROCESOSMutation>response.data.deleteAUDGENPROCESOS;
-  }
-  async CreateAUDGENESTADOPROCESO(
-    input: CreateAUDGENESTADOPROCESOInput
-  ): Promise<CreateAUDGENESTADOPROCESOMutation> {
-    const statement = `mutation CreateAUDGENESTADOPROCESO($input: CreateAUDGENESTADOPROCESOInput!) {
-        createAUDGENESTADOPROCESO(input: $input) {
-          __typename
-          ESTADO
-          ESTADO_EJECUCION
-          ETAPA
-          FECHA_ACTUALIZACION
-          FECHA_CREADO
-          ID_PROCESO
-          INSUMO
-          INTERFAZ
-          TIPO_PROCESO
-        }
-      }`;
-    const gqlAPIServiceArguments: any = {
-      input
-    };
-    const response = (await API.graphql(
-      graphqlOperation(statement, gqlAPIServiceArguments)
-    )) as any;
-    return <CreateAUDGENESTADOPROCESOMutation>(
-      response.data.createAUDGENESTADOPROCESO
-    );
-  }
-  async UpdateAUDGENESTADOPROCESO(
-    input: UpdateAUDGENESTADOPROCESOInput
-  ): Promise<UpdateAUDGENESTADOPROCESOMutation> {
-    const statement = `mutation UpdateAUDGENESTADOPROCESO($input: UpdateAUDGENESTADOPROCESOInput!) {
-        updateAUDGENESTADOPROCESO(input: $input) {
-          __typename
-          ESTADO
-          ESTADO_EJECUCION
-          ETAPA
-          FECHA_ACTUALIZACION
-          FECHA_CREADO
-          ID_PROCESO
-          INSUMO
-          INTERFAZ
-          TIPO_PROCESO
-        }
-      }`;
-    const gqlAPIServiceArguments: any = {
-      input
-    };
-    const response = (await API.graphql(
-      graphqlOperation(statement, gqlAPIServiceArguments)
-    )) as any;
-    return <UpdateAUDGENESTADOPROCESOMutation>(
-      response.data.updateAUDGENESTADOPROCESO
-    );
-  }
-  async DeleteAUDGENESTADOPROCESO(
-    input: DeleteAUDGENESTADOPROCESOInput
-  ): Promise<DeleteAUDGENESTADOPROCESOMutation> {
-    const statement = `mutation DeleteAUDGENESTADOPROCESO($input: DeleteAUDGENESTADOPROCESOInput!) {
-        deleteAUDGENESTADOPROCESO(input: $input) {
-          __typename
-          ESTADO
-          ESTADO_EJECUCION
-          ETAPA
-          FECHA_ACTUALIZACION
-          FECHA_CREADO
-          ID_PROCESO
-          INSUMO
-          INTERFAZ
-          TIPO_PROCESO
-        }
-      }`;
-    const gqlAPIServiceArguments: any = {
-      input
-    };
-    const response = (await API.graphql(
-      graphqlOperation(statement, gqlAPIServiceArguments)
-    )) as any;
-    return <DeleteAUDGENESTADOPROCESOMutation>(
-      response.data.deleteAUDGENESTADOPROCESO
-    );
   }
   async CreateCATPROCESOS(
     input: CreateCATPROCESOSInput
@@ -1438,6 +1357,87 @@ export class APIService {
     )) as any;
     return <DeleteCATPERMISOSMutation>response.data.deleteCATPERMISOS;
   }
+  async CreateSiaGenAudEstadoProcesosDev(
+    input: CreateSiaGenAudEstadoProcesosDevInput
+  ): Promise<CreateSiaGenAudEstadoProcesosDevMutation> {
+    const statement = `mutation CreateSiaGenAudEstadoProcesosDev($input: CreateSiaGenAudEstadoProcesosDevInput!) {
+        createSiaGenAudEstadoProcesosDev(input: $input) {
+          __typename
+          ESTADO
+          ESTADO_EJECUCION
+          ETAPA
+          FECHA_ACTUALIZACION
+          FECHA_CREADO
+          ID_PROCESO
+          INSUMO
+          INTERFAZ
+          TIPO_PROCESO
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {
+      input
+    };
+    const response = (await API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    )) as any;
+    return <CreateSiaGenAudEstadoProcesosDevMutation>(
+      response.data.createSiaGenAudEstadoProcesosDev
+    );
+  }
+  async UpdateSiaGenAudEstadoProcesosDev(
+    input: UpdateSiaGenAudEstadoProcesosDevInput
+  ): Promise<UpdateSiaGenAudEstadoProcesosDevMutation> {
+    const statement = `mutation UpdateSiaGenAudEstadoProcesosDev($input: UpdateSiaGenAudEstadoProcesosDevInput!) {
+        updateSiaGenAudEstadoProcesosDev(input: $input) {
+          __typename
+          ESTADO
+          ESTADO_EJECUCION
+          ETAPA
+          FECHA_ACTUALIZACION
+          FECHA_CREADO
+          ID_PROCESO
+          INSUMO
+          INTERFAZ
+          TIPO_PROCESO
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {
+      input
+    };
+    const response = (await API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    )) as any;
+    return <UpdateSiaGenAudEstadoProcesosDevMutation>(
+      response.data.updateSiaGenAudEstadoProcesosDev
+    );
+  }
+  async DeleteSiaGenAudEstadoProcesosDev(
+    input: DeleteSiaGenAudEstadoProcesosDevInput
+  ): Promise<DeleteSiaGenAudEstadoProcesosDevMutation> {
+    const statement = `mutation DeleteSiaGenAudEstadoProcesosDev($input: DeleteSiaGenAudEstadoProcesosDevInput!) {
+        deleteSiaGenAudEstadoProcesosDev(input: $input) {
+          __typename
+          ESTADO
+          ESTADO_EJECUCION
+          ETAPA
+          FECHA_ACTUALIZACION
+          FECHA_CREADO
+          ID_PROCESO
+          INSUMO
+          INTERFAZ
+          TIPO_PROCESO
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {
+      input
+    };
+    const response = (await API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    )) as any;
+    return <DeleteSiaGenAudEstadoProcesosDevMutation>(
+      response.data.deleteSiaGenAudEstadoProcesosDev
+    );
+  }
   async GetAUDGENUSUARIOS(ID: string): Promise<GetAUDGENUSUARIOSQuery> {
     const statement = `query GetAUDGENUSUARIOS($ID: String!) {
         getAUDGENUSUARIOS(ID: $ID) {
@@ -1569,110 +1569,6 @@ export class APIService {
       graphqlOperation(statement, gqlAPIServiceArguments)
     )) as any;
     return <ListAUDGENPROCESOSQuery>response.data.listAUDGENPROCESOS;
-  }
-  async GetAUDGENESTADOPROCESO(
-    ID_PROCESO: string
-  ): Promise<GetAUDGENESTADOPROCESOQuery> {
-    const statement = `query GetAUDGENESTADOPROCESO($ID_PROCESO: String!) {
-        getAUDGENESTADOPROCESO(ID_PROCESO: $ID_PROCESO) {
-          __typename
-          ESTADO
-          ESTADO_EJECUCION
-          ETAPA
-          FECHA_ACTUALIZACION
-          FECHA_CREADO
-          ID_PROCESO
-          INSUMO
-          INTERFAZ
-          TIPO_PROCESO
-        }
-      }`;
-    const gqlAPIServiceArguments: any = {
-      ID_PROCESO
-    };
-    const response = (await API.graphql(
-      graphqlOperation(statement, gqlAPIServiceArguments)
-    )) as any;
-    return <GetAUDGENESTADOPROCESOQuery>response.data.getAUDGENESTADOPROCESO;
-  }
-  async ListAUDGENESTADOPROCESOS(
-    filter?: TableAUDGENESTADOPROCESOFilterInput,
-    limit?: number,
-    nextToken?: string
-  ): Promise<ListAUDGENESTADOPROCESOSQuery> {
-    const statement = `query ListAUDGENESTADOPROCESOS($filter: TableAUDGENESTADOPROCESOFilterInput, $limit: Int, $nextToken: String) {
-        listAUDGENESTADOPROCESOS(filter: $filter, limit: $limit, nextToken: $nextToken) {
-          __typename
-          items {
-            __typename
-            ESTADO
-            ESTADO_EJECUCION
-            ETAPA
-            FECHA_ACTUALIZACION
-            FECHA_CREADO
-            ID_PROCESO
-            INSUMO
-            INTERFAZ
-            TIPO_PROCESO
-          }
-          nextToken
-        }
-      }`;
-    const gqlAPIServiceArguments: any = {};
-    if (filter) {
-      gqlAPIServiceArguments.filter = filter;
-    }
-    if (limit) {
-      gqlAPIServiceArguments.limit = limit;
-    }
-    if (nextToken) {
-      gqlAPIServiceArguments.nextToken = nextToken;
-    }
-    const response = (await API.graphql(
-      graphqlOperation(statement, gqlAPIServiceArguments)
-    )) as any;
-    return <ListAUDGENESTADOPROCESOSQuery>(
-      response.data.listAUDGENESTADOPROCESOS
-    );
-  }
-  async QueryAUDGENESTADOPROCESOSByIDREGISTROFECHACREADOIndex(
-    ID_REGISTRO: string,
-    first?: number,
-    after?: string
-  ): Promise<QueryAUDGENESTADOPROCESOSByIDREGISTROFECHACREADOIndexQuery> {
-    const statement = `query QueryAUDGENESTADOPROCESOSByIDREGISTROFECHACREADOIndex($ID_REGISTRO: String!, $first: Int, $after: String) {
-        queryAUDGENESTADOPROCESOSByIDREGISTROFECHACREADOIndex(ID_REGISTRO: $ID_REGISTRO, first: $first, after: $after) {
-          __typename
-          items {
-            __typename
-            ESTADO
-            ESTADO_EJECUCION
-            ETAPA
-            FECHA_ACTUALIZACION
-            FECHA_CREADO
-            ID_PROCESO
-            INSUMO
-            INTERFAZ
-            TIPO_PROCESO
-          }
-          nextToken
-        }
-      }`;
-    const gqlAPIServiceArguments: any = {
-      ID_REGISTRO
-    };
-    if (first) {
-      gqlAPIServiceArguments.first = first;
-    }
-    if (after) {
-      gqlAPIServiceArguments.after = after;
-    }
-    const response = (await API.graphql(
-      graphqlOperation(statement, gqlAPIServiceArguments)
-    )) as any;
-    return <QueryAUDGENESTADOPROCESOSByIDREGISTROFECHACREADOIndexQuery>(
-      response.data.queryAUDGENESTADOPROCESOSByIDREGISTROFECHACREADOIndex
-    );
   }
   async GetCATPROCESOS(PROCESO: string): Promise<GetCATPROCESOSQuery> {
     const statement = `query GetCATPROCESOS($PROCESO: String!) {
@@ -1829,6 +1725,112 @@ export class APIService {
       graphqlOperation(statement, gqlAPIServiceArguments)
     )) as any;
     return <ListCATPERMISOSQuery>response.data.listCATPERMISOS;
+  }
+  async GetSiaGenAudEstadoProcesosDev(
+    ID_PROCESO: string
+  ): Promise<GetSiaGenAudEstadoProcesosDevQuery> {
+    const statement = `query GetSiaGenAudEstadoProcesosDev($ID_PROCESO: String!) {
+        getSiaGenAudEstadoProcesosDev(ID_PROCESO: $ID_PROCESO) {
+          __typename
+          ESTADO
+          ESTADO_EJECUCION
+          ETAPA
+          FECHA_ACTUALIZACION
+          FECHA_CREADO
+          ID_PROCESO
+          INSUMO
+          INTERFAZ
+          TIPO_PROCESO
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {
+      ID_PROCESO
+    };
+    const response = (await API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    )) as any;
+    return <GetSiaGenAudEstadoProcesosDevQuery>(
+      response.data.getSiaGenAudEstadoProcesosDev
+    );
+  }
+  async ListSiaGenAudEstadoProcesosDevs(
+    filter?: TableSiaGenAudEstadoProcesosDevFilterInput,
+    limit?: number,
+    nextToken?: string
+  ): Promise<ListSiaGenAudEstadoProcesosDevsQuery> {
+    const statement = `query ListSiaGenAudEstadoProcesosDevs($filter: TableSiaGenAudEstadoProcesosDevFilterInput, $limit: Int, $nextToken: String) {
+        listSiaGenAudEstadoProcesosDevs(filter: $filter, limit: $limit, nextToken: $nextToken) {
+          __typename
+          items {
+            __typename
+            ESTADO
+            ESTADO_EJECUCION
+            ETAPA
+            FECHA_ACTUALIZACION
+            FECHA_CREADO
+            ID_PROCESO
+            INSUMO
+            INTERFAZ
+            TIPO_PROCESO
+          }
+          nextToken
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {};
+    if (filter) {
+      gqlAPIServiceArguments.filter = filter;
+    }
+    if (limit) {
+      gqlAPIServiceArguments.limit = limit;
+    }
+    if (nextToken) {
+      gqlAPIServiceArguments.nextToken = nextToken;
+    }
+    const response = (await API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    )) as any;
+    return <ListSiaGenAudEstadoProcesosDevsQuery>(
+      response.data.listSiaGenAudEstadoProcesosDevs
+    );
+  }
+  async QuerySiaGenAudEstadoProcesosDevsByINTERFAZIndex(
+    INTERFAZ: string,
+    first?: number,
+    after?: string
+  ): Promise<QuerySiaGenAudEstadoProcesosDevsByINTERFAZIndexQuery> {
+    const statement = `query QuerySiaGenAudEstadoProcesosDevsByINTERFAZIndex($INTERFAZ: String!, $first: Int, $after: String) {
+        querySiaGenAudEstadoProcesosDevsByINTERFAZIndex(INTERFAZ: $INTERFAZ, first: $first, after: $after) {
+          __typename
+          items {
+            __typename
+            ESTADO
+            ESTADO_EJECUCION
+            ETAPA
+            FECHA_ACTUALIZACION
+            FECHA_CREADO
+            ID_PROCESO
+            INSUMO
+            INTERFAZ
+            TIPO_PROCESO
+          }
+          nextToken
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {
+      INTERFAZ
+    };
+    if (first) {
+      gqlAPIServiceArguments.first = first;
+    }
+    if (after) {
+      gqlAPIServiceArguments.after = after;
+    }
+    const response = (await API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    )) as any;
+    return <QuerySiaGenAudEstadoProcesosDevsByINTERFAZIndexQuery>(
+      response.data.querySiaGenAudEstadoProcesosDevsByINTERFAZIndex
+    );
   }
   OnCreateAUDGENUSUARIOSListener(
     ID?: string
@@ -2005,102 +2007,6 @@ export class APIService {
     return API.graphql(
       graphqlOperation(statement, gqlAPIServiceArguments)
     ) as Observable<SubscriptionResponse<OnDeleteAUDGENPROCESOSSubscription>>;
-  }
-
-  OnCreateAUDGENESTADOPROCESOListener(
-    ID_PROCESO?: string,
-    FECHA_CREADO?: string
-  ): Observable<SubscriptionResponse<OnCreateAUDGENESTADOPROCESOSubscription>> {
-    const statement = `subscription OnCreateAUDGENESTADOPROCESO($ID_PROCESO: String, $FECHA_CREADO: String) {
-        onCreateAUDGENESTADOPROCESO(ID_PROCESO: $ID_PROCESO, FECHA_CREADO: $FECHA_CREADO) {
-          __typename
-          ESTADO
-          ESTADO_EJECUCION
-          ETAPA
-          FECHA_ACTUALIZACION
-          FECHA_CREADO
-          ID_PROCESO
-          INSUMO
-          INTERFAZ
-          TIPO_PROCESO
-        }
-      }`;
-    const gqlAPIServiceArguments: any = {};
-    if (ID_PROCESO) {
-      gqlAPIServiceArguments.ID_PROCESO = ID_PROCESO;
-    }
-    if (FECHA_CREADO) {
-      gqlAPIServiceArguments.FECHA_CREADO = FECHA_CREADO;
-    }
-    return API.graphql(
-      graphqlOperation(statement, gqlAPIServiceArguments)
-    ) as Observable<
-      SubscriptionResponse<OnCreateAUDGENESTADOPROCESOSubscription>
-    >;
-  }
-
-  OnUpdateAUDGENESTADOPROCESOListener(
-    ID_PROCESO?: string,
-    FECHA_CREADO?: string
-  ): Observable<SubscriptionResponse<OnUpdateAUDGENESTADOPROCESOSubscription>> {
-    const statement = `subscription OnUpdateAUDGENESTADOPROCESO($ID_PROCESO: String, $FECHA_CREADO: String) {
-        onUpdateAUDGENESTADOPROCESO(ID_PROCESO: $ID_PROCESO, FECHA_CREADO: $FECHA_CREADO) {
-          __typename
-          ESTADO
-          ESTADO_EJECUCION
-          ETAPA
-          FECHA_ACTUALIZACION
-          FECHA_CREADO
-          ID_PROCESO
-          INSUMO
-          INTERFAZ
-          TIPO_PROCESO
-        }
-      }`;
-    const gqlAPIServiceArguments: any = {};
-    if (ID_PROCESO) {
-      gqlAPIServiceArguments.ID_PROCESO = ID_PROCESO;
-    }
-    if (FECHA_CREADO) {
-      gqlAPIServiceArguments.FECHA_CREADO = FECHA_CREADO;
-    }
-    return API.graphql(
-      graphqlOperation(statement, gqlAPIServiceArguments)
-    ) as Observable<
-      SubscriptionResponse<OnUpdateAUDGENESTADOPROCESOSubscription>
-    >;
-  }
-
-  OnDeleteAUDGENESTADOPROCESOListener(
-    ID_PROCESO?: string,
-    FECHA_CREADO?: string
-  ): Observable<SubscriptionResponse<OnDeleteAUDGENESTADOPROCESOSubscription>> {
-    const statement = `subscription OnDeleteAUDGENESTADOPROCESO($ID_PROCESO: String, $FECHA_CREADO: String) {
-        onDeleteAUDGENESTADOPROCESO(ID_PROCESO: $ID_PROCESO, FECHA_CREADO: $FECHA_CREADO) {
-          __typename
-          ESTADO
-          ESTADO_EJECUCION
-          ETAPA
-          FECHA_ACTUALIZACION
-          FECHA_CREADO
-          ID_PROCESO
-          INSUMO
-          INTERFAZ
-          TIPO_PROCESO
-        }
-      }`;
-    const gqlAPIServiceArguments: any = {};
-    if (ID_PROCESO) {
-      gqlAPIServiceArguments.ID_PROCESO = ID_PROCESO;
-    }
-    if (FECHA_CREADO) {
-      gqlAPIServiceArguments.FECHA_CREADO = FECHA_CREADO;
-    }
-    return API.graphql(
-      graphqlOperation(statement, gqlAPIServiceArguments)
-    ) as Observable<
-      SubscriptionResponse<OnDeleteAUDGENESTADOPROCESOSubscription>
-    >;
   }
 
   OnCreateCATPROCESOSListener(
@@ -2308,5 +2214,107 @@ export class APIService {
     return API.graphql(
       graphqlOperation(statement, gqlAPIServiceArguments)
     ) as Observable<SubscriptionResponse<OnDeleteCATPERMISOSSubscription>>;
+  }
+
+  OnCreateSiaGenAudEstadoProcesosDevListener(
+    ID_PROCESO?: string,
+    INTERFAZ?: string
+  ): Observable<
+    SubscriptionResponse<OnCreateSiaGenAudEstadoProcesosDevSubscription>
+  > {
+    const statement = `subscription OnCreateSiaGenAudEstadoProcesosDev($ID_PROCESO: String, $INTERFAZ: String) {
+        onCreateSiaGenAudEstadoProcesosDev(ID_PROCESO: $ID_PROCESO, INTERFAZ: $INTERFAZ) {
+          __typename
+          ESTADO
+          ESTADO_EJECUCION
+          ETAPA
+          FECHA_ACTUALIZACION
+          FECHA_CREADO
+          ID_PROCESO
+          INSUMO
+          INTERFAZ
+          TIPO_PROCESO
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {};
+    if (ID_PROCESO) {
+      gqlAPIServiceArguments.ID_PROCESO = ID_PROCESO;
+    }
+    if (INTERFAZ) {
+      gqlAPIServiceArguments.INTERFAZ = INTERFAZ;
+    }
+    return API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    ) as Observable<
+      SubscriptionResponse<OnCreateSiaGenAudEstadoProcesosDevSubscription>
+    >;
+  }
+
+  OnUpdateSiaGenAudEstadoProcesosDevListener(
+    ID_PROCESO?: string,
+    INTERFAZ?: string
+  ): Observable<
+    SubscriptionResponse<OnUpdateSiaGenAudEstadoProcesosDevSubscription>
+  > {
+    const statement = `subscription OnUpdateSiaGenAudEstadoProcesosDev($ID_PROCESO: String, $INTERFAZ: String) {
+        onUpdateSiaGenAudEstadoProcesosDev(ID_PROCESO: $ID_PROCESO, INTERFAZ: $INTERFAZ) {
+          __typename
+          ESTADO
+          ESTADO_EJECUCION
+          ETAPA
+          FECHA_ACTUALIZACION
+          FECHA_CREADO
+          ID_PROCESO
+          INSUMO
+          INTERFAZ
+          TIPO_PROCESO
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {};
+    if (ID_PROCESO) {
+      gqlAPIServiceArguments.ID_PROCESO = ID_PROCESO;
+    }
+    if (INTERFAZ) {
+      gqlAPIServiceArguments.INTERFAZ = INTERFAZ;
+    }
+    return API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    ) as Observable<
+      SubscriptionResponse<OnUpdateSiaGenAudEstadoProcesosDevSubscription>
+    >;
+  }
+
+  OnDeleteSiaGenAudEstadoProcesosDevListener(
+    ID_PROCESO?: string,
+    INTERFAZ?: string
+  ): Observable<
+    SubscriptionResponse<OnDeleteSiaGenAudEstadoProcesosDevSubscription>
+  > {
+    const statement = `subscription OnDeleteSiaGenAudEstadoProcesosDev($ID_PROCESO: String, $INTERFAZ: String) {
+        onDeleteSiaGenAudEstadoProcesosDev(ID_PROCESO: $ID_PROCESO, INTERFAZ: $INTERFAZ) {
+          __typename
+          ESTADO
+          ESTADO_EJECUCION
+          ETAPA
+          FECHA_ACTUALIZACION
+          FECHA_CREADO
+          ID_PROCESO
+          INSUMO
+          INTERFAZ
+          TIPO_PROCESO
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {};
+    if (ID_PROCESO) {
+      gqlAPIServiceArguments.ID_PROCESO = ID_PROCESO;
+    }
+    if (INTERFAZ) {
+      gqlAPIServiceArguments.INTERFAZ = INTERFAZ;
+    }
+    return API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    ) as Observable<
+      SubscriptionResponse<OnDeleteSiaGenAudEstadoProcesosDevSubscription>
+    >;
   }
 }

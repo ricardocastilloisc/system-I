@@ -257,7 +257,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
     }
 
 
-    await this.api.ListAUDGENESTADOPROCESOS(body.filter, body.limit).then(res => {
+    await this.api.ListSiaGenAudEstadoProcesosDevs(body.filter, body.limit).then(res => {
 
       this.CATESTADOS = res.items.slice().sort(function (a, b) { return new Date(b.FECHA_ACTUALIZACION).getTime() - new Date(a.FECHA_ACTUALIZACION).getTime() })
 
@@ -269,7 +269,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
 
 
 
-    if(this.CATESTADOS[0]?.ESTADO === 'FALLIDO'  || this.CATESTADOS[0]?.ESTADO === 'EXITOSO'  || this.CATESTADOS === [] ){
+    if(this.CATESTADOS[0]?.ESTADO_EJECUCION === 'TERMINADO' || this.CATESTADOS === [] ){
 
       let idEjecucion  = uuidv4();
       console.log(this.procesoEjecutar,correo, area, idEjecucion)
@@ -285,6 +285,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
         } else {
 
           this.spinner.hide();
+          console.log(response)
           this.modalMensaje("modalEstado","Error al ejecutar proceso")
 
         }
@@ -292,14 +293,15 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
       } catch(e){
 
         this.modalMensaje("modalEstado","Error al ejecutar proceso")
-        console.log(e)
+        console.log(e.message)
       }
 
-    }else if( this.CATESTADOS[0]?.ESTADO === 'INICIADO') {
+    }else if( this.CATESTADOS[0]?.ESTADO_EJECUCION === 'INICIADO') {
       this.modalMensaje("modalEstado","El proceso se encuentra en ejecución")
     
     }else (
 
+      
 
       this.modalMensaje("modalEstado","Error al ejecutar proceso")
     )

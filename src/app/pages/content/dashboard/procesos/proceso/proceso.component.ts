@@ -79,14 +79,19 @@ export class ProcesoComponent implements OnInit, OnDestroy {
 
   ngAfterViewInit() {
 
-    this.rutaActiva.queryParams
-      .subscribe(res =>{ console.log(res); this.titulo = res['titulo'] || 0 })
-      console.log('titulo', this.titulo)
+    // this.rutaActiva.queryParams
+    //   .subscribe(res =>{ console.log(res); this.titulo = res['titulo'] || 0 })
+    //   console.log('titulo', this.titulo)
     
     
   }
 
   ngOnInit(): void {
+
+    this.rutaActiva.queryParams
+      .subscribe(res =>{ console.log(res); this.titulo = res['titulo'] || 0 })
+      console.log('titulo', this.titulo)
+
     this.ocultarbusqueda = false
     this.paginaActualProceso = 1;
     this.paginaActualEjecucionesProceso = 1;
@@ -96,9 +101,9 @@ export class ProcesoComponent implements OnInit, OnDestroy {
     })
 
 
-    this.api.OnUpdateAUDGENESTADOPROCESOListener().subscribe(res => 
-      console.log(res)
-      )
+    // this.api.OnUpdateAUDGENESTADOPROCESOListener().subscribe(res => 
+    //   console.log(res)
+    //   )
 
     this.maxDate = new Date();
     this.DataUser$ = this.store.select(({ usuario }) => usuario.user);
@@ -153,7 +158,8 @@ export class ProcesoComponent implements OnInit, OnDestroy {
     this.AUDGENESTADOPROCESOS$.subscribe(res => { if(res && res.length === 0){
       this.ejecucionesInexistentesModal()
       //this.modalService.open(this.templateRefEjecuciones, { ariaLabelledBy: 'modal-basic-title' });
-    }})
+      }else this.cerrarModales();
+    })
 
   }
 
@@ -416,7 +422,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
 /*
 {
   "data": {
-    "listAUDGENESTADOPROCESOS": {
+    "ListSiaGenAudEstadoProcesosDevs": {
       "nextToken": "eyJ2ZXJzaW9uIjoyLCJ0b2tlbiI6IkFRSUNBSGg5OUIvN3BjWU41eE96NDZJMW5GeGM4WUNGeG1acmFOMUpqajZLWkFDQ25BRS9DQWQxbExNTW9rTzlPRytIR2dNYUFBQUNGVENDQWhFR0NTcUdTSWIzRFFFSEJxQ0NBZ0l3Z2dIK0FnRUFNSUlCOXdZSktvWklodmNOQVFjQk1CNEdDV0NHU0FGbEF3UUJMakFSQkF6ZlU5UVVQanlEclFEZ1doNENBUkNBZ2dISWtZWWRSQ21ZL0p5c3RIYkdTSFM4MnNrZTZmOGk3cUlQUWR6aUI5ZWxVME5GL1BVUm4xNHNHYjFtY1hVN2R5Yy95YkxpSlMrWE8zeEkzVVVHNUt1bnM2U1FGcXhXdHJQb2xnNEh1bjRBc09ucE9DWkRrczEvYzk5Zm1ZMFUyaWVRanhna0tOaTlSc0ZFeGVlc1pERTBFdW5VWTFMaWZwT0hMY25wZTVVMXBBZXFmRWFnRHZGdmdQdmhDRi9ybWhkN0RpWE11Mzk5NndNS25rM2FUbkJab3pob2RnMHRHWFo1bXFqS1pkb1oxN3NaU1YvVWhMRElCSE1Ub2tnSDdkMElyY0t3Ly85QW1OanEraGRWNmlFdkk0RDJmd3FPaVZZWVB4UU94cUc5N2JpRmQzaVQwd29tM1pGZUQyVkZOb1ZSb3JsVjhaeEFVa3BQKy95emY0UDZGVmFrVzg5N2FYMy85N0craWdiM21nbnBLb1Q2MC9FNE5FNk93Y0p1STY2TkRVRkRKTVlHQ0RHMUxaZHZnakJXcFVKT0RIa0VOTXN3K2phdnUyNFkrYlhMNkdPNm1oN2NhVXJRRURCR0paWlVVMkdOQy9scEdNNXFDZDdSMjlwNHVhbExreVpmelAwTFEvQWtBTnRKalZWQ25YSGVrbjVDRDA2ZktNcnJzZmtGTzZYLzcrK2JEQ1hoNGJBd2FHbEgrN2tIZ0UxV050SDBwVFptU2ZaL09DdkQxSFNWeUJJY1JaU1RFeFNRaytPQUJTWGNjc1l4U1h6bmRiRlp6UkJHdEl3c0tKMENMcU5rIn0=",
       "items": [
         {

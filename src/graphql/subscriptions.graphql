@@ -92,63 +92,6 @@ subscription OnDeleteAUDGENPROCESOS($ID_REGISTRO: String) {
     STEP
   }
 }
-subscription OnCreateAUDGENESTADOPROCESO(
-  $ID_PROCESO: String
-  $FECHA_CREADO: String
-) {
-  onCreateAUDGENESTADOPROCESO(
-    ID_PROCESO: $ID_PROCESO
-    FECHA_CREADO: $FECHA_CREADO
-  ) {
-    ESTADO
-    ESTADO_EJECUCION
-    ETAPA
-    FECHA_ACTUALIZACION
-    FECHA_CREADO
-    ID_PROCESO
-    INSUMO
-    INTERFAZ
-    TIPO_PROCESO
-  }
-}
-subscription OnUpdateAUDGENESTADOPROCESO(
-  $ID_PROCESO: String
-  $FECHA_CREADO: String
-) {
-  onUpdateAUDGENESTADOPROCESO(
-    ID_PROCESO: $ID_PROCESO
-    FECHA_CREADO: $FECHA_CREADO
-  ) {
-    ESTADO
-    ESTADO_EJECUCION
-    ETAPA
-    FECHA_ACTUALIZACION
-    FECHA_CREADO
-    ID_PROCESO
-    INSUMO
-    INTERFAZ
-    TIPO_PROCESO
-  }
-}
-subscription OnDeleteAUDGENESTADOPROCESO(
-  $ID_PROCESO: String
-  $FECHA_CREADO: String
-) {
-  onDeleteAUDGENESTADOPROCESO(
-    ID_PROCESO: $ID_PROCESO
-    FECHA_CREADO: $FECHA_CREADO
-  ) {
-    ESTADO
-    ESTADO_EJECUCION
-    ETAPA
-    FECHA_ACTUALIZACION
-    FECHA_CREADO
-    ID_PROCESO
-    INSUMO
-    INTERFAZ
-    TIPO_PROCESO
-  }
-}
 subscription OnCreateCATPROCESOS($PROCESO: String) {
   onCreateCATPROCESOS(PROCESO: $PROCESO) {
     PROCESO
@@ -264,5 +207,62 @@ subscription OnDeleteCATPERMISOS($ID: String) {
       CONSULTAR
     }
     NEGOCIO
+  }
+}
+subscription OnCreateSiaGenAudEstadoProcesosDev(
+  $ID_PROCESO: String
+  $INTERFAZ: String
+) {
+  onCreateSiaGenAudEstadoProcesosDev(
+    ID_PROCESO: $ID_PROCESO
+    INTERFAZ: $INTERFAZ
+  ) {
+    ESTADO
+    ESTADO_EJECUCION
+    ETAPA
+    FECHA_ACTUALIZACION
+    FECHA_CREADO
+    ID_PROCESO
+    INSUMO
+    INTERFAZ
+    TIPO_PROCESO
+  }
+}
+subscription OnUpdateSiaGenAudEstadoProcesosDev(
+  $ID_PROCESO: String
+  $INTERFAZ: String
+) {
+  onUpdateSiaGenAudEstadoProcesosDev(
+    ID_PROCESO: $ID_PROCESO
+    INTERFAZ: $INTERFAZ
+  ) {
+    ESTADO
+    ESTADO_EJECUCION
+    ETAPA
+    FECHA_ACTUALIZACION
+    FECHA_CREADO
+    ID_PROCESO
+    INSUMO
+    INTERFAZ
+    TIPO_PROCESO
+  }
+}
+subscription OnDeleteSiaGenAudEstadoProcesosDev(
+  $ID_PROCESO: String
+  $INTERFAZ: String
+) {
+  onDeleteSiaGenAudEstadoProcesosDev(
+    ID_PROCESO: $ID_PROCESO
+    INTERFAZ: $INTERFAZ
+  ) {
+    ESTADO
+    ESTADO_EJECUCION
+    ETAPA
+    FECHA_ACTUALIZACION
+    FECHA_CREADO
+    ID_PROCESO
+    INSUMO
+    INTERFAZ
+    TIPO_PROCESO
   }
 }
