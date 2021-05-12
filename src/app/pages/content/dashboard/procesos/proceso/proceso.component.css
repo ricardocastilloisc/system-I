@@ -91,14 +91,14 @@
 
 .container-referencias-log{
     margin-top: 30px;
-    margin-bottom: 50px;
+
     
     
 }
 
 .show-ejecuciones{
     visibility: visible;
-    max-height: 50px;
+    max-height: 30px;
     opacity: 1;
     transition: visibility 0.3s, opacity 0.3s, max-height 0.5s linear;
 }

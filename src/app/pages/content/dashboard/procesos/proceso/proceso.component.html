@@ -155,19 +155,6 @@
         
         </div>
 
-        <div class="row justify-content-center container-referencias-log" *ngIf="">
-            <div class=" align-self-center">
-                <div class="d-flex flex-column" style="width: 504px;">
-                    <div class="descripcionNoEjecuciones" style="margin-top:34px">
-                        <div class="row">
-                            <div class="col-12">
-                                <p> No existen registros de ejecución para este proceso.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <div class="row justify-content-center container-referencias-log" *ngIf=" AUDGENESTADOPROCESOS.length === 0">
 
@@ -191,7 +178,7 @@
             <div class="d-flex col-md-9 col-xs-9 col-sm-9 col-lg-9 mr-9 col-9 align-items-center justify-content-center" >
                 <div class="show-info"> </div>
                 <span *ngIf="mostrarEjecucionesProcesos" class="show-info-button" (click)="mostrarEjecucionesProcesos = !mostrarEjecucionesProcesos">Ocultar Ejecuciones</span>
-                <span *ngIf="!mostrarEjecucionesProcesos" class="show-info-button" (click)="mostrarEjecucionesProcesos = !mostrarEjecucionesProcesos">Mostrar Ejecuciones</span>
+                <span *ngIf="!mostrarEjecucionesProcesos" class="show-info-button" (click)="mostrarEjecucionesProcesos = !mostrarEjecucionesProcesos">Atras</span>
             </div>
             
         </div>
