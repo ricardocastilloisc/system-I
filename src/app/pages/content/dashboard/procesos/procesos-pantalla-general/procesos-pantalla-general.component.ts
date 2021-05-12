@@ -219,7 +219,10 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
  }
 
   consultar(idProceso, titulo): void {
-    this.router.navigate(['/' + window.location.pathname + '/' + idProceso], { queryParams: { titulo: titulo} });
+    this.guardarDescripcionProceso(titulo);
+    this.router.navigate(['/' + window.location.pathname + '/' + idProceso]);
+
+    
   }
 
   openModal(content, nombreProceso){
@@ -313,6 +316,13 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
 
 
 
+  }
+
+  guardarDescripcionProceso(descripcion: string){
+    localStorage.setItem(
+      'Titulo',
+      JSON.stringify(descripcion)
+    );
   }
 
   rolesValids = (User: Usuario, roles: any[]): boolean => {

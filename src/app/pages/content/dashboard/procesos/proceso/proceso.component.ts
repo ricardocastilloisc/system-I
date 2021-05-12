@@ -88,9 +88,14 @@ export class ProcesoComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    this.rutaActiva.queryParams
-      .subscribe(res =>{ console.log(res); this.titulo = res['titulo'] || 0 })
-      console.log('titulo', this.titulo)
+    this.titulo = JSON.parse(
+      localStorage.getItem('Titulo')
+    );
+
+
+    // this.rutaActiva.queryParams
+    //   .subscribe(res =>{ console.log(res); this.titulo = res['titulo'] || 0 })
+    //   console.log('titulo', this.titulo)
 
     this.ocultarbusqueda = false
     this.paginaActualProceso = 1;
@@ -169,6 +174,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
 
   }
 
+  
 
   obtenerArea(): string{
     let arrayTempArea = [];
