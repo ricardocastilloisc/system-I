@@ -535,7 +535,7 @@ table.listado-design-general td {
   display: inline-block;
   font: normal normal bold 18px/45px FS Elliot Pro;
   background: none;
-  margin: 0px 4px;
+  margin: 0px 10px;
   text-align: right;
 }
 
@@ -828,4 +828,12 @@ table.listado-design-general td {
   text-align: center;;
   font: normal normal bold 18px FS Elliot Pro;
   color: #0091da;
+}
+
+.descripcionNoEjecuciones {
+  text-align: center;
+  font: normal normal normal 20px/28px FS Elliot Pro;
+  letter-spacing: 0px;
+  color: #7c69c3;
+  opacity: 1;
 }

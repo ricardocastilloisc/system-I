@@ -218,8 +218,8 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
     this.router.navigate([this.router.url])
  }
 
-  consultar(idProceso): void {
-    this.router.navigate(['/' + window.location.pathname + '/' + idProceso]);
+  consultar(idProceso, titulo): void {
+    this.router.navigate(['/' + window.location.pathname + '/' + idProceso], { queryParams: { titulo: titulo} });
   }
 
   openModal(content, nombreProceso){

@@ -25,6 +25,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class ProcesoComponent implements OnInit, OnDestroy {
   @ViewChild('modalEstado') templateRef: TemplateRef<any>;
+  @ViewChild('ejecucionesInexistentes') templateRefEjecuciones: TemplateRef<any>;
   filtroEjecucionesForm: FormGroup;
 
   Areas = [
@@ -39,7 +40,9 @@ export class ProcesoComponent implements OnInit, OnDestroy {
   last;
   PROCESOS = new Array();
   ocultarbusqueda = false;
+  titulo$: Observable<object>;
 
+  titulo: string;
   area: string;
   listaProcesos: any;
   totalItems: number;
@@ -74,6 +77,15 @@ export class ProcesoComponent implements OnInit, OnDestroy {
     this.store.dispatch(UnsetAUDGENEJECUCIONPROCESO());
   }
 
+  ngAfterViewInit() {
+
+    this.rutaActiva.queryParams
+      .subscribe(res =>{ console.log(res); this.titulo = res['titulo'] || 0 })
+      console.log('titulo', this.titulo)
+    
+    
+  }
+
   ngOnInit(): void {
     this.ocultarbusqueda = false
     this.paginaActualProceso = 1;
@@ -82,6 +94,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
       fechaFiltrar: [],
       idProceso: []
     })
+
 
     this.api.OnUpdateAUDGENESTADOPROCESOListener().subscribe(res => 
       console.log(res)
@@ -110,9 +123,9 @@ export class ProcesoComponent implements OnInit, OnDestroy {
     }
     ))
 
-    // this.store.select(
-    //   ({ AUDGENESTADOPROCESOS }) => AUDGENESTADOPROCESOS.AUDGENESTADOPROCESO
-    // ).subscribe(res => console.log('que hay',res))
+    this.store.select(
+      ({ AUDGENESTADOPROCESOS }) => AUDGENESTADOPROCESOS.AUDGENESTADOPROCESO
+    ).subscribe(res => console.log('que hay',res))
 
 
 
@@ -136,6 +149,11 @@ export class ProcesoComponent implements OnInit, OnDestroy {
     this.store.dispatch(LoadAUDGENESTADOPROCESOS({ consult: body }));
 
     // this.llenarTabla(this.page);
+
+    this.AUDGENESTADOPROCESOS$.subscribe(res => { if(res && res.length === 0){
+      this.ejecucionesInexistentesModal()
+      //this.modalService.open(this.templateRefEjecuciones, { ariaLabelledBy: 'modal-basic-title' });
+    }})
 
   }
 
@@ -191,6 +209,8 @@ export class ProcesoComponent implements OnInit, OnDestroy {
     }
 
     this.store.dispatch(LoadAUDGENESTADOPROCESOS({ consult: body }));
+
+    this.filtroEjecucionesForm.reset()
 
   }
 
@@ -362,11 +382,18 @@ export class ProcesoComponent implements OnInit, OnDestroy {
         this.store.dispatch(LoadAUDGENESTADOPROCESOS({ consult: body }));
       }
 
-      this.filtroEjecucionesForm.reset()
+      
       
 
       
     }
+  }
+
+  ejecucionesInexistentesModal(){
+    
+      this.modalService.open(this.templateRefEjecuciones, { ariaLabelledBy: 'modal-basic-title' });
+      
+
   }
 
   cerrarModales = () =>{

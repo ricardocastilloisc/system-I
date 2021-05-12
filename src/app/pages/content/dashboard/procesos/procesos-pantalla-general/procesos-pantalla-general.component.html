@@ -52,7 +52,7 @@
               <td>
                 <img *ngIf="PROCESO.INICIAR" class="play-icon" (click)="openModal(confirmacion, PROCESO.PROCESO)" >
                 <img *ngIf="PROCESO.DETENER" class="stop-icon">
-                <img *ngIf="PROCESO.MONITOREAR"  class="detalle-icon" (click)="consultar(PROCESO.PROCESO)">
+                <img *ngIf="PROCESO.MONITOREAR"  class="detalle-icon" (click)="consultar(PROCESO.PROCESO, PROCESO.DESCRIPCION)">
               </td>
             </tr>
           

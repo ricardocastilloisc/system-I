@@ -3,7 +3,7 @@
         <div class="row justify-content-center">
         
         
-            <div class="titulo-proceso">{{rutaActiva.snapshot.params.id}}</div>
+            <div class="titulo-proceso">{{titulo}}</div>
     
         </div>
 
@@ -155,13 +155,35 @@
         
         </div>
 
-        <div class="row justify-content-center container-referencias-log" *ngIf=" AUDGENESTADOPROCESOS.length === 0"  >
+        <div class="row justify-content-center container-referencias-log" *ngIf="">
+            <div class=" align-self-center">
+                <div class="d-flex flex-column" style="width: 504px;">
+                    <div class="descripcionNoEjecuciones" style="margin-top:34px">
+                        <div class="row">
+                            <div class="col-12">
+                                <p> No existen registros de ejecución para este proceso.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center container-referencias-log" *ngIf=" AUDGENESTADOPROCESOS.length === 0">
 
            
 
-          <div>
-              No existen registros de ejecución para este proceso.
-          </div>
+            <div class=" align-self-center">
+                <div class="d-flex flex-column" style="width: 504px;">
+                    <div class="descripcionNoEjecuciones" style="margin-top:34px">
+                        <div class="row">
+                            <div class="col-12">
+                                <p> No existen registros de ejecución para este proceso.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         </div>
     
@@ -320,6 +342,31 @@
             <div class="col-12 row justify-content-center align-items-center" style="height:120px;">
               <div>
                 <button class="btn bottonConfirmarEjecucionProceso" (click)="cerrarModales()">Aceptar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    
+        <!--
+              <div class="modal-footer">
+          <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Save</button>
+        </div>
+        -->
+      </ng-template>
+
+      <ng-template #ejecucionesInexistentes let-modal id="ejecucionesInexistentes">
+        <div class="modal-body">
+          <div class="row justify-content-center">
+            <div class="col-12 row justify-content-center align-items-center" style="height:120px;">
+              <div class="textoConfirmacionModalUsuarios">Consulta de ejecuciones</div>
+            </div>
+            <div class="col-12 row">
+              <div class="col-12 descripcionConfirmacionEjecucionProceso">No existen ejecuciones para este proceso</div>
+              
+            </div>
+            <div class="col-12 row justify-content-center align-items-center" style="height:120px;">
+              <div>
+                <button class="btn bottonConfirmarEjecucionProceso" (click)="cerrarModales()">Continuar</button>
               </div>
             </div>
           </div>
