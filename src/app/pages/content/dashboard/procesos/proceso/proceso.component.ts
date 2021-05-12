@@ -127,11 +127,11 @@ export class ProcesoComponent implements OnInit, OnDestroy {
 
     }
     ))
-
+/*
     this.store.select(
       ({ AUDGENESTADOPROCESOS }) => AUDGENESTADOPROCESOS.AUDGENESTADOPROCESO
     ).subscribe(res => console.log('que hay',res))
-
+*/
 
 
     this.store.select(
