@@ -20,6 +20,7 @@ export class NotificacionesService {
     };
 
     this.api.ListSiaGenAudEstadoProcesosDevs(body).then(({ items }) => {
+
       let ArrayItems = [
         ...items.filter((e) => e.ESTADO === 'EXITOSO'),
         ...items.filter((e) => e.ESTADO === 'FALLIDO'),

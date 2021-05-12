@@ -64,7 +64,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
       if (!coincidencia && elementoRuta !== '') {
 
         ArrayRuta.push(elementoRuta.split('%20').join(' ').toString());
-        
+
       }
     });
 
@@ -217,9 +217,11 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     } else {
       if ($('#sidebar').hasClass('active')) {
         $('#content').css('margin-left', '0px');
+        $('#content').css('width', '100%');
         $('#headernav').css('width', '100%');
       } else {
         $('#content').css('margin-left', '253px');
+        $('#content').css('width', '85%');
         $('#headernav').css('width', window.innerWidth - 253 + 'px');
       }
     }
