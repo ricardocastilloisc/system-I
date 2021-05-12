@@ -62,7 +62,9 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
       });
 
       if (!coincidencia && elementoRuta !== '') {
-        ArrayRuta.push(elementoRuta);
+
+        ArrayRuta.push(elementoRuta.split('%20').join(' ').toString());
+        
       }
     });
 
@@ -97,6 +99,34 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
     if (this.retornarColor(this.arrayRuta()) === 'azul') {
       return 'alineadoTextoIzquierdaAzul';
+    }
+  };
+
+  retornarClaseCorrectaDrecha = () => {
+    if (this.retornarColor(this.arrayRuta()) === 'verde') {
+      return 'alineadoTextoDerecha';
+    }
+
+    if (this.retornarColor(this.arrayRuta()) === 'morado') {
+      return 'alineadoTextoDerechaMorado';
+    }
+
+    if (this.retornarColor(this.arrayRuta()) === 'azul') {
+      return 'alineadoTextoDerechaAzul';
+    }
+  };
+
+  retornarClaseCorrectaLinea = () => {
+    if (this.retornarColor(this.arrayRuta()) === 'verde') {
+      return 'linea';
+    }
+
+    if (this.retornarColor(this.arrayRuta()) === 'morado') {
+      return 'linea-morado';
+    }
+
+    if (this.retornarColor(this.arrayRuta()) === 'azul') {
+      return 'linea-azul';
     }
   };
 
