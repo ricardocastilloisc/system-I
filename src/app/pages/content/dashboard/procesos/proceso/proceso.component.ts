@@ -191,6 +191,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
   }
 
   recargarEjecuciones(){
+    this.mostrarEjecucionesProcesos = !this.mostrarEjecucionesProcesos 
     this.ocultarbusqueda = false;
 
     this.AUDGENESTADOPROCESOS$ = this.store.select(
