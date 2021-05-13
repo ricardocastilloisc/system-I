@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../../ReduxStore/app.reducers';
-import { cargarCatalogos } from '../../../../../ReduxStore/actions/catalogos/catalogos.actions';
+import { cargarCatalogos, unSetCatalogos } from '../../../../../ReduxStore/actions/catalogos/catalogos.actions';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -18,6 +18,7 @@ export class CatalogosComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.catalogos$.unsubscribe();
+    this.store.dispatch(unSetCatalogos());
   }
 
   ngOnInit(): void {
