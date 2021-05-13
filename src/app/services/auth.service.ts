@@ -41,8 +41,7 @@ export class AuthService {
                 .toString()
             );
           }
-          //https://up37qokwrj.execute-api.us-east-1.amazonaws.com/dev/sia/catalogos?negocio=afore&area=custodia,contabilidad
-    
+
           const areas = [
             EArea.Tesoreria,
             EArea.Inversiones_Riesgos,
@@ -62,7 +61,6 @@ export class AuthService {
             'area',
             areasStore.toString()
           );
-
           localStorage.setItem(
             'negocio',
             user.attributes['custom:negocio']

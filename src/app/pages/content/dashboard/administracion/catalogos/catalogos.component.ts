@@ -26,7 +26,7 @@ export class CatalogosComponent implements OnInit, OnDestroy {
         this.AforesGens = [];
         this.AforesSubs = [];
 
-        if(res){
+        if (res) {
           res.forEach((e) => {
             if (e.INTERFAZ === 'GEN') {
               this.AforesGens.push(e);
@@ -45,8 +45,6 @@ export class CatalogosComponent implements OnInit, OnDestroy {
             }
           });
         }
-
       });
-
   }
 }
