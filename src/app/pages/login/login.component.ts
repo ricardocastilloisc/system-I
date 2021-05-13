@@ -29,10 +29,9 @@ export class LoginComponent implements OnInit {
   }
 
   login = () => {
-    //this.auth.signIn();
     const time = new Date().getTime();
     localStorage.setItem("SIA", time.toString());
-    this.auth.goLogin();
+    this.auth.signIn();
   };
 
   validarInicioSesion(): any {

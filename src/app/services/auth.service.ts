@@ -80,7 +80,7 @@ export class AuthService {
       .catch(() => this.store.dispatch(authActions.unSetUser()));
   };
 
-  goLogin = () => {
+  signIn = () => {
     window.location.assign(environment.urlExternalLogin);
   };
 
@@ -109,14 +109,14 @@ export class AuthService {
   };
 
   cleanStates = () => {
-    //this.store.dispatch(authActions.unSetUser());
+    this.store.dispatch(authActions.unSetUser());
   };
 
   getToken = (): String => {
     return localStorage.getItem('access');
   };
 
-  signIn = async () => {
+  login = async () => {
     await Auth.federatedSignIn({ customProvider: 'SAML' });
   };
 

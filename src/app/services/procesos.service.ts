@@ -41,28 +41,18 @@ export class ProcesosService {
       'Content-Type': 'application/json'
     }
 
-    return this.http.post(endpoint, config.data, {headers}).toPromise().then(function (response) {
-      //console.log(JSON.stringify(response.data));
-      /*
-      {"message":"AIMS y EXCEDENTES start"}
-       */
-      //response = response.data;
+    return this.http.post(endpoint, config.data, { headers }).toPromise().then(function (response) {
       return response = {
         codigo: 'EXITO',
         descripcion: 'La solicitud fue exitosa.'
       };
     })
-    .catch(function (error) {
-      //console.log(JSON.stringify(error));
-      //response = error;
-      return response = {
-        codigo: 'FALLO',
-        descripcion: error.message
-      };
-      //console.log(response);
-    });
-;
-
-   
+      .catch(function (error) {
+        return response = {
+          codigo: 'FALLO',
+          descripcion: error.message
+        };
+      });
+    ;
   }
 }

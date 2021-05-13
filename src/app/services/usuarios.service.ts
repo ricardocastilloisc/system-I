@@ -519,11 +519,11 @@ ayuda de atibutos: {Name: "sub", Value: "42ae1b55-8029-4a09-8c81-8c805c650aaf"}
       for (var i = 0; i < usuarios.Users.length; i++) {
         if (
           usuarios.Users[i]['Attributes'].find(
-            (fruta) => fruta.Name === 'custom:rol'
+            (elemento) => elemento.Name === 'custom:rol'
           )
         ) {
           var atrPermiso = usuarios.Users[i]['Attributes'].find(
-            (fruta) => fruta.Name === 'custom:rol'
+            (elemento) => elemento.Name === 'custom:rol'
           )['Value'];
           if (atrPermiso === permiso) {
             result.push(usuarios.Users[i]);
@@ -536,11 +536,11 @@ ayuda de atibutos: {Name: "sub", Value: "42ae1b55-8029-4a09-8c81-8c805c650aaf"}
       for (var i = 0; i < usuarios.Users.length; i++) {
         if (
           usuarios.Users[i]['Attributes'].find(
-            (fruta) => fruta.Name === 'custom:negocio'
+            (elemento) => elemento.Name === 'custom:negocio'
           )
         ) {
           var atrNegocio = usuarios.Users[i]['Attributes'].find(
-            (fruta) => fruta.Name === 'custom:negocio'
+            (elemento) => elemento.Name === 'custom:negocio'
           )['Value'];
           if (atrNegocio === negocio) {
             result.push(usuarios.Users[i]);
@@ -553,11 +553,11 @@ ayuda de atibutos: {Name: "sub", Value: "42ae1b55-8029-4a09-8c81-8c805c650aaf"}
       for (var i = 0; i < usuarios.Users.length; i++) {
         if (
           usuarios.Users[i]['Attributes'].find(
-            (fruta) => fruta.Name === 'email'
+            (elemento) => elemento.Name === 'email'
           )
         ) {
           var atrCorreo = usuarios.Users[i]['Attributes'].find(
-            (fruta) => fruta.Name === 'email'
+            (elemento) => elemento.Name === 'email'
           )['Value'];
           if (atrCorreo === correo) {
             result.push(usuarios.Users[i]);

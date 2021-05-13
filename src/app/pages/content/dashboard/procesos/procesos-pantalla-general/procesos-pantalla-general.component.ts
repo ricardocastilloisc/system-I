@@ -276,17 +276,19 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
       console.log(this.procesoEjecutar,correo, area, idEjecucion)
 
       try{
-        const response = await this.serviciosProcesos.iniciarProceso(this.procesoEjecutar, correo, area)
-        //console.log(response)
+        const response = await this.serviciosProcesos.iniciarProceso(this.procesoEjecutar, correo, area)        
 
         if(response.codigo == 'EXITO'){
           this.spinner.hide();
           this.modalMensaje("modalEstado","Se inicio el proceso")
 
-        } else {
+        } else if(response.descripcion.includes('401')){
+          this.authService.signOut();
+        }
+        else {
 
           this.spinner.hide();
-          console.log(response)
+          console.log(response);
           this.modalMensaje("modalEstado","Error al ejecutar proceso: " +  response.descripcion)
 
         }
