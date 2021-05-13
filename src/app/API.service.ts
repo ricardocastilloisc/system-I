@@ -714,6 +714,23 @@ export type QuerySiaGenAudEstadoProcesosDevsByINTERFAZIndexQuery = {
   nextToken?: string | null;
 };
 
+export type ListSiaGenAudEstadoProcesosDevsPorFechaQuery = {
+  __typename: "SiaGenAudEstadoProcesosDevConnection";
+  items?: Array<{
+    __typename: "SiaGenAudEstadoProcesosDev";
+    ESTADO?: string | null;
+    ESTADO_EJECUCION?: string | null;
+    ETAPA?: string | null;
+    FECHA_ACTUALIZACION?: string | null;
+    FECHA_CREADO?: string | null;
+    ID_PROCESO: string;
+    INSUMO?: string | null;
+    INTERFAZ?: string | null;
+    TIPO_PROCESO?: string | null;
+  } | null> | null;
+  nextToken?: string | null;
+};
+
 export type OnCreateAUDGENUSUARIOSSubscription = {
   __typename: "AUDGENUSUARIOS";
   ID: string;
@@ -1830,6 +1847,38 @@ export class APIService {
     )) as any;
     return <QuerySiaGenAudEstadoProcesosDevsByINTERFAZIndexQuery>(
       response.data.querySiaGenAudEstadoProcesosDevsByINTERFAZIndex
+    );
+  }
+  async ListSiaGenAudEstadoProcesosDevsPorFecha(
+    FECHA?: string
+  ): Promise<ListSiaGenAudEstadoProcesosDevsPorFechaQuery> {
+    const statement = `query ListSiaGenAudEstadoProcesosDevsPorFecha($FECHA: String) {
+        listSiaGenAudEstadoProcesosDevsPorFecha(FECHA: $FECHA) {
+          __typename
+          items {
+            __typename
+            ESTADO
+            ESTADO_EJECUCION
+            ETAPA
+            FECHA_ACTUALIZACION
+            FECHA_CREADO
+            ID_PROCESO
+            INSUMO
+            INTERFAZ
+            TIPO_PROCESO
+          }
+          nextToken
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {};
+    if (FECHA) {
+      gqlAPIServiceArguments.FECHA = FECHA;
+    }
+    const response = (await API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    )) as any;
+    return <ListSiaGenAudEstadoProcesosDevsPorFechaQuery>(
+      response.data.listSiaGenAudEstadoProcesosDevsPorFecha
     );
   }
   OnCreateAUDGENUSUARIOSListener(

@@ -220,3 +220,19 @@ query QuerySiaGenAudEstadoProcesosDevsByINTERFAZIndex(
     nextToken
   }
 }
+query ListSiaGenAudEstadoProcesosDevsPorFecha($FECHA: String) {
+  listSiaGenAudEstadoProcesosDevsPorFecha(FECHA: $FECHA) {
+    items {
+      ESTADO
+      ESTADO_EJECUCION
+      ETAPA
+      FECHA_ACTUALIZACION
+      FECHA_CREADO
+      ID_PROCESO
+      INSUMO
+      INTERFAZ
+      TIPO_PROCESO
+    }
+    nextToken
+  }
+}
