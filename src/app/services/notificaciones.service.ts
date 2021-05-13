@@ -15,7 +15,7 @@ export class NotificacionesService {
   obtenerListadoDeNotificaciones = () => {
 
 
-    this.api.ListSiaGenAudEstadoProcesosDevsPorFecha(moment('8:00', 'HH:mm').format().toString()).then(({ items }) => {
+    this.api.ListSiaGenAudEstadoProcesosDevsPorFecha(moment('7:59', 'HH:mm').format().toString()).then(({ items }) => {
 
       let ArrayItems = [
         ...items.filter((e) => e.ESTADO === 'EXITOSO'),
