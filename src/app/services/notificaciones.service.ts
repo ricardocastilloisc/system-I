@@ -13,13 +13,9 @@ export class NotificacionesService {
   constructor(private api: APIService, private store: Store<AppState>) {}
 
   obtenerListadoDeNotificaciones = () => {
-    let body = {
-      FECHA_ACTUALIZACION: {
-        gt: moment('8:00', 'HH:mm').format().toString(),
-      },
-    };
 
-    this.api.ListSiaGenAudEstadoProcesosDevs(body).then(({ items }) => {
+
+    this.api.ListSiaGenAudEstadoProcesosDevsPorFecha(moment('8:00', 'HH:mm').format().toString()).then(({ items }) => {
 
       let ArrayItems = [
         ...items.filter((e) => e.ESTADO === 'EXITOSO'),
