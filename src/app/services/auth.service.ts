@@ -13,9 +13,9 @@ import { Router } from '@angular/router';
 import { EArea } from '../validators/roles';
 import { setUserArea } from '../ReduxStore/actions/usuario.actions';
 
-try{
+try {
   Amplify.configure(environment.amplifyConfig);
-} catch (e){
+} catch (e) {
   console.log('Error Amplify Configuration: ', e);
 }
 
@@ -23,7 +23,7 @@ try{
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private store: Store<AppState>, private router: Router) { }
+  constructor(private store: Store<AppState>, private router: Router) {}
 
   initAuthData = () => {
     Auth.currentAuthenticatedUser()
@@ -31,22 +31,50 @@ export class AuthService {
         //console.log("AUTH SERVICE");
         //console.log(JSON.stringify(result));
         if (result.getSignInUserSession().isValid()) {
-          const user = Usuario.fromAmplify(
-            new User(result)
-          );
+          const user = Usuario.fromAmplify(new User(result));
           if (!this.getToken()) {
-            localStorage.setItem('access', (await Auth.currentSession()).getAccessToken().getJwtToken().toString());
+            localStorage.setItem(
+              'access',
+              (await Auth.currentSession())
+                .getAccessToken()
+                .getJwtToken()
+                .toString()
+            );
           }
-          console.log(user.attributes);
-//https://up37qokwrj.execute-api.us-east-1.amazonaws.com/dev/sia/catalogos?negocio=afore&area=custodia,contabilidad
-         //cognito:groups
-         //cognito:username
+          //https://up37qokwrj.execute-api.us-east-1.amazonaws.com/dev/sia/catalogos?negocio=afore&area=custodia,contabilidad
+    
+          const areas = [
+            EArea.Tesoreria,
+            EArea.Inversiones_Riesgos,
+            EArea.Contabilidad,
+            EArea.Custodia,
+            EArea.Soporte,
+          ];
+
+          let areasStore = [];
+          user.attributes['cognito:groups'].forEach((e) => {
+            if (areas.includes(e)) {
+              areasStore.push(e);
+            }
+          });
+
+          localStorage.setItem(
+            'area',
+            areasStore.toString()
+          );
+
+          localStorage.setItem(
+            'negocio',
+            user.attributes['custom:negocio']
+          );
 
           this.store.dispatch(authActions.setUser({ user }));
           let area = this.obtenerArea();
-          this.store.dispatch(setUserArea({
-            area: area
-          }))
+          this.store.dispatch(
+            setUserArea({
+              area: area,
+            })
+          );
         } else {
           this.store.dispatch(authActions.unSetUser());
         }
@@ -84,16 +112,15 @@ export class AuthService {
 
   cleanStates = () => {
     //this.store.dispatch(authActions.unSetUser());
-  }
+  };
 
   getToken = (): String => {
     return localStorage.getItem('access');
-  }
+  };
 
   signIn = async () => {
-    await Auth.federatedSignIn({ customProvider: "SAML" });
-  }
-
+    await Auth.federatedSignIn({ customProvider: 'SAML' });
+  };
 
   rolesValids = (User: Usuario, roles: any[], Area?): boolean => {
     let flagValidate = false;
@@ -102,16 +129,14 @@ export class AuthService {
     } else {
       if (Area) {
         if (roles.includes(User.attributes['custom:rol']) && Area == 'SOPORTE')
-          console.log('entre al area')
+          console.log('entre al area');
         flagValidate = true;
-      } else
-        if (roles.includes(User.attributes['custom:rol'])) {
-          flagValidate = true;
-        }
+      } else if (roles.includes(User.attributes['custom:rol'])) {
+        flagValidate = true;
+      }
     }
     return flagValidate;
-  }
-
+  };
 
   perfilValido = (User: Usuario, roles: any[]): boolean => {
     //console.log("perfilValido");
@@ -122,15 +147,15 @@ export class AuthService {
       EArea.Custodia,
       EArea.Inversiones_Riesgos,
       EArea.Tesoreria,
-      EArea.Soporte
+      EArea.Soporte,
     ];
     User.groups.forEach((area) => {
-      Areas.forEach(areaDef => {
+      Areas.forEach((areaDef) => {
         if (area === areaDef) {
           arrayTempArea.push(area);
         }
-      })
-    })
+      });
+    });
     if (arrayTempArea.length > 0) {
       //console.log(arrayTempArea[0]);
       if (arrayTempArea[0] === 'Soporte') {
@@ -144,28 +169,31 @@ export class AuthService {
           }
         }
       }
-    }
-    else {
+    } else {
       flagValidate = false;
     }
     return flagValidate;
-  }
+  };
 
   obtenerArea(): any {
     let area = '';
     let arrayTempArea = [];
-    let areas = [    EArea.Contabilidad,
+    let areas = [
+      EArea.Contabilidad,
       EArea.Custodia,
       EArea.Inversiones_Riesgos,
       EArea.Tesoreria,
-      EArea.Soporte,];
-    this.store.select(({ usuario }) => usuario.user.groups).subscribe(res => {
-      res.forEach(item => {
-        if (areas.includes(item)) {
-          arrayTempArea.push(item);
-        }
-      })
-    });
+      EArea.Soporte,
+    ];
+    this.store
+      .select(({ usuario }) => usuario.user.groups)
+      .subscribe((res) => {
+        res.forEach((item) => {
+          if (areas.includes(item)) {
+            arrayTempArea.push(item);
+          }
+        });
+      });
     area = arrayTempArea.join(', ');
     return area;
   }
