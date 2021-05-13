@@ -1,41 +1,55 @@
 <section id="optionshome">
   <div class="container-fluid">
     <div class="d-flex" style="height: 75vh; width: 100%">
-      <div class="row" style="width: 100%;">
-        <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12" >
-          <div class="card  cardAzul" style="padding-left: 10px;">
+      <div class="row" style="width: 100%">
+        <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+          <div class="card cardAzul" style="padding-left: 10px">
             <div class="card-body cardCatalogos">
               <div class="d-flex flex-column">
                 <div>
-                  <div
-                    class="elementsMenus d-flex flex-column">
+                  <div class="elementsMenus d-flex flex-column">
                     <div>
                       <ul class="acomodardorDeLista">
-                        <li class="tituloPrincipalCatalogos"><span class="spanColorCatalogosListaTituloPricipal">Afores</span></li>
+                        <li class="tituloPrincipalCatalogos">
+                          <span class="spanColorCatalogosListaTituloPricipal"
+                            >Afores</span
+                          >
+                        </li>
                         <ul class="acomodardorDeLista">
-                          <li class="subtitulosCatalogos">Portafolios</li>
-                          <li class="subtitulosCatalogos">Indice rentabilidad</li>
-                          <li class="subtitulosCatalogos">Benchmark</li>
-                          <li class="subtitulosCatalogos">Nuevos instrumentos</li>
-                          <li class="subtitulosCatalogos">Archivos / Interfaces</li>
-                          <ul class="acomodardorDeLista">
-                            <li class="tituloPrincipalCatalogos"><span class="spanColorCatalogosListaTituloPricipal">Movimientos de Operaciones (MO)</span></li>
+                          <li
+                            class="subtitulosCatalogos"
+                            *ngFor="let AforesGen of AforesGens"
+                          >
+                            {{ AforesGen.NOMBRE }}
+                          </li>
+                          <ul
+                            class="acomodardorDeLista"
+                            *ngFor="let AforesSub of AforesSubs"
+                          >
+                            <li class="tituloPrincipalCatalogos">
+                              <span
+                                class="spanColorCatalogosListaTituloPricipal"
+                                >{{ AforesSub.INTERFAZ }}</span
+                              >
+                            </li>
                             <ul class="acomodardorDeLista">
-                              <li class="subtitulosCatalogos">Contrapartes</li>
-                              <li class="subtitulosCatalogos">Campos personalizados</li>
+                              <li
+                                class="subtitulosCatalogos"
+                                *ngFor="let SUBMENU of AforesSub.SUBMENUS"
+                              >
+                                {{ SUBMENU.NOMBRE }}
+                              </li>
                             </ul>
                           </ul>
                         </ul>
                       </ul>
                     </div>
                   </div>
-
                 </div>
               </div>
             </div>
           </div>
         </div>
-
       </div>
     </div>
   </div>

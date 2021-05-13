@@ -3,4 +3,5 @@ export interface CATALOGO_INTERFACE {
   INTERFAZ: string;
   NEGOCIO: string;
   NOMBRE: string;
+  NOMBRE_NEGOCIO:string;
 }

@@ -888,3 +888,7 @@ table.listado-design-general td {
 }
 
 
+.subtitulosCatalogos:hover {
+  cursor: pointer;
+  text-decoration-line: underline;
+}
