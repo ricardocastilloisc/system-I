@@ -221,8 +221,6 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
   consultar(idProceso, titulo): void {
     this.guardarDescripcionProceso(titulo);
     this.router.navigate(['/' + window.location.pathname + '/' + idProceso]);
-
-    
   }
 
   openModal(content, nombreProceso){
@@ -289,7 +287,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
 
           this.spinner.hide();
           console.log(response)
-          this.modalMensaje("modalEstado","Error al ejecutar proceso")
+          this.modalMensaje("modalEstado","Error al ejecutar proceso: " +  response.descripcion)
 
         }
 
