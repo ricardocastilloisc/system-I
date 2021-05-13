@@ -37,6 +37,11 @@ export class AuthService {
           if (!this.getToken()) {
             localStorage.setItem('access', (await Auth.currentSession()).getAccessToken().getJwtToken().toString());
           }
+          console.log(user.attributes);
+//https://up37qokwrj.execute-api.us-east-1.amazonaws.com/dev/sia/catalogos?negocio=afore&area=custodia,contabilidad
+         //cognito:groups
+         //cognito:username
+
           this.store.dispatch(authActions.setUser({ user }));
           let area = this.obtenerArea();
           this.store.dispatch(setUserArea({
@@ -49,7 +54,7 @@ export class AuthService {
       .catch(() => this.store.dispatch(authActions.unSetUser()));
   };
 
-  goLogin = () => {    
+  goLogin = () => {
     window.location.assign(environment.urlExternalLogin);
   };
 
@@ -71,7 +76,7 @@ export class AuthService {
     });
   };
 
-  signOut = () => {    
+  signOut = () => {
     localStorage.clear();
     this.cleanStates();
     this.router.navigate(['/login']);

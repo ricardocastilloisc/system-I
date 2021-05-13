@@ -25,7 +25,10 @@ export const environment = {
         responseType: "token"
       },
     }
-  },//https://dev.d23mbxjbgl0msz.amplifyapp.com/
+  },
+  ENPOINT_RES:{
+    catalogos: "https://up37qokwrj.execute-api.us-east-1.amazonaws.com/dev/sia/"
+  },
   API: {
     endpoints: [
       {
