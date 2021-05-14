@@ -838,6 +838,7 @@ table.listado-design-general td {
 
 .cardCatalogos {
   height: 515px;
+  overflow: auto;
   background: #ffffff 0% 0% no-repeat padding-box;
   box-shadow: 4px 4px 10px #00000029;
   border-radius: 30px;
