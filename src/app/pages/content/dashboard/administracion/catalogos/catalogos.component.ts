@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../../ReduxStore/app.reducers';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-catalogos',
@@ -13,10 +14,21 @@ export class CatalogosComponent implements OnInit, OnDestroy {
 
   AforesGens = [];
   AforesSubs = [];
-  constructor(private store: Store<AppState>) {}
+  constructor(
+    private store: Store<AppState>,
+    private router: Router,) {}
 
   ngOnDestroy(): void {
     this.catalogos$.unsubscribe();
+  }
+
+  goDetailCat = (negocioCat,nameCat) =>{
+
+    localStorage.setItem(
+      'nameCat',
+      nameCat
+    );
+    this.router.navigate(['/' + window.location.pathname + '/' + negocioCat]);
   }
 
   ngOnInit(): void {

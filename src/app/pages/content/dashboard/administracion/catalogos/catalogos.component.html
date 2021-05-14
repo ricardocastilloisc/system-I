@@ -19,7 +19,10 @@
                           <li
                             class="subtitulosCatalogos"
                             *ngFor="let AforesGen of AforesGens"
+                            (click)="goDetailCat(AforesGen.NOMBRE_NEGOCIO, AforesGen.NOMBRE)"
                           >
+
+                          <span (click)="goDetailCat(AforesGen.NOMBRE_NEGOCIO, AforesGen.NOMBRE)"> {{ AforesGen.NOMBRE_NEGOCIO }}</span>
                             {{ AforesGen.NOMBRE_NEGOCIO }}
                           </li>
                           <ul
@@ -36,8 +39,9 @@
                               <li
                                 class="subtitulosCatalogos"
                                 *ngFor="let SUBMENU of AforesSub.SUBMENUS"
-                              >
-                                {{ SUBMENU.NOMBRE_NEGOCIO }}
+                                (click)="goDetailCat(SUBMENU.NOMBRE_NEGOCIO, SUBMENU.NOMBRE)"
+                              > <span (click)="goDetailCat(SUBMENU.NOMBRE_NEGOCIO, SUBMENU.NOMBRE)"> {{ SUBMENU.NOMBRE_NEGOCIO }}</span>
+
                               </li>
                             </ul>
                           </ul>
