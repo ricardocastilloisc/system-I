@@ -272,9 +272,9 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
         if (response.codigo == 'EXITO') {
           this.spinner.hide();
           this.modalMensaje("modalEstado", "Se inicio el proceso")
-        } else if (response.descripcion.includes('401')) {
-          this.modalService.dismissAll();
+        } else if (response.descripcion.includes('401')) {          
           this.spinner.hide();
+          this.modalService.dismissAll();
           this.authService.signOut();
         }
         else {
