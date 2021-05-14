@@ -15,7 +15,7 @@ import { CATPERMISOS_INTERFACE } from 'src/app/model/CATPERMISOS.model'
 import { LoadCATPROCESOS, UnsetCATPROCESO, LoadCATPERMISOS, UnsetCATPERMISO, LoadAUDGENESTADOPROCESOS } from 'src/app/ReduxStore/actions';
 import { Usuario } from '../../../../../model/usuario.model';
 import { ProcesosService } from '../../../../../services/procesos.service'
-import {v4 as uuidv4} from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { EArea, ERole } from './../../../../../validators/roles';
 import { UsuariosService } from 'src/app/services/usuarios.service';
@@ -28,7 +28,7 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./procesos-pantalla-general.component.css'],
 })
 
-export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
+export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
 
 
   @ViewChild('modalEstado') templateRef: TemplateRef<any>;
@@ -71,7 +71,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
   Administrador = ERole.Administrador;
   Ejecutor = ERole.Monitor;
 
-  DataUser:  Usuario;
+  DataUser: Usuario;
   PROCESOS = new Array();
   constructor(
     private router: Router,
@@ -105,7 +105,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
     this.DataUser$ = this.store.select(({ usuario }) => usuario.user);
 
 
-    this.store.select(({ usuario }) => usuario.user).subscribe(res => {this.DataUser = res});
+    this.store.select(({ usuario }) => usuario.user).subscribe(res => { this.DataUser = res });
 
     this.area = this.obtenerArea();
 
@@ -114,11 +114,11 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
 
     this.negocios = this.DataUser.attributes["custom:negocio"].split(',')
 
-    this.negocios = this.negocios.map(negocio => {return negocio.toUpperCase()})
+    this.negocios = this.negocios.map(negocio => { return negocio.toUpperCase() })
 
 
-    let bodyProcesos =   {
-      filter:{​​​​​ TIPO: {​​​​​ eq: this.tipo.toUpperCase()}}​​​​​,
+    let bodyProcesos = {
+      filter: { TIPO: { eq: this.tipo.toUpperCase() } },
       limit: 1000
     }
 
@@ -136,8 +136,8 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
     // ).subscribe(res => this.CATPERMISOS = res)
 
 
-    this.api.ListCATPERMISOS(this.negocios ,this.area, this.DataUser.attributes["custom:rol"].toUpperCase()).then(res => console.log('resultado',res))
-    this.store.dispatch(LoadCATPROCESOS({consult:bodyProcesos}));
+    this.api.ListCATPERMISOS(this.negocios, this.area, this.DataUser.attributes["custom:rol"].toUpperCase()).then(res => console.log('resultado', res))
+    this.store.dispatch(LoadCATPROCESOS({ consult: bodyProcesos }));
 
 
 
@@ -150,26 +150,28 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
     )
 
 
-    this.store.dispatch(LoadCATPERMISOS({consult:bodyPermisos}));
+    this.store.dispatch(LoadCATPERMISOS({ consult: bodyPermisos }));
 
   }
 
-  obtenerProcesos(catProcesos: Array<CATPROCESOS_INTERFACE>, catPermisos: Array<CATPERMISOS_INTERFACE>){
+  obtenerProcesos(catProcesos: Array<CATPROCESOS_INTERFACE>, catPermisos: Array<CATPERMISOS_INTERFACE>) {
 
     let tempArray = new Array()
-     //console.log(catProcesos)
-     //console.log(catPermisos)
+    //console.log(catProcesos)
+    //console.log(catPermisos)
 
     catProcesos.forEach(proceso => {
 
-      catPermisos.forEach( permiso => {
-        if(permiso.FLUJO == proceso.PROCESO)
+      catPermisos.forEach(permiso => {
+        if (permiso.FLUJO == proceso.PROCESO)
 
-        tempArray.push({"DESCRIPCION": proceso.DESCRIPCION,
-                        "PROCESO": proceso.PROCESO,
-                        "DETENER": permiso.PROCESOS.DETENER,
-                        "INICIAR": permiso.PROCESOS.INICIAR,
-                        "MONITOREAR": permiso.PROCESOS.MONITOREAR })
+          tempArray.push({
+            "DESCRIPCION": proceso.DESCRIPCION,
+            "PROCESO": proceso.PROCESO,
+            "DETENER": permiso.PROCESOS.DETENER,
+            "INICIAR": permiso.PROCESOS.INICIAR,
+            "MONITOREAR": permiso.PROCESOS.MONITOREAR
+          })
       }
 
       )
@@ -187,20 +189,19 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
 
 
 
-  obtenerArea(): string{
+  obtenerArea(): string {
     let arrayTempArea = [];
 
     this.DataUser.groups.forEach((area) => {
 
-        this.Areas.forEach(areaDef =>
-          {
-            if(area === areaDef){
-              arrayTempArea.push(area);
-            }
-          })
+      this.Areas.forEach(areaDef => {
+        if (area === areaDef) {
+          arrayTempArea.push(area);
+        }
+      })
 
     })
-    if(arrayTempArea.length > 0)
+    if (arrayTempArea.length > 0)
       return arrayTempArea[0].toUpperCase()
     else "N/D"
 
@@ -214,22 +215,22 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
       : false;
 
   };
-  refreshComponent() : void{
+  refreshComponent(): void {
     this.router.navigate([this.router.url])
- }
+  }
 
   consultar(idProceso, titulo): void {
     this.guardarDescripcionProceso(titulo);
     this.router.navigate(['/' + window.location.pathname + '/' + idProceso]);
   }
 
-  openModal(content, nombreProceso){
+  openModal(content, nombreProceso) {
     this.procesoEjecutar = nombreProceso;
 
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
   }
 
-  modalMensaje(content, mensajeEjecucion){
+  modalMensaje(content, mensajeEjecucion) {
 
     this.mensajeEjecucion = mensajeEjecucion;
 
@@ -242,7 +243,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
   }
 
 
-  async inciarProceso( correo: string, area: string) {
+  async inciarProceso(correo: string, area: string) {
 
     console.log(this.procesoEjecutar)
     let CATESTADOS;
@@ -253,7 +254,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
     this.spinner.show();
 
     let body = {
-      filter:{​​​​​ INTERFAZ: { eq: this.procesoEjecutar} }​​​​​,
+      filter: { INTERFAZ: { eq: this.procesoEjecutar } },
       limit: 10000000
     }
 
@@ -270,43 +271,32 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
 
 
 
-    if(this.CATESTADOS[0]?.ESTADO_EJECUCION === 'TERMINADO' || this.CATESTADOS === [] ){
+    if (this.CATESTADOS[0]?.ESTADO_EJECUCION === 'TERMINADO' || this.CATESTADOS === []) {
+      let idEjecucion = uuidv4();
+      console.log(this.procesoEjecutar, correo, area, idEjecucion)
+      try {
+        const response = await this.serviciosProcesos.iniciarProceso(this.procesoEjecutar, correo, area)
 
-      let idEjecucion  = uuidv4();
-      console.log(this.procesoEjecutar,correo, area, idEjecucion)
-
-      try{
-        const response = await this.serviciosProcesos.iniciarProceso(this.procesoEjecutar, correo, area)        
-
-        if(response.codigo == 'EXITO'){
+        if (response.codigo == 'EXITO') {
           this.spinner.hide();
-          this.modalMensaje("modalEstado","Se inicio el proceso")
-
-        } else if(response.descripcion.includes('401')){
+          this.modalMensaje("modalEstado", "Se inicio el proceso")
+        } else if (response.descripcion.includes('401')) {
+          this.modalService.dismissAll();
           this.authService.signOut();
         }
         else {
-
           this.spinner.hide();
           console.log(response);
-          this.modalMensaje("modalEstado","Error al ejecutar proceso: " +  response.descripcion)
-
+          this.modalMensaje("modalEstado", "Error al ejecutar proceso: " + response.descripcion)
         }
-
-      } catch(e){
-
-        this.modalMensaje("modalEstado","Error al ejecutar proceso")
+      } catch (e) {
+        this.modalMensaje("modalEstado", "Error al ejecutar proceso")
         console.log(e.message)
       }
-
-    }else if( this.CATESTADOS[0]?.ESTADO_EJECUCION === 'INICIADO') {
-      this.modalMensaje("modalEstado","El proceso se encuentra en ejecución")
-    
-    }else (
-
-      
-
-      this.modalMensaje("modalEstado","Error al ejecutar proceso")
+    } else if (this.CATESTADOS[0]?.ESTADO_EJECUCION === 'INICIADO') {
+      this.modalMensaje("modalEstado", "El proceso se encuentra en ejecución")
+    } else (
+      this.modalMensaje("modalEstado", "Error al ejecutar proceso")
     )
 
 
@@ -314,11 +304,9 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
       this.spinner.hide();
     }, 300);
 
-
-
   }
 
-  guardarDescripcionProceso(descripcion: string){
+  guardarDescripcionProceso(descripcion: string) {
     localStorage.setItem(
       'Titulo',
       JSON.stringify(descripcion)
@@ -330,7 +318,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit,OnDestroy {
   };
 
 
-  cerrarModales = () =>{
+  cerrarModales = () => {
     this.modalService.dismissAll();
   }
 
