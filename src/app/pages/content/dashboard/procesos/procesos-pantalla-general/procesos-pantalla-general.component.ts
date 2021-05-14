@@ -226,20 +226,12 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
 
   openModal(content, nombreProceso) {
     this.procesoEjecutar = nombreProceso;
-
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
   }
 
   modalMensaje(content, mensajeEjecucion) {
-
     this.mensajeEjecucion = mensajeEjecucion;
-
-
-
-
-
     this.modalService.open(this.templateRef, { ariaLabelledBy: 'modal-basic-title' });
-
   }
 
 
@@ -282,6 +274,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
           this.modalMensaje("modalEstado", "Se inicio el proceso")
         } else if (response.descripcion.includes('401')) {
           this.modalService.dismissAll();
+          this.spinner.hide();
           this.authService.signOut();
         }
         else {
