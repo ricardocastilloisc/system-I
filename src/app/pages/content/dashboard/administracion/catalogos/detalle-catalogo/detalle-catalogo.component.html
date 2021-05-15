@@ -1,17 +1,38 @@
 <div class="row justify-content-center">
-  <div class="d-flex col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12 justify-content-center">
+  <div
+    class="
+      d-flex
+      col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12
+      justify-content-center
+    "
+  >
     <div class="card-lista-design-general" style="overflow-x: auto">
-
-
       <table class="table listado-design-general">
         <tr>
-          <th style="padding-left: 40px; max-width: 100px">ID</th>
-          <th style="padding-left: 40px; max-width: 300px">Descripción</th>
-          <th style="padding-left: 40px; max-width: 150px">Valor</th>
-          <th style="padding-left: 40px; max-width: 150px"><p>Fecha actualización</p></th>
-          <th style="padding-left: 40px; max-width: 150px">Acciones</th>
+          <th scope="col" *ngFor="let colum of ColumDinamicData">
+            {{ removeCharterSpecialSringTh(colum.VALUE) }}
+          </th>
+          <th scope="col">Acciones</th>
         </tr>
-
+        <tr
+          *ngFor="
+            let DetailCat of DetailCats
+              | paginate
+                : {
+                    id: 'DetailCats',
+                    itemsPerPage: 10,
+                    currentPage: paginaDetailCats
+                  }
+          "
+        >
+          <td *ngFor="let colum of ColumDinamicData">
+            {{ transformDateOrString( DetailCat[colum.VALUE], colum.DATE )}}
+          </td>
+          <td>
+            <img style="cursor: pointer" class="editar-icon-catalog" />
+            <img style="cursor: pointer" class="eliminar-icon" />
+          </td>
+        </tr>
         <!--
 
 
@@ -20,9 +41,9 @@
               | oredenascEmailusurios: 'email'
               | paginate
                 : {
-                    id: 'Usuarios',
+                    id: 'DetailCats',
                     itemsPerPage: 10,
-                    currentPage: paginaActualUsuarios
+                    currentPage: paginaDetailCats
                   };
             index as i
           ">
@@ -60,16 +81,28 @@
       </table>
     </div>
   </div>
-<!--
-  <pagination-template id="Usuarios" #p="paginationApi" *ngIf="verPaginado()"
-    (pageChange)="paginaActualUsuarios = $event" class="ngx-pagination">
+
+  <pagination-template
+    id="DetailCats"
+    #p="paginationApi"
+    *ngIf="verPaginado()"
+    (pageChange)="paginaDetailCats = $event"
+    class="ngx-pagination"
+  >
     <div class="custom-pagination">
       <div class="pagination-previous" [class.disabled]="p.isFirstPage()">
-        <span *ngIf="!p.isFirstPage()" (click)="p.previous()">
-          << </span>
+        <span *ngIf="!p.isFirstPage()" (click)="p.previous()"> << </span>
       </div>
-      <div class="page-number" *ngFor="let page of p.pages" [class.current]="p.getCurrent() === page.value">
-        <span (click)="p.setCurrent(page.value)" *ngIf="p.getCurrent() !== page.value">{{ page.label }}</span>
+      <div
+        class="page-number"
+        *ngFor="let page of p.pages"
+        [class.current]="p.getCurrent() === page.value"
+      >
+        <span
+          (click)="p.setCurrent(page.value)"
+          *ngIf="p.getCurrent() !== page.value"
+          >{{ page.label }}</span
+        >
         <div *ngIf="p.getCurrent() === page.value">
           <span>{{ page.label }}</span>
         </div>
@@ -79,8 +112,8 @@
       </div>
     </div>
   </pagination-template>
- -->
-<!--
+
+  <!--
  <ng-template #content let-modal>
     <div class="modal-header">
       <h4 class="modal-title" id="modal-basic-title">
@@ -186,4 +219,4 @@
 
   </ng-template>
 </div>
--->
+--></div>

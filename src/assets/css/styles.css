@@ -349,6 +349,17 @@ a[data-toggle="collapse"] {
   margin: 0 15px;
   padding: 15px;
 }
+
+.editar-icon-catalog {
+  background: transparent url("../icons/Icono\ -\  editar.svg") 0% 0% no-repeat
+    padding-box;
+  width: 30px;
+  height: 30px;
+  opacity: 1;
+  margin: 0;
+  margin-right: 4px;
+  padding: 15px;
+}
 .eliminar-icon {
   background: transparent url("../icons/azulEliminar.svg") 0% 0% no-repeat
     padding-box;
@@ -389,20 +400,20 @@ img.alineadoTextoImagenCentro {
 .alineadoTextoIzquierda {
   text-align: left;
   margin-top: 15px;
-  line-height: 5px;
+ /* line-height: 5px;*/
   color: #00c4d9;
 }
 
 .alineadoTextoIzquierdaAzul {
   text-align: left;
   margin-top: 15px;
-  line-height: 5px;
+ /* line-height: 5px;*/
   color: #0091da;
 }
 .alineadoTextoIzquierdaMorado {
   text-align: left;
   margin-top: 15px;
-  line-height: 5px;
+ /* line-height: 5px; */
   color: #7c69c3;
 }
 

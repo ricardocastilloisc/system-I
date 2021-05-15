@@ -57,11 +57,16 @@ div.card-lista-design-general {
 }
 
 table.listado-design-general th {
-  background-color: #0A8299;
+  background-color: #0a8299;
   font: bold 18px FS Elliot Pro;
   height: 40px;
   height: 40px;
   font: bold 18px FS Elliot Pro;
+}
+
+table.listado-design-general {
+  margin-left: 1% !important;
+  margin-right: 1% !important;
 }
 
 section {
@@ -110,16 +115,21 @@ section {
   text-decoration: underline #67dce8 !important;
   color: #67dce8 !important;
 }
-.limpiarFiltro:hover{
+.limpiarFiltro:hover {
   cursor: pointer;
 }
 
-.tamanioFiltroIcono{
-  width:12px;
-  height:12px;
+.tamanioFiltroIcono {
+  width: 12px;
+  height: 12px;
   margin-top: -4px;
 }
 
-.modal-content{
+.modal-content {
   background-color: red !important;
+}
+
+.row {
+  margin-right: 0;
+  margin-left: 0;
 }
