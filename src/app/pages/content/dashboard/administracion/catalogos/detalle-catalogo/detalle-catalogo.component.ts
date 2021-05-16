@@ -9,6 +9,7 @@ import {
   unSetDetailCatalogos,
 } from '../../../../../../ReduxStore/actions/catalogos/catalogoDetail.actions';
 import { Subscription } from 'rxjs';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-detalle-catalogo',
@@ -24,6 +25,8 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
   DetailCats: any = [];
 
   paginaDetailCats: number = 1;
+
+  FormsDinamic: FormGroup;
 
   constructor(
     private CatalogosService: CatalogosService,
@@ -86,6 +89,12 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
       this.store.dispatch(cargarDetailCatalogos());
     });
   };
+
+
+  makeFormsDinamic  = () => {
+    this.FormsDinamic = null;
+    this.FormsDinamic = new FormGroup({})
+  }
 
   verPaginado = () => {
     if (this.DetailCats) {
