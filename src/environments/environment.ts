@@ -41,7 +41,7 @@ export const environment = {
       },
       {
         name: 'MD',
-        endpoint: 'https://yyzloium49.execute-api.us-east-1.amazonaws.com/apis/sia/afore/md/mock'
+        endpoint: 'https://irrsf7x9q7.execute-api.us-east-1.amazonaws.com/apis/sia/afore/md'
       }
     ],
   },
