@@ -349,6 +349,17 @@ a[data-toggle="collapse"] {
   margin: 0 15px;
   padding: 15px;
 }
+
+.editar-icon-catalog {
+  background: transparent url("../icons/Icono\ -\  editar.svg") 0% 0% no-repeat
+    padding-box;
+  width: 30px;
+  height: 30px;
+  opacity: 1;
+  margin: 0;
+  margin-right: 4px;
+  padding: 15px;
+}
 .eliminar-icon {
   background: transparent url("../icons/azulEliminar.svg") 0% 0% no-repeat
     padding-box;
@@ -389,20 +400,20 @@ img.alineadoTextoImagenCentro {
 .alineadoTextoIzquierda {
   text-align: left;
   margin-top: 15px;
-  line-height: 5px;
+  /* line-height: 5px;*/
   color: #00c4d9;
 }
 
 .alineadoTextoIzquierdaAzul {
   text-align: left;
   margin-top: 15px;
-  line-height: 5px;
+  /* line-height: 5px;*/
   color: #0091da;
 }
 .alineadoTextoIzquierdaMorado {
   text-align: left;
   margin-top: 15px;
-  line-height: 5px;
+  /* line-height: 5px; */
   color: #7c69c3;
 }
 
@@ -862,19 +873,19 @@ table.listado-design-general td {
   list-style-type: circle;
 
   content: "\00B0";
-  color: #0A8299;
+  color: #0a8299;
   /*
   */
 }
 
-.spanColorCatalogosListaTituloPricipal{
+.spanColorCatalogosListaTituloPricipal {
   opacity: 1;
   color: #707070;
 }
 
-.acomodardorDeLista{
+.acomodardorDeLista {
   padding: 0;
-  margin:0;
+  margin: 0;
   padding-left: 10px;
 }
 
@@ -888,8 +899,83 @@ table.listado-design-general td {
   opacity: 1;
 }
 
-
 .subtitulosCatalogos:hover {
   cursor: pointer;
   text-decoration-line: underline;
 }
+
+.agregarRegistro {
+  background: #00c4d9 0% 0% no-repeat padding-box;
+  border-radius: 30px;
+  opacity: 1;
+  text-decoration: none;
+  height: 48px;
+  padding-left: 62px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  padding-right: 62px;
+  color: #fff;
+  font: normal normal bold 20px/25px FS Elliot Pro;
+}
+.btnAgregarRegistro {
+  background: #00c4d9 0% 0% no-repeat padding-box;
+  border-radius: 30px;
+  opacity: 1;
+  text-decoration: none;
+  height: 48px;
+  padding-left: 110px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  padding-right: 110px;
+  color: #fff;
+  font: normal normal bold 20px/25px FS Elliot Pro;
+}
+
+.agregarRegistroCard {
+  background: #ffffff 0% 0% no-repeat padding-box;
+  box-shadow: 4px 4px 10px #00000033;
+  border-radius: 30px;
+  opacity: 1;
+}
+
+.texto-agregarRegistroCardTitle {
+  text-align: center;
+  font: normal normal bold 20px/45px FS Elliot Pro;
+  letter-spacing: 0px;
+  color: #0a8299;
+  opacity: 1;
+}
+
+.labelFormAgregarRegistro {
+  font: normal normal normal 14px/45px FS Elliot Pro;
+  color: #707070;
+  opacity: 1;
+}
+
+
+.btnAgregarCancelarRegistro {
+  border: 2px solid #00c4d9;
+  border-radius: 30px;
+  opacity: 1;
+  text-decoration: none;
+  height: 48px;
+  padding-left: 110px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  padding-right: 110px;
+  color: #00c4d9;
+  font: normal normal bold 20px/25px FS Elliot Pro;
+}
+/*
+
+border: 2px solid #00c4d9;
+  border-radius: 30px;
+  opacity: 1;
+  width: 184px;
+  text-decoration: none;
+  height: 48px;
+  color: #00c4d9;
+  margin-right: 22px;
+  font: normal normal bold 20px/25px FS Elliot Pro;
+
+*/

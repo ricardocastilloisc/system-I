@@ -6,6 +6,8 @@ import { APIService } from '../../../API.service';
 import { NotificacionesService } from '../../../services/notificaciones.service';
 import { cargarCatalogos, unSetCatalogos } from '../../../ReduxStore/actions/catalogos/catalogos.actions';
 import { Store } from '@ngrx/store';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,10 +15,14 @@ import { Store } from '@ngrx/store';
   styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
+
+  LoadingDetailCatalogos$: Subscription;
+
   constructor(
     private api: APIService,
     private store: Store<AppState>,
-    private NotificacionesService: NotificacionesService
+    private NotificacionesService: NotificacionesService,
+    private spinner: NgxSpinnerService
     ) { }
   ngOnDestroy(): void {
     this.store.dispatch(unSetCatalogos());
@@ -35,7 +41,15 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
       this.NotificacionesService.obtenerListadoDeNotificaciones();
     }, 50000);
 
-
+    this.LoadingDetailCatalogos$ = this.store
+    .select(({ DetailCatalogos }) => DetailCatalogos.loading)
+    .subscribe((res) => {
+      if (res) {
+        this.spinner.show();
+      } else {
+        this.spinner.hide();
+      }
+    });
 
 
     this.api.OnDeleteCATPROCESOSListener().subscribe((res) => {

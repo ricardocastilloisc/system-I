@@ -4,14 +4,14 @@
         <div class="row justify-content-center">
             <div class="titulo-proceso">{{titulo}}</div>
         </div>
-        
+
         <div class="row justify-content-center" *ngIf="!ocultarbusqueda">
 
             <div class="d-flex col-md-9 col-xs-9 col-sm-9 col-lg-9 mr-9 col-9 align-items-center justify-content-center">
-            
+
                 <div class="card-calendario">
 
-                
+
 
                     <div class="mt-4">Buscar por</div>
                     <!-- <div style="
@@ -25,24 +25,24 @@
                         <img src="assets/icons/Eliminar.svg" class="tamanioFiltroIcono" /></a>
                     </div> -->
 
-                    
+
                     <div>
                         <form [formGroup]="filtroEjecucionesForm">
                         <section class="mt-3">
 
-                            <div class="row align-items-center justify-content-center"> 
-                                
-                                <div class="col-11 inputs-busqueda">
-                                
-                                    
+                            <div class="row align-items-center justify-content-center">
 
-                                    
+                                <div class="col-11 inputs-busqueda">
+
+
+
+
 
                                     <div class="col-4">
                                         <input style="width: 100%; padding-left: 10px" type="date" placeholder="dd-MM-yyyy" onfocus="(this.type='date')"
                                             formControlName="fechaFiltrar" id="fechaFiltrar" name="fechaFiltrar" [value]="maxDate"
                                             max="{{ maxDate| date:'yyyy-MM-dd'}}" />
-            
+
                                     </div>
                                     <div class="col-4">
                                         <input  style="width: 100%; padding-left: 10px" type="text" placeholder="ID de ejecución" formControlName="idProceso" id="idProceso"
@@ -51,17 +51,17 @@
                                     <div class="col-4">
                                         <button  class="clickable" (click)="busquedaFiltros()">Buscar</button>
                                     </div>
-                                    
+
                                 </div>
-                            
+
                             </div>
                             <div class="row">
-                                
+
                             </div>
 
                         </section>
                     </form>
-                    
+
                     </div>
 
                     <div style="
@@ -81,8 +81,8 @@
             </div>
 
         </div>
-        
-            
+
+
 
         <!-- <div class="d-flex col-md-9 col-xs-9 col-sm-9 col-lg-9 mr-9 col-9 align-items-center justify-content-center">
 
@@ -90,11 +90,11 @@
 
         <div class="row justify-content-center" *ngIf="!ocultarbusqueda">
             <div class="d-flex col-md-9 col-xs-9 col-sm-9 col-lg-9 mr-9 col-9 align-items-center justify-content-center">
-            
+
                     <div class="card-calendario">
                         <section class="mt-3">
 
-                        
+
                         <form style="width: 100%;" [formGroup]="filtroEjecucionesForm">
                         <div style="
                             text-align: right;
@@ -112,7 +112,7 @@
                             <div style="
                         text-align: center;
                         width: 100%;
-                        justify-content: center;                    
+                        justify-content: center;
                         ">
                                 Selecciona una fecha
                             </div>
@@ -122,30 +122,30 @@
                                 <input  style="width: 100%; padding-left: 10px" type="date" placeholder="dd-MM-yyyy" onfocus="(this.type='date')"
                                     formControlName="fechaFiltrar" id="fechaFiltrar" name="fechaFiltrar" [value]="maxDate"
                                     max="{{ maxDate| date:'yyyy-MM-dd'}}" />
-    
+
                             </div>
-                                
-    
+
+
                             <div class="col3">
                                 <input style="width: 100%; padding-left: 10px" type="text" placeholder="ID de ejecución" formControlName="idProceso" id="idProceso"
                                     name=""/>
-    
+
                             </div>
 
                         </div>
-                        
-                        
-                            
+
+
+
                         <div class="col2-row2">
                             <button class="clickable" (click)="busquedaFiltros()">Buscar</button>
                         </div>
-                        
+
                     </form>
                     </section>
                     </div>
                 </div>
         </div> -->
-        <!-- <div class="card-busqueda"> 
+        <!-- <div class="card-busqueda">
             <div>
                 <section class="mt-3">
                 <div class="col2-row2">
@@ -270,7 +270,7 @@
             </div>
             <div [ngClass]="{'step-proceso-disabled': AUDGENEJECUCIONPROCESO[0]?.ETAPA == 'INICIAL',
                             'step-proceso-enabled': AUDGENEJECUCIONPROCESO[0]?.ETAPA == 'PROCESAMIENTO' || AUDGENEJECUCIONPROCESO[0]?.ETAPA == 'FINAL',
-                            'step-completado': AUDGENEJECUCIONPROCESO[0]?.ETAPA == 'FINAL' || (AUDGENEJECUCIONPROCESO[0]?.ESTADO_EJECUCION == 'FINALIZADO' &&  AUDGENEJECUCIONPROCESO[0]?.ETAPA == 'PROCESAMIENTO') , 
+                            'step-completado': AUDGENEJECUCIONPROCESO[0]?.ETAPA == 'FINAL' || (AUDGENEJECUCIONPROCESO[0]?.ESTADO_EJECUCION == 'FINALIZADO' &&  AUDGENEJECUCIONPROCESO[0]?.ETAPA == 'PROCESAMIENTO') ,
                             'step-incompleto': AUDGENEJECUCIONPROCESO[0]?.ESTADO == 'FALLIDO' && AUDGENEJECUCIONPROCESO[0]?.ETAPA == 'PROCESAMIENTO'
                             }" class=" step-1-proceso">
                 <span>
@@ -291,7 +291,7 @@
             </div>
             <div [ngClass]="{'step-proceso-disabled': AUDGENEJECUCIONPROCESO[0]?.ETAPA != 'FINAL',
                             'step-proceso-enabled': AUDGENEJECUCIONPROCESO[0]?.ETAPA === 'FINAL',
-                            'step-completado-final': AUDGENEJECUCIONPROCESO[0]?.ESTADO == 'EXITOSO' && AUDGENEJECUCIONPROCESO[0]?.ETAPA == 'FINAL', 
+                            'step-completado-final': AUDGENEJECUCIONPROCESO[0]?.ESTADO == 'EXITOSO' && AUDGENEJECUCIONPROCESO[0]?.ETAPA == 'FINAL',
                             'step-incompleto': AUDGENEJECUCIONPROCESO[0]?.ESTADO == 'FALLIDO' && AUDGENEJECUCIONPROCESO[0]?.ETAPA == 'FINAL'
                             }" class="step-4-proceso">
                 <span>

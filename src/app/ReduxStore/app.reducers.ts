@@ -11,7 +11,8 @@ export interface AppState {
   CATPROCESOS: reducers.CATPROCESOState,
   CATPERMISOS: reducers.CATPERMISOState,
   notificaciones: reducers.NotificacionesState,
-  catalogos: reducers.CatalogosState
+  catalogos: reducers.CatalogosState,
+  DetailCatalogos: reducers.DetailCatalogosState
 }
 
 export const appReducers:ActionReducerMap<AppState> = {
@@ -24,5 +25,6 @@ export const appReducers:ActionReducerMap<AppState> = {
   CATPROCESOS: reducers.CATPROCESOReducer,
   CATPERMISOS: reducers.CATPERMISOReducer,
   notificaciones: reducers.NotificacionesReducer,
-  catalogos: reducers.catalogosReducer
+  catalogos: reducers.catalogosReducer,
+  DetailCatalogos: reducers.DetailCatologosReducer
 }

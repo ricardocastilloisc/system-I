@@ -30,8 +30,12 @@ import { registerLocaleData } from '@angular/common';
 
 // importar locales
 import localeMX from '@angular/common/locales/es-MX';
+import { ToastrModule } from 'ngx-toastr';
 // registrar los locales con el nombre que quieras utilizar a la hora de proveer
 registerLocaleData(localeMX, 'es-MX');
+
+
+
 
 @NgModule({
   declarations: [AppComponent, LoginComponent],
@@ -44,6 +48,7 @@ registerLocaleData(localeMX, 'es-MX');
     HttpClientModule,
     /* configure app with AmplifyUIAngularModule */
     AmplifyUIAngularModule,
+    ToastrModule.forRoot(),
     NgMultiSelectDropDownModule.forRoot(),
     StoreModule.forRoot(appReducers),
     EffectsModule.forRoot(EffectsArrays),
@@ -56,6 +61,7 @@ registerLocaleData(localeMX, 'es-MX');
   providers: [
     AmplifyService,
     DatePipe,
+
     { provide: LOCALE_ID, useValue: 'es-MX' },
   ],
 
