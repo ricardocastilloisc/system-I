@@ -86,4 +86,10 @@ export class CatalogosService {
     .post(this.UrlCatalogos + 'catalogos/' + localStorage.getItem('nameCat') + '/registros', object)
     .toPromise()
   }
+
+  deleteDetailsCat = (object) => {
+    return this.httpClient
+    .delete(this.UrlCatalogos + 'catalogos/' + localStorage.getItem('nameCat') + '/registros', object)
+    .toPromise()
+  }
 }
