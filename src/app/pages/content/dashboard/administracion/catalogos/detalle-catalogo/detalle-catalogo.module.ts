@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { DetalleCatalogoRoutingModule } from './detalle-catalogo-routing.module';
 import { DetalleCatalogoComponent } from './detalle-catalogo.component';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -14,6 +15,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
     CommonModule,
     DetalleCatalogoRoutingModule,
     NgxPaginationModule,
+    ReactiveFormsModule,
+    FormsModule
   ]
 })
 export class DetalleCatalogoModule { }

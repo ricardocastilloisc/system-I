@@ -35,8 +35,6 @@ export class CatalogosService {
       .toPromise()
       .then((res: any) => {
         let arrayTemp: STRUCTURE_CAT[] = [];
-        console.log(res);
-
         arrayTemp.push({
           PRIMARY_KEY: true,
           VALUE: res['PK'],

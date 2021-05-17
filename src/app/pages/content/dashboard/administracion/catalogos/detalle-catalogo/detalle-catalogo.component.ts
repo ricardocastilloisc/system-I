@@ -9,7 +9,8 @@ import {
   unSetDetailCatalogos,
 } from '../../../../../../ReduxStore/actions/catalogos/catalogoDetail.actions';
 import { Subscription } from 'rxjs';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-detalle-catalogo',
@@ -28,6 +29,9 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
 
   FormsDinamic: FormGroup;
 
+
+  mostrarEjecucionesProcesos = true;
+
   constructor(
     private CatalogosService: CatalogosService,
     private store: Store<AppState>
@@ -44,6 +48,9 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
       .select(({ DetailCatalogos }) => DetailCatalogos.DetailCatalogos)
       .subscribe((res) => {
         this.DetailCats = res;
+        if (this.ColumDinamicData.length > 0) {
+          this.makeFormsDinamic(res);
+        }
       });
   }
 
@@ -90,10 +97,79 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     });
   };
 
-
-  makeFormsDinamic  = () => {
+  makeFormsDinamic = (dataValues) => {
     this.FormsDinamic = null;
-    this.FormsDinamic = new FormGroup({})
+    this.FormsDinamic = new FormGroup({});
+    this.ColumDinamicData.forEach((dataColum) => {
+      let valueFormControl = null;
+
+
+      this.FormsDinamic.addControl(
+        dataColum.VALUE,
+        new FormControl(valueFormControl, [Validators.required])
+      );
+    });
+  };
+
+  viewInputText = (colum: STRUCTURE_CAT) => {
+    return (
+      this.viewPrimaryKey(colum) &&
+      this.viewFECHA(colum.VALUE) &&
+      colum.TYPE === 'S' &&
+      !colum.DATE
+    );
+  };
+  viewInputNumber = (colum: STRUCTURE_CAT) => {
+    return (
+      this.viewPrimaryKey(colum) &&
+      this.viewFECHA(colum.VALUE) &&
+      colum.TYPE === 'N' &&
+      !colum.DATE
+    );
+  };
+  viewInputDate = (colum: STRUCTURE_CAT) => {
+    return (
+      this.viewPrimaryKey(colum) && this.viewFECHA(colum.VALUE) && colum.DATE
+    );
+  };
+  viewFECHA = (value) => {
+    return !value.includes('FECHA_ACTUALIZADO');
+  };
+
+  viewPrimaryKey = (colum: STRUCTURE_CAT) => {
+    if (colum.PRIMARY_KEY && colum.TYPE == 'S') {
+      return true;
+    } else {
+      return !colum.PRIMARY_KEY;
+    }
+  };
+
+  arrayFomsInput = (colums: STRUCTURE_CAT[]) => {
+
+    let arrayReturn: STRUCTURE_CAT[] = [];
+
+    arrayReturn = colums.filter((e) => {
+      if (this.viewFECHA(e.VALUE)) {
+        return e;
+      }
+    });
+
+    arrayReturn = arrayReturn.filter((e) => {
+      if (this.viewPrimaryKey(e)) {
+        return e;
+      }
+    });
+    return arrayReturn;
+  };
+
+
+  mostrarCardAgregarResgistro = () =>{
+
+    this.mostrarEjecucionesProcesos = false;
+  }
+  ocultarCardAgregarResgistro = () =>{
+
+    this.mostrarEjecucionesProcesos = true;
   }
 
   verPaginado = () => {
@@ -108,3 +184,62 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     }
   };
 }
+
+
+/*
+
+      if (dataColum.PRIMARY_KEY && dataColum.TYPE === 'N') {
+        let arrayNumbers: number[] = [];
+
+        dataValues.forEach((e) => {
+          if (typeof e[dataColum.VALUE] === 'string') {
+            arrayNumbers.push(parseInt(e[dataColum.VALUE]));
+          } else {
+            arrayNumbers.push(e[dataColum.VALUE]);
+          }
+        });
+
+        if (arrayNumbers.length > 0) {
+          valueFormControl =
+            arrayNumbers.sort((a, b) => a - b)[arrayNumbers.length - 1] + 1;
+        }
+      }
+
+      if (dataColum.DATE) {
+        if (this.DetailCats.length > 0) {
+          let valueTempDate = this.DetailCats[0][dataColum.VALUE];
+
+          let specialFormat = false;
+
+          if (typeof valueTempDate === 'string') {
+            valueTempDate = valueTempDate;
+          } else {
+            valueTempDate = valueTempDate.toString();
+          }
+
+          if (valueTempDate.includes('-')) {
+            valueFormControl = moment().format('YYYY-MM-DD').toString();
+
+            specialFormat = true;
+          }
+
+          if (valueTempDate.includes('/')) {
+            valueFormControl = moment().format('YYYY/MM/DD').toString();
+
+            specialFormat = true;
+          }
+
+          if (!specialFormat) {
+            valueFormControl = moment().format('YYYYMMDD').toString();
+          }
+        } else {
+          valueFormControl = moment().format('YYYYMMDD').toString();
+        }
+
+        if (valueFormControl) {
+          if (dataColum.TYPE === 'N') {
+            valueFormControl = parseInt(valueFormControl);
+          }
+        }
+      }
+*/

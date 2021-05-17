@@ -1,4 +1,10 @@
-<div class="row justify-content-center">
+<div
+  class="row justify-content-center"
+  [ngClass]="{
+    'show-ejecuciones': mostrarEjecucionesProcesos == true,
+    'hide-ejecuciones': mostrarEjecucionesProcesos == false
+  }"
+>
   <div
     class="
       d-flex
@@ -117,7 +123,12 @@
     </div>
     <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
       <div class="row justify-content-end">
-        <button class="btn agregarRegistro">Agregar Registro</button>
+        <button
+          (click)="mostrarCardAgregarResgistro()"
+          class="btn agregarRegistro"
+        >
+          Agregar Registro
+        </button>
       </div>
     </div>
   </div>
@@ -287,8 +298,99 @@
 </form>
 </div>
 
-
-
-
-
 --></div>
+<div
+  class="row justify-content-center"
+  [ngClass]="{
+    'show-ejecuciones': mostrarEjecucionesProcesos == false,
+    'hide-ejecuciones': mostrarEjecucionesProcesos == true
+  }"
+  *ngIf="FormsDinamic"
+>
+  <div class="col-12">
+    <div class="card agregarRegistroCard">
+      <div
+        class="aling-items-center text-center"
+        style="margin-top: 20px; margin-bottom: 30px"
+      >
+        <div
+          class="
+            d-flex
+            flex-column
+            align-items-center
+            justify-content-center
+            texto-agregarRegistroCardTitle
+          "
+        >
+          Agregar Registro
+        </div>
+      </div>
+
+      <div class="card-body" style="padding-left: 127px; padding-right: 127px">
+        <form [formGroup]="FormsDinamic">
+          <div class="form-row">
+            <div
+              class="form-group col-md-6"
+              *ngFor="let colum of arrayFomsInput(ColumDinamicData)"
+            >
+              <label class="labelFormAgregarRegistro" [for]="colum.VALUE">{{
+                colum.VALUE
+              }}</label>
+              <input
+                *ngIf="viewInputText(colum)"
+                [formControlName]="colum.VALUE"
+                type="text"
+                class="form-control"
+                [id]="colum.VALUE"
+                [placeholder]="colum.VALUE"
+              />
+              <input
+                *ngIf="viewInputNumber(colum)"
+                [formControlName]="colum.VALUE"
+                type="number"
+                class="form-control"
+                [id]="colum.VALUE"
+                [placeholder]="colum.VALUE"
+              />
+              <input
+                *ngIf="viewInputDate(colum)"
+                [formControlName]="colum.VALUE"
+                type="date"
+                class="form-control"
+                [id]="colum.VALUE"
+                [placeholder]="colum.VALUE"
+              />
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div
+        class="row aling-items-center text-center"
+        style="margin-top: 20px; margin-bottom: 30px"
+      >
+        <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+          <div class="row justify-content-center">
+            <button
+              class="btn btnAgregarCancelarRegistro"
+              (click)="ocultarCardAgregarResgistro()"
+            >
+              Cancelar
+            </button>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+          <div class="row justify-content-center">
+            <button
+              [disabled]="FormsDinamic.invalid"
+              class="btn btnAgregarRegistro"
+            >
+              Agregar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -133,3 +133,20 @@ section {
   margin-right: 0;
   margin-left: 0;
 }
+
+
+.show-ejecuciones{
+  visibility: visible;
+  max-height: 30px;
+  opacity: 1;
+  transition: visibility 0.3s, opacity 0.3s, max-height 0.5s linear;
+}
+
+
+.hide-ejecuciones{
+  visibility: hidden;
+  max-height: 0px;
+  opacity: 0;
+  transition: visibility 0.3s, opacity 0.3s, max-height 0.3s linear;
+
+}
