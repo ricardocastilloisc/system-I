@@ -75,4 +75,15 @@ export class CatalogosService {
   getDetailsCat = () => {
     return this.httpClient.get(this.UrlCatalogos + 'catalogos/' + localStorage.getItem('nameCat') + '/registros')
   }
+
+  updateDetailsCat = (object) => {
+    return this.httpClient
+    .put(this.UrlCatalogos + 'catalogos/' + localStorage.getItem('nameCat') + '/registros', object)
+    .toPromise()
+  }
+  addDetailsCat = (object) => {
+    return this.httpClient
+    .post(this.UrlCatalogos + 'catalogos/' + localStorage.getItem('nameCat') + '/registros', object)
+    .toPromise()
+  }
 }

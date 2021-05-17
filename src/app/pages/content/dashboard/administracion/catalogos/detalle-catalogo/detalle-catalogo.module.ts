@@ -5,6 +5,8 @@ import { DetalleCatalogoRoutingModule } from './detalle-catalogo-routing.module'
 import { DetalleCatalogoComponent } from './detalle-catalogo.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ToastrModule } from 'ngx-toastr';
+
 
 
 @NgModule({
@@ -16,7 +18,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     DetalleCatalogoRoutingModule,
     NgxPaginationModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+ 
+
   ]
 })
 export class DetalleCatalogoModule { }
