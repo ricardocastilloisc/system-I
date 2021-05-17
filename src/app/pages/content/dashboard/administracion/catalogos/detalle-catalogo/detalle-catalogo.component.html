@@ -18,7 +18,7 @@
           <th scope="col" *ngFor="let colum of ColumDinamicData">
             {{ removeCharterSpecialSringTh(colum.VALUE) }}
           </th>
-          <th scope="col">Acciones</th>
+          <th scope="col" *ngIf="validarRoles()">Acciones</th>
         </tr>
         <tr
           *ngFor="
@@ -34,7 +34,7 @@
           <td *ngFor="let colum of ColumDinamicData">
             {{ transformDateOrString(DetailCat[colum.VALUE], colum.DATE) }}
           </td>
-          <td>
+          <td *ngIf="validarRoles()">
             <img
               style="cursor: pointer"
               (click)="mostrarCardAgregarResgistro(1, DetailCat)"
@@ -125,7 +125,7 @@
         </div>
       </pagination-template>
     </div>
-    <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12">
+    <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12" *ngIf="validarRoles()">
       <div class="row justify-content-end">
         <button
           (click)="mostrarCardAgregarResgistro()"

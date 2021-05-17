@@ -13,7 +13,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import { NotificationsService } from 'angular2-notifications';
 import { ToastrService } from 'ngx-toastr';
-
+import { ERole } from '../../../../../../validators/roles';
 
 @Component({
   selector: 'app-detalle-catalogo',
@@ -22,6 +22,15 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class DetalleCatalogoComponent implements OnInit, OnDestroy {
 
+  validarRoles():boolean{
+    let flag = false;
+    this.store.select(({ usuario }) => usuario.user).subscribe(res => {
+      let rol = res['attributes']['custom:rol'];
+      console.log(rol);
+      if(rol === ERole.Administrador) flag = true;
+    });
+    return flag;
+  }
   DetailCatalogos$: Subscription;
 
   ColumDinamicData: STRUCTURE_CAT[] = [];
@@ -50,6 +59,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.validarRoles();
     this.getDataCat();
     this.DetailCatalogos$ = this.store
       .select(({ DetailCatalogos }) => DetailCatalogos.DetailCatalogos)
