@@ -179,7 +179,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
   mostrarCardAgregarResgistro = (editar = 0, object = null) => {
     this.mostrarEjecucionesProcesos = false;
 
-   /* this.showHTMLMessage("<h2>Data shown successfully !!</h2>", "Notification") */
+    /* this.showHTMLMessage("<h2>Data shown successfully !!</h2>", "Notification") */
 
 
     if (editar === 0) {
@@ -375,14 +375,18 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
   eliminarRegistro = (object = null) => {
     console.log("ELIMINAR REGISTRO INPUT", JSON.stringify(object));
     let pk = '';
+    let registro = '';
     this.CatalogosService.structureCat().then((res: STRUCTURE_CAT[]) => {
-      console.log("AQUI GET ESTRUCTURA", JSON.stringify(res));
       let find = res.find(el => el.PRIMARY_KEY == true);
       pk = find['VALUE'];
       console.log("AQUI FIND", pk);
+      registro = object[pk];
+      console.log("AQUI REGISTRO ", registro);
+      this.CatalogosService.deleteDetailsCat(registro).then((res) => {
+        console.log("AQUI DELETE DETAILS ", res);
+        this.getDataCat();
+      });
     });
-    //let registro = object['',pk,''];
-    
   };
 
   verPaginado = () => {

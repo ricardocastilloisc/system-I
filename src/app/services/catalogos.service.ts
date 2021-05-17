@@ -87,9 +87,9 @@ export class CatalogosService {
     .toPromise()
   }
 
-  deleteDetailsCat = (object) => {
+  deleteDetailsCat = (registro) => {
     return this.httpClient
-    .delete(this.UrlCatalogos + 'catalogos/' + localStorage.getItem('nameCat') + '/registros', object)
+    .delete(this.UrlCatalogos + 'catalogos/' + localStorage.getItem('nameCat') + '/registros/' + registro)
     .toPromise()
   }
 }
