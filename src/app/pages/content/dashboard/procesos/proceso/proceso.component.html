@@ -196,7 +196,7 @@
                             <td>{{AUDGENESTADOPROCESO.FECHA_ACTUALIZACION | date :'dd/MM/yyyy'}}
                                 {{AUDGENESTADOPROCESO.FECHA_ACTUALIZACION | date:'mediumTime'}} </td>
                             <td [ngClass]="{'error-log': AUDGENESTADOPROCESO.ESTADO == 'FALLIDO'}">
-                                {{AUDGENESTADOPROCESO.ESTADO}}</td>
+                                {{AUDGENESTADOPROCESO.ESTADO_EJECUCION}}</td>
                         </tr>
                     </tbody>
                 </table>
