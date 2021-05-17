@@ -26,7 +26,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     let flag = false;
     this.store.select(({ usuario }) => usuario.user).subscribe(res => {
       let rol = res['attributes']['custom:rol'];
-      console.log(rol);
+      //console.log(rol);
       if(rol === ERole.Administrador) flag = true;
     });
     return flag;
