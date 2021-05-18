@@ -164,6 +164,9 @@ table.listado-log td.wideRow, table th.wideRow{
 .error-log{
     color: #C00000 !important;
 }
+.success-log{
+    color: #4BB543 !important;
+}
 
 .warning-log{
     color: #FF7000 !important;
