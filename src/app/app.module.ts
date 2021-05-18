@@ -48,7 +48,10 @@ registerLocaleData(localeMX, 'es-MX');
     HttpClientModule,
     /* configure app with AmplifyUIAngularModule */
     AmplifyUIAngularModule,
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot(
+      {
+      preventDuplicates: true
+    }),
     NgMultiSelectDropDownModule.forRoot(),
     StoreModule.forRoot(appReducers),
     EffectsModule.forRoot(EffectsArrays),

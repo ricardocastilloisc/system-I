@@ -5,7 +5,6 @@ import { DetalleCatalogoRoutingModule } from './detalle-catalogo-routing.module'
 import { DetalleCatalogoComponent } from './detalle-catalogo.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ToastrModule } from 'ngx-toastr';
 
 
 
@@ -19,7 +18,7 @@ import { ToastrModule } from 'ngx-toastr';
     NgxPaginationModule,
     ReactiveFormsModule,
     FormsModule,
- 
+
 
   ]
 })

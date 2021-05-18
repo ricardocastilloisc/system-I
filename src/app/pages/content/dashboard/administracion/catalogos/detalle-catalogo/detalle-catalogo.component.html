@@ -15,7 +15,7 @@
     <div class="card-lista-design-general" style="overflow-x: auto">
       <table class="table listado-design-general">
         <tr>
-          <th scope="col" *ngFor="let colum of ColumDinamicData">
+          <th scope="col" *ngFor="let colum of ColumDinamicData" >
             {{ removeCharterSpecialSringTh(colum.VALUE) }}
           </th>
           <th scope="col" *ngIf="validarRoles()">Acciones</th>
@@ -40,10 +40,10 @@
               (click)="mostrarCardAgregarResgistro(1, DetailCat)"
               class="editar-icon-catalog"
             />
-            <img 
-              style="cursor: pointer" 
+            <img
+              style="cursor: pointer"
               (click)="eliminarRegistro(DetailCat)"
-              class="eliminar-icon"          
+              class="eliminar-icon"
             />
           </td>
         </tr>

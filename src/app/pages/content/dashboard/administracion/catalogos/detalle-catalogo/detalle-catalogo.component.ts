@@ -1,4 +1,10 @@
-import { Component, OnInit, OnDestroy, ViewChild, TemplateRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ViewChild,
+  TemplateRef,
+} from '@angular/core';
 import { CatalogosService } from '../../../../../../services/catalogos.service';
 import { STRUCTURE_CAT } from '../../../../../../model/catalogos/STRUCTURE_CAT.model';
 import { Store } from '@ngrx/store';
@@ -21,14 +27,15 @@ import { ERole } from '../../../../../../validators/roles';
   styleUrls: ['./detalle-catalogo.component.css'],
 })
 export class DetalleCatalogoComponent implements OnInit, OnDestroy {
-
   validarRoles(): boolean {
     let flag = false;
-    this.store.select(({ usuario }) => usuario.user).subscribe(res => {
-      let rol = res['attributes']['custom:rol'];
-      //console.log(rol);
-      if (rol === ERole.Administrador) flag = true;
-    });
+    this.store
+      .select(({ usuario }) => usuario.user)
+      .subscribe((res) => {
+        let rol = res['attributes']['custom:rol'];
+        //console.log(rol);
+        if (rol === ERole.Administrador) flag = true;
+      });
     return flag;
   }
   DetailCatalogos$: Subscription;
@@ -51,7 +58,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     private CatalogosService: CatalogosService,
     private store: Store<AppState>,
     private toastr: ToastrService
-  ) { }
+  ) {}
 
   ngOnDestroy(): void {
     this.store.dispatch(unSetDetailCatalogos());
@@ -70,6 +77,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
         }
 
         if (this.AgregarRegistroLoading) {
+          this.abrirToass();
           this.AgregarRegistroLoading = false;
         }
       });
@@ -96,10 +104,10 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
 
     return isDate
       ? stringReturn.substring(6, 8) +
-      '/' +
-      stringReturn.substring(4, 6) +
-      '/' +
-      stringReturn.substring(0, 4)
+          '/' +
+          stringReturn.substring(4, 6) +
+          '/' +
+          stringReturn.substring(0, 4)
       : stringReturn;
   };
 
@@ -169,18 +177,14 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     return arrayReturn;
   };
 
-
   showHTMLMessage(message, title) {
     this.toastr.success(message, title, {
-      enableHtml: true
-    })
+      enableHtml: true,
+    });
   }
 
   mostrarCardAgregarResgistro = (editar = 0, object = null) => {
     this.mostrarEjecucionesProcesos = false;
-
-    /* this.showHTMLMessage("<h2>Data shown successfully !!</h2>", "Notification") */
-
 
     if (editar === 0) {
       this.editar = false;
@@ -216,12 +220,12 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
       });
     } else {
       this.editar = true;
-      console.log("AQUI");
+
       this.ColumDinamicData.forEach((dataColum) => {
         let valueTempControl = null;
 
         valueTempControl = object[dataColum.VALUE];
-        console.log("AQUI 2 ", valueTempControl);
+
         if (typeof valueTempControl === 'string') {
           valueTempControl = valueTempControl;
         } else {
@@ -259,10 +263,10 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
             if (!specialFormat) {
               valueTempControl = moment(
                 valueTempControl.substring(0, 4) +
-                '-' +
-                valueTempControl.substring(4, 6) +
-                '-' +
-                valueTempControl.substring(6, 8)
+                  '-' +
+                  valueTempControl.substring(4, 6) +
+                  '-' +
+                  valueTempControl.substring(6, 8)
               )
                 .format('YYYY-MM-DD')
                 .toString();
@@ -270,10 +274,10 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
           } else {
             valueTempControl = moment(
               valueTempControl.substring(0, 4) +
-              '-' +
-              valueTempControl.substring(4, 6) +
-              '-' +
-              valueTempControl.substring(6, 8)
+                '-' +
+                valueTempControl.substring(4, 6) +
+                '-' +
+                valueTempControl.substring(6, 8)
             )
               .format('YYYY-MM-DD')
               .toString();
@@ -288,8 +292,48 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     this.mostrarEjecucionesProcesos = true;
   };
 
-  agregarRegistroOActualizarRegistro = () => {
+  abrirToass = () => {
+    let mensaje =
+      '<div class="row justify-content-center align-items-center textoAddUpdateregistro"><img class="successRegistro"/>';
 
+    mensaje = mensaje + 'Registro exitoso';
+
+    mensaje = mensaje + '</div>';
+
+    this.toastr.show(mensaje, null, {
+      timeOut: 1500,
+      toastClass:
+        'etiquetaAddRegistro etiquetaAddRegistro row justify-content-center',
+      positionClass: 'toast-top-right',
+      enableHtml: true,
+      progressBar: true,
+      progressAnimation: 'increasing',
+    });
+  };
+
+  abrirToassError = (err) => {
+    console.log(err);
+
+    let mensaje =
+      '<div class="row justify-content-center align-items-center textoAddUpdateregistro"><div><img class="iconErrorRegistro"/>';
+
+    mensaje = mensaje + 'Se ha producido un error';
+
+    mensaje = mensaje + '</div><div class="descipcionError">';
+    mensaje = mensaje + err['error']['descripcion'];
+    mensaje = mensaje + '</div></div>';
+
+    this.toastr.show(mensaje, null, {
+      timeOut: 3500,
+      toastClass: 'etiquetaErrorRegistro row justify-content-center',
+      positionClass: 'toast-top-right',
+      enableHtml: true,
+      progressBar: true,
+      progressAnimation: 'increasing',
+    });
+  };
+
+  agregarRegistroOActualizarRegistro = () => {
     this.AgregarRegistroLoading = true;
 
     let ObjectTemp = this.FormsDinamic.value;
@@ -351,41 +395,37 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     });
 
     if (this.editar) {
-      this.CatalogosService.updateDetailsCat(objectFinish).then((res) => {
-
-        this.ocultarCardAgregarResgistro();
-        this.getDataCat();
-      },
+      this.CatalogosService.updateDetailsCat(objectFinish).then(
+        () => {
+          this.ocultarCardAgregarResgistro();
+          this.getDataCat();
+        },
         (err) => {
-
-          console.log(err);
-
-        });
+          this.abrirToassError(err);
+        }
+      );
     } else {
-      this.CatalogosService.addDetailsCat(objectFinish).then((res) => {
-
-        this.ocultarCardAgregarResgistro();
-        this.getDataCat();
-      });
+      this.CatalogosService.addDetailsCat(objectFinish).then(
+        () => {
+          this.ocultarCardAgregarResgistro();
+          this.getDataCat();
+        },
+        (err) => {
+          this.abrirToassError(err);
+        }
+      );
     }
   };
 
-
-
   eliminarRegistro = (object = null) => {
-    console.log("ELIMINAR REGISTRO INPUT", JSON.stringify(object));
-    let pk = '';
-    let registro = '';
-    this.CatalogosService.structureCat().then((res: STRUCTURE_CAT[]) => {
-      let find = res.find(el => el.PRIMARY_KEY == true);
-      pk = find['VALUE'];
-      console.log("AQUI FIND", pk);
-      registro = object[pk];
-      console.log("AQUI REGISTRO ", registro);
-      this.CatalogosService.deleteDetailsCat(registro).then((res) => {
-        console.log("AQUI DELETE DETAILS ", res);
-        this.getDataCat();
-      });
+    let objectReferencePk = this.ColumDinamicData.filter(
+      (e) => e.PRIMARY_KEY === true
+    )[0];
+
+    const registro = object[objectReferencePk.VALUE];
+
+    this.CatalogosService.deleteDetailsCat(registro).then((res) => {
+      this.getDataCat();
     });
   };
 
@@ -401,103 +441,3 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     }
   };
 }
-
-/*
-
-      if (dataColum.PRIMARY_KEY && dataColum.TYPE === 'N') {
-        let arrayNumbers: number[] = [];
-
-        dataValues.forEach((e) => {
-          if (typeof e[dataColum.VALUE] === 'string') {
-            arrayNumbers.push(Number(e[dataColum.VALUE]));
-          } else {
-            arrayNumbers.push(e[dataColum.VALUE]);
-          }
-        });
-
-        if (arrayNumbers.length > 0) {
-          valueFormControl =
-            arrayNumbers.sort((a, b) => a - b)[arrayNumbers.length - 1] + 1;
-        }
-      }
-
-      if (dataColum.DATE) {
-        if (this.DetailCats.length > 0) {
-          let valueTempDate = this.DetailCats[0][dataColum.VALUE];
-
-          let specialFormat = false;
-
-          if (typeof valueTempDate === 'string') {
-            valueTempDate = valueTempDate;
-          } else {
-            valueTempDate = valueTempDate.toString();
-          }
-
-          if (valueTempDate.includes('-')) {
-            valueFormControl = moment().format('YYYY-MM-DD').toString();
-
-            specialFormat = true;
-          }
-
-          if (valueTempDate.includes('/')) {
-            valueFormControl = moment().format('YYYY/MM/DD').toString();
-
-            specialFormat = true;
-          }
-
-          if (!specialFormat) {
-            valueFormControl = moment().format('YYYYMMDD').toString();
-          }
-        } else {
-          valueFormControl = moment().format('YYYYMMDD').toString();
-        }
-
-        if (valueFormControl) {
-          if (dataColum.TYPE === 'N') {
-            valueFormControl = Number(valueFormControl);
-          }
-        }
-      }
-
-
-
-
-
-            if (dataColum.DATE) {
-          if (this.DetailCats.length > 0) {
-            let valueTempDate = this.DetailCats[0][dataColum.VALUE];
-
-            let specialFormat = false;
-
-            if (typeof valueTempDate === 'string') {
-              valueTempDate = valueTempDate;
-            } else {
-              valueTempDate = valueTempDate.toString();
-            }
-
-            if (valueTempDate.includes('-')) {
-              valueFormControl = moment().format('YYYY-MM-DD').toString();
-
-              specialFormat = true;
-            }
-
-            if (valueTempDate.includes('/')) {
-              valueFormControl = moment().format('YYYY/MM/DD').toString();
-
-              specialFormat = true;
-            }
-
-            if (!specialFormat) {
-              valueFormControl = moment().format('YYYYMMDD').toString();
-            }
-          } else {
-            valueFormControl = moment().format('YYYYMMDD').toString();
-          }
-
-          if (valueFormControl) {
-            if (dataColum.TYPE === 'N') {
-              valueFormControl = Number(valueFormControl);
-            }
-          }
-        }
-*/

@@ -952,7 +952,6 @@ table.listado-design-general td {
   opacity: 1;
 }
 
-
 .btnAgregarCancelarRegistro {
   border: 2px solid #00c4d9;
   border-radius: 30px;
@@ -966,16 +965,61 @@ table.listado-design-general td {
   color: #00c4d9;
   font: normal normal bold 20px/25px FS Elliot Pro;
 }
-/*
 
-border: 2px solid #00c4d9;
-  border-radius: 30px;
+.etiquetaAddRegistro {
+  width: 309px;
+  height: 85px;
+  background: #00c4d9 0% 0% no-repeat padding-box;
+  border-radius: 50px 0px 0px 50px;
   opacity: 1;
-  width: 184px;
-  text-decoration: none;
-  height: 48px;
-  color: #00c4d9;
-  margin-right: 22px;
-  font: normal normal bold 20px/25px FS Elliot Pro;
+ /* margin-top: 104px;*/
+}
 
-*/
+.textoAddUpdateregistro {
+  height: 100%;
+  text-align: center;
+  font: normal normal bold 20px/45px FS Elliot Pro;
+  letter-spacing: 0px;
+  color: #ffffff;
+  opacity: 1;
+}
+
+.successRegistro {
+  background: transparent url("../icons/iconocheck.svg") 0% 0% no-repeat
+    padding-box;
+  width: 18px;
+  height: 14px;
+  opacity: 1;
+  margin: 0;
+  margin-right: 4px;
+  padding: 15px;
+  margin-top: 13px;
+}
+
+.iconErrorRegistro {
+  background: transparent url("../icons/iconoerror.svg") 0% 0% no-repeat
+    padding-box;
+  width: 18px;
+  height: 14px;
+  opacity: 1;
+  margin: 0;
+  margin-right: 4px;
+  padding: 15px;
+  margin-top: 13px;
+}
+
+.etiquetaErrorRegistro {
+  background: #ff9231 0% 0% no-repeat padding-box;
+  border-radius: 50px 0px 0px 50px;
+  width: 383px;
+  height: 85px;
+}
+
+.descipcionError {
+  text-align: right;
+  font: normal normal normal 16px/18px FS Elliot Pro;
+  letter-spacing: 0px;
+  color: #ffffff;
+  opacity: 1;
+  margin-top: -18px;
+}
