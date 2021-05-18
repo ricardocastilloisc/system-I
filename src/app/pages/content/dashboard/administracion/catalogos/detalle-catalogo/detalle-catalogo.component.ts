@@ -22,12 +22,12 @@ import { ERole } from '../../../../../../validators/roles';
 })
 export class DetalleCatalogoComponent implements OnInit, OnDestroy {
 
-  validarRoles():boolean{
+  validarRoles(): boolean {
     let flag = false;
     this.store.select(({ usuario }) => usuario.user).subscribe(res => {
       let rol = res['attributes']['custom:rol'];
       //console.log(rol);
-      if(rol === ERole.Administrador) flag = true;
+      if (rol === ERole.Administrador) flag = true;
     });
     return flag;
   }
@@ -51,7 +51,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     private CatalogosService: CatalogosService,
     private store: Store<AppState>,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   ngOnDestroy(): void {
     this.store.dispatch(unSetDetailCatalogos());
@@ -96,10 +96,10 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
 
     return isDate
       ? stringReturn.substring(6, 8) +
-          '/' +
-          stringReturn.substring(4, 6) +
-          '/' +
-          stringReturn.substring(0, 4)
+      '/' +
+      stringReturn.substring(4, 6) +
+      '/' +
+      stringReturn.substring(0, 4)
       : stringReturn;
   };
 
@@ -170,16 +170,16 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
   };
 
 
-  showHTMLMessage(message, title){
+  showHTMLMessage(message, title) {
     this.toastr.success(message, title, {
-      enableHtml :  true
+      enableHtml: true
     })
   }
 
   mostrarCardAgregarResgistro = (editar = 0, object = null) => {
     this.mostrarEjecucionesProcesos = false;
 
-    this.showHTMLMessage("<h2>Data shown successfully !!</h2>", "Notification")
+    /* this.showHTMLMessage("<h2>Data shown successfully !!</h2>", "Notification") */
 
 
     if (editar === 0) {
@@ -216,12 +216,12 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
       });
     } else {
       this.editar = true;
-
+      console.log("AQUI");
       this.ColumDinamicData.forEach((dataColum) => {
         let valueTempControl = null;
 
         valueTempControl = object[dataColum.VALUE];
-
+        console.log("AQUI 2 ", valueTempControl);
         if (typeof valueTempControl === 'string') {
           valueTempControl = valueTempControl;
         } else {
@@ -259,10 +259,10 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
             if (!specialFormat) {
               valueTempControl = moment(
                 valueTempControl.substring(0, 4) +
-                  '-' +
-                  valueTempControl.substring(4, 6) +
-                  '-' +
-                  valueTempControl.substring(6, 8)
+                '-' +
+                valueTempControl.substring(4, 6) +
+                '-' +
+                valueTempControl.substring(6, 8)
               )
                 .format('YYYY-MM-DD')
                 .toString();
@@ -270,10 +270,10 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
           } else {
             valueTempControl = moment(
               valueTempControl.substring(0, 4) +
-                '-' +
-                valueTempControl.substring(4, 6) +
-                '-' +
-                valueTempControl.substring(6, 8)
+              '-' +
+              valueTempControl.substring(4, 6) +
+              '-' +
+              valueTempControl.substring(6, 8)
             )
               .format('YYYY-MM-DD')
               .toString();
@@ -289,6 +289,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
   };
 
   agregarRegistroOActualizarRegistro = () => {
+
     this.AgregarRegistroLoading = true;
 
     let ObjectTemp = this.FormsDinamic.value;
@@ -351,22 +352,41 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
 
     if (this.editar) {
       this.CatalogosService.updateDetailsCat(objectFinish).then((res) => {
-        console.log(res);
+
         this.ocultarCardAgregarResgistro();
         this.getDataCat();
       },
-      (err)=>{
+        (err) => {
 
-        console.log(err);
+          console.log(err);
 
-      });
+        });
     } else {
       this.CatalogosService.addDetailsCat(objectFinish).then((res) => {
-        console.log(res);
+
         this.ocultarCardAgregarResgistro();
         this.getDataCat();
       });
     }
+  };
+
+
+
+  eliminarRegistro = (object = null) => {
+    console.log("ELIMINAR REGISTRO INPUT", JSON.stringify(object));
+    let pk = '';
+    let registro = '';
+    this.CatalogosService.structureCat().then((res: STRUCTURE_CAT[]) => {
+      let find = res.find(el => el.PRIMARY_KEY == true);
+      pk = find['VALUE'];
+      console.log("AQUI FIND", pk);
+      registro = object[pk];
+      console.log("AQUI REGISTRO ", registro);
+      this.CatalogosService.deleteDetailsCat(registro).then((res) => {
+        console.log("AQUI DELETE DETAILS ", res);
+        this.getDataCat();
+      });
+    });
   };
 
   verPaginado = () => {
