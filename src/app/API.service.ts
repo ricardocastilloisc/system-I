@@ -48,6 +48,7 @@ export type AUDGENPROCESOS = {
   TIPO?: string | null;
   NIVEL?: string | null;
   STEP?: string | null;
+  ACTIVIDAD?: string | null;
 };
 
 export type PROCESO = {
@@ -1571,6 +1572,7 @@ export class APIService {
             TIPO
             NIVEL
             STEP
+            ACTIVIDAD
           }
           nextToken
         }

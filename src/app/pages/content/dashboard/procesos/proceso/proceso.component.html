@@ -325,7 +325,8 @@
                             <th>#</th>
                             <th>Tipo</th>
                             <th>Hora</th>
-                            <th colspan="12">Mensaje</th>
+                            <th>Actividad</th>
+                            <th colspan="9">Mensaje</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -337,7 +338,8 @@
                                 {{AUDGENPROCESO.NIVEL}}</td>
                             <td>{{AUDGENPROCESO.FECHA | date :'dd/MM/yyyy'}} {{AUDGENPROCESO.FECHA | date:'mediumTime'}}
                             </td>
-                            <td [ngClass]="{'error-log': AUDGENPROCESO.NIVEL === 'FALLIDO'}">
+                            <td>{{AUDGENPROCESO.ACTIVIDAD}}</td>
+                            <td colspan="9" [ngClass]="{'error-log': AUDGENPROCESO.NIVEL === 'FALLIDO'}">
                                 {{AUDGENPROCESO.MENSAJE_SOPORTE}}</td>
                         </tr>
                     </tbody>
@@ -350,7 +352,8 @@
                         <tr>
                             <th>#</th>
                             <th>Hora</th>
-                            <th colspan="12">Mensaje</th>
+                            <th>Actividad</th>
+                            <th colspan="9">Mensaje</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -359,7 +362,8 @@
                             <td>{{i + 1 }}</td>
                             <td>{{AUDGENPROCESO.FECHA | date :'dd/MM/yyyy'}} {{AUDGENPROCESO.FECHA | date:'mediumTime'}}
                             </td>
-                            <td [ngClass]="{'error-log': AUDGENPROCESO.NIVEL === 'FALLIDO'} ">
+                            <td>{{AUDGENPROCESO.ACTIVIDAD}}</td>
+                            <td colspan="9" [ngClass]="{'error-log': AUDGENPROCESO.NIVEL === 'FALLIDO'} ">
                                 {{AUDGENPROCESO.MENSAJE_NEGOCIO}}</td>
 
                             <!-- <td  [ngClass]="{'error-log': AUDGENPROCESO.NIVEL === 'FALLIDO'}" *ngIf="area == 'SOPORTE' ">{{AUDGENPROCESO.MENSAJE_SOPORTE}}</td> -->

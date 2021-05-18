@@ -42,6 +42,7 @@ export class ProcesosService {
     }
 
     return this.http.post(endpoint, config.data, { headers }).toPromise().then(function (response) {
+      console.log("Respuesta llamado proceso",response)
       return response = {
         codigo: 'EXITO',
         descripcion: 'La solicitud fue exitosa.'
