@@ -42,6 +42,10 @@ export const environment = {
       {
         name: 'MD',
         endpoint: 'https://irrsf7x9q7.execute-api.us-east-1.amazonaws.com/apis/sia/afore/md'
+      },
+      {
+        name: 'INT CASH',
+        endpoint: 'https://k25d08r7sd.execute-api.us-east-1.amazonaws.com/dev/sia/afore/intcash'
       }
     ],
   },
