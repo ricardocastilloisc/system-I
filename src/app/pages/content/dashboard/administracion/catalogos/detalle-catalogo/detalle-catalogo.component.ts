@@ -1,10 +1,4 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  ViewChild,
-  TemplateRef,
-} from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CatalogosService } from '../../../../../../services/catalogos.service';
 import { STRUCTURE_CAT } from '../../../../../../model/catalogos/STRUCTURE_CAT.model';
 import { Store } from '@ngrx/store';
@@ -20,6 +14,7 @@ import * as moment from 'moment';
 import { NotificationsService } from 'angular2-notifications';
 import { ToastrService } from 'ngx-toastr';
 import { ERole } from '../../../../../../validators/roles';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-detalle-catalogo',
@@ -32,8 +27,8 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     this.store
       .select(({ usuario }) => usuario.user)
       .subscribe((res) => {
-        let rol = res['attributes']['custom:rol'];
-        //console.log(rol);
+        let rol = res['attributes']['custom:rol']
+
         if (rol === ERole.Administrador) flag = true;
       });
     return flag;
@@ -54,10 +49,15 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
 
   AgregarRegistroLoading = false;
 
+  elementoEliminar: any;
+
+  idetentificadorDelObjectoAEliminar;
+
   constructor(
     private CatalogosService: CatalogosService,
     private store: Store<AppState>,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private modalService: NgbModal
   ) {}
 
   ngOnDestroy(): void {
@@ -81,6 +81,24 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
           this.AgregarRegistroLoading = false;
         }
       });
+  }
+
+  openModalConfirmacionEliminar(content, object) {
+    this.elementoEliminar = object;
+
+    let objectReferencePk = this.ColumDinamicData.filter(
+      (e) => e.PRIMARY_KEY === true
+    )[0];
+
+    const registro = object[objectReferencePk.VALUE];
+
+    this.idetentificadorDelObjectoAEliminar =
+      objectReferencePk.VALUE + ': ' + registro;
+
+    this.modalService.open(content, {
+      ariaLabelledBy: 'modal-basic-title',
+      windowClass: 'confirmacionUsuariosModal',
+    });
   }
 
   transformDateOrString = (value, isDate) => {
@@ -312,8 +330,6 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
   };
 
   abrirToassError = (err) => {
-    console.log(err);
-
     let mensaje =
       '<div class="row justify-content-center align-items-center textoAddUpdateregistro"><div><img class="iconErrorRegistro"/>';
 
@@ -334,8 +350,6 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
   };
 
   agregarRegistroOActualizarRegistro = () => {
-    this.AgregarRegistroLoading = true;
-
     let ObjectTemp = this.FormsDinamic.value;
 
     let objectFinish = {};
@@ -397,6 +411,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     if (this.editar) {
       this.CatalogosService.updateDetailsCat(objectFinish).then(
         () => {
+          this.AgregarRegistroLoading = true;
           this.ocultarCardAgregarResgistro();
           this.getDataCat();
         },
@@ -407,7 +422,23 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     } else {
       this.CatalogosService.addDetailsCat(objectFinish).then(
         () => {
+          this.AgregarRegistroLoading = true;
           this.ocultarCardAgregarResgistro();
+
+          new Promise((resolve) => {
+            const intervalo = setInterval(() => {
+              if (!this.AgregarRegistroLoading) {
+                resolve('ok');
+                clearInterval(intervalo);
+              }
+            }, 100);
+          }).then(() => {
+            if (this.DetailCats.length % 10 !== 0) {
+              this.paginaDetailCats =
+                parseInt((this.DetailCats.length / 10).toLocaleString()) + 1;
+            }
+          });
+
           this.getDataCat();
         },
         (err) => {
@@ -417,16 +448,24 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     }
   };
 
-  eliminarRegistro = (object = null) => {
+  eliminarRegistro = () => {
     let objectReferencePk = this.ColumDinamicData.filter(
       (e) => e.PRIMARY_KEY === true
     )[0];
 
-    const registro = object[objectReferencePk.VALUE];
+    const registro = this.elementoEliminar[objectReferencePk.VALUE];
 
-    this.CatalogosService.deleteDetailsCat(registro).then((res) => {
-      this.getDataCat();
-    });
+    this.CatalogosService.deleteDetailsCat(registro).then(
+      () => {
+        this.AgregarRegistroLoading = true;
+        this.paginaDetailCats = 1;
+        this.modalService.dismissAll();
+        this.getDataCat();
+      },
+      (err) => {
+        this.abrirToassError(err);
+      }
+    );
   };
 
   verPaginado = () => {

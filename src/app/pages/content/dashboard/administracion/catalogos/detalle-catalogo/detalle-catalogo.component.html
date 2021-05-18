@@ -15,7 +15,7 @@
     <div class="card-lista-design-general" style="overflow-x: auto">
       <table class="table listado-design-general">
         <tr>
-          <th scope="col" *ngFor="let colum of ColumDinamicData" >
+          <th scope="col" *ngFor="let colum of ColumDinamicData">
             {{ removeCharterSpecialSringTh(colum.VALUE) }}
           </th>
           <th scope="col" *ngIf="validarRoles()">Acciones</th>
@@ -42,56 +42,11 @@
             />
             <img
               style="cursor: pointer"
-              (click)="eliminarRegistro(DetailCat)"
+              (click)="openModalConfirmacionEliminar(confrimacion, DetailCat)"
               class="eliminar-icon"
             />
           </td>
         </tr>
-        <!--
-
-
-        <tr *ngFor="
-            let usuario of ListadoUsuariosPantalla
-              | oredenascEmailusurios: 'email'
-              | paginate
-                : {
-                    id: 'DetailCats',
-                    itemsPerPage: 10,
-                    currentPage: paginaDetailCats
-                  };
-            index as i
-          ">
-          <td style="padding-left: 40px; max-width: 300px">
-            {{ retornarStringSiexiste(usuario.Attributes, "given_name") }}
-            {{ retornarStringSiexiste(usuario.Attributes, "family_name") }}
-          </td>
-          <td style="padding-left: 40px; max-width: 300px">
-            {{ retornarStringSiexiste(usuario.Attributes, "email") }}
-          </td>
-          <td style="padding-left: 40px; max-width: 150px">
-            {{ usuario.GrupoQuePertenece }}
-          </td>
-          <td style="padding-left: 40px; max-width: 150px">
-            {{ retornarStringSiexiste(usuario.Attributes, "custom:rol") }}
-          </td>
-          <td style="padding-left: 40px; max-width: 150px">
-            <p>
-              {{
-              retornarStringSiexiste(usuario.Attributes, "custom:negocio")
-              | quitarcoma
-              }}
-            </p>
-          </td>
-          <td style="width: 200px">
-            <img style="cursor: pointer" (click)="openModal(content, usuario, usuario.GrupoQuePertenece)"
-              class="editar-icon" />
-            <img style="cursor: pointer" (click)="
-              openModalConfirmacionBaja(confrimacion, usuario, usuario.GrupoQuePertenece)
-              " class="eliminar-icon" />
-          </td>
-        </tr>
-
-        -->
       </table>
     </div>
   </div>
@@ -140,115 +95,7 @@
       </div>
     </div>
   </div>
-
-  <!--
- <ng-template #content let-modal>
-    <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">
-        <div>Cambiar permiso</div>
-      </h4>
-      <button type="button" aria-label="Close" (click)="modal.dismiss()">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <div class="form-group">
-        <label for="dateOfBirth">Área</label>
-        <div class="input-group">
-          <select class="form-control" [(ngModel)]="SelectCamabiarArea">
-            <option disabled selected value="Area">Área</option>
-            <option *ngFor="let Area of Areas" [value]="Area">
-              {{ Area }}
-            </option>
-          </select>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="dateOfBirth">Permiso</label>
-        <div class="input-group">
-          <select class="form-control" [(ngModel)]="SelectCamabiarPermiso">
-            <option disabled selected value="Permiso">Permiso</option>
-            <option value="Administrador">Administrador</option>
-            <option value="Monitor">Monitor</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="dateOfBirth">Negocio</label>
-        <div class="input-group">
-          <ng-multiselect-dropdown style="width: 100%" [placeholder]="'Negocio'" [settings]="SettingsCambioDeNegocio"
-            [data]="dropdownListCambioDeNegocio" [(ngModel)]="selectedItemsCambioDeNegocio" id="cambiarnegocio"
-            (onSelect)="cambiarEtiquetaSeleccionadaGeneral('cambiarnegocio')">
-          </ng-multiselect-dropdown>
-
-
-        </div>
-      </div>
-    </div>
-
-    <div class="modal-footer">
-      <button type="button" class="btn btn-primary" style="background-color: #00c4d9"
-        (click)="openModalConfirmacionEdicion(confrimacionEditar)">
-        Guardar cambio
-      </button>
-      <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="modal.close()">
-        Cerrar
-      </button>
-    </div>
-
-  </ng-template>
-
-  <ng-template #confrimacion let-modal id="confirmacion">
-    <div class="modal-body">
-      <div class="row justify-content-center">
-        <div class="col-12 row justify-content-center align-items-center" style="height:120px;">
-          <div class="textoConfirmacionModalUsuarios">Cofirmar baja de usuario</div>
-        </div>
-        <div class="col-12 row">
-          <div class="col-12 descripcionConfirmacionModalUsuarios">Se eliminará el usuario:</div>
-          <div class="col-12 descripcionConfirmacionModalUsuarios">
-            {{ObjectUsuarioCambiar.Attributes.given_name}} {{ObjectUsuarioCambiar.Attributes.family_name}}
-
-          </div>
-        </div>
-        <div class="col-12 row justify-content-center align-items-center" style="height:120px;">
-          <div>
-
-            <button class="btn bottonCancelarModalUsuario" (click)="modal.close()">Cancelar</button>
-            <button class="btn bottonConfirmar" (click)="darDeBajaUsuario()">Continuar</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-  </ng-template>
-
-  <ng-template #confrimacionEditar let-modal>
-    <div class="modal-body">
-      <div class="row justify-content-center">
-        <div class="col-12 row justify-content-center align-items-center" style="height:120px;">
-          <div class="textoConfirmacionModalUsuarios">Cofirmar edición de usuario</div>
-        </div>
-        <div class="col-12 row">
-          <div class="col-12 descripcionConfirmacionModalUsuarios">Se editará el usuario:</div>
-          <div class="col-12 descripcionConfirmacionModalUsuarios">
-            {{ObjectUsuarioCambiar.Attributes.given_name}} {{ObjectUsuarioCambiar.Attributes.family_name}}
-          </div>
-        </div>
-        <div class="col-12 row justify-content-center align-items-center" style="height:120px;">
-          <div>
-            <button class="btn bottonCancelarModalUsuario" (click)="modal.close()">Cancelar</button>
-            <button class="btn bottonConfirmar" (click)="guardarCambioPermisoUsuario()">Continuar</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </ng-template>
 </div>
-
---></div>
 <div
   class="row justify-content-center"
   [ngClass]="{
@@ -335,9 +182,9 @@
             <button
               [disabled]="FormsDinamic.invalid"
               class="btn btnAgregarRegistro"
-              (click)=" agregarRegistroOActualizarRegistro()"
+              (click)="agregarRegistroOActualizarRegistro()"
             >
-            {{ editar ? "Actualizar" : "Agregar" }}
+              {{ editar ? "Actualizar" : "Agregar" }}
             </button>
           </div>
         </div>
@@ -346,4 +193,40 @@
   </div>
 </div>
 
-
+<ng-template #confrimacion let-modal id="confirmacion">
+  <div class="modal-body">
+    <div class="row justify-content-center">
+      <div
+        class="col-12 row justify-content-center align-items-center"
+        style="height: 120px"
+      >
+        <div class="textoConfirmacionModalUsuarios">Cofirmar eliminación</div>
+      </div>
+      <div class="col-12 row">
+        <div class="col-12 descripcionConfirmacionModalUsuarios">
+          Se eliminará el el registro con identificador:
+        </div>
+        <div class="col-12 descripcionConfirmacionModalUsuarios">
+          <b>{{ idetentificadorDelObjectoAEliminar }}</b>
+          del catálogo
+        </div>
+      </div>
+      <div
+        class="col-12 row justify-content-center align-items-center"
+        style="height: 120px"
+      >
+        <div>
+          <button
+            class="btn bottonCancelarModalUsuario"
+            (click)="modal.close()"
+          >
+            Cancelar
+          </button>
+          <button class="btn bottonConfirmar" (click)="eliminarRegistro()">
+            Continuar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
