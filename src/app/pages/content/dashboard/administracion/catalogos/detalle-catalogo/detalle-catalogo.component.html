@@ -6,8 +6,6 @@
   }"
 >
   <div
-
-
     class="
       d-flex
       col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12
@@ -34,7 +32,12 @@
           "
         >
           <td *ngFor="let colum of ColumDinamicData">
-            {{ transformDateOrString(DetailCat[colum.campo], colum.esFecha.bandera) }}
+            {{
+              transformDateOrString(
+                DetailCat[colum.campo],
+                colum.esFecha.bandera
+              )
+            }}
           </td>
           <td *ngIf="validarRoles()">
             <img
@@ -130,7 +133,7 @@
           <div class="form-row">
             <div
               class="form-group col-md-6"
-              *ngFor="let colum of ColumDinamicData"
+              *ngFor="let colum of arrayFomsInput(ColumDinamicData)"
             >
               <label class="labelFormAgregarRegistro" [for]="colum.campo">{{
                 colum.campo
@@ -142,7 +145,8 @@
                 class="form-control"
                 [id]="colum.campo"
                 [placeholder]="colum.campo"
-
+                [ngStyle]="bordeError(FormsDinamic.controls[colum.campo].touched &&
+                FormsDinamic.controls[colum.campo].invalid)"
               />
               <input
                 *ngIf="viewInputNumber(colum)"
@@ -151,7 +155,8 @@
                 class="form-control"
                 [id]="colum.campo"
                 [placeholder]="colum.campo"
-                required
+                [ngStyle]="bordeError(FormsDinamic.controls[colum.campo].touched &&
+                FormsDinamic.controls[colum.campo].invalid)"
               />
               <input
                 *ngIf="viewInputDate(colum)"
@@ -160,17 +165,36 @@
                 class="form-control"
                 [id]="colum.campo"
                 [placeholder]="colum.campo"
-
+                [ngStyle]="bordeError(FormsDinamic.controls[colum.campo].touched &&
+                FormsDinamic.controls[colum.campo].invalid)"
               />
 
-              <!--  style="border-color: #dc3545;"-->
               <div
-              *ngIf="FormsDinamic.controls[colum.campo].touched && FormsDinamic.controls[colum.campo].invalid"
-             >-{{ errores(FormsDinamic.controls[colum.campo].errors)}}</div>
+                *ngIf="
+                  FormsDinamic.controls[colum.campo].touched &&
+                  FormsDinamic.controls[colum.campo].invalid
+                "
+                class="errors"
+              >
+                <div *ngIf="FormsDinamic.controls[colum.campo].errors.required">
+                  El valor es requerido
+                </div>
+                <div
+                  *ngIf="FormsDinamic.controls[colum.campo].errors.minlength"
+                >
+                  El mínimo de caracteres es {{ colum.minCaracteres }}
+                </div>
+                <div
+                  *ngIf="FormsDinamic.controls[colum.campo].errors.maxlength"
+                >
+                  El máximo de caracteres es {{ colum.maxCaracteres }}
+                </div>
+                <div *ngIf="FormsDinamic.controls[colum.campo].errors.pattern">
+                  {{ colum.validacion.mensaje }}
+                </div>
+              </div>
             </div>
           </div>
-
-
         </form>
       </div>
 

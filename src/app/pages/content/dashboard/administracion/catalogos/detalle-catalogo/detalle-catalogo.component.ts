@@ -27,7 +27,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     this.store
       .select(({ usuario }) => usuario.user)
       .subscribe((res) => {
-        let rol = res['attributes']['custom:rol']
+        let rol = res['attributes']['custom:rol'];
 
         if (rol === ERole.Administrador) flag = true;
       });
@@ -53,6 +53,9 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
 
   idetentificadorDelObjectoAEliminar;
 
+  addRegister = false;
+  removeRegister = false;
+  updateRegister = false;
   constructor(
     private CatalogosService: CatalogosService,
     private store: Store<AppState>,
@@ -149,18 +152,39 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     this.FormsDinamic = new FormGroup({});
     this.ColumDinamicData.forEach((dataColum) => {
       let valueFormControl = null;
+      let arraValidators = [];
+
+      if (!dataColum.esFecha.bandera) {
+        arraValidators = [
+          Validators.required,
+          Validators.minLength(dataColum.minCaracteres),
+          Validators.maxLength(dataColum.maxCaracteres),
+          Validators.pattern(dataColum.validacion.expresionRegular + '+'),
+        ];
+      } else {
+        arraValidators = [Validators.required];
+      }
+
       this.FormsDinamic.addControl(
         dataColum.campo,
-        new FormControl(valueFormControl, [Validators.required])
+        new FormControl(valueFormControl, arraValidators)
       );
     });
   };
 
+  bordeError = (boolean) => {
+    if (boolean) {
+      return { 'border-color': '#dc3545' };
+    } else {
+      return {};
+    }
+  };
+
   viewInputText = (colum: STRUCTURE_CAT) => {
-    return this.viewFECHA(colum.campo) && colum.tipo === 'S' && !colum.esFecha.bandera;
+    return colum.tipo === 'S' && !colum.esFecha.bandera;
   };
   viewInputNumber = (colum: STRUCTURE_CAT) => {
-    return this.viewFECHA(colum.campo) && colum.tipo === 'N' && !colum.esFecha.bandera;
+    return colum.tipo === 'N' && !colum.esFecha.bandera;
   };
   viewInputDate = (colum: STRUCTURE_CAT) => {
     return colum.esFecha.bandera;
@@ -179,13 +203,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
   };
 
   arrayFomsInput = (colums: STRUCTURE_CAT[]) => {
-    let arrayReturn: STRUCTURE_CAT[] = [];
-
-    arrayReturn = colums.filter((e) => {
-      if (this.viewFECHA(e.campo)) {
-        return e;
-      }
-    });
+    let arrayReturn: STRUCTURE_CAT[] = colums;
 
     arrayReturn = arrayReturn.filter((e) => {
       if (this.viewPrimaryKey(e)) {
@@ -194,12 +212,6 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     });
     return arrayReturn;
   };
-
-  showHTMLMessage(message, title) {
-    this.toastr.success(message, title, {
-      enableHtml: true,
-    });
-  }
 
   mostrarCardAgregarResgistro = (editar = 0, object = null) => {
     this.mostrarEjecucionesProcesos = false;
@@ -210,7 +222,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
         let valueFormControl = null;
 
         if (editar === 0) {
-          if (dataColum.campo && dataColum.tipo === 'N') {
+          if (dataColum.llavePrimaria && dataColum.tipo === 'N') {
             let arrayNumbers: number[] = [];
 
             this.DetailCats.forEach((e) => {
@@ -232,7 +244,6 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
           if (dataColum.esFecha.bandera) {
             valueFormControl = moment().format('YYYY-MM-DD').toString();
           }
-          this.FormsDinamic.get(dataColum.campo).errors
           this.FormsDinamic.get(dataColum.campo).setValue(valueFormControl);
         }
       });
@@ -306,6 +317,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
       });
     }
   };
+
   ocultarCardAgregarResgistro = () => {
     this.mostrarEjecucionesProcesos = true;
   };
@@ -314,7 +326,18 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     let mensaje =
       '<div class="row justify-content-center align-items-center textoAddUpdateregistro"><img class="successRegistro"/>';
 
-    mensaje = mensaje + 'Registro exitoso';
+    //mensaje = mensaje + 'Registro' 'exitoso';
+    mensaje = mensaje + 'Registro';
+
+    if (this.addRegister) {
+      mensaje = mensaje + ' añadido ';
+    }
+    if (this.removeRegister) {
+      mensaje = mensaje + ' eliminado ';
+    }
+    if (this.updateRegister) {
+      mensaje = mensaje + ' actualizado ';
+    }
 
     mensaje = mensaje + '</div>';
 
@@ -327,6 +350,10 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
       progressBar: true,
       progressAnimation: 'increasing',
     });
+
+    this.addRegister = false;
+    this.removeRegister = false;
+    this.updateRegister = false;
   };
 
   abrirToassError = (err) => {
@@ -349,11 +376,6 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     });
   };
 
-
-
-  errores = (object) =>{
-console.log(object);
-  }
   agregarRegistroOActualizarRegistro = () => {
     let ObjectTemp = this.FormsDinamic.value;
 
@@ -416,6 +438,7 @@ console.log(object);
     if (this.editar) {
       this.CatalogosService.updateDetailsCat(objectFinish).then(
         () => {
+          this.updateRegister = true;
           this.AgregarRegistroLoading = true;
           this.ocultarCardAgregarResgistro();
           this.getDataCat();
@@ -427,6 +450,7 @@ console.log(object);
     } else {
       this.CatalogosService.addDetailsCat(objectFinish).then(
         () => {
+          this.addRegister = true;
           this.AgregarRegistroLoading = true;
           this.ocultarCardAgregarResgistro();
 
@@ -462,6 +486,7 @@ console.log(object);
 
     this.CatalogosService.deleteDetailsCat(registro).then(
       () => {
+        this.removeRegister = true;
         this.AgregarRegistroLoading = true;
         this.paginaDetailCats = 1;
         this.modalService.dismissAll();
@@ -485,4 +510,3 @@ console.log(object);
     }
   };
 }
-

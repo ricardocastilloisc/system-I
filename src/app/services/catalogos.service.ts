@@ -35,8 +35,6 @@ export class CatalogosService {
       .toPromise()
       .then((res: any) => {
 
-        console.log(res);
-
         let arrayTemp: STRUCTURE_CAT[] = [];
 
         res.filter(e => e.llavePrimaria === true).forEach(
@@ -51,7 +49,7 @@ export class CatalogosService {
         )
 
         array = arrayTemp;
-      
+
       });
 
     return new Promise((resolve) => {
