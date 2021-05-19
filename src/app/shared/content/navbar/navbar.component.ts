@@ -39,9 +39,9 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     private usuario: UsuariosService,
     private NotificacionesService: NotificacionesService,
     private router: Router
-  ) {}
+  ) { }
   ngOnDestroy(): void {
-   this.store.dispatch(unSetnotificaciones())
+    this.store.dispatch(unSetnotificaciones())
   }
 
   ngAfterViewInit(): void {
@@ -62,9 +62,13 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
       });
 
       if (!coincidencia && elementoRuta !== '') {
-
-        ArrayRuta.push(elementoRuta.split('%20').join(' ').toString());
-
+        let ruta = '';
+        ruta = elementoRuta.split('%20').join(' ').toString();
+        ruta = ruta.split('%C3%A1').join('á').toString();
+        ruta = ruta.split('%C3%A9').join('é').toString();
+        ruta = ruta.split('%C3%AD').join('í').toString();
+        ruta = ruta.split('%C3%B3').join('ó').toString();
+        ArrayRuta.push(ruta);
       }
     });
 
