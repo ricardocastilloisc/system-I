@@ -181,7 +181,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
   };
 
   viewInputText = (colum: STRUCTURE_CAT) => {
-    return colum.tipo === 'S' && !colum.esFecha.bandera;
+    return (colum.tipo === 'S' || colum.tipo === 'N' ) && !colum.esFecha.bandera;
   };
   viewInputNumber = (colum: STRUCTURE_CAT) => {
     return colum.tipo === 'N' && !colum.esFecha.bandera;

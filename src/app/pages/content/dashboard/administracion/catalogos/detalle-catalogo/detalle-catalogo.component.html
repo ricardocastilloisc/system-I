@@ -148,6 +148,7 @@
                 [ngStyle]="bordeError(FormsDinamic.controls[colum.campo].touched &&
                 FormsDinamic.controls[colum.campo].invalid)"
               />
+              <!---
               <input
                 *ngIf="viewInputNumber(colum)"
                 [formControlName]="colum.campo"
@@ -157,7 +158,7 @@
                 [placeholder]="colum.campo"
                 [ngStyle]="bordeError(FormsDinamic.controls[colum.campo].touched &&
                 FormsDinamic.controls[colum.campo].invalid)"
-              />
+              />-->
               <input
                 *ngIf="viewInputDate(colum)"
                 [formControlName]="colum.campo"
