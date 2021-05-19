@@ -163,7 +163,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     return this.viewFECHA(colum.campo) && colum.tipo === 'N' && !colum.esFecha.bandera;
   };
   viewInputDate = (colum: STRUCTURE_CAT) => {
-    return colum.esFecha;
+    return colum.esFecha.bandera;
   };
 
   viewFECHA = (value) => {
@@ -485,3 +485,4 @@ console.log(object);
     }
   };
 }
+

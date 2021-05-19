@@ -34,7 +34,7 @@
           "
         >
           <td *ngFor="let colum of ColumDinamicData">
-            {{ transformDateOrString(DetailCat[colum.campo], colum.DATE) }}
+            {{ transformDateOrString(DetailCat[colum.campo], colum.esFecha.bandera) }}
           </td>
           <td *ngIf="validarRoles()">
             <img
@@ -126,7 +126,7 @@
       </div>
 
       <div class="card-body" style="padding-left: 127px; padding-right: 127px">
-        <form [formGroup]="FormsDinamic" class="was-validated">
+        <form [formGroup]="FormsDinamic">
           <div class="form-row">
             <div
               class="form-group col-md-6"
