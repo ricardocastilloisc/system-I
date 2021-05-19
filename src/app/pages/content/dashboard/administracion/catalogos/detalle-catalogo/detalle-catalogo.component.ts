@@ -87,13 +87,13 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     this.elementoEliminar = object;
 
     let objectReferencePk = this.ColumDinamicData.filter(
-      (e) => e.PRIMARY_KEY === true
+      (e) => e.llavePrimaria === true
     )[0];
 
-    const registro = object[objectReferencePk.VALUE];
+    const registro = object[objectReferencePk.campo];
 
     this.idetentificadorDelObjectoAEliminar =
-      objectReferencePk.VALUE + ': ' + registro;
+      objectReferencePk.campo + ': ' + registro;
 
     this.modalService.open(content, {
       ariaLabelledBy: 'modal-basic-title',
@@ -150,20 +150,20 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     this.ColumDinamicData.forEach((dataColum) => {
       let valueFormControl = null;
       this.FormsDinamic.addControl(
-        dataColum.VALUE,
+        dataColum.campo,
         new FormControl(valueFormControl, [Validators.required])
       );
     });
   };
 
   viewInputText = (colum: STRUCTURE_CAT) => {
-    return this.viewFECHA(colum.VALUE) && colum.TYPE === 'S' && !colum.DATE;
+    return this.viewFECHA(colum.campo) && colum.tipo === 'S' && !colum.esFecha.bandera;
   };
   viewInputNumber = (colum: STRUCTURE_CAT) => {
-    return this.viewFECHA(colum.VALUE) && colum.TYPE === 'N' && !colum.DATE;
+    return this.viewFECHA(colum.campo) && colum.tipo === 'N' && !colum.esFecha.bandera;
   };
   viewInputDate = (colum: STRUCTURE_CAT) => {
-    return colum.DATE;
+    return colum.esFecha;
   };
 
   viewFECHA = (value) => {
@@ -171,10 +171,10 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
   };
 
   viewPrimaryKey = (colum: STRUCTURE_CAT) => {
-    if (colum.PRIMARY_KEY && colum.TYPE == 'S') {
+    if (colum.llavePrimaria && colum.tipo == 'S') {
       return true;
     } else {
-      return !colum.PRIMARY_KEY;
+      return !colum.llavePrimaria;
     }
   };
 
@@ -182,7 +182,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     let arrayReturn: STRUCTURE_CAT[] = [];
 
     arrayReturn = colums.filter((e) => {
-      if (this.viewFECHA(e.VALUE)) {
+      if (this.viewFECHA(e.campo)) {
         return e;
       }
     });
@@ -210,14 +210,14 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
         let valueFormControl = null;
 
         if (editar === 0) {
-          if (dataColum.PRIMARY_KEY && dataColum.TYPE === 'N') {
+          if (dataColum.campo && dataColum.tipo === 'N') {
             let arrayNumbers: number[] = [];
 
             this.DetailCats.forEach((e) => {
-              if (typeof e[dataColum.VALUE] === 'string') {
-                arrayNumbers.push(Number(e[dataColum.VALUE]));
+              if (typeof e[dataColum.campo] === 'string') {
+                arrayNumbers.push(Number(e[dataColum.campo]));
               } else {
-                arrayNumbers.push(e[dataColum.VALUE]);
+                arrayNumbers.push(e[dataColum.campo]);
               }
             });
 
@@ -229,11 +229,11 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
             }
           }
 
-          if (dataColum.DATE) {
+          if (dataColum.esFecha.bandera) {
             valueFormControl = moment().format('YYYY-MM-DD').toString();
           }
-
-          this.FormsDinamic.get(dataColum.VALUE).setValue(valueFormControl);
+          this.FormsDinamic.get(dataColum.campo).errors
+          this.FormsDinamic.get(dataColum.campo).setValue(valueFormControl);
         }
       });
     } else {
@@ -242,7 +242,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
       this.ColumDinamicData.forEach((dataColum) => {
         let valueTempControl = null;
 
-        valueTempControl = object[dataColum.VALUE];
+        valueTempControl = object[dataColum.campo];
 
         if (typeof valueTempControl === 'string') {
           valueTempControl = valueTempControl;
@@ -250,9 +250,9 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
           valueTempControl = valueTempControl.toString();
         }
 
-        if (dataColum.DATE) {
+        if (dataColum.esFecha.bandera) {
           if (this.DetailCats.length > 0) {
-            let valueTempDate = this.DetailCats[0][dataColum.VALUE];
+            let valueTempDate = this.DetailCats[0][dataColum.campo];
 
             let specialFormat = false;
 
@@ -263,7 +263,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
             }
 
             if (valueTempDate.includes('-')) {
-              valueTempControl = moment(object[dataColum.VALUE])
+              valueTempControl = moment(object[dataColum.campo])
                 .format('YYYY-MM-DD')
                 .toString();
 
@@ -302,7 +302,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
           }
         }
 
-        this.FormsDinamic.get(dataColum.VALUE).setValue(valueTempControl);
+        this.FormsDinamic.get(dataColum.campo).setValue(valueTempControl);
       });
     }
   };
@@ -349,6 +349,11 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     });
   };
 
+
+
+  errores = (object) =>{
+console.log(object);
+  }
   agregarRegistroOActualizarRegistro = () => {
     let ObjectTemp = this.FormsDinamic.value;
 
@@ -357,11 +362,11 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     this.ColumDinamicData.forEach((dataColum) => {
       let finishTempControl = null;
 
-      let valueTempControl = ObjectTemp[dataColum.VALUE];
+      let valueTempControl = ObjectTemp[dataColum.campo];
 
-      if (dataColum.DATE) {
+      if (dataColum.esFecha.bandera) {
         if (this.DetailCats.length > 0) {
-          let valueTempDate = this.DetailCats[0][dataColum.VALUE];
+          let valueTempDate = this.DetailCats[0][dataColum.campo];
 
           let specialFormat = false;
 
@@ -397,15 +402,15 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
         valueTempControl = valueTempControl.toString();
       }
 
-      if (dataColum.TYPE === 'N') {
+      if (dataColum.tipo === 'N') {
         finishTempControl = Number(valueTempControl);
       }
 
-      if (dataColum.TYPE === 'S') {
+      if (dataColum.tipo === 'S') {
         finishTempControl = valueTempControl;
       }
 
-      objectFinish[dataColum.VALUE] = finishTempControl;
+      objectFinish[dataColum.campo] = finishTempControl;
     });
 
     if (this.editar) {
@@ -450,10 +455,10 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
 
   eliminarRegistro = () => {
     let objectReferencePk = this.ColumDinamicData.filter(
-      (e) => e.PRIMARY_KEY === true
+      (e) => e.llavePrimaria === true
     )[0];
 
-    const registro = this.elementoEliminar[objectReferencePk.VALUE];
+    const registro = this.elementoEliminar[objectReferencePk.campo];
 
     this.CatalogosService.deleteDetailsCat(registro).then(
       () => {

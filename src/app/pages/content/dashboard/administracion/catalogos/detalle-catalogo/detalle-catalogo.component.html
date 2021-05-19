@@ -6,6 +6,8 @@
   }"
 >
   <div
+
+
     class="
       d-flex
       col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12
@@ -16,7 +18,7 @@
       <table class="table listado-design-general">
         <tr>
           <th scope="col" *ngFor="let colum of ColumDinamicData">
-            {{ removeCharterSpecialSringTh(colum.VALUE) }}
+            {{ removeCharterSpecialSringTh(colum.campo) }}
           </th>
           <th scope="col" *ngIf="validarRoles()">Acciones</th>
         </tr>
@@ -32,7 +34,7 @@
           "
         >
           <td *ngFor="let colum of ColumDinamicData">
-            {{ transformDateOrString(DetailCat[colum.VALUE], colum.DATE) }}
+            {{ transformDateOrString(DetailCat[colum.campo], colum.DATE) }}
           </td>
           <td *ngIf="validarRoles()">
             <img
@@ -124,41 +126,51 @@
       </div>
 
       <div class="card-body" style="padding-left: 127px; padding-right: 127px">
-        <form [formGroup]="FormsDinamic">
+        <form [formGroup]="FormsDinamic" class="was-validated">
           <div class="form-row">
             <div
               class="form-group col-md-6"
               *ngFor="let colum of ColumDinamicData"
             >
-              <label class="labelFormAgregarRegistro" [for]="colum.VALUE">{{
-                colum.VALUE
+              <label class="labelFormAgregarRegistro" [for]="colum.campo">{{
+                colum.campo
               }}</label>
               <input
                 *ngIf="viewInputText(colum)"
-                [formControlName]="colum.VALUE"
+                [formControlName]="colum.campo"
                 type="text"
                 class="form-control"
-                [id]="colum.VALUE"
-                [placeholder]="colum.VALUE"
+                [id]="colum.campo"
+                [placeholder]="colum.campo"
+
               />
               <input
                 *ngIf="viewInputNumber(colum)"
-                [formControlName]="colum.VALUE"
+                [formControlName]="colum.campo"
                 type="number"
                 class="form-control"
-                [id]="colum.VALUE"
-                [placeholder]="colum.VALUE"
+                [id]="colum.campo"
+                [placeholder]="colum.campo"
+                required
               />
               <input
                 *ngIf="viewInputDate(colum)"
-                [formControlName]="colum.VALUE"
+                [formControlName]="colum.campo"
                 type="date"
                 class="form-control"
-                [id]="colum.VALUE"
-                [placeholder]="colum.VALUE"
+                [id]="colum.campo"
+                [placeholder]="colum.campo"
+
               />
+
+              <!--  style="border-color: #dc3545;"-->
+              <div
+              *ngIf="FormsDinamic.controls[colum.campo].touched && FormsDinamic.controls[colum.campo].invalid"
+             >-{{ errores(FormsDinamic.controls[colum.campo].errors)}}</div>
             </div>
           </div>
+
+
         </form>
       </div>
 

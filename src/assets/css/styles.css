@@ -219,6 +219,19 @@ a[data-toggle="collapse"] {
   transition: all 0.3;
 }
 
+
+.tamanoGrafica{
+  height:100px;
+  width:300px
+}
+
+@media(min-width: 1200px){
+  .tamanoGrafica{
+    height: 120px,
+    width: 1200px
+  }
+}
+
 @media (max-width: 768px) {
   #sidebar {
     margin-left: -253px;

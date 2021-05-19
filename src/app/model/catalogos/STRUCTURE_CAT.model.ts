@@ -1,6 +1,16 @@
 export interface STRUCTURE_CAT {
-  PRIMARY_KEY: boolean;
-  VALUE: string;
-  TYPE: string;
-  DATE: boolean;
+  campo: string;
+esFecha: {bandera: boolean, formato: any}
+llavePrimaria: boolean
+maxCaracteres: number
+minCaracteres: number
+tipo: string
+validacion:{
+  expresionRegular: string;
+  mensaje: string;
 }
+
+
+}
+
+
