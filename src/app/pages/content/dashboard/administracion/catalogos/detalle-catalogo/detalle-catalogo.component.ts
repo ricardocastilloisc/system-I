@@ -156,17 +156,12 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
 
 
 
-      let expreRegular = dataColum.validacion.expresionRegular;
-      if(expreRegular.includes('\\\\')){
-        expreRegular = expreRegular.split('\\\\').join("\\");
-      }
-
       if (!dataColum.esFecha.bandera) {
         arraValidators = [
           Validators.required,
           Validators.minLength(dataColum.minCaracteres),
           Validators.maxLength(dataColum.maxCaracteres),
-          Validators.pattern(expreRegular + '+'),
+          Validators.pattern(dataColum.validacion.expresionRegular + '+'),
         ];
       } else {
         arraValidators = [Validators.required];
