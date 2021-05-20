@@ -144,7 +144,7 @@
                 type="text"
                 class="form-control"
                 [id]="colum.campo"
-                [placeholder]="colum.campo"
+                [placeholder]="colum.ejemplo"
                 [disabled]="disabledInput(colum)"
                 (keypress)="AJrestriccion($event)"
                 [attr.disabled]="disabledInput(colum)? true : null"
@@ -168,7 +168,7 @@
                 type="date"
                 class="form-control"
                 [id]="colum.campo"
-                [placeholder]="colum.campo"
+                [placeholder]="colum.ejemplo"
                 [disabled]="disabledInput(colum)"
                 [attr.disabled]="disabledInput(colum)? true : null"
                 [ngStyle]="bordeError(FormsDinamic.controls[colum.campo].touched &&
