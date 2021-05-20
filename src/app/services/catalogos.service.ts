@@ -34,32 +34,22 @@ export class CatalogosService {
       .get(this.UrlCatalogos + 'catalogos/' + localStorage.getItem('nameCat'))
       .toPromise()
       .then((res: any) => {
-        let arrayTemp: STRUCTURE_CAT[] = [];
-        arrayTemp.push({
-          PRIMARY_KEY: true,
-          VALUE: res['PK'],
-          TYPE: res[res['PK']],
-          DATE: false,
-        });
 
-        //sentence.includes(word)
-        const keys = Object.keys(res);
-        keys.forEach((element) => {
-          if (element !== 'PK') {
-            const validator = arrayTemp.filter(
-              (filt) => filt.VALUE === element
-            );
-            if (validator.length === 0) {
-              arrayTemp.push({
-                PRIMARY_KEY: false,
-                VALUE: element,
-                TYPE: res[element],
-                DATE: element.includes('FECHA'),
-              });
-            }
-          }
-        });
+        let arrayTemp: STRUCTURE_CAT[] = [];
+
+        res.filter(e => e.llavePrimaria === true).forEach(
+          r => arrayTemp.push(
+            r
+          )
+        )
+        res.filter(e => e.llavePrimaria === false).forEach(
+          r => arrayTemp.push(
+            r
+          )
+        )
+
         array = arrayTemp;
+
       });
 
     return new Promise((resolve) => {

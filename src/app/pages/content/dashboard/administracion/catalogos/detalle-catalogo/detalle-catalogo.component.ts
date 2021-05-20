@@ -27,7 +27,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     this.store
       .select(({ usuario }) => usuario.user)
       .subscribe((res) => {
-        let rol = res['attributes']['custom:rol']
+        let rol = res['attributes']['custom:rol'];
 
         if (rol === ERole.Administrador) flag = true;
       });
@@ -53,6 +53,9 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
 
   idetentificadorDelObjectoAEliminar;
 
+  addRegister = false;
+  removeRegister = false;
+  updateRegister = false;
   constructor(
     private CatalogosService: CatalogosService,
     private store: Store<AppState>,
@@ -87,13 +90,13 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     this.elementoEliminar = object;
 
     let objectReferencePk = this.ColumDinamicData.filter(
-      (e) => e.PRIMARY_KEY === true
+      (e) => e.llavePrimaria === true
     )[0];
 
-    const registro = object[objectReferencePk.VALUE];
+    const registro = object[objectReferencePk.campo];
 
     this.idetentificadorDelObjectoAEliminar =
-      objectReferencePk.VALUE + ': ' + registro;
+      objectReferencePk.campo + ': ' + registro;
 
     this.modalService.open(content, {
       ariaLabelledBy: 'modal-basic-title',
@@ -149,21 +152,42 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     this.FormsDinamic = new FormGroup({});
     this.ColumDinamicData.forEach((dataColum) => {
       let valueFormControl = null;
+      let arraValidators = [];
+
+      if (!dataColum.esFecha.bandera) {
+        arraValidators = [
+          Validators.required,
+          Validators.minLength(dataColum.minCaracteres),
+          Validators.maxLength(dataColum.maxCaracteres),
+          Validators.pattern(dataColum.validacion.expresionRegular + '+'),
+        ];
+      } else {
+        arraValidators = [Validators.required];
+      }
+
       this.FormsDinamic.addControl(
-        dataColum.VALUE,
-        new FormControl(valueFormControl, [Validators.required])
+        dataColum.campo,
+        new FormControl(valueFormControl, arraValidators)
       );
     });
   };
 
+  bordeError = (boolean) => {
+    if (boolean) {
+      return { 'border-color': '#dc3545' };
+    } else {
+      return {};
+    }
+  };
+
   viewInputText = (colum: STRUCTURE_CAT) => {
-    return this.viewFECHA(colum.VALUE) && colum.TYPE === 'S' && !colum.DATE;
+    return (colum.tipo === 'S' || colum.tipo === 'N' ) && !colum.esFecha.bandera;
   };
   viewInputNumber = (colum: STRUCTURE_CAT) => {
-    return this.viewFECHA(colum.VALUE) && colum.TYPE === 'N' && !colum.DATE;
+    return colum.tipo === 'N' && !colum.esFecha.bandera;
   };
   viewInputDate = (colum: STRUCTURE_CAT) => {
-    return colum.DATE;
+    return colum.esFecha.bandera;
   };
 
   viewFECHA = (value) => {
@@ -171,21 +195,15 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
   };
 
   viewPrimaryKey = (colum: STRUCTURE_CAT) => {
-    if (colum.PRIMARY_KEY && colum.TYPE == 'S') {
+    if (colum.llavePrimaria && colum.tipo == 'S') {
       return true;
     } else {
-      return !colum.PRIMARY_KEY;
+      return !colum.llavePrimaria;
     }
   };
 
   arrayFomsInput = (colums: STRUCTURE_CAT[]) => {
-    let arrayReturn: STRUCTURE_CAT[] = [];
-
-    arrayReturn = colums.filter((e) => {
-      if (this.viewFECHA(e.VALUE)) {
-        return e;
-      }
-    });
+    let arrayReturn: STRUCTURE_CAT[] = colums;
 
     arrayReturn = arrayReturn.filter((e) => {
       if (this.viewPrimaryKey(e)) {
@@ -195,10 +213,9 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     return arrayReturn;
   };
 
-  showHTMLMessage(message, title) {
-    this.toastr.success(message, title, {
-      enableHtml: true,
-    });
+
+  disabledInput = (colum: STRUCTURE_CAT) => {
+    return colum.llavePrimaria && this.editar
   }
 
   mostrarCardAgregarResgistro = (editar = 0, object = null) => {
@@ -210,14 +227,14 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
         let valueFormControl = null;
 
         if (editar === 0) {
-          if (dataColum.PRIMARY_KEY && dataColum.TYPE === 'N') {
+          if (dataColum.llavePrimaria && dataColum.tipo === 'N') {
             let arrayNumbers: number[] = [];
 
             this.DetailCats.forEach((e) => {
-              if (typeof e[dataColum.VALUE] === 'string') {
-                arrayNumbers.push(Number(e[dataColum.VALUE]));
+              if (typeof e[dataColum.campo] === 'string') {
+                arrayNumbers.push(Number(e[dataColum.campo]));
               } else {
-                arrayNumbers.push(e[dataColum.VALUE]);
+                arrayNumbers.push(e[dataColum.campo]);
               }
             });
 
@@ -229,11 +246,10 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
             }
           }
 
-          if (dataColum.DATE) {
+          if (dataColum.esFecha.bandera) {
             valueFormControl = moment().format('YYYY-MM-DD').toString();
           }
-
-          this.FormsDinamic.get(dataColum.VALUE).setValue(valueFormControl);
+          this.FormsDinamic.get(dataColum.campo).setValue(valueFormControl);
         }
       });
     } else {
@@ -242,7 +258,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
       this.ColumDinamicData.forEach((dataColum) => {
         let valueTempControl = null;
 
-        valueTempControl = object[dataColum.VALUE];
+        valueTempControl = object[dataColum.campo];
 
         if (typeof valueTempControl === 'string') {
           valueTempControl = valueTempControl;
@@ -250,9 +266,9 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
           valueTempControl = valueTempControl.toString();
         }
 
-        if (dataColum.DATE) {
+        if (dataColum.esFecha.bandera) {
           if (this.DetailCats.length > 0) {
-            let valueTempDate = this.DetailCats[0][dataColum.VALUE];
+            let valueTempDate = this.DetailCats[0][dataColum.campo];
 
             let specialFormat = false;
 
@@ -263,7 +279,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
             }
 
             if (valueTempDate.includes('-')) {
-              valueTempControl = moment(object[dataColum.VALUE])
+              valueTempControl = moment(object[dataColum.campo])
                 .format('YYYY-MM-DD')
                 .toString();
 
@@ -302,10 +318,11 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
           }
         }
 
-        this.FormsDinamic.get(dataColum.VALUE).setValue(valueTempControl);
+        this.FormsDinamic.get(dataColum.campo).setValue(valueTempControl);
       });
     }
   };
+
   ocultarCardAgregarResgistro = () => {
     this.mostrarEjecucionesProcesos = true;
   };
@@ -314,7 +331,18 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     let mensaje =
       '<div class="row justify-content-center align-items-center textoAddUpdateregistro"><img class="successRegistro"/>';
 
-    mensaje = mensaje + 'Registro exitoso';
+    //mensaje = mensaje + 'Registro' 'exitoso';
+    mensaje = mensaje + 'Registro';
+
+    if (this.addRegister) {
+      mensaje = mensaje + ' añadido ';
+    }
+    if (this.removeRegister) {
+      mensaje = mensaje + ' eliminado ';
+    }
+    if (this.updateRegister) {
+      mensaje = mensaje + ' actualizado ';
+    }
 
     mensaje = mensaje + '</div>';
 
@@ -327,6 +355,10 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
       progressBar: true,
       progressAnimation: 'increasing',
     });
+
+    this.addRegister = false;
+    this.removeRegister = false;
+    this.updateRegister = false;
   };
 
   abrirToassError = (err) => {
@@ -357,11 +389,11 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     this.ColumDinamicData.forEach((dataColum) => {
       let finishTempControl = null;
 
-      let valueTempControl = ObjectTemp[dataColum.VALUE];
+      let valueTempControl = ObjectTemp[dataColum.campo];
 
-      if (dataColum.DATE) {
+      if (dataColum.esFecha.bandera) {
         if (this.DetailCats.length > 0) {
-          let valueTempDate = this.DetailCats[0][dataColum.VALUE];
+          let valueTempDate = this.DetailCats[0][dataColum.campo];
 
           let specialFormat = false;
 
@@ -397,20 +429,21 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
         valueTempControl = valueTempControl.toString();
       }
 
-      if (dataColum.TYPE === 'N') {
+      if (dataColum.tipo === 'N') {
         finishTempControl = Number(valueTempControl);
       }
 
-      if (dataColum.TYPE === 'S') {
+      if (dataColum.tipo === 'S') {
         finishTempControl = valueTempControl;
       }
 
-      objectFinish[dataColum.VALUE] = finishTempControl;
+      objectFinish[dataColum.campo] = finishTempControl;
     });
 
     if (this.editar) {
       this.CatalogosService.updateDetailsCat(objectFinish).then(
         () => {
+          this.updateRegister = true;
           this.AgregarRegistroLoading = true;
           this.ocultarCardAgregarResgistro();
           this.getDataCat();
@@ -422,6 +455,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     } else {
       this.CatalogosService.addDetailsCat(objectFinish).then(
         () => {
+          this.addRegister = true;
           this.AgregarRegistroLoading = true;
           this.ocultarCardAgregarResgistro();
 
@@ -450,13 +484,14 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
 
   eliminarRegistro = () => {
     let objectReferencePk = this.ColumDinamicData.filter(
-      (e) => e.PRIMARY_KEY === true
+      (e) => e.llavePrimaria === true
     )[0];
 
-    const registro = this.elementoEliminar[objectReferencePk.VALUE];
+    const registro = this.elementoEliminar[objectReferencePk.campo];
 
     this.CatalogosService.deleteDetailsCat(registro).then(
       () => {
+        this.removeRegister = true;
         this.AgregarRegistroLoading = true;
         this.paginaDetailCats = 1;
         this.modalService.dismissAll();
