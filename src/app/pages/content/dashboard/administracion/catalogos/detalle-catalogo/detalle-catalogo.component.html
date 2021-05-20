@@ -146,6 +146,7 @@
                 [id]="colum.campo"
                 [placeholder]="colum.campo"
                 [disabled]="disabledInput(colum)"
+                (keypress)="AJrestriccion($event)"
                 [attr.disabled]="disabledInput(colum)? true : null"
                 [ngStyle]="bordeError(FormsDinamic.controls[colum.campo].touched &&
                 FormsDinamic.controls[colum.campo].invalid)"

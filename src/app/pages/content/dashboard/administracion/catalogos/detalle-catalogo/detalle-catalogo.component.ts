@@ -182,6 +182,16 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     }
   };
 
+  AJrestriccion(event){
+
+    if(this.FormsDinamic.get(event.target.id)?.errors){
+      if(this.FormsDinamic.get(event.target.id).errors.hasOwnProperty('maxlength')){
+        event.preventDefault();
+      }
+    }
+
+  }
+
   viewInputText = (colum: STRUCTURE_CAT) => {
     return (colum.tipo === 'S' || colum.tipo === 'N' ) && !colum.esFecha.bandera;
   };
