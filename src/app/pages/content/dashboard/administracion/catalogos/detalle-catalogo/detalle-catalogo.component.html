@@ -145,6 +145,7 @@
                 class="form-control"
                 [id]="colum.campo"
                 [placeholder]="colum.campo"
+                [disabled]="disabledInput(colum)"
                 [ngStyle]="bordeError(FormsDinamic.controls[colum.campo].touched &&
                 FormsDinamic.controls[colum.campo].invalid)"
               />

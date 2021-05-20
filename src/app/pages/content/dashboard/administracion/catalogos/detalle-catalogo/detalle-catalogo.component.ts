@@ -213,6 +213,11 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     return arrayReturn;
   };
 
+
+  disabledInput = (colum: STRUCTURE_CAT) => {
+    return colum.llavePrimaria && this.editar
+  }
+
   mostrarCardAgregarResgistro = (editar = 0, object = null) => {
     this.mostrarEjecucionesProcesos = false;
 
