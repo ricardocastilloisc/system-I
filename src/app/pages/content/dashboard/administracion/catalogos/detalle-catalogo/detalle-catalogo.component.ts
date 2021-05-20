@@ -11,7 +11,6 @@ import {
 import { Subscription } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
-import { NotificationsService } from 'angular2-notifications';
 import { ToastrService } from 'ngx-toastr';
 import { ERole } from '../../../../../../validators/roles';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -337,6 +336,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
 
   ocultarCardAgregarResgistro = () => {
     this.mostrarEjecucionesProcesos = true;
+    this.FormsDinamic.reset();
   };
 
   abrirToass = () => {
