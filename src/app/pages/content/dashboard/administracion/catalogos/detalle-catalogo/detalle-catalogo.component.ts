@@ -105,6 +105,9 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
 
   transformDateOrString = (value, isDate) => {
 
+    if(value === null){
+      return ''
+    }
 
     let stringReturn = '';
     if (typeof value === 'string') {
