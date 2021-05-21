@@ -5,6 +5,16 @@
     'hide-ejecuciones': mostrarEjecucionesProcesos == false
   }"
 >
+
+<div *ngIf="filter" class="
+d-flex
+col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12
+justify-content-end
+">
+  <a (click)="cleanFilter()" class="limpiarFiltroRed clickable" style="margin-right: 30px;">Eliminar Filtro
+      <img src="assets/icons/Eliminar.svg" class="tamanioFiltroIcono" /></a>
+</div>
+
   <div
     class="
       d-flex
@@ -15,8 +25,12 @@
     <div class="card-lista-design-general" style="overflow-x: auto">
       <table class="table listado-design-general">
         <tr>
-          <th scope="col" *ngFor="let colum of ColumDinamicData">
+          <th
+          scope="col" *ngFor="let colum of ColumDinamicData"
+          style="cursor: pointer" (click)="openModalFilter(colum, filtro)"
+          >
             {{ removeCharterSpecialSringTh(colum.campo) }}
+
           </th>
           <th scope="col" *ngIf="validarRoles()">Acciones</th>
         </tr>
@@ -29,7 +43,7 @@
                     itemsPerPage: 10,
                     currentPage: paginaDetailCats
                   }
-              | ordenasPk : primaryKeyOrder
+              | ordenasPk: primaryKeyOrder
           "
         >
           <td *ngFor="let colum of ColumDinamicData">
@@ -131,19 +145,22 @@
       </div>
 
       <div class="card-body" style="padding-left: 127px; padding-right: 127px">
-
-
         <form [formGroup]="FormsDinamic">
           <div class="form-row">
             <div
               class="form-group col-md-6"
               *ngFor="let colum of arrayFomsInput(ColumDinamicData)"
             >
-              <label class="labelFormAgregarRegistro" [for]="colum.campo">{{
-                colum.campo
-              }} <i class="far fa-question-circle"  (mouseenter)="helperInputs(colum)"
-              triggers="mouseenter:mouseleave"
-              [ngbPopover]="popContent" [popoverTitle]="popTitle"></i> </label>
+              <label class="labelFormAgregarRegistro" [for]="colum.campo"
+                >{{ colum.campo }}
+                <i
+                  class="far fa-question-circle"
+                  (mouseenter)="helperInputs(colum)"
+                  triggers="mouseenter:mouseleave"
+                  [ngbPopover]="popContent"
+                  [popoverTitle]="popTitle"
+                ></i>
+              </label>
               <input
                 *ngIf="viewInputText(colum)"
                 [formControlName]="colum.campo"
@@ -287,21 +304,65 @@
   </div>
 </ng-template>
 
-<ng-template #popContent>
+<ng-template #filtro let-modal id="filtro">
+  <div class="modal-body">
+    <div class="row justify-content-center">
+      <div
+        class="col-12 row justify-content-center align-items-center"
+        style="height: 120px"
+      >
+        <div class="textoConfirmacionModalUsuarios">{{placeholderFiltro}}</div>
+      </div>
+      <div class="col-12 row">
+        <div class="col-12 descripcionConfirmacionModalUsuarios" style="margin-bottom: 15px;">
+          Filtrar:
+        </div>
 
-  <div style="width: 100%;">
-    El valor es requerido
+        <div class="col-12 descripcionConfirmacionModalUsuarios">
+          <ng-multiselect-dropdown
+          style="width: 100%"
+          [placeholder]="placeholderFiltro"
+          [settings]="SettingsFiltro"
+          [data]="dropdownListFiltro"
+          [(ngModel)]="selectedItemsFiltro"
+          >
+        </ng-multiselect-dropdown>
+        </div>
+      </div>
+      <div
+        class="col-12 row justify-content-center align-items-center"
+        style="height: 120px"
+      >
+        <div>
+          <button
+            class="btn bottonCancelarModalUsuario"
+            (click)="modal.close()"
+          >
+            Cancelar
+          </button>
+          <button class="btn bottonConfirmar"
+          [disabled]="selectedItemsFiltro.length === 0"
+          [attr.disabled]="selectedItemsFiltro.length === 0 ? true : null"
+          (click)="filtrar()"
+          >
+            Filtrar
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
-  <div style="width: 100%;">
+</ng-template>
+
+<ng-template #popContent>
+  <div style="width: 100%">El valor es requerido</div>
+  <div *ngIf="!columnTemp.esFecha.bandera" style="width: 100%">
     El mínimo de caracteres es {{ columnTemp.minCaracteres }}
   </div>
-  <div style="width: 100%;">
+  <div *ngIf="!columnTemp.esFecha.bandera" style="width: 100%">
     El máximo de caracteres es {{ columnTemp.maxCaracteres }}
   </div>
-  <div style="width: 100%;">
+  <div *ngIf="!columnTemp.esFecha.bandera" style="width: 100%">
     {{ columnTemp.validacion.mensaje }}
   </div>
-
-
 </ng-template>
-<ng-template #popTitle>{{columnTemp.campo}}</ng-template>
+<ng-template #popTitle>{{ columnTemp.campo }}</ng-template>

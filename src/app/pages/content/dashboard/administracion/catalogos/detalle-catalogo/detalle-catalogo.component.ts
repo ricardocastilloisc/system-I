@@ -14,6 +14,7 @@ import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { ERole } from '../../../../../../validators/roles';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
 @Component({
   selector: 'app-detalle-catalogo',
@@ -58,7 +59,27 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
 
   columnTemp: STRUCTURE_CAT;
 
-  primaryKeyOrder = ''
+  primaryKeyOrder = '';
+
+  DetailCatsStatic = [];
+
+  filter = false;
+
+  dropdownListFiltro = [];
+  SettingsFiltro: IDropdownSettings = {
+    singleSelection: false,
+    idField: 'item_id',
+    textField: 'item_text',
+    allowSearchFilter: true,
+    clearSearchFilter: true,
+    enableCheckAll: false,
+    maxHeight: 200,
+    itemsShowLimit: 3,
+    searchPlaceholderText: 'Buscar ',
+  };
+  selectedItemsFiltro = [];
+
+  placeholderFiltro = '';
 
   constructor(
     private CatalogosService: CatalogosService,
@@ -72,16 +93,66 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     this.DetailCatalogos$.unsubscribe();
   }
 
+  openModalFilter = (column: STRUCTURE_CAT, content) => {
+    this.modalService.open(content, {
+      ariaLabelledBy: 'modal-basic-title',
+      windowClass: 'confirmacionUsuariosModal',
+    });
+
+    this.dropdownListFiltro = [];
+
+    this.selectedItemsFiltro = [];
+
+    this.placeholderFiltro = column.campo;
+
+    this.DetailCats.forEach((e) => {
+      const object = {
+        item_id: e[column.campo],
+        item_text: this.transformDateOrString(e[column.campo],column.esFecha.bandera),
+      };
+
+      if (this.dropdownListFiltro.filter(e => e.item_id === object.item_id).length === 0) {
+        this.dropdownListFiltro.push(object);
+      }
+    });
+  };
+
+  cleanFilter = () => {
+
+    this.filter = false;
+
+    this.DetailCats = this.DetailCatsStatic
+
+  }
+  filtrar = () => {
+
+    let arrayTemp = [];
+
+    this.selectedItemsFiltro.forEach( e => {
+      arrayTemp = [...arrayTemp, ...this.DetailCats.filter( f => f[this.placeholderFiltro] === e.item_id)]
+    });
+
+
+    this.DetailCats = arrayTemp;
+
+    this.filter = true;
+
+    this.modalService.dismissAll();
+  }
+
   viewUpdateIcon = () => {
     return this.ColumDinamicData.length > 1;
-  }
+  };
   ngOnInit(): void {
     this.validarRoles();
     this.getDataCat();
     this.DetailCatalogos$ = this.store
       .select(({ DetailCatalogos }) => DetailCatalogos.DetailCatalogos)
       .subscribe((res) => {
+        //DetailCats
         this.DetailCats = res;
+        this.DetailCatsStatic = res;
+
         if (this.ColumDinamicData.length > 0) {
           this.makeFormsDinamic();
         }
@@ -112,16 +183,14 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
   }
 
   transformDateOrString = (value, isDate) => {
-
-    if(value === null){
-      return ''
+    if (value === null) {
+      return '';
     }
 
     let stringReturn = '';
     if (typeof value === 'string') {
       stringReturn = value;
     } else {
-
       stringReturn = value.toString();
     }
 
@@ -141,21 +210,20 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
       : stringReturn;
   };
 
-  helperInputs = (column: STRUCTURE_CAT) =>{
+  helperInputs = (column: STRUCTURE_CAT) => {
     this.columnTemp = column;
-  }
+  };
 
   removeCharterSpecialSringTh = (value: string) => {
     if (value) {
       return value.split('_').join(' ');
     }
-    return '' ;
+    return '';
   };
 
   getDataCat = () => {
     this.store.dispatch(loadingDetailCatalogos());
     this.CatalogosService.structureCat().then((res: STRUCTURE_CAT[]) => {
-
       this.primaryKeyOrder = res.filter(
         (e) => e.llavePrimaria === true
       )[0].campo;
@@ -172,8 +240,6 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     this.ColumDinamicData.forEach((dataColum) => {
       let valueFormControl = null;
       let arraValidators = [];
-
-
 
       if (!dataColum.esFecha.bandera) {
         arraValidators = [
@@ -201,18 +267,20 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     }
   };
 
-  AJrestriccion(event){
-
-    if(this.FormsDinamic.get(event.target.id)?.errors){
-      if(this.FormsDinamic.get(event.target.id).errors.hasOwnProperty('maxlength')){
+  AJrestriccion(event) {
+    if (this.FormsDinamic.get(event.target.id)?.errors) {
+      if (
+        this.FormsDinamic.get(event.target.id).errors.hasOwnProperty(
+          'maxlength'
+        )
+      ) {
         event.preventDefault();
       }
     }
-
   }
 
   viewInputText = (colum: STRUCTURE_CAT) => {
-    return (colum.tipo === 'S' || colum.tipo === 'N' ) && !colum.esFecha.bandera;
+    return (colum.tipo === 'S' || colum.tipo === 'N') && !colum.esFecha.bandera;
   };
   viewInputNumber = (colum: STRUCTURE_CAT) => {
     return colum.tipo === 'N' && !colum.esFecha.bandera;
@@ -244,10 +312,9 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     return arrayReturn;
   };
 
-
   disabledInput = (colum: STRUCTURE_CAT) => {
-    return colum.llavePrimaria && this.editar
-  }
+    return colum.llavePrimaria && this.editar;
+  };
 
   mostrarCardAgregarResgistro = (editar = 0, object = null) => {
     this.mostrarEjecucionesProcesos = false;

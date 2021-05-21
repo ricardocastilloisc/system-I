@@ -7,6 +7,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { OrdenasPkPipe } from '../../../../../../pipes/ordenas-pk.pipe';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 
 
@@ -21,7 +22,8 @@ import { OrdenasPkPipe } from '../../../../../../pipes/ordenas-pk.pipe';
     NgxPaginationModule,
     ReactiveFormsModule,
     FormsModule,
-    NgbModule
+    NgbModule,
+    NgMultiSelectDropDownModule.forRoot(),
   ]
 })
 export class DetalleCatalogoModule { }

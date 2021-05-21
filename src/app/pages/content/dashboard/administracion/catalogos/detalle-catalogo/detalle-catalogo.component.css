@@ -119,6 +119,18 @@ section {
   cursor: pointer;
 }
 
+.limpiarFiltroRed {
+  text-align: right;
+  text-decoration: underline;
+  font: normal normal normal 14px/22px FS Elliot Pro;
+  letter-spacing: 0px;
+  text-decoration: underline red !important;
+  color: red !important;
+}
+.limpiarFiltroRed:hover {
+  cursor: pointer;
+}
+
 .tamanioFiltroIcono {
   width: 12px;
   height: 12px;
