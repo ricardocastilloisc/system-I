@@ -140,7 +140,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     if (value) {
       return value.split('_').join(' ');
     }
-    return '';
+    return '' ;
   };
 
   getDataCat = () => {

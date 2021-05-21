@@ -9,6 +9,7 @@ import { EArea, ERole } from '../validators/roles';
 })
 export class CatalogosService {
   UrlCatalogos = environment.ENPOINT_RES.catalogos;
+
   constructor(private httpClient: HttpClient) {}
   getCatalogos = () => {
     let area = localStorage.getItem('area');
@@ -57,12 +58,61 @@ export class CatalogosService {
   };
 
   getDetailsCat = () => {
-    return this.httpClient.get(
-      this.UrlCatalogos +
-        'catalogos/' +
-        localStorage.getItem('nameCat') +
-        '/registros'
-    );
+    let nextTokenValidator = 'next';
+
+    let arrayRes = [];
+
+    //nextToken
+
+    this.httpClient
+      .get(
+        this.UrlCatalogos +
+          'catalogos/' +
+          localStorage.getItem('nameCat') +
+          '/registros'
+      )
+      .toPromise()
+      .then(({ nextToken, registros }: any) => {
+        arrayRes = [...registros];
+        nextTokenValidator = nextToken;
+      });
+
+    return new Promise((resolve) => {
+      const intervalo = setInterval(() => {
+        if (nextTokenValidator === null) {
+          resolve({ registros: arrayRes });
+          clearInterval(intervalo);
+        } else {
+          if (nextTokenValidator !== 'next') {
+            let QueryParams = new HttpParams();
+            QueryParams = QueryParams.append('nextToken', nextTokenValidator);
+
+            this.httpClient
+              .get(
+                this.UrlCatalogos +
+                  'catalogos/' +
+                  localStorage.getItem('nameCat') +
+                  '/registros',
+                {
+                  params: QueryParams,
+                }
+              )
+              .toPromise()
+              .then(({ nextToken, registros }: any) => {
+                if (!arrayRes.includes(registros[0])) {
+                  arrayRes = [...arrayRes, ...registros];
+                }
+
+                if (nextTokenValidator !== nextToken) {
+                  if (nextTokenValidator) {
+                    nextTokenValidator = nextToken;
+                  }
+                }
+              });
+          }
+        }
+      }, 1000);
+    });
   };
 
   updateDetailsCat = (object) => {
