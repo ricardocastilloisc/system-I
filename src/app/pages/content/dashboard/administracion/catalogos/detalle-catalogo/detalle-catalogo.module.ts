@@ -5,12 +5,15 @@ import { DetalleCatalogoRoutingModule } from './detalle-catalogo-routing.module'
 import { DetalleCatalogoComponent } from './detalle-catalogo.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { OrdenasPkPipe } from '../../../../../../pipes/ordenas-pk.pipe';
 
 
 
 @NgModule({
   declarations: [
-    DetalleCatalogoComponent
+    DetalleCatalogoComponent,
+    OrdenasPkPipe
   ],
   imports: [
     CommonModule,
@@ -18,8 +21,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     NgxPaginationModule,
     ReactiveFormsModule,
     FormsModule,
-
-
+    NgbModule
   ]
 })
 export class DetalleCatalogoModule { }

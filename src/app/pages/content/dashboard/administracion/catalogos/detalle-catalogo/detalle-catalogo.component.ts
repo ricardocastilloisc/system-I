@@ -55,6 +55,11 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
   addRegister = false;
   removeRegister = false;
   updateRegister = false;
+
+  columnTemp: STRUCTURE_CAT;
+
+  primaryKeyOrder = ''
+
   constructor(
     private CatalogosService: CatalogosService,
     private store: Store<AppState>,
@@ -136,6 +141,10 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
       : stringReturn;
   };
 
+  helperInputs = (column: STRUCTURE_CAT) =>{
+    this.columnTemp = column;
+  }
+
   removeCharterSpecialSringTh = (value: string) => {
     if (value) {
       return value.split('_').join(' ');
@@ -146,7 +155,13 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
   getDataCat = () => {
     this.store.dispatch(loadingDetailCatalogos());
     this.CatalogosService.structureCat().then((res: STRUCTURE_CAT[]) => {
+
+      this.primaryKeyOrder = res.filter(
+        (e) => e.llavePrimaria === true
+      )[0].campo;
+
       this.ColumDinamicData = res;
+
       this.store.dispatch(cargarDetailCatalogos());
     });
   };

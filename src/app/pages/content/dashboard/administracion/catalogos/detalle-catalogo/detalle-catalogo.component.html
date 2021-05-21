@@ -29,6 +29,7 @@
                     itemsPerPage: 10,
                     currentPage: paginaDetailCats
                   }
+              | ordenasPk : primaryKeyOrder
           "
         >
           <td *ngFor="let colum of ColumDinamicData">
@@ -130,6 +131,8 @@
       </div>
 
       <div class="card-body" style="padding-left: 127px; padding-right: 127px">
+
+
         <form [formGroup]="FormsDinamic">
           <div class="form-row">
             <div
@@ -138,7 +141,9 @@
             >
               <label class="labelFormAgregarRegistro" [for]="colum.campo">{{
                 colum.campo
-              }}</label>
+              }} <i class="far fa-question-circle"  (mouseenter)="helperInputs(colum)"
+              triggers="mouseenter:mouseleave"
+              [ngbPopover]="popContent" [popoverTitle]="popTitle"></i> </label>
               <input
                 *ngIf="viewInputText(colum)"
                 [formControlName]="colum.campo"
@@ -281,3 +286,22 @@
     </div>
   </div>
 </ng-template>
+
+<ng-template #popContent>
+
+  <div style="width: 100%;">
+    El valor es requerido
+  </div>
+  <div style="width: 100%;">
+    El mínimo de caracteres es {{ columnTemp.minCaracteres }}
+  </div>
+  <div style="width: 100%;">
+    El máximo de caracteres es {{ columnTemp.maxCaracteres }}
+  </div>
+  <div style="width: 100%;">
+    {{ columnTemp.validacion.mensaje }}
+  </div>
+
+
+</ng-template>
+<ng-template #popTitle>{{columnTemp.campo}}</ng-template>
