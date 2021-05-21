@@ -34,22 +34,16 @@ export class CatalogosService {
       .get(this.UrlCatalogos + 'catalogos/' + localStorage.getItem('nameCat'))
       .toPromise()
       .then((res: any) => {
-
         let arrayTemp: STRUCTURE_CAT[] = [];
 
-        res.filter(e => e.llavePrimaria === true).forEach(
-          r => arrayTemp.push(
-            r
-          )
-        )
-        res.filter(e => e.llavePrimaria === false).forEach(
-          r => arrayTemp.push(
-            r
-          )
-        )
+        res
+          .filter((e) => e.llavePrimaria === true)
+          .forEach((r) => arrayTemp.push(r));
+        res
+          .filter((e) => e.llavePrimaria === false)
+          .forEach((r) => arrayTemp.push(r));
 
         array = arrayTemp;
-
       });
 
     return new Promise((resolve) => {
@@ -63,23 +57,52 @@ export class CatalogosService {
   };
 
   getDetailsCat = () => {
-    return this.httpClient.get(this.UrlCatalogos + 'catalogos/' + localStorage.getItem('nameCat') + '/registros')
-  }
+    return this.httpClient.get(
+      this.UrlCatalogos +
+        'catalogos/' +
+        localStorage.getItem('nameCat') +
+        '/registros'
+    );
+  };
 
   updateDetailsCat = (object) => {
     return this.httpClient
-    .put(this.UrlCatalogos + 'catalogos/' + localStorage.getItem('nameCat') + '/registros', object)
-    .toPromise()
-  }
+      .put(
+        this.UrlCatalogos +
+          'catalogos/' +
+          localStorage.getItem('nameCat') +
+          '/registros',
+        object
+      )
+      .toPromise();
+  };
   addDetailsCat = (object) => {
     return this.httpClient
-    .post(this.UrlCatalogos + 'catalogos/' + localStorage.getItem('nameCat') + '/registros', object)
-    .toPromise()
-  }
+      .post(
+        this.UrlCatalogos +
+          'catalogos/' +
+          localStorage.getItem('nameCat') +
+          '/registros',
+        object
+      )
+      .toPromise();
+  };
 
   deleteDetailsCat = (registro) => {
+    let stringCode = '';
+    if (typeof registro === 'string') {
+      stringCode = registro;
+    } else {
+      stringCode = registro.toString();
+    }
     return this.httpClient
-    .delete(this.UrlCatalogos + 'catalogos/' + localStorage.getItem('nameCat') + '/registros/' + registro)
-    .toPromise()
-  }
+      .delete(
+        this.UrlCatalogos +
+          'catalogos/' +
+          localStorage.getItem('nameCat') +
+          '/registros/' +
+          window.btoa(unescape(encodeURIComponent(registro)))
+      )
+      .toPromise();
+  };
 }
