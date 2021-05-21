@@ -41,6 +41,7 @@
           </td>
           <td *ngIf="validarRoles()">
             <img
+              *ngIf="viewUpdateIcon()"
               style="cursor: pointer"
               (click)="mostrarCardAgregarResgistro(1, DetailCat)"
               class="editar-icon-catalog"
@@ -147,9 +148,13 @@
                 [placeholder]="colum.ejemplo"
                 [disabled]="disabledInput(colum)"
                 (keypress)="AJrestriccion($event)"
-                [attr.disabled]="disabledInput(colum)? true : null"
-                [ngStyle]="bordeError(FormsDinamic.controls[colum.campo].touched &&
-                FormsDinamic.controls[colum.campo].invalid)"
+                [attr.disabled]="disabledInput(colum) ? true : null"
+                [ngStyle]="
+                  bordeError(
+                    FormsDinamic.controls[colum.campo].touched &&
+                      FormsDinamic.controls[colum.campo].invalid
+                  )
+                "
               />
               <!---
               <input
@@ -170,9 +175,13 @@
                 [id]="colum.campo"
                 [placeholder]="colum.ejemplo"
                 [disabled]="disabledInput(colum)"
-                [attr.disabled]="disabledInput(colum)? true : null"
-                [ngStyle]="bordeError(FormsDinamic.controls[colum.campo].touched &&
-                FormsDinamic.controls[colum.campo].invalid)"
+                [attr.disabled]="disabledInput(colum) ? true : null"
+                [ngStyle]="
+                  bordeError(
+                    FormsDinamic.controls[colum.campo].touched &&
+                      FormsDinamic.controls[colum.campo].invalid
+                  )
+                "
               />
 
               <div

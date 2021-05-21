@@ -67,6 +67,9 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     this.DetailCatalogos$.unsubscribe();
   }
 
+  viewUpdateIcon = () => {
+    return this.ColumDinamicData.length > 1;
+  }
   ngOnInit(): void {
     this.validarRoles();
     this.getDataCat();
