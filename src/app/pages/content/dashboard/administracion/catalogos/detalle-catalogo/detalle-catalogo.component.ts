@@ -108,37 +108,62 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     this.DetailCats.forEach((e) => {
       const object = {
         item_id: e[column.campo],
-        item_text: this.transformDateOrString(e[column.campo],column.esFecha.bandera),
+        item_text: this.transformDateOrString(
+          e[column.campo],
+          column.esFecha.bandera
+        ),
       };
 
-      if (this.dropdownListFiltro.filter(e => e.item_id === object.item_id).length === 0) {
+      if (
+        this.dropdownListFiltro.filter((e) => e.item_id === object.item_id)
+          .length === 0
+      ) {
         this.dropdownListFiltro.push(object);
       }
     });
   };
 
   cleanFilter = () => {
-
     this.filter = false;
 
-    this.DetailCats = this.DetailCatsStatic
-
-  }
+    this.DetailCats = this.DetailCatsStatic;
+  };
   filtrar = () => {
-
     let arrayTemp = [];
 
-    this.selectedItemsFiltro.forEach( e => {
-      arrayTemp = [...arrayTemp, ...this.DetailCats.filter( f => f[this.placeholderFiltro] === e.item_id)]
+    this.selectedItemsFiltro.forEach((e) => {
+      arrayTemp = [
+        ...arrayTemp,
+        ...this.DetailCats.filter(
+          (f) =>
+            window.btoa(
+              unescape(
+                encodeURIComponent(
+                  typeof f[this.placeholderFiltro] === 'string'
+                    ? f[this.placeholderFiltro]
+                    : f[this.placeholderFiltro].toString()
+                )
+              )
+            ) ===
+            window.btoa(
+              unescape(
+                encodeURIComponent(
+                  typeof e.item_id === 'string'
+                    ? e.item_id
+                    : e.item_id.toString()
+                )
+              )
+            )
+        ),
+      ];
     });
-
 
     this.DetailCats = arrayTemp;
 
     this.filter = true;
 
     this.modalService.dismissAll();
-  }
+  };
 
   viewUpdateIcon = () => {
     return this.ColumDinamicData.length > 1;
