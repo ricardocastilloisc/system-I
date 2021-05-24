@@ -49,6 +49,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
   Loading$: Subscription;
 
   DataUser$: Observable<Usuario>;
+  LoadingPermisos$: Subscription;
   AUDGENPROCESOS$: Observable<AUDGENPROCESO_INERFACE[]>;
   CATPROCESOS$: Observable<CATPROCESOS_INTERFACE[]>
   AUDGENESTADOPROCESOS$: Observable<AUDGENESTADOPROCESO_INTERFACE[]>;
@@ -85,6 +86,19 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
     private modalService: NgbModal,
     private datePipe: DatePipe
   ) {
+
+    this.Loading$ =  this.store.select(
+      ({ CATPERMISOS }) => CATPERMISOS.error
+    ).subscribe( (res => {
+
+      if(res){
+
+        this.authService.signOut()
+ 
+      }else{
+
+      }
+    }))
     this.spinner.show();
     setTimeout(() => {
       this.spinner.hide();
@@ -275,7 +289,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
         } else if (response.descripcion.includes('401')) {          
           this.spinner.hide();
           this.modalService.dismissAll();
-          this.authService.signOut();
+          //this.authService.signOut();
         }
         else {
           this.spinner.hide();

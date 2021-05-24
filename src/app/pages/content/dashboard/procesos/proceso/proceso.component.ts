@@ -42,6 +42,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
   ocultarbusqueda = false;
   titulo$: Observable<object>;
 
+  Loading$: Subscription;
   titulo: string;
   area: string;
   listaProcesos: any;
@@ -65,7 +66,22 @@ export class ProcesoComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private modalService: NgbModal,
     private datepipe: DatePipe
-  ) { }
+  ) { 
+
+    this.Loading$ =  this.store.select(
+      ({ AUDGENESTADOPROCESOS }) => AUDGENESTADOPROCESOS.error
+    ).subscribe( (res => {
+
+      if(res){
+
+        this.authService.signOut()
+ 
+      }else{
+
+      }
+    }))
+
+  }
 
   AUDGENPROCESOS$: Observable<AUDGENPROCESO_INERFACE[]>;
   AUDGENEJECUCIONPROCESO$: Observable<AUDGENPROCESO_INERFACE[]>;
@@ -87,6 +103,8 @@ export class ProcesoComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+
+    this.authService.refreshToken();
 
     this.titulo = JSON.parse(
       localStorage.getItem('Titulo')
