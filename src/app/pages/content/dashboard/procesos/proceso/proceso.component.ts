@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy, TemplateRef, ViewChild } from '@angular/c
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../../ReduxStore/app.reducers';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { AUDGENPROCESO_INERFACE } from '../../../../../model/AUDGENPROCESO.model';
 import { AUDGENESTADOPROCESO_INTERFACE } from '../../../../../model/AUDGENESTADOPROCESO.model';
 import { map } from "rxjs/operators";
