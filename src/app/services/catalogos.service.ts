@@ -9,6 +9,7 @@ import { EArea, ERole } from '../validators/roles';
 })
 export class CatalogosService {
   UrlCatalogos = environment.ENPOINT_RES.catalogos;
+
   constructor(private httpClient: HttpClient) {}
   getCatalogos = () => {
     let area = localStorage.getItem('area');
@@ -34,22 +35,16 @@ export class CatalogosService {
       .get(this.UrlCatalogos + 'catalogos/' + localStorage.getItem('nameCat'))
       .toPromise()
       .then((res: any) => {
-
         let arrayTemp: STRUCTURE_CAT[] = [];
 
-        res.filter(e => e.llavePrimaria === true).forEach(
-          r => arrayTemp.push(
-            r
-          )
-        )
-        res.filter(e => e.llavePrimaria === false).forEach(
-          r => arrayTemp.push(
-            r
-          )
-        )
+        res
+          .filter((e) => e.llavePrimaria === true)
+          .forEach((r) => arrayTemp.push(r));
+        res
+          .filter((e) => e.llavePrimaria === false)
+          .forEach((r) => arrayTemp.push(r));
 
         array = arrayTemp;
-
       });
 
     return new Promise((resolve) => {
@@ -63,23 +58,101 @@ export class CatalogosService {
   };
 
   getDetailsCat = () => {
-    return this.httpClient.get(this.UrlCatalogos + 'catalogos/' + localStorage.getItem('nameCat') + '/registros')
-  }
+    let nextTokenValidator = 'next';
+
+    let arrayRes = [];
+
+    //nextToken
+
+    this.httpClient
+      .get(
+        this.UrlCatalogos +
+          'catalogos/' +
+          localStorage.getItem('nameCat') +
+          '/registros'
+      )
+      .toPromise()
+      .then(({ nextToken, registros }: any) => {
+        arrayRes = [...registros];
+        nextTokenValidator = nextToken;
+      });
+
+    return new Promise((resolve) => {
+      const intervalo = setInterval(() => {
+        if (nextTokenValidator === null) {
+          resolve({ registros: arrayRes });
+          clearInterval(intervalo);
+        } else {
+          if (nextTokenValidator !== 'next') {
+            let QueryParams = new HttpParams();
+            QueryParams = QueryParams.append('nextToken', nextTokenValidator);
+
+            this.httpClient
+              .get(
+                this.UrlCatalogos +
+                  'catalogos/' +
+                  localStorage.getItem('nameCat') +
+                  '/registros',
+                {
+                  params: QueryParams,
+                }
+              )
+              .toPromise()
+              .then(({ nextToken, registros }: any) => {
+                if (!arrayRes.includes(registros[0])) {
+                  arrayRes = [...arrayRes, ...registros];
+                }
+
+                if (nextTokenValidator !== nextToken) {
+                  if (nextTokenValidator) {
+                    nextTokenValidator = nextToken;
+                  }
+                }
+              });
+          }
+        }
+      }, 1000);
+    });
+  };
 
   updateDetailsCat = (object) => {
     return this.httpClient
-    .put(this.UrlCatalogos + 'catalogos/' + localStorage.getItem('nameCat') + '/registros', object)
-    .toPromise()
-  }
+      .put(
+        this.UrlCatalogos +
+          'catalogos/' +
+          localStorage.getItem('nameCat') +
+          '/registros',
+        object
+      )
+      .toPromise();
+  };
   addDetailsCat = (object) => {
     return this.httpClient
-    .post(this.UrlCatalogos + 'catalogos/' + localStorage.getItem('nameCat') + '/registros', object)
-    .toPromise()
-  }
+      .post(
+        this.UrlCatalogos +
+          'catalogos/' +
+          localStorage.getItem('nameCat') +
+          '/registros',
+        object
+      )
+      .toPromise();
+  };
 
   deleteDetailsCat = (registro) => {
+    let stringCode = '';
+    if (typeof registro === 'string') {
+      stringCode = registro;
+    } else {
+      stringCode = registro.toString();
+    }
     return this.httpClient
-    .delete(this.UrlCatalogos + 'catalogos/' + localStorage.getItem('nameCat') + '/registros/' + registro)
-    .toPromise()
-  }
+      .delete(
+        this.UrlCatalogos +
+          'catalogos/' +
+          localStorage.getItem('nameCat') +
+          '/registros/' +
+          window.btoa(unescape(encodeURIComponent(registro)))
+      )
+      .toPromise();
+  };
 }

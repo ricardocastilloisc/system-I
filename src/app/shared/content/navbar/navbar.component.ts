@@ -68,6 +68,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
         ruta = ruta.split('%C3%A9').join('é').toString();
         ruta = ruta.split('%C3%AD').join('í').toString();
         ruta = ruta.split('%C3%B3').join('ó').toString();
+        ruta = ruta.split('%C3%B1').join('ñ').toString();
         ArrayRuta.push(ruta);
       }
     });

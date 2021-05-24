@@ -7,6 +7,7 @@ import { mergeMap, map, catchError } from 'rxjs/operators';
 
 import { of } from 'rxjs';
 import { CatalogosService } from '../../../services/catalogos.service';
+import { fromPromise } from 'rxjs/observable/fromPromise';
 
 import { caragarDetailCatalogosError, caragarDetailCatalogosSucces, cargarDetailCatalogos } from '../../actions';
 //CatalogosService
@@ -21,7 +22,7 @@ export class CatalogoDetailEfffects {
     this.actions$.pipe(
       ofType(cargarDetailCatalogos),
       mergeMap(() =>
-        this.CatalogosService.getDetailsCat().pipe(
+      fromPromise(this.CatalogosService.getDetailsCat()).pipe(
           map(({ registros }: any) =>
           caragarDetailCatalogosSucces({ DetailCatalogos: registros })
           ),
