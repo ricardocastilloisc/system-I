@@ -4,7 +4,12 @@ import * as AWS from 'aws-sdk';
 import { environment } from '../../environments/environment';
 import { v4 as uuidv4 } from 'uuid';
 
-Amplify.configure(environment.amplifyConfig);
+AWS.config.update({
+  accessKeyId: environment.SESConfig.accessKeyId,
+  secretAccessKey: environment.SESConfig.secretAccessKey,
+  region: environment.SESConfig.region
+});
+
 var sqs = new AWS.SQS();
 
 var payload = { /* este objeto se llenara por cada pantalla/proceso que se lanza */ 
@@ -68,6 +73,7 @@ var payloadString = JSON.stringify(payload);
 })
 
 export class AuditoriaService {
+  
   params = {
     MessageBody: payloadString,
     MessageDeduplicationId: uuidv4(),  // Required for FIFO queues
@@ -119,4 +125,26 @@ export class AuditoriaService {
       }
     });
   }
+
+
+  enviarBitacoraUsuarios(objectoUsuarios): void {
+    
+    //console.log("enviarBitacoraUsuarios");
+
+    let params = {
+      MessageBody: objectoUsuarios,
+      MessageDeduplicationId: uuidv4(),  // Required for FIFO queues
+      MessageGroupId: uuidv4(),  // Required for FIFO queues
+      QueueUrl: environment.API.endpoints.find((el) => el.name === 'sqs-auditoria')['endpoint']
+    };
+
+    sqs.sendMessage(params, function (err, data) {
+      if (err) {
+        console.log("Error.", err);
+      } else {
+        //console.log("Success.", data.MessageId);
+      }
+    });
+  }
+
 }

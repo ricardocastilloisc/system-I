@@ -165,13 +165,14 @@
     </div>
 
     <div class="modal-footer">
-      <button type="button" class="btn btn-primary" style="background-color: #00c4d9"
+      <button type="button" class="btn bottonCancelarModalUsuario" data-dismiss="modal" (click)="modal.close()">
+        Cerrar
+      </button>
+      <button type="button" class="btn bottonConfirmar" style="background-color: #00c4d9"
         (click)="openModalConfirmacionEdicion(confrimacionEditar)">
         Guardar cambio
       </button>
-      <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="modal.close()">
-        Cerrar
-      </button>
+      
     </div>
 
     <!--
