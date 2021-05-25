@@ -38,6 +38,7 @@ subscription OnCreateAUDGENPROCESOS($ID_REGISTRO: String) {
     TIPO
     NIVEL
     STEP
+    ACTIVIDAD
   }
 }
 subscription OnUpdateAUDGENPROCESOS($ID_REGISTRO: String) {
@@ -64,6 +65,7 @@ subscription OnUpdateAUDGENPROCESOS($ID_REGISTRO: String) {
     TIPO
     NIVEL
     STEP
+    ACTIVIDAD
   }
 }
 subscription OnDeleteAUDGENPROCESOS($ID_REGISTRO: String) {
@@ -90,6 +92,7 @@ subscription OnDeleteAUDGENPROCESOS($ID_REGISTRO: String) {
     TIPO
     NIVEL
     STEP
+    ACTIVIDAD
   }
 }
 subscription OnCreateCATPROCESOS($PROCESO: String) {
@@ -219,7 +222,17 @@ subscription OnCreateSiaGenAudEstadoProcesosDev(
   ) {
     ESTADO
     ESTADO_EJECUCION
-    ETAPA
+    ETAPA {
+      INICIAL {
+        ESTADO
+      }
+      PROCESAMIENTO {
+        ESTADO
+      }
+      FINAL {
+        ESTADO
+      }
+    }
     FECHA_ACTUALIZACION
     FECHA_CREADO
     ID_PROCESO
@@ -238,7 +251,17 @@ subscription OnUpdateSiaGenAudEstadoProcesosDev(
   ) {
     ESTADO
     ESTADO_EJECUCION
-    ETAPA
+    ETAPA {
+      INICIAL {
+        ESTADO
+      }
+      PROCESAMIENTO {
+        ESTADO
+      }
+      FINAL {
+        ESTADO
+      }
+    }
     FECHA_ACTUALIZACION
     FECHA_CREADO
     ID_PROCESO
@@ -257,7 +280,17 @@ subscription OnDeleteSiaGenAudEstadoProcesosDev(
   ) {
     ESTADO
     ESTADO_EJECUCION
-    ETAPA
+    ETAPA {
+      INICIAL {
+        ESTADO
+      }
+      PROCESAMIENTO {
+        ESTADO
+      }
+      FINAL {
+        ESTADO
+      }
+    }
     FECHA_ACTUALIZACION
     FECHA_CREADO
     ID_PROCESO

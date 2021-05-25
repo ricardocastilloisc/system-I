@@ -38,6 +38,7 @@ mutation CreateAUDGENPROCESOS($input: CreateAUDGENPROCESOSInput!) {
     TIPO
     NIVEL
     STEP
+    ACTIVIDAD
   }
 }
 mutation UpdateAUDGENPROCESOS($input: UpdateAUDGENPROCESOSInput!) {
@@ -64,6 +65,7 @@ mutation UpdateAUDGENPROCESOS($input: UpdateAUDGENPROCESOSInput!) {
     TIPO
     NIVEL
     STEP
+    ACTIVIDAD
   }
 }
 mutation DeleteAUDGENPROCESOS($input: DeleteAUDGENPROCESOSInput!) {
@@ -90,6 +92,7 @@ mutation DeleteAUDGENPROCESOS($input: DeleteAUDGENPROCESOSInput!) {
     TIPO
     NIVEL
     STEP
+    ACTIVIDAD
   }
 }
 mutation CreateCATPROCESOS($input: CreateCATPROCESOSInput!) {
@@ -215,7 +218,17 @@ mutation CreateSiaGenAudEstadoProcesosDev(
   createSiaGenAudEstadoProcesosDev(input: $input) {
     ESTADO
     ESTADO_EJECUCION
-    ETAPA
+    ETAPA {
+      INICIAL {
+        ESTADO
+      }
+      PROCESAMIENTO {
+        ESTADO
+      }
+      FINAL {
+        ESTADO
+      }
+    }
     FECHA_ACTUALIZACION
     FECHA_CREADO
     ID_PROCESO
@@ -230,7 +243,17 @@ mutation UpdateSiaGenAudEstadoProcesosDev(
   updateSiaGenAudEstadoProcesosDev(input: $input) {
     ESTADO
     ESTADO_EJECUCION
-    ETAPA
+    ETAPA {
+      INICIAL {
+        ESTADO
+      }
+      PROCESAMIENTO {
+        ESTADO
+      }
+      FINAL {
+        ESTADO
+      }
+    }
     FECHA_ACTUALIZACION
     FECHA_CREADO
     ID_PROCESO
@@ -245,7 +268,17 @@ mutation DeleteSiaGenAudEstadoProcesosDev(
   deleteSiaGenAudEstadoProcesosDev(input: $input) {
     ESTADO
     ESTADO_EJECUCION
-    ETAPA
+    ETAPA {
+      INICIAL {
+        ESTADO
+      }
+      PROCESAMIENTO {
+        ESTADO
+      }
+      FINAL {
+        ESTADO
+      }
+    }
     FECHA_ACTUALIZACION
     FECHA_CREADO
     ID_PROCESO

@@ -40,6 +40,7 @@ query GetAUDGENPROCESOS($ID_PROCESO: String!) {
     TIPO
     NIVEL
     STEP
+    ACTIVIDAD
   }
 }
 query ListAUDGENPROCESOS($ID_PROCESO: String, $FECHA: String) {
@@ -67,6 +68,7 @@ query ListAUDGENPROCESOS($ID_PROCESO: String, $FECHA: String) {
       TIPO
       NIVEL
       STEP
+      ACTIVIDAD
     }
     nextToken
   }
@@ -163,7 +165,17 @@ query GetSiaGenAudEstadoProcesosDev($ID_PROCESO: String!) {
   getSiaGenAudEstadoProcesosDev(ID_PROCESO: $ID_PROCESO) {
     ESTADO
     ESTADO_EJECUCION
-    ETAPA
+    ETAPA {
+      INICIAL {
+        ESTADO
+      }
+      PROCESAMIENTO {
+        ESTADO
+      }
+      FINAL {
+        ESTADO
+      }
+    }
     FECHA_ACTUALIZACION
     FECHA_CREADO
     ID_PROCESO
@@ -185,7 +197,6 @@ query ListSiaGenAudEstadoProcesosDevs(
     items {
       ESTADO
       ESTADO_EJECUCION
-      ETAPA
       FECHA_ACTUALIZACION
       FECHA_CREADO
       ID_PROCESO
@@ -209,7 +220,6 @@ query QuerySiaGenAudEstadoProcesosDevsByINTERFAZIndex(
     items {
       ESTADO
       ESTADO_EJECUCION
-      ETAPA
       FECHA_ACTUALIZACION
       FECHA_CREADO
       ID_PROCESO
@@ -225,7 +235,6 @@ query ListSiaGenAudEstadoProcesosDevsPorFecha($FECHA: String) {
     items {
       ESTADO
       ESTADO_EJECUCION
-      ETAPA
       FECHA_ACTUALIZACION
       FECHA_CREADO
       ID_PROCESO

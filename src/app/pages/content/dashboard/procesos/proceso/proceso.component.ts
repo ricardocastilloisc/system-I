@@ -74,7 +74,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
 
       if(res){
 
-        this.authService.signOut()
+        //this.authService.signOut()
  
       }else{
 
@@ -143,9 +143,10 @@ export class ProcesoComponent implements OnInit, OnDestroy {
       if (res === null) return res
       else return res.slice().sort(function (a, b) { return new Date(b.FECHA_ACTUALIZACION).getTime() - new Date(a.FECHA_ACTUALIZACION).getTime() }).filter((item, i, res) => {
         return res.indexOf(res.find(t => t.ID_PROCESO === item.ID_PROCESO)) === i
-      }).filter(item => {
-        return item.ETAPA != ""
       })
+      // .filter(item => {
+      //   return item.ETAPA != ""
+      // })
 
 
     }
@@ -227,9 +228,10 @@ export class ProcesoComponent implements OnInit, OnDestroy {
       if (res === null) return res
       else return res.slice().sort(function (a, b) { return new Date(b.FECHA_ACTUALIZACION).getTime() - new Date(a.FECHA_ACTUALIZACION).getTime() }).filter((item, i, res) => {
         return res.indexOf(res.find(t => t.ID_PROCESO === item.ID_PROCESO)) === i
-      }).filter(item => {
-        return item.ETAPA != ""
       })
+      // .filter(item => {
+      //   return item.ETAPA != ""
+      // })
 
 
     }
@@ -374,9 +376,10 @@ export class ProcesoComponent implements OnInit, OnDestroy {
         if (res === null) return res
         else return res.slice().sort(function (a, b) { return new Date(b.FECHA_ACTUALIZACION).getTime() - new Date(a.FECHA_ACTUALIZACION).getTime() }).filter((item, i, res) => {
           return res.indexOf(res.find(t => t.ID_PROCESO === item.ID_PROCESO)) === i
-        }).filter(item => {
-          return item.ETAPA != ""
         })
+        // .filter(item => {
+        //   return item.ETAPA != ""
+        // })
       }
       ))
       this.store.select(

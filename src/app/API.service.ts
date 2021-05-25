@@ -153,15 +153,26 @@ export type CreateSiaGenAudEstadoProcesosDevInput = {
 
 export type SiaGenAudEstadoProcesosDev = {
   __typename: "SiaGenAudEstadoProcesosDev";
-  ESTADO?: string | null;
   ESTADO_EJECUCION?: string | null;
-  ETAPA?: string | null;
+  ETAPA?: siaGenAudEtapas;
   FECHA_ACTUALIZACION?: string | null;
   FECHA_CREADO?: string | null;
   ID_PROCESO?: string;
   INSUMO?: string | null;
   INTERFAZ?: string | null;
   TIPO_PROCESO?: string | null;
+};
+
+export type siaGenAudEtapas = {
+  __typename: "siaGenAudEtapas";
+  INICIAL?: ETAPA;
+  PROCESAMIENTO?: ETAPA;
+  FINAL?: ETAPA;
+};
+
+export type ETAPA = {
+  __typename: "ETAPA";
+  ESTADO?: string | null;
 };
 
 export type UpdateSiaGenAudEstadoProcesosDevInput = {
@@ -274,6 +285,7 @@ export type CreateAUDGENPROCESOSMutation = {
   TIPO?: string | null;
   NIVEL?: string | null;
   STEP?: string | null;
+  ACTIVIDAD?: string | null;
 };
 
 export type UpdateAUDGENPROCESOSMutation = {
@@ -302,6 +314,7 @@ export type UpdateAUDGENPROCESOSMutation = {
   TIPO?: string | null;
   NIVEL?: string | null;
   STEP?: string | null;
+  ACTIVIDAD?: string | null;
 };
 
 export type DeleteAUDGENPROCESOSMutation = {
@@ -330,6 +343,7 @@ export type DeleteAUDGENPROCESOSMutation = {
   TIPO?: string | null;
   NIVEL?: string | null;
   STEP?: string | null;
+  ACTIVIDAD?: string | null;
 };
 
 export type CreateCATPROCESOSMutation = {
@@ -465,7 +479,21 @@ export type CreateSiaGenAudEstadoProcesosDevMutation = {
   __typename: "SiaGenAudEstadoProcesosDev";
   ESTADO?: string | null;
   ESTADO_EJECUCION?: string | null;
-  ETAPA?: string | null;
+  ETAPA?: {
+    __typename: "siaGenAudEtapas";
+    INICIAL?: {
+      __typename: "ETAPA";
+      ESTADO?: string | null;
+    } | null;
+    PROCESAMIENTO?: {
+      __typename: "ETAPA";
+      ESTADO?: string | null;
+    } | null;
+    FINAL?: {
+      __typename: "ETAPA";
+      ESTADO?: string | null;
+    } | null;
+  } | null;
   FECHA_ACTUALIZACION?: string | null;
   FECHA_CREADO?: string | null;
   ID_PROCESO: string;
@@ -478,7 +506,21 @@ export type UpdateSiaGenAudEstadoProcesosDevMutation = {
   __typename: "SiaGenAudEstadoProcesosDev";
   ESTADO?: string | null;
   ESTADO_EJECUCION?: string | null;
-  ETAPA?: string | null;
+  ETAPA?: {
+    __typename: "siaGenAudEtapas";
+    INICIAL?: {
+      __typename: "ETAPA";
+      ESTADO?: string | null;
+    } | null;
+    PROCESAMIENTO?: {
+      __typename: "ETAPA";
+      ESTADO?: string | null;
+    } | null;
+    FINAL?: {
+      __typename: "ETAPA";
+      ESTADO?: string | null;
+    } | null;
+  } | null;
   FECHA_ACTUALIZACION?: string | null;
   FECHA_CREADO?: string | null;
   ID_PROCESO: string;
@@ -491,7 +533,21 @@ export type DeleteSiaGenAudEstadoProcesosDevMutation = {
   __typename: "SiaGenAudEstadoProcesosDev";
   ESTADO?: string | null;
   ESTADO_EJECUCION?: string | null;
-  ETAPA?: string | null;
+  ETAPA?: {
+    __typename: "siaGenAudEtapas";
+    INICIAL?: {
+      __typename: "ETAPA";
+      ESTADO?: string | null;
+    } | null;
+    PROCESAMIENTO?: {
+      __typename: "ETAPA";
+      ESTADO?: string | null;
+    } | null;
+    FINAL?: {
+      __typename: "ETAPA";
+      ESTADO?: string | null;
+    } | null;
+  } | null;
   FECHA_ACTUALIZACION?: string | null;
   FECHA_CREADO?: string | null;
   ID_PROCESO: string;
@@ -540,6 +596,7 @@ export type GetAUDGENPROCESOSQuery = {
   TIPO?: string | null;
   NIVEL?: string | null;
   STEP?: string | null;
+  ACTIVIDAD?: string | null;
 };
 
 export type ListAUDGENPROCESOSQuery = {
@@ -570,6 +627,7 @@ export type ListAUDGENPROCESOSQuery = {
     TIPO?: string | null;
     NIVEL?: string | null;
     STEP?: string | null;
+    ACTIVIDAD?: string | null;
   } | null> | null;
   nextToken?: string | null;
 };
@@ -672,7 +730,21 @@ export type GetSiaGenAudEstadoProcesosDevQuery = {
   __typename: "SiaGenAudEstadoProcesosDev";
   ESTADO?: string | null;
   ESTADO_EJECUCION?: string | null;
-  ETAPA?: string | null;
+  ETAPA?: {
+    __typename: "siaGenAudEtapas";
+    INICIAL?: {
+      __typename: "ETAPA";
+      ESTADO?: string | null;
+    } | null;
+    PROCESAMIENTO?: {
+      __typename: "ETAPA";
+      ESTADO?: string | null;
+    } | null;
+    FINAL?: {
+      __typename: "ETAPA";
+      ESTADO?: string | null;
+    } | null;
+  } | null;
   FECHA_ACTUALIZACION?: string | null;
   FECHA_CREADO?: string | null;
   ID_PROCESO: string;
@@ -687,7 +759,6 @@ export type ListSiaGenAudEstadoProcesosDevsQuery = {
     __typename: "SiaGenAudEstadoProcesosDev";
     ESTADO?: string | null;
     ESTADO_EJECUCION?: string | null;
-    ETAPA?: string | null;
     FECHA_ACTUALIZACION?: string | null;
     FECHA_CREADO?: string | null;
     ID_PROCESO: string;
@@ -704,7 +775,6 @@ export type QuerySiaGenAudEstadoProcesosDevsByINTERFAZIndexQuery = {
     __typename: "SiaGenAudEstadoProcesosDev";
     ESTADO?: string | null;
     ESTADO_EJECUCION?: string | null;
-    ETAPA?: string | null;
     FECHA_ACTUALIZACION?: string | null;
     FECHA_CREADO?: string | null;
     ID_PROCESO: string;
@@ -721,7 +791,6 @@ export type ListSiaGenAudEstadoProcesosDevsPorFechaQuery = {
     __typename: "SiaGenAudEstadoProcesosDev";
     ESTADO?: string | null;
     ESTADO_EJECUCION?: string | null;
-    ETAPA?: string | null;
     FECHA_ACTUALIZACION?: string | null;
     FECHA_CREADO?: string | null;
     ID_PROCESO: string;
@@ -773,6 +842,7 @@ export type OnCreateAUDGENPROCESOSSubscription = {
   TIPO?: string | null;
   NIVEL?: string | null;
   STEP?: string | null;
+  ACTIVIDAD?: string | null;
 };
 
 export type OnUpdateAUDGENPROCESOSSubscription = {
@@ -801,6 +871,7 @@ export type OnUpdateAUDGENPROCESOSSubscription = {
   TIPO?: string | null;
   NIVEL?: string | null;
   STEP?: string | null;
+  ACTIVIDAD?: string | null;
 };
 
 export type OnDeleteAUDGENPROCESOSSubscription = {
@@ -829,6 +900,7 @@ export type OnDeleteAUDGENPROCESOSSubscription = {
   TIPO?: string | null;
   NIVEL?: string | null;
   STEP?: string | null;
+  ACTIVIDAD?: string | null;
 };
 
 export type OnCreateCATPROCESOSSubscription = {
@@ -964,7 +1036,21 @@ export type OnCreateSiaGenAudEstadoProcesosDevSubscription = {
   __typename: "SiaGenAudEstadoProcesosDev";
   ESTADO?: string | null;
   ESTADO_EJECUCION?: string | null;
-  ETAPA?: string | null;
+  ETAPA?: {
+    __typename: "siaGenAudEtapas";
+    INICIAL?: {
+      __typename: "ETAPA";
+      ESTADO?: string | null;
+    } | null;
+    PROCESAMIENTO?: {
+      __typename: "ETAPA";
+      ESTADO?: string | null;
+    } | null;
+    FINAL?: {
+      __typename: "ETAPA";
+      ESTADO?: string | null;
+    } | null;
+  } | null;
   FECHA_ACTUALIZACION?: string | null;
   FECHA_CREADO?: string | null;
   ID_PROCESO: string;
@@ -977,7 +1063,21 @@ export type OnUpdateSiaGenAudEstadoProcesosDevSubscription = {
   __typename: "SiaGenAudEstadoProcesosDev";
   ESTADO?: string | null;
   ESTADO_EJECUCION?: string | null;
-  ETAPA?: string | null;
+  ETAPA?: {
+    __typename: "siaGenAudEtapas";
+    INICIAL?: {
+      __typename: "ETAPA";
+      ESTADO?: string | null;
+    } | null;
+    PROCESAMIENTO?: {
+      __typename: "ETAPA";
+      ESTADO?: string | null;
+    } | null;
+    FINAL?: {
+      __typename: "ETAPA";
+      ESTADO?: string | null;
+    } | null;
+  } | null;
   FECHA_ACTUALIZACION?: string | null;
   FECHA_CREADO?: string | null;
   ID_PROCESO: string;
@@ -990,7 +1090,21 @@ export type OnDeleteSiaGenAudEstadoProcesosDevSubscription = {
   __typename: "SiaGenAudEstadoProcesosDev";
   ESTADO?: string | null;
   ESTADO_EJECUCION?: string | null;
-  ETAPA?: string | null;
+  ETAPA?: {
+    __typename: "siaGenAudEtapas";
+    INICIAL?: {
+      __typename: "ETAPA";
+      ESTADO?: string | null;
+    } | null;
+    PROCESAMIENTO?: {
+      __typename: "ETAPA";
+      ESTADO?: string | null;
+    } | null;
+    FINAL?: {
+      __typename: "ETAPA";
+      ESTADO?: string | null;
+    } | null;
+  } | null;
   FECHA_ACTUALIZACION?: string | null;
   FECHA_CREADO?: string | null;
   ID_PROCESO: string;
@@ -1084,6 +1198,7 @@ export class APIService {
           TIPO
           NIVEL
           STEP
+          ACTIVIDAD
         }
       }`;
     const gqlAPIServiceArguments: any = {
@@ -1124,6 +1239,7 @@ export class APIService {
           TIPO
           NIVEL
           STEP
+          ACTIVIDAD
         }
       }`;
     const gqlAPIServiceArguments: any = {
@@ -1164,6 +1280,7 @@ export class APIService {
           TIPO
           NIVEL
           STEP
+          ACTIVIDAD
         }
       }`;
     const gqlAPIServiceArguments: any = {
@@ -1383,7 +1500,21 @@ export class APIService {
           __typename
           ESTADO
           ESTADO_EJECUCION
-          ETAPA
+          ETAPA {
+            __typename
+            INICIAL {
+              __typename
+              ESTADO
+            }
+            PROCESAMIENTO {
+              __typename
+              ESTADO
+            }
+            FINAL {
+              __typename
+              ESTADO
+            }
+          }
           FECHA_ACTUALIZACION
           FECHA_CREADO
           ID_PROCESO
@@ -1410,7 +1541,21 @@ export class APIService {
           __typename
           ESTADO
           ESTADO_EJECUCION
-          ETAPA
+          ETAPA {
+            __typename
+            INICIAL {
+              __typename
+              ESTADO
+            }
+            PROCESAMIENTO {
+              __typename
+              ESTADO
+            }
+            FINAL {
+              __typename
+              ESTADO
+            }
+          }
           FECHA_ACTUALIZACION
           FECHA_CREADO
           ID_PROCESO
@@ -1437,7 +1582,21 @@ export class APIService {
           __typename
           ESTADO
           ESTADO_EJECUCION
-          ETAPA
+          ETAPA {
+            __typename
+            INICIAL {
+              __typename
+              ESTADO
+            }
+            PROCESAMIENTO {
+              __typename
+              ESTADO
+            }
+            FINAL {
+              __typename
+              ESTADO
+            }
+          }
           FECHA_ACTUALIZACION
           FECHA_CREADO
           ID_PROCESO
@@ -1529,6 +1688,7 @@ export class APIService {
           TIPO
           NIVEL
           STEP
+          ACTIVIDAD
         }
       }`;
     const gqlAPIServiceArguments: any = {
@@ -1753,7 +1913,21 @@ export class APIService {
           __typename
           ESTADO
           ESTADO_EJECUCION
-          ETAPA
+          ETAPA {
+            __typename
+            INICIAL {
+              __typename
+              ESTADO
+            }
+            PROCESAMIENTO {
+              __typename
+              ESTADO
+            }
+            FINAL {
+              __typename
+              ESTADO
+            }
+          }
           FECHA_ACTUALIZACION
           FECHA_CREADO
           ID_PROCESO
@@ -1784,13 +1958,27 @@ export class APIService {
             __typename
             ESTADO
             ESTADO_EJECUCION
-            ETAPA
             FECHA_ACTUALIZACION
             FECHA_CREADO
             ID_PROCESO
             INSUMO
             INTERFAZ
             TIPO_PROCESO
+            ETAPA {
+              __typename
+              INICIAL {
+                __typename
+                ESTADO
+              }
+              PROCESAMIENTO {
+                __typename
+                ESTADO
+              }
+              FINAL {
+                __typename
+                ESTADO
+              }
+            }
           }
           nextToken
         }
@@ -1824,7 +2012,6 @@ export class APIService {
             __typename
             ESTADO
             ESTADO_EJECUCION
-            ETAPA
             FECHA_ACTUALIZACION
             FECHA_CREADO
             ID_PROCESO
@@ -1861,7 +2048,6 @@ export class APIService {
             __typename
             ESTADO
             ESTADO_EJECUCION
-            ETAPA
             FECHA_ACTUALIZACION
             FECHA_CREADO
             ID_PROCESO
@@ -1967,6 +2153,7 @@ export class APIService {
           TIPO
           NIVEL
           STEP
+          ACTIVIDAD
         }
       }`;
     const gqlAPIServiceArguments: any = {};
@@ -2008,6 +2195,7 @@ export class APIService {
           TIPO
           NIVEL
           STEP
+          ACTIVIDAD
         }
       }`;
     const gqlAPIServiceArguments: any = {};
@@ -2049,6 +2237,7 @@ export class APIService {
           TIPO
           NIVEL
           STEP
+          ACTIVIDAD
         }
       }`;
     const gqlAPIServiceArguments: any = {};
@@ -2278,7 +2467,21 @@ export class APIService {
           __typename
           ESTADO
           ESTADO_EJECUCION
-          ETAPA
+          ETAPA {
+            __typename
+            INICIAL {
+              __typename
+              ESTADO
+            }
+            PROCESAMIENTO {
+              __typename
+              ESTADO
+            }
+            FINAL {
+              __typename
+              ESTADO
+            }
+          }
           FECHA_ACTUALIZACION
           FECHA_CREADO
           ID_PROCESO
@@ -2312,7 +2515,21 @@ export class APIService {
           __typename
           ESTADO
           ESTADO_EJECUCION
-          ETAPA
+          ETAPA {
+            __typename
+            INICIAL {
+              __typename
+              ESTADO
+            }
+            PROCESAMIENTO {
+              __typename
+              ESTADO
+            }
+            FINAL {
+              __typename
+              ESTADO
+            }
+          }
           FECHA_ACTUALIZACION
           FECHA_CREADO
           ID_PROCESO
@@ -2346,7 +2563,21 @@ export class APIService {
           __typename
           ESTADO
           ESTADO_EJECUCION
-          ETAPA
+          ETAPA {
+            __typename
+            INICIAL {
+              __typename
+              ESTADO
+            }
+            PROCESAMIENTO {
+              __typename
+              ESTADO
+            }
+            FINAL {
+              __typename
+              ESTADO
+            }
+          }
           FECHA_ACTUALIZACION
           FECHA_CREADO
           ID_PROCESO
