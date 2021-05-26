@@ -3,6 +3,9 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { STRUCTURE_CAT } from '../model/catalogos/STRUCTURE_CAT.model';
 import { EArea, ERole } from '../validators/roles';
+import { AuditoriaService } from './auditoria.service';
+import { AppState } from '../ReduxStore/app.reducers';
+import { Store } from '@ngrx/store';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +13,7 @@ import { EArea, ERole } from '../validators/roles';
 export class CatalogosService {
   UrlCatalogos = environment.ENPOINT_RES.catalogos;
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient, private store: Store<AppState>, private auditoria: AuditoriaService) {}
   getCatalogos = () => {
     let area = localStorage.getItem('area');
 
@@ -126,6 +129,7 @@ export class CatalogosService {
       )
       .toPromise();
   };
+
   addDetailsCat = (object) => {
     return this.httpClient
       .post(
@@ -155,4 +159,64 @@ export class CatalogosService {
       )
       .toPromise();
   };
+
+  generarAuditoria(estado: string): void {
+
+    const catalogo = localStorage.getItem('nameCat');
+    const newRegister = localStorage.getItem('ObjectNewRegister');
+    const oldRegister = localStorage.getItem('ObjectOldRegister');
+    const accion = localStorage.getItem('RegisterAction');
+
+    const today = new Date().toISOString();
+
+    let area: String = '';
+    let rol = '';
+    let correo = '';
+    let apellidoPaterno = '';
+    let nombre = '';
+
+    this.store.select(({ usuario }) => usuario.user).subscribe(res => {
+      rol = res.attributes.rol;
+      correo = res.email;
+      nombre = res.attributes.given_name;
+      apellidoPaterno = res.attributes.family_name;
+    });
+    this.store.select(({ usuario }) => usuario.area).subscribe(res => {
+      //console.log(res)
+      area = res;
+    });
+
+    let payload = {
+      areaNegocio: area,
+      rol: rol,
+      correo: correo,
+      fecha: today,
+      usuario: {
+        apellidoPaterno: apellidoPaterno,
+        nombre: nombre
+      },
+      seccion: {},
+      catalogos: {
+        nombre: catalogo,
+        accion: accion,
+        estado: estado,
+        detalleModificaciones: [{
+          valorAnterior: JSON.parse(oldRegister),
+          valorNuevo: JSON.parse(newRegister)
+        }]
+      },
+      procesos: {},
+      permisosUsuarios: []
+    };
+
+    const payloadString = JSON.stringify(payload);
+
+    console.log("BGM - payloadString", payload);
+
+    this.auditoria.enviarBitacoraUsuarios(payloadString);
+    
+    localStorage.removeItem('RegisterAction');
+    localStorage.removeItem('ObjectNewRegister');
+    localStorage.removeItem('ObjectOldRegister');
+  }
 }

@@ -86,7 +86,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     private store: Store<AppState>,
     private toastr: ToastrService,
     private modalService: NgbModal
-  ) {}
+  ) { }
 
   ngOnDestroy(): void {
     this.store.dispatch(unSetDetailCatalogos());
@@ -190,6 +190,11 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
   }
 
   openModalConfirmacionEliminar(content, object) {
+
+    localStorage.setItem('RegisterAction', 'ELIMINAR');
+    localStorage.setItem('ObjectNewRegister', JSON.stringify(null));
+    localStorage.setItem('ObjectOldRegister', JSON.stringify(object));
+
     this.elementoEliminar = object;
 
     let objectReferencePk = this.ColumDinamicData.filter(
@@ -228,10 +233,10 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
 
     return isDate
       ? stringReturn.substring(6, 8) +
-          '/' +
-          stringReturn.substring(4, 6) +
-          '/' +
-          stringReturn.substring(0, 4)
+      '/' +
+      stringReturn.substring(4, 6) +
+      '/' +
+      stringReturn.substring(0, 4)
       : stringReturn;
   };
 
@@ -342,10 +347,13 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
   };
 
   mostrarCardAgregarResgistro = (editar = 0, object = null) => {
+
     this.mostrarEjecucionesProcesos = false;
 
     if (editar === 0) {
       this.editar = false;
+      localStorage.setItem('RegisterAction', 'AGREGAR');
+      localStorage.setItem('ObjectOldRegister', JSON.stringify(null));
       this.ColumDinamicData.forEach((dataColum) => {
         let valueFormControl = null;
 
@@ -377,7 +385,8 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
       });
     } else {
       this.editar = true;
-
+      localStorage.setItem('RegisterAction', 'ACTUALIZAR');
+      localStorage.setItem('ObjectOldRegister', JSON.stringify(object));
       this.ColumDinamicData.forEach((dataColum) => {
         let valueTempControl = null;
 
@@ -420,10 +429,10 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
             if (!specialFormat) {
               valueTempControl = moment(
                 valueTempControl.substring(0, 4) +
-                  '-' +
-                  valueTempControl.substring(4, 6) +
-                  '-' +
-                  valueTempControl.substring(6, 8)
+                '-' +
+                valueTempControl.substring(4, 6) +
+                '-' +
+                valueTempControl.substring(6, 8)
               )
                 .format('YYYY-MM-DD')
                 .toString();
@@ -431,10 +440,10 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
           } else {
             valueTempControl = moment(
               valueTempControl.substring(0, 4) +
-                '-' +
-                valueTempControl.substring(4, 6) +
-                '-' +
-                valueTempControl.substring(6, 8)
+              '-' +
+              valueTempControl.substring(4, 6) +
+              '-' +
+              valueTempControl.substring(6, 8)
             )
               .format('YYYY-MM-DD')
               .toString();
@@ -442,8 +451,11 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
         }
 
         this.FormsDinamic.get(dataColum.campo).setValue(valueTempControl);
+
       });
+
     }
+
   };
 
   ocultarCardAgregarResgistro = () => {
@@ -506,7 +518,9 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
   };
 
   agregarRegistroOActualizarRegistro = () => {
+
     let ObjectTemp = this.FormsDinamic.value;
+    localStorage.setItem('ObjectNewRegister', JSON.stringify(ObjectTemp));
 
     let objectFinish = {};
 
@@ -571,9 +585,11 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
           this.AgregarRegistroLoading = true;
           this.ocultarCardAgregarResgistro();
           this.getDataCat();
+          this.CatalogosService.generarAuditoria('EXITO');
         },
         (err) => {
           this.abrirToassError(err);
+          this.CatalogosService.generarAuditoria('ERROR');
         }
       );
     } else {
@@ -596,23 +612,24 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
                 parseInt((this.DetailCats.length / 10).toLocaleString()) + 1;
             }
           });
-
           this.getDataCat();
+          this.CatalogosService.generarAuditoria('EXITO');
         },
         (err) => {
           this.abrirToassError(err);
+          this.CatalogosService.generarAuditoria('ERROR');
         }
       );
     }
   };
 
   eliminarRegistro = () => {
+
+
     let objectReferencePk = this.ColumDinamicData.filter(
       (e) => e.llavePrimaria === true
     )[0];
-
     const registro = this.elementoEliminar[objectReferencePk.campo];
-
     this.CatalogosService.deleteDetailsCat(registro).then(
       () => {
         this.removeRegister = true;
@@ -620,9 +637,11 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
         this.paginaDetailCats = 1;
         this.modalService.dismissAll();
         this.getDataCat();
+        this.CatalogosService.generarAuditoria('EXITO');
       },
       (err) => {
         this.abrirToassError(err);
+        this.CatalogosService.generarAuditoria('ERROR');
       }
     );
   };
