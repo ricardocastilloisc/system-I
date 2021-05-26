@@ -210,9 +210,7 @@ export class CatalogosService {
     };
 
     const payloadString = JSON.stringify(payload);
-
-    console.log("BGM - payloadString", payload);
-
+    
     this.auditoria.enviarBitacoraUsuarios(payloadString);
     
     localStorage.removeItem('RegisterAction');
