@@ -1,19 +1,4 @@
 # this is an auto generated file. This will be overwritten
-mutation CreateAUDGENUSUARIOS($input: CreateAUDGENUSUARIOSInput!) {
-  createAUDGENUSUARIOS(input: $input) {
-    ID
-  }
-}
-mutation UpdateAUDGENUSUARIOS($input: UpdateAUDGENUSUARIOSInput!) {
-  updateAUDGENUSUARIOS(input: $input) {
-    ID
-  }
-}
-mutation DeleteAUDGENUSUARIOS($input: DeleteAUDGENUSUARIOSInput!) {
-  deleteAUDGENUSUARIOS(input: $input) {
-    ID
-  }
-}
 mutation CreateAUDGENPROCESOS($input: CreateAUDGENPROCESOSInput!) {
   createAUDGENPROCESOS(input: $input) {
     DESTINO

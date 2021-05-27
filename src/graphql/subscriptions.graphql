@@ -1,19 +1,4 @@
 # this is an auto generated file. This will be overwritten
-subscription OnCreateAUDGENUSUARIOS($ID: String) {
-  onCreateAUDGENUSUARIOS(ID: $ID) {
-    ID
-  }
-}
-subscription OnUpdateAUDGENUSUARIOS($ID: String) {
-  onUpdateAUDGENUSUARIOS(ID: $ID) {
-    ID
-  }
-}
-subscription OnDeleteAUDGENUSUARIOS($ID: String) {
-  onDeleteAUDGENUSUARIOS(ID: $ID) {
-    ID
-  }
-}
 subscription OnCreateAUDGENPROCESOS($ID_REGISTRO: String) {
   onCreateAUDGENPROCESOS(ID_REGISTRO: $ID_REGISTRO) {
     DESTINO
