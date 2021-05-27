@@ -23,7 +23,9 @@ export class CatalogosService {
     let area = localStorage.getItem('area');
 
     if (area.split(',').includes(EArea.Soporte)) {
-      return this.httpClient.get(this.UrlCatalogos + 'catalogos');
+      return this.httpClient.get(this.UrlCatalogos + 'catalogos', {
+        headers: this.AuthService.userHeaders()
+      });
     }
     let QueryParams = new HttpParams();
     QueryParams = QueryParams.append(
@@ -33,6 +35,7 @@ export class CatalogosService {
     QueryParams = QueryParams.append('area', localStorage.getItem('area'));
     return this.httpClient.get(this.UrlCatalogos + 'catalogos', {
       params: QueryParams,
+      headers: this.AuthService.userHeaders()
     });
   };
 
@@ -40,7 +43,9 @@ export class CatalogosService {
     let array = null;
 
     this.httpClient
-      .get(this.UrlCatalogos + 'catalogos/' + localStorage.getItem('nameCat'))
+      .get(this.UrlCatalogos + 'catalogos/' + localStorage.getItem('nameCat'),{
+        headers: this.AuthService.userHeaders(),
+      } )
       .toPromise()
       .then((res: any) => {
         let arrayTemp: STRUCTURE_CAT[] = [];
