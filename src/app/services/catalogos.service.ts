@@ -13,7 +13,7 @@ import { Store } from '@ngrx/store';
 export class CatalogosService {
   UrlCatalogos = environment.ENPOINT_RES.catalogos;
 
-  constructor(private httpClient: HttpClient, private store: Store<AppState>, private auditoria: AuditoriaService) {}
+  constructor(private httpClient: HttpClient, private store: Store<AppState>, private auditoria: AuditoriaService) { }
   getCatalogos = () => {
     let area = localStorage.getItem('area');
 
@@ -70,9 +70,9 @@ export class CatalogosService {
     this.httpClient
       .get(
         this.UrlCatalogos +
-          'catalogos/' +
-          localStorage.getItem('nameCat') +
-          '/registros'
+        'catalogos/' +
+        localStorage.getItem('nameCat') +
+        '/registros'
       )
       .toPromise()
       .then(({ nextToken, registros }: any) => {
@@ -93,9 +93,9 @@ export class CatalogosService {
             this.httpClient
               .get(
                 this.UrlCatalogos +
-                  'catalogos/' +
-                  localStorage.getItem('nameCat') +
-                  '/registros',
+                'catalogos/' +
+                localStorage.getItem('nameCat') +
+                '/registros',
                 {
                   params: QueryParams,
                 }
@@ -122,9 +122,9 @@ export class CatalogosService {
     return this.httpClient
       .put(
         this.UrlCatalogos +
-          'catalogos/' +
-          localStorage.getItem('nameCat') +
-          '/registros',
+        'catalogos/' +
+        localStorage.getItem('nameCat') +
+        '/registros',
         object
       )
       .toPromise();
@@ -134,9 +134,9 @@ export class CatalogosService {
     return this.httpClient
       .post(
         this.UrlCatalogos +
-          'catalogos/' +
-          localStorage.getItem('nameCat') +
-          '/registros',
+        'catalogos/' +
+        localStorage.getItem('nameCat') +
+        '/registros',
         object
       )
       .toPromise();
@@ -152,10 +152,10 @@ export class CatalogosService {
     return this.httpClient
       .delete(
         this.UrlCatalogos +
-          'catalogos/' +
-          localStorage.getItem('nameCat') +
-          '/registros/' +
-          window.btoa(unescape(encodeURIComponent(registro)))
+        'catalogos/' +
+        localStorage.getItem('nameCat') +
+        '/registros/' +
+        window.btoa(unescape(encodeURIComponent(registro)))
       )
       .toPromise();
   };
@@ -176,7 +176,7 @@ export class CatalogosService {
     let nombre = '';
 
     this.store.select(({ usuario }) => usuario.user).subscribe(res => {
-      rol = res.attributes.rol;
+      rol = res.attributes['custom:rol'];
       correo = res.email;
       nombre = res.attributes.given_name;
       apellidoPaterno = res.attributes.family_name;
@@ -191,28 +191,29 @@ export class CatalogosService {
       rol: rol,
       correo: correo,
       fecha: today,
+      modulo: "CATALOGOS",
       usuario: {
         apellidoPaterno: apellidoPaterno,
         nombre: nombre
       },
-      seccion: {},
       catalogos: {
         nombre: catalogo,
         accion: accion,
         estado: estado,
+        descripcion: ("Se realizó la acción de "+ accion + " sobre el catálogo " + catalogo + "."),
         detalleModificaciones: [{
           valorAnterior: JSON.parse(oldRegister),
           valorNuevo: JSON.parse(newRegister)
         }]
-      },
-      procesos: {},
-      permisosUsuarios: []
+      }
     };
 
+    //console.log("payload", payload);
+
     const payloadString = JSON.stringify(payload);
-    
+
     this.auditoria.enviarBitacoraUsuarios(payloadString);
-    
+
     localStorage.removeItem('RegisterAction');
     localStorage.removeItem('ObjectNewRegister');
     localStorage.removeItem('ObjectOldRegister');

@@ -397,24 +397,23 @@ export class UsuariosService {
     //console.log("generar auditoria");
 
     const userOld = localStorage.getItem('ObjectOldUser');
-    let userNew;
-    if (localStorage.getItem('ObjectNewUser')) {
-      userNew = localStorage.getItem('ObjectNewUser');
-    } else {
-      userNew = localStorage.getItem('ObjectOldUser');
-    }
-    
+    const userNew = localStorage.getItem('ObjectNewUser');
+
     const dataUsuario = JSON.parse(localStorage.getItem('ObjectDataUser'));
     const today = new Date().toISOString();
 
     let area: String = '';
     let rol = '';
     let correo = '';
+    let apellidoPaterno = '';
+    let nombre = '';
 
     this.store.select(({ usuario }) => usuario.user).subscribe(res => {
       //console.log(res);
-      rol = res.attributes.rol;
+      rol = res.attributes['custom:rol'];
       correo = res.email;
+      nombre = res.attributes.given_name;
+      apellidoPaterno = res.attributes.family_name;
     });
     this.store.select(({ usuario }) => usuario.area).subscribe(res => {
       //console.log(res)
@@ -426,10 +425,11 @@ export class UsuariosService {
       rol: rol,
       correo: correo,
       fecha: today,
-      usuario: {},
-      seccion: {},
-      catalogos: {},
-      procesos: {},
+      modulo: "USUARIOS",
+      usuario: {
+        apellidoPaterno: apellidoPaterno,
+        nombre: nombre
+      },
       permisosUsuarios: [{
         nombre: dataUsuario.nombre,
         apellidoPaterno: dataUsuario.apellidoPaterno,
@@ -442,7 +442,6 @@ export class UsuariosService {
         }]
       }]
     };
-    //console.log("payload", payload);
 
     const payloadString = JSON.stringify(payload);
 

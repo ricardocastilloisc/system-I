@@ -12,7 +12,7 @@ AWS.config.update({
 
 var sqs = new AWS.SQS();
 
-var payload = { /* este objeto se llenara por cada pantalla/proceso que se lanza */ 
+var payload = { /* este objeto se llenara por cada pantalla/proceso que se lanza */
   areaNegocio: "TESORERÍA",
   rol: "Soporte",
   correo: "garcia.diego@principal.com",
@@ -73,7 +73,7 @@ var payloadString = JSON.stringify(payload);
 })
 
 export class AuditoriaService {
-  
+
   params = {
     MessageBody: payloadString,
     MessageDeduplicationId: uuidv4(),  // Required for FIFO queues
@@ -83,17 +83,17 @@ export class AuditoriaService {
 
   paramsReceive = {
     AttributeNames: [
-       "SentTimestamp"
+      "SentTimestamp"
     ],
     MaxNumberOfMessages: 10,
     MessageAttributeNames: [
-       "All"
+      "All"
     ],
     QueueUrl: environment.API.endpoints.find((el) => el.name === 'sqs-auditoria')['endpoint'],
     VisibilityTimeout: 20,
     WaitTimeSeconds: 0
-   };
-   
+  };
+
   constructor() { }
 
   enviarMensaje(): void {
@@ -107,7 +107,7 @@ export class AuditoriaService {
   }
 
   recibirMensaje(): void {
-    sqs.receiveMessage(this.paramsReceive, function(err, data) {
+    sqs.receiveMessage(this.paramsReceive, function (err, data) {
       if (err) {
         console.log("Receive Error", err);
       } else if (data.Messages) {
@@ -115,7 +115,7 @@ export class AuditoriaService {
           QueueUrl: environment.API.endpoints.find((el) => el.name === 'sqs-auditoria')['endpoint'],
           ReceiptHandle: data.Messages[0].ReceiptHandle
         };
-        sqs.deleteMessage(deleteParams, function(err, data) {
+        sqs.deleteMessage(deleteParams, function (err, data) {
           if (err) {
             console.log("Delete Error", err);
           } else {
@@ -127,12 +127,12 @@ export class AuditoriaService {
   }
 
 
-  enviarBitacoraUsuarios(objectoUsuarios): void {
-    
-    //console.log("enviarBitacoraUsuarios");
+  enviarBitacoraUsuarios(objetoBitacora): void {
+
+    //console.log("objetoBitacora", objetoBitacora);
 
     let params = {
-      MessageBody: objectoUsuarios,
+      MessageBody: objetoBitacora,
       MessageDeduplicationId: uuidv4(),  // Required for FIFO queues
       MessageGroupId: uuidv4(),  // Required for FIFO queues
       QueueUrl: environment.API.endpoints.find((el) => el.name === 'sqs-auditoria')['endpoint']
