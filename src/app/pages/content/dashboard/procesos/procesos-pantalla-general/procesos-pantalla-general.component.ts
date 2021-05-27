@@ -289,6 +289,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
         } else if (response.descripcion.includes('401')) {          
           this.spinner.hide();
           this.modalService.dismissAll();
+          this.authService.refreshToken();
         }
         else {
           this.spinner.hide();
