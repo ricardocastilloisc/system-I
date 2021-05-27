@@ -50,12 +50,8 @@ query GetAUDGENUSUARIOS($ID: String!) {
     }
   }
 }
-query ListAUDGENUSUARIOS(
-  $filter: TableAUDGENUSUARIOSFilterInput
-  $limit: Int
-  $nextToken: String
-) {
-  listAUDGENUSUARIOS(filter: $filter, limit: $limit, nextToken: $nextToken) {
+query ListAUDGENUSUARIOS($MODULO: String) {
+  listAUDGENUSUARIOS(MODULO: $MODULO) {
     items {
       ID
       FECHA

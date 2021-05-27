@@ -234,23 +234,6 @@ export type AUD_PERMISOS = {
   ROL?: string | null;
 };
 
-export type TableAUDGENUSUARIOSFilterInput = {
-  MODULO?: TableStringFilterInput | null;
-};
-
-export type TableStringFilterInput = {
-  ne?: string | null;
-  eq?: string | null;
-  le?: string | null;
-  lt?: string | null;
-  ge?: string | null;
-  gt?: string | null;
-  contains?: string | null;
-  notContains?: string | null;
-  between?: Array<string | null> | null;
-  beginsWith?: string | null;
-};
-
 export type AUDGENUSUARIOSConnection = {
   __typename: "AUDGENUSUARIOSConnection";
   items?: Array<AUDGENUSUARIOS | null> | null;
@@ -267,6 +250,19 @@ export type TableCATPROCESOSFilterInput = {
   PROCESO?: TableStringFilterInput | null;
   TIPO?: TableStringFilterInput | null;
   NEGOCIO?: TableStringFilterInput | null;
+};
+
+export type TableStringFilterInput = {
+  ne?: string | null;
+  eq?: string | null;
+  le?: string | null;
+  lt?: string | null;
+  ge?: string | null;
+  gt?: string | null;
+  contains?: string | null;
+  notContains?: string | null;
+  between?: Array<string | null> | null;
+  beginsWith?: string | null;
 };
 
 export type CATPROCESOSConnection = {
@@ -1748,13 +1744,9 @@ export class APIService {
     )) as any;
     return <GetAUDGENUSUARIOSQuery>response.data.getAUDGENUSUARIOS;
   }
-  async ListAUDGENUSUARIOS(
-    filter?: TableAUDGENUSUARIOSFilterInput,
-    limit?: number,
-    nextToken?: string
-  ): Promise<ListAUDGENUSUARIOSQuery> {
-    const statement = `query ListAUDGENUSUARIOS($filter: TableAUDGENUSUARIOSFilterInput, $limit: Int, $nextToken: String) {
-        listAUDGENUSUARIOS(filter: $filter, limit: $limit, nextToken: $nextToken) {
+  async ListAUDGENUSUARIOS(MODULO?: string): Promise<ListAUDGENUSUARIOSQuery> {
+    const statement = `query ListAUDGENUSUARIOS($MODULO: String) {
+        listAUDGENUSUARIOS(MODULO: $MODULO) {
           __typename
           items {
             __typename
@@ -1807,14 +1799,8 @@ export class APIService {
         }
       }`;
     const gqlAPIServiceArguments: any = {};
-    if (filter) {
-      gqlAPIServiceArguments.filter = filter;
-    }
-    if (limit) {
-      gqlAPIServiceArguments.limit = limit;
-    }
-    if (nextToken) {
-      gqlAPIServiceArguments.nextToken = nextToken;
+    if (MODULO) {
+      gqlAPIServiceArguments.MODULO = MODULO;
     }
     const response = (await API.graphql(
       graphqlOperation(statement, gqlAPIServiceArguments)
@@ -2125,6 +2111,21 @@ export class APIService {
             INSUMO
             INTERFAZ
             TIPO_PROCESO
+            ETAPA {
+              __typename
+              INICIAL {
+                __typename
+                ESTADO
+              }
+              PROCESAMIENTO {
+                __typename
+                ESTADO
+              }
+              FINAL {
+                __typename
+                ESTADO
+              }
+            }
           }
           nextToken
         }
