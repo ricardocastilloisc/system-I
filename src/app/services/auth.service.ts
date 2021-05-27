@@ -9,6 +9,7 @@ import { AppState } from '../ReduxStore/app.reducers';
 import * as authActions from '../ReduxStore/actions/usuario.actions';
 import { User } from '../model/user';
 import { Usuario } from '../model/usuario.model';
+import { Router  } from '@angular/router';
 import { EArea } from '../validators/roles';
 import { setUserArea } from '../ReduxStore/actions/usuario.actions';
 
@@ -25,7 +26,7 @@ try {
 export class AuthService {
 
   codeChallenge: string;
-  constructor(private store: Store<AppState>, private router: Router, private rutaActiva: ActivatedRoute, private httpClient: HttpClient) {}
+  constructor(private store: Store<AppState>, private router: Router) {}
 
   initAuthData = () => {
     Auth.currentAuthenticatedUser()
