@@ -6,6 +6,7 @@ import { EArea, ERole } from '../validators/roles';
 import { AuditoriaService } from './auditoria.service';
 import { AppState } from '../ReduxStore/app.reducers';
 import { Store } from '@ngrx/store';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,11 @@ import { Store } from '@ngrx/store';
 export class CatalogosService {
   UrlCatalogos = environment.ENPOINT_RES.catalogos;
 
-  constructor(private httpClient: HttpClient, private store: Store<AppState>, private auditoria: AuditoriaService) { }
+  constructor(
+    private httpClient: HttpClient,
+     private store: Store<AppState>,
+     private auditoria: AuditoriaService,
+     private AuthService:AuthService) { }
   getCatalogos = () => {
     let area = localStorage.getItem('area');
 
@@ -65,14 +70,15 @@ export class CatalogosService {
 
     let arrayRes = [];
 
-    //nextToken
 
     this.httpClient
       .get(
         this.UrlCatalogos +
         'catalogos/' +
         localStorage.getItem('nameCat') +
-        '/registros'
+        '/registros',{
+          headers: this.AuthService.userHeaders(),
+        }
       )
       .toPromise()
       .then(({ nextToken, registros }: any) => {
@@ -98,6 +104,7 @@ export class CatalogosService {
                 '/registros',
                 {
                   params: QueryParams,
+                  headers: this.AuthService.userHeaders(),
                 }
               )
               .toPromise()
@@ -125,7 +132,10 @@ export class CatalogosService {
         'catalogos/' +
         localStorage.getItem('nameCat') +
         '/registros',
-        object
+        object,
+        {
+          headers: this.AuthService.userHeaders(),
+        }
       )
       .toPromise();
   };
@@ -137,7 +147,10 @@ export class CatalogosService {
         'catalogos/' +
         localStorage.getItem('nameCat') +
         '/registros',
-        object
+        object,
+        {
+          headers: this.AuthService.userHeaders(),
+        }
       )
       .toPromise();
   };
@@ -155,7 +168,10 @@ export class CatalogosService {
         'catalogos/' +
         localStorage.getItem('nameCat') +
         '/registros/' +
-        window.btoa(unescape(encodeURIComponent(registro)))
+        window.btoa(unescape(encodeURIComponent(registro))),
+        {
+          headers: this.AuthService.userHeaders(),
+        }
       )
       .toPromise();
   };

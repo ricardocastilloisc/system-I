@@ -11,6 +11,7 @@ import { ValorFiltrarGrupo } from '../validators/opcionesDeFiltroUsuarioAdminini
 import { UsuarioListado } from '../model/usuarioLitsa.model';
 import { AuthService } from './auth.service';
 import { AuditoriaService } from './auditoria.service';
+import { HttpHeaders } from '@angular/common/http';
 
 AWS.config.update(environment.SESConfig);
 var cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider();
@@ -135,7 +136,7 @@ export class UsuariosService {
   };
 
   consultarUsuarios = () => {
-    // metodo para consultar todos los usuarios del user pool   
+    // metodo para consultar todos los usuarios del user pool
     return cognitoidentityserviceprovider.listUsers(this.paramsGroups);
   };
 
@@ -149,6 +150,7 @@ export class UsuariosService {
     }
     return promesa.promise();
   };
+
 
 
 
@@ -376,7 +378,7 @@ export class UsuariosService {
 
     let usuario = '';
     this.store.select(({ usuario }) => usuario.user.email).subscribe(res => {
-      //console.log(res); 
+      //console.log(res);
       usuario = res;
     });
 
