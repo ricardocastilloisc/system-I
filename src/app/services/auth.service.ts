@@ -9,9 +9,9 @@ import { AppState } from '../ReduxStore/app.reducers';
 import * as authActions from '../ReduxStore/actions/usuario.actions';
 import { User } from '../model/user';
 import { Usuario } from '../model/usuario.model';
-import { Router } from '@angular/router';
 import { EArea } from '../validators/roles';
 import { setUserArea } from '../ReduxStore/actions/usuario.actions';
+
 
 try {
   Amplify.configure(environment.amplifyConfig);
@@ -23,13 +23,15 @@ try {
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private store: Store<AppState>, private router: Router) {}
+
+  codeChallenge: string;
+  constructor(private store: Store<AppState>, private router: Router, private rutaActiva: ActivatedRoute, private httpClient: HttpClient) {}
 
   initAuthData = () => {
     Auth.currentAuthenticatedUser()
       .then(async (result: CognitoUser) => {
         //console.log("AUTH SERVICE");
-        //console.log(JSON.stringify(result));
+        //console.log('Usser result: ',JSON.stringify(result));
         if (result.getSignInUserSession().isValid()) {
           const user = Usuario.fromAmplify(new User(result));
           if (!this.getToken()) {
@@ -68,6 +70,7 @@ export class AuthService {
 
           this.store.dispatch(authActions.setUser({ user }));
           let area = this.obtenerArea();
+          //console.log(area)
           this.store.dispatch(
             setUserArea({
               area: area,
@@ -81,8 +84,34 @@ export class AuthService {
   };
 
   signIn = () => {
+
     window.location.assign(environment.urlExternalLogin);
+    
   };
+
+ 
+
+
+
+  refreshToken = async () =>{
+
+    
+    try {
+      const cognitoUser = await Auth.currentAuthenticatedUser();
+      console.log(cognitoUser)
+      const currentSession = await Auth.currentSession();
+      console.log(currentSession)
+      // cognitoUser.refreshSession(currentSession.refreshToken, (err, session) => {
+      //   console.log('session', err, session);
+      //   const { idToken, refreshToken, accessToken } = session;
+      //   // do whatever you want to do now :)
+      // });
+    } catch (e) {
+      console.log('Unable to refresh Token', e);
+    }
+    console.log((await Auth.currentSession()).getRefreshToken())
+    
+  }
 
   isAuth = () => {
     return fromPromise(this.userPromise()).pipe(map((user) => user != null));

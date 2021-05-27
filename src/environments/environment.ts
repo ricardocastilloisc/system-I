@@ -9,20 +9,24 @@ export const environment = {
     secretAccessKey: "6luR2RVQcyRbuOgSd11CZo1W6kTUwIytlfi92o8K",
     region: "us-east-1",
   },
+  //urlExternalLogin: 'https://sia-app-up.auth.us-east-1.amazoncognito.com/oauth2/authorize?identity_provider=Azure&redirect_uri=http://localhost:4200/dashboard&response_type=code&client_id=5cvq4jop6octili7583n597kd1&state=usSu0K88JAUtvsDi9ldADWEezLdvFzqQ&code_challenge=GpAjcPWwYZ7Xrge2-dS2BdA7C4UNJcOfNzQVpdp2tN8&code_challenge_method=S256&scope=phone%20email%20openid%20profile',
 
-  urlExternalLogin:
-    'https://sia-app-up.auth.us-east-1.amazoncognito.com/oauth2/authorize?identity_provider=Azure&redirect_uri=http://localhost:4200/dashboard&response_type=token&client_id=v0pu39f7uvsr127og546qjope&state=usSu0K88JAUtvsDi9ldADWEezLdvFzqQ&code_challenge=GpAjcPWwYZ7Xrge2-dS2BdA7C4UNJcOfNzQVpdp2tN8&code_challenge_method=S256&scope=phone%20email%20openid%20profile',
+   urlExternalLogin:
+     'https://sia-app-up.auth.us-east-1.amazoncognito.com/oauth2/authorize?identity_provider=Azure&redirect_uri=http://localhost:4200/dashboard&response_type=code&client_id=5cvq4jop6octili7583n597kd1&scope=phone%20email%20openid%20profile',
+  accessTokenUrl: 'https://sia-app-up.auth.us-east-1.amazoncognito.com/oauth2/token' ,
+  clientId: 'v0pu39f7uvsr127og546qjope',
+  clientSecret: 'b4g4f8k4imm3qmc3793cveeu76ikeql5uqgvfh9p56da7nsg0m1' ,
  amplifyConfig: {
     Auth: {
       region: "us-east-1",
       userPoolId: "us-east-1_Ftm7m3Om2",
-      userPoolWebClientId: "v0pu39f7uvsr127og546qjope",
+      userPoolWebClientId: "5cvq4jop6octili7583n597kd1",
       oauth: {
         domain: "sia-app-up.auth.us-east-1.amazoncognito.com",
         scope: ["phone", "email", "openid", "profile"],
-        redirectSignIn: "localhost:4200/dashboard",
-        redirectSignOut: "localhost:4200",
-        responseType: "token"
+        redirectSignIn: "http://localhost:4200/dashboard",
+        redirectSignOut: "http://localhost:4200",
+        responseType: "code"
       },
     }
   },

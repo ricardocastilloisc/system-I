@@ -93,7 +93,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
 
       if(res){
 
-        this.authService.signOut()
+        //this.authService.signOut()
  
       }else{
 
