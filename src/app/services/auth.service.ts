@@ -97,7 +97,7 @@ export class AuthService {
     return new HttpHeaders({
       'content-type': 'application/json',
       'Access-Control-Allow-Origin': '*',
-      'Authorization': 'Bearer ' + this.authService.getToken(),
+      'Authorization': 'Bearer ' + this.getToken(),
     });
   }
 
