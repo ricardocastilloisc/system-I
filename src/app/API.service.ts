@@ -9,23 +9,6 @@ export interface SubscriptionResponse<T> {
   value: GraphQLResult<T>;
 }
 
-export type CreateAUDGENUSUARIOSInput = {
-  ID: string;
-};
-
-export type AUDGENUSUARIOS = {
-  __typename: "AUDGENUSUARIOS";
-  ID?: string;
-};
-
-export type UpdateAUDGENUSUARIOSInput = {
-  ID: string;
-};
-
-export type DeleteAUDGENUSUARIOSInput = {
-  ID: string;
-};
-
 export type CreateAUDGENPROCESOSInput = {
   ID_REGISTRO: string;
 };
@@ -153,6 +136,7 @@ export type CreateSiaGenAudEstadoProcesosDevInput = {
 
 export type SiaGenAudEstadoProcesosDev = {
   __typename: "SiaGenAudEstadoProcesosDev";
+  ESTADO?: string | null;
   ESTADO_EJECUCION?: string | null;
   ETAPA?: siaGenAudEtapas;
   FECHA_ACTUALIZACION?: string | null;
@@ -184,8 +168,74 @@ export type DeleteSiaGenAudEstadoProcesosDevInput = {
   ID_PROCESO: string;
 };
 
+export type AUDGENUSUARIOS = {
+  __typename: "AUDGENUSUARIOS";
+  ID?: string;
+  FECHA?: string | null;
+  CORREO?: string | null;
+  AREA_NEGOCIO?: string | null;
+  MODULO?: string | null;
+  ROL?: string | null;
+  USUARIO?: AUD_USER;
+  SECCION?: AUD_SECCION;
+  PROCESOS?: AUD_PROCESOS;
+  CATALOGOS?: AUD_CATALOGOS;
+  PERMISOS_USUARIOS?: AUD_PERMISOS;
+};
+
+export type AUD_USER = {
+  __typename: "AUD_USER";
+  NOMBRE?: string | null;
+  INICIO_SESION?: string | null;
+  FIN_SESION?: string | null;
+  APELLIDO_PATERNO?: string | null;
+};
+
+export type AUD_SECCION = {
+  __typename: "AUD_SECCION";
+  NOMBRE?: string | null;
+  ACCION?: string | null;
+  SUBSECCION?: string | null;
+};
+
+export type AUD_PROCESOS = {
+  __typename: "AUD_PROCESOS";
+  NOMBRE?: string | null;
+  ACCION?: string | null;
+  DESCRIPCION?: string | null;
+  ESTADO?: string | null;
+  TIPO?: string | null;
+};
+
+export type AUD_CATALOGOS = {
+  __typename: "AUD_CATALOGOS";
+  ACCION?: string | null;
+  DESCRIPCION?: string | null;
+  DETALLE_MODIFICACIONES?: Array<AUD_VALORES | null> | null;
+  ESTADO?: string | null;
+  NOMBRE?: string | null;
+};
+
+export type AUD_VALORES = {
+  __typename: "AUD_VALORES";
+  valorAnterior?: string | null;
+  valorNuevo?: string | null;
+};
+
+export type AUD_PERMISOS = {
+  __typename: "AUD_PERMISOS";
+  ACCION?: string | null;
+  APELLIDO_MATERNO?: string | null;
+  APELLIDO_PATERNO?: string | null;
+  CORREO?: string | null;
+  DETALLE_MODIFICACIONES?: Array<AUD_VALORES | null> | null;
+  ESTADO?: string | null;
+  NOMBRE?: string | null;
+  ROL?: string | null;
+};
+
 export type TableAUDGENUSUARIOSFilterInput = {
-  ID?: TableStringFilterInput | null;
+  MODULO?: TableStringFilterInput | null;
 };
 
 export type TableStringFilterInput = {
@@ -242,21 +292,6 @@ export type SiaGenAudEstadoProcesosDevConnection = {
   __typename: "SiaGenAudEstadoProcesosDevConnection";
   items?: Array<SiaGenAudEstadoProcesosDev | null> | null;
   nextToken?: string | null;
-};
-
-export type CreateAUDGENUSUARIOSMutation = {
-  __typename: "AUDGENUSUARIOS";
-  ID: string;
-};
-
-export type UpdateAUDGENUSUARIOSMutation = {
-  __typename: "AUDGENUSUARIOS";
-  ID: string;
-};
-
-export type DeleteAUDGENUSUARIOSMutation = {
-  __typename: "AUDGENUSUARIOS";
-  ID: string;
 };
 
 export type CreateAUDGENPROCESOSMutation = {
@@ -559,6 +594,59 @@ export type DeleteSiaGenAudEstadoProcesosDevMutation = {
 export type GetAUDGENUSUARIOSQuery = {
   __typename: "AUDGENUSUARIOS";
   ID: string;
+  FECHA?: string | null;
+  CORREO?: string | null;
+  AREA_NEGOCIO?: string | null;
+  MODULO?: string | null;
+  ROL?: string | null;
+  USUARIO?: {
+    __typename: "AUD_USER";
+    NOMBRE?: string | null;
+    INICIO_SESION?: string | null;
+    FIN_SESION?: string | null;
+    APELLIDO_PATERNO?: string | null;
+  } | null;
+  SECCION?: {
+    __typename: "AUD_SECCION";
+    NOMBRE?: string | null;
+    ACCION?: string | null;
+    SUBSECCION?: string | null;
+  } | null;
+  PROCESOS?: {
+    __typename: "AUD_PROCESOS";
+    NOMBRE?: string | null;
+    ACCION?: string | null;
+    DESCRIPCION?: string | null;
+    ESTADO?: string | null;
+    TIPO?: string | null;
+  } | null;
+  CATALOGOS?: {
+    __typename: "AUD_CATALOGOS";
+    ACCION?: string | null;
+    DESCRIPCION?: string | null;
+    DETALLE_MODIFICACIONES?: Array<{
+      __typename: "AUD_VALORES";
+      valorAnterior?: string | null;
+      valorNuevo?: string | null;
+    } | null> | null;
+    ESTADO?: string | null;
+    NOMBRE?: string | null;
+  } | null;
+  PERMISOS_USUARIOS?: {
+    __typename: "AUD_PERMISOS";
+    ACCION?: string | null;
+    APELLIDO_MATERNO?: string | null;
+    APELLIDO_PATERNO?: string | null;
+    CORREO?: string | null;
+    DETALLE_MODIFICACIONES?: Array<{
+      __typename: "AUD_VALORES";
+      valorAnterior?: string | null;
+      valorNuevo?: string | null;
+    } | null> | null;
+    ESTADO?: string | null;
+    NOMBRE?: string | null;
+    ROL?: string | null;
+  } | null;
 };
 
 export type ListAUDGENUSUARIOSQuery = {
@@ -566,6 +654,49 @@ export type ListAUDGENUSUARIOSQuery = {
   items?: Array<{
     __typename: "AUDGENUSUARIOS";
     ID: string;
+    FECHA?: string | null;
+    CORREO?: string | null;
+    AREA_NEGOCIO?: string | null;
+    MODULO?: string | null;
+    ROL?: string | null;
+    USUARIO?: {
+      __typename: "AUD_USER";
+      NOMBRE?: string | null;
+      INICIO_SESION?: string | null;
+      FIN_SESION?: string | null;
+      APELLIDO_PATERNO?: string | null;
+    } | null;
+    SECCION?: {
+      __typename: "AUD_SECCION";
+      NOMBRE?: string | null;
+      ACCION?: string | null;
+      SUBSECCION?: string | null;
+    } | null;
+    PROCESOS?: {
+      __typename: "AUD_PROCESOS";
+      NOMBRE?: string | null;
+      ACCION?: string | null;
+      DESCRIPCION?: string | null;
+      ESTADO?: string | null;
+      TIPO?: string | null;
+    } | null;
+    CATALOGOS?: {
+      __typename: "AUD_CATALOGOS";
+      ACCION?: string | null;
+      DESCRIPCION?: string | null;
+      ESTADO?: string | null;
+      NOMBRE?: string | null;
+    } | null;
+    PERMISOS_USUARIOS?: {
+      __typename: "AUD_PERMISOS";
+      ACCION?: string | null;
+      APELLIDO_MATERNO?: string | null;
+      APELLIDO_PATERNO?: string | null;
+      CORREO?: string | null;
+      ESTADO?: string | null;
+      NOMBRE?: string | null;
+      ROL?: string | null;
+    } | null;
   } | null> | null;
   nextToken?: string | null;
 };
@@ -799,21 +930,6 @@ export type ListSiaGenAudEstadoProcesosDevsPorFechaQuery = {
     TIPO_PROCESO?: string | null;
   } | null> | null;
   nextToken?: string | null;
-};
-
-export type OnCreateAUDGENUSUARIOSSubscription = {
-  __typename: "AUDGENUSUARIOS";
-  ID: string;
-};
-
-export type OnUpdateAUDGENUSUARIOSSubscription = {
-  __typename: "AUDGENUSUARIOS";
-  ID: string;
-};
-
-export type OnDeleteAUDGENUSUARIOSSubscription = {
-  __typename: "AUDGENUSUARIOS";
-  ID: string;
 };
 
 export type OnCreateAUDGENPROCESOSSubscription = {
@@ -1117,57 +1233,6 @@ export type OnDeleteSiaGenAudEstadoProcesosDevSubscription = {
   providedIn: "root"
 })
 export class APIService {
-  async CreateAUDGENUSUARIOS(
-    input: CreateAUDGENUSUARIOSInput
-  ): Promise<CreateAUDGENUSUARIOSMutation> {
-    const statement = `mutation CreateAUDGENUSUARIOS($input: CreateAUDGENUSUARIOSInput!) {
-        createAUDGENUSUARIOS(input: $input) {
-          __typename
-          ID
-        }
-      }`;
-    const gqlAPIServiceArguments: any = {
-      input
-    };
-    const response = (await API.graphql(
-      graphqlOperation(statement, gqlAPIServiceArguments)
-    )) as any;
-    return <CreateAUDGENUSUARIOSMutation>response.data.createAUDGENUSUARIOS;
-  }
-  async UpdateAUDGENUSUARIOS(
-    input: UpdateAUDGENUSUARIOSInput
-  ): Promise<UpdateAUDGENUSUARIOSMutation> {
-    const statement = `mutation UpdateAUDGENUSUARIOS($input: UpdateAUDGENUSUARIOSInput!) {
-        updateAUDGENUSUARIOS(input: $input) {
-          __typename
-          ID
-        }
-      }`;
-    const gqlAPIServiceArguments: any = {
-      input
-    };
-    const response = (await API.graphql(
-      graphqlOperation(statement, gqlAPIServiceArguments)
-    )) as any;
-    return <UpdateAUDGENUSUARIOSMutation>response.data.updateAUDGENUSUARIOS;
-  }
-  async DeleteAUDGENUSUARIOS(
-    input: DeleteAUDGENUSUARIOSInput
-  ): Promise<DeleteAUDGENUSUARIOSMutation> {
-    const statement = `mutation DeleteAUDGENUSUARIOS($input: DeleteAUDGENUSUARIOSInput!) {
-        deleteAUDGENUSUARIOS(input: $input) {
-          __typename
-          ID
-        }
-      }`;
-    const gqlAPIServiceArguments: any = {
-      input
-    };
-    const response = (await API.graphql(
-      graphqlOperation(statement, gqlAPIServiceArguments)
-    )) as any;
-    return <DeleteAUDGENUSUARIOSMutation>response.data.deleteAUDGENUSUARIOS;
-  }
   async CreateAUDGENPROCESOS(
     input: CreateAUDGENPROCESOSInput
   ): Promise<CreateAUDGENPROCESOSMutation> {
@@ -1620,6 +1685,59 @@ export class APIService {
         getAUDGENUSUARIOS(ID: $ID) {
           __typename
           ID
+          FECHA
+          CORREO
+          AREA_NEGOCIO
+          MODULO
+          ROL
+          USUARIO {
+            __typename
+            NOMBRE
+            INICIO_SESION
+            FIN_SESION
+            APELLIDO_PATERNO
+          }
+          SECCION {
+            __typename
+            NOMBRE
+            ACCION
+            SUBSECCION
+          }
+          PROCESOS {
+            __typename
+            NOMBRE
+            ACCION
+            DESCRIPCION
+            ESTADO
+            TIPO
+          }
+          CATALOGOS {
+            __typename
+            ACCION
+            DESCRIPCION
+            DETALLE_MODIFICACIONES {
+              __typename
+              valorAnterior
+              valorNuevo
+            }
+            ESTADO
+            NOMBRE
+          }
+          PERMISOS_USUARIOS {
+            __typename
+            ACCION
+            APELLIDO_MATERNO
+            APELLIDO_PATERNO
+            CORREO
+            DETALLE_MODIFICACIONES {
+              __typename
+              valorAnterior
+              valorNuevo
+            }
+            ESTADO
+            NOMBRE
+            ROL
+          }
         }
       }`;
     const gqlAPIServiceArguments: any = {
@@ -1641,6 +1759,49 @@ export class APIService {
           items {
             __typename
             ID
+            FECHA
+            CORREO
+            AREA_NEGOCIO
+            MODULO
+            ROL
+            USUARIO {
+              __typename
+              NOMBRE
+              INICIO_SESION
+              FIN_SESION
+              APELLIDO_PATERNO
+            }
+            SECCION {
+              __typename
+              NOMBRE
+              ACCION
+              SUBSECCION
+            }
+            PROCESOS {
+              __typename
+              NOMBRE
+              ACCION
+              DESCRIPCION
+              ESTADO
+              TIPO
+            }
+            CATALOGOS {
+              __typename
+              ACCION
+              DESCRIPCION
+              ESTADO
+              NOMBRE
+            }
+            PERMISOS_USUARIOS {
+              __typename
+              ACCION
+              APELLIDO_MATERNO
+              APELLIDO_PATERNO
+              CORREO
+              ESTADO
+              NOMBRE
+              ROL
+            }
           }
           nextToken
         }
@@ -1964,21 +2125,6 @@ export class APIService {
             INSUMO
             INTERFAZ
             TIPO_PROCESO
-            ETAPA {
-              __typename
-              INICIAL {
-                __typename
-                ESTADO
-              }
-              PROCESAMIENTO {
-                __typename
-                ESTADO
-              }
-              FINAL {
-                __typename
-                ESTADO
-              }
-            }
           }
           nextToken
         }
@@ -2069,60 +2215,6 @@ export class APIService {
       response.data.listSiaGenAudEstadoProcesosDevsPorFecha
     );
   }
-  OnCreateAUDGENUSUARIOSListener(
-    ID?: string
-  ): Observable<SubscriptionResponse<OnCreateAUDGENUSUARIOSSubscription>> {
-    const statement = `subscription OnCreateAUDGENUSUARIOS($ID: String) {
-        onCreateAUDGENUSUARIOS(ID: $ID) {
-          __typename
-          ID
-        }
-      }`;
-    const gqlAPIServiceArguments: any = {};
-    if (ID) {
-      gqlAPIServiceArguments.ID = ID;
-    }
-    return API.graphql(
-      graphqlOperation(statement, gqlAPIServiceArguments)
-    ) as Observable<SubscriptionResponse<OnCreateAUDGENUSUARIOSSubscription>>;
-  }
-
-  OnUpdateAUDGENUSUARIOSListener(
-    ID?: string
-  ): Observable<SubscriptionResponse<OnUpdateAUDGENUSUARIOSSubscription>> {
-    const statement = `subscription OnUpdateAUDGENUSUARIOS($ID: String) {
-        onUpdateAUDGENUSUARIOS(ID: $ID) {
-          __typename
-          ID
-        }
-      }`;
-    const gqlAPIServiceArguments: any = {};
-    if (ID) {
-      gqlAPIServiceArguments.ID = ID;
-    }
-    return API.graphql(
-      graphqlOperation(statement, gqlAPIServiceArguments)
-    ) as Observable<SubscriptionResponse<OnUpdateAUDGENUSUARIOSSubscription>>;
-  }
-
-  OnDeleteAUDGENUSUARIOSListener(
-    ID?: string
-  ): Observable<SubscriptionResponse<OnDeleteAUDGENUSUARIOSSubscription>> {
-    const statement = `subscription OnDeleteAUDGENUSUARIOS($ID: String) {
-        onDeleteAUDGENUSUARIOS(ID: $ID) {
-          __typename
-          ID
-        }
-      }`;
-    const gqlAPIServiceArguments: any = {};
-    if (ID) {
-      gqlAPIServiceArguments.ID = ID;
-    }
-    return API.graphql(
-      graphqlOperation(statement, gqlAPIServiceArguments)
-    ) as Observable<SubscriptionResponse<OnDeleteAUDGENUSUARIOSSubscription>>;
-  }
-
   OnCreateAUDGENPROCESOSListener(
     ID_REGISTRO?: string
   ): Observable<SubscriptionResponse<OnCreateAUDGENPROCESOSSubscription>> {

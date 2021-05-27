@@ -10,6 +10,7 @@ import { ConsultaUsuario } from '../ReduxStore/reducers';
 import { ValorFiltrarGrupo } from '../validators/opcionesDeFiltroUsuarioAdmininistracion';
 import { UsuarioListado } from '../model/usuarioLitsa.model';
 import { AuthService } from './auth.service';
+import { AuditoriaService } from './auditoria.service';
 
 AWS.config.update(environment.SESConfig);
 var cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider();
@@ -90,7 +91,7 @@ export class UsuariosService {
   };
   numeroDeProcesos = 0;
 
-  constructor(private store: Store<AppState>, private authService: AuthService) { }
+  constructor(private store: Store<AppState>, private authService: AuthService, private auditoria: AuditoriaService) { }
 
   paramSignOut = {
     Username: this.authService.getToken() as string,
@@ -105,7 +106,7 @@ export class UsuariosService {
     // metodo para eliminar un usuario del user pool
     cognitoidentityserviceprovider.adminDeleteUser(this.paramsDeleteUser, this.callbackAws);
   }
-  
+
   eliminarUsuarioPromesa = (Username) => {
     // metodo para eliminar un usuario del user pool
     const paramsDeleteUser = {
@@ -256,6 +257,7 @@ export class UsuariosService {
   }
 
   eliminarYAgregarGrupo = (Grupo, Username, GrupoOriginal) => {
+
     const params = {
       GroupName: GrupoOriginal,
       UserPoolId: environment.UserPoolId,
@@ -319,6 +321,7 @@ export class UsuariosService {
   }
 
   actualizarAtributosUsuarioCallback = (UserAttributes, Username) => {
+
     const paramsAtributos = {
       UserAttributes: UserAttributes,
       Username: Username /* identificador del usuario en el user pool */,
@@ -348,6 +351,7 @@ export class UsuariosService {
   };
 
   validacionDeProcesosInsertar = (Attributos, paramGrupo) => {
+
     let numeroProcesosComparar = 2;
 
     const { Grupo, Username, GrupoOriginal } = paramGrupo;
@@ -369,14 +373,87 @@ export class UsuariosService {
       this.numeroDeProcesos = 0;
       this.store.dispatch(ProcesoTerminado());
     });
+
+    let usuario = '';
+    this.store.select(({ usuario }) => usuario.user.email).subscribe(res => {
+      //console.log(res); 
+      usuario = res;
+    });
+
+    const ObjectUsuarioString = {
+      area: paramGrupo.Grupo,
+      permiso: Attributos.UserAttributes.find(el => el.Name === 'custom:rol')['Value'],
+      negocio: Attributos.UserAttributes.find(el => el.Name === 'custom:negocio')['Value']
+    };
+
+    //console.log('ObjectUsuarioString', ObjectUsuarioString);
+    localStorage.setItem('ObjectNewUser', JSON.stringify(ObjectUsuarioString));
+
+    this.generarAuditoria();
+
   };
+
+  generarAuditoria(): void {
+    //console.log("generar auditoria");
+
+    const userOld = localStorage.getItem('ObjectOldUser');
+    const userNew = localStorage.getItem('ObjectNewUser');
+
+    const dataUsuario = JSON.parse(localStorage.getItem('ObjectDataUser'));
+    const today = new Date().toISOString();
+
+    let area: String = '';
+    let rol = '';
+    let correo = '';
+    let apellidoPaterno = '';
+    let nombre = '';
+
+    this.store.select(({ usuario }) => usuario.user).subscribe(res => {
+      //console.log(res);
+      rol = res.attributes['custom:rol'];
+      correo = res.email;
+      nombre = res.attributes.given_name;
+      apellidoPaterno = res.attributes.family_name;
+    });
+    this.store.select(({ usuario }) => usuario.area).subscribe(res => {
+      //console.log(res)
+      area = res;
+    });
+
+    let payload = {
+      areaNegocio: area,
+      rol: rol,
+      correo: correo,
+      fecha: today,
+      modulo: "USUARIOS",
+      usuario: {
+        apellidoPaterno: apellidoPaterno,
+        nombre: nombre
+      },
+      permisosUsuarios: [{
+        nombre: dataUsuario.nombre,
+        apellidoPaterno: dataUsuario.apellidoPaterno,
+        correo: dataUsuario.usuario,
+        accion: dataUsuario.accion,
+        estado: "EXITO",
+        detalleModificaciones: [{
+          valorAnterior: JSON.parse(userOld),
+          valorNuevo: JSON.parse(userNew)
+        }]
+      }]
+    };
+
+    const payloadString = JSON.stringify(payload);
+
+    this.auditoria.enviarBitacoraUsuarios(payloadString);
+
+    localStorage.removeItem('ObjectOldUser');
+    localStorage.removeItem('ObjectNewUser');
+    localStorage.removeItem('ObjectDataUser');
+  }
 
   actualizarAtributosUsuario = (UserAttributes, Username) => {
     // metodo para actualizar los valores de los atributos del usuario en el user pool
-    /* cognitoidentityserviceprovider.adminUpdateUserAttributes(
-    this.paramsAtributos,
-    this.callbackAws
-  );*/
 
     const paramsAtributos = {
       UserAttributes: UserAttributes,

@@ -99,7 +99,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     private modalService: NgbModal,
     private UsuariosService: UsuariosService,
     private spinner: NgxSpinnerService
-  ) {}
+  ) { }
   ngOnDestroy(): void {
     this.store.dispatch(UnsetListaUsuarios());
     this.ListadoUsuarios$.unsubscribe();
@@ -117,7 +117,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
 
   cambiarEtiquetaSeleccionadaGeneral(elemento) {
     setTimeout(() => {
-      $('#'+elemento)
+      $('#' + elemento)
         .find('.selected-item')
         .attr('class', 'etiquetasUsuarios');
     }, 1);
@@ -159,7 +159,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
               });
             }
           });
-          if(this.dropdownListFiltroCorreos.length === 0){
+          if (this.dropdownListFiltroCorreos.length === 0) {
             this.dropdownListFiltroCorreos = arrayCorreos;
           }
 
@@ -167,7 +167,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
 
         this.ListadoUsuariosPantalla = ListadoDeUsuarios;
 
-        if(this.filtroActivo){
+        if (this.filtroActivo) {
           this.filtrar();
         }
       });
@@ -278,25 +278,41 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     };
   };
 
-  openModalConfirmacionBaja(content, ObjectUsuario: UsuarioListado, grupoPertenece){
+  openModalConfirmacionBaja(content, ObjectUsuario: UsuarioListado, grupoPertenece) {
     this.ObjectUsuarioCambiar = ObjectUsuario;
     this.grupoPertenece = grupoPertenece;
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', windowClass:'confirmacionUsuariosModal' });
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', windowClass: 'confirmacionUsuariosModal' });
   }
 
-  cerrarModal = (modal) =>{
+  cerrarModal = (modal) => {
     modal.close();
   }
   openModalConfirmacionEdicion = (modal) => {
-    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title', windowClass:'confirmacionUsuariosModal' });
+    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title', windowClass: 'confirmacionUsuariosModal' });
   }
 
   openModal(content, ObjectUsuario: UsuarioListado, grupoPertenece) {
 
-    console.log(content);
+    //console.log('ObjectUsuario', ObjectUsuario);
+    const ObjectUsuarioString = {
+      area: ObjectUsuario.GrupoQuePertenece,
+      permiso: ObjectUsuario.Attributes['custom:rol'],
+      negocio: ObjectUsuario.Attributes['custom:negocio'],
+    };
+
+    const datosUsuario = {
+      usuario: ObjectUsuario.Attributes.email,
+      nombre: ObjectUsuario.Attributes['given_name'],
+      apellidoPaterno: ObjectUsuario.Attributes['family_name'],
+      accion: "ACTUALIZAR"
+    };
+
+    //console.log('ObjectUsuarioString', ObjectUsuarioString);
+    localStorage.setItem('ObjectOldUser', JSON.stringify(ObjectUsuarioString));
+    localStorage.setItem('ObjectDataUser', JSON.stringify(datosUsuario));
+
     this.ObjectUsuarioCambiar = ObjectUsuario;
     this.grupoPertenece = grupoPertenece;
-
 
     this.cambiarEtiquetaSeleccionadaGeneral('cambiarnegocio');
 
@@ -362,6 +378,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   };
 
   guardarCambioPermisoUsuario = () => {
+
     if (
       this.SelectCamabiarPermiso === 'Permiso' &&
       this.selectedItemsCambioDeNegocio.length === 0 &&
@@ -377,7 +394,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       arraySeleccionados.push(e.item_id);
     });
 
-    if (this.SelectCamabiarArea === 'Soporte'){
+    if (this.SelectCamabiarArea === 'Soporte') {
       this.SelectCamabiarPermiso = 'Administrador';
     }
     const UserAttributes = [
@@ -396,7 +413,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       Username: this.ObjectUsuarioCambiar.Username,
     };
     //console.log('AREA', this.SelectCamabiarArea);
-    if(this.SelectCamabiarArea === 'Inversiones y Riesgos'){
+    if (this.SelectCamabiarArea === 'Inversiones y Riesgos') {
       this.SelectCamabiarArea = 'InversionesyRiesgos';
     }
     //console.log('AREA CHANGE', this.SelectCamabiarArea);
@@ -414,7 +431,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     this.modalService.dismissAll();
   };
 
-  cerrarModales = () =>{
+  cerrarModales = () => {
     this.modalService.dismissAll();
   }
 
@@ -437,7 +454,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   filtrar = () => {
     this.spinner.show();
 
-    this.paginaActualUsuarios= 1
+    this.paginaActualUsuarios = 1
 
     this.filtroActivo = true;
     let FiltrarRol = null;
@@ -485,8 +502,32 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   };
 
 
-  darDeBajaUsuario = () =>{
-    this.UsuariosService.eliminarUsuarioPromesa(this.ObjectUsuarioCambiar.Username).then( () => {
+  darDeBajaUsuario = () => {
+    this.UsuariosService.eliminarUsuarioPromesa(this.ObjectUsuarioCambiar.Username).then(() => {
+      console.log("Entrando a darDeBajaUsuario");
+      const obj = this.ObjectUsuarioCambiar;
+
+
+      //console.log('ObjectUsuario', ObjectUsuario);
+      const ObjectUsuarioString = {
+        area: obj.GrupoQuePertenece,
+        permiso: obj.Attributes['custom:rol'],
+        negocio: obj.Attributes['custom:negocio'],
+      };
+
+      const datosUsuario = {
+        usuario: obj.Attributes.email,
+        nombre: obj.Attributes['given_name'],
+        apellidoPaterno: obj.Attributes['family_name'],
+        accion: "ELIMINAR"
+      };
+
+      //console.log('ObjectUsuarioString', ObjectUsuarioString);
+      localStorage.setItem('ObjectOldUser', JSON.stringify(ObjectUsuarioString));
+      localStorage.setItem('ObjectDataUser', JSON.stringify(datosUsuario));
+
+      this.UsuariosService.generarAuditoria();
+      
       this.cerrarModales();
       this.store.dispatch(LoadListaUsuarios({ consulta: null }));
     })

@@ -2,6 +2,52 @@
 query GetAUDGENUSUARIOS($ID: String!) {
   getAUDGENUSUARIOS(ID: $ID) {
     ID
+    FECHA
+    CORREO
+    AREA_NEGOCIO
+    MODULO
+    ROL
+    USUARIO {
+      NOMBRE
+      INICIO_SESION
+      FIN_SESION
+      APELLIDO_PATERNO
+    }
+    SECCION {
+      NOMBRE
+      ACCION
+      SUBSECCION
+    }
+    PROCESOS {
+      NOMBRE
+      ACCION
+      DESCRIPCION
+      ESTADO
+      TIPO
+    }
+    CATALOGOS {
+      ACCION
+      DESCRIPCION
+      DETALLE_MODIFICACIONES {
+        valorAnterior
+        valorNuevo
+      }
+      ESTADO
+      NOMBRE
+    }
+    PERMISOS_USUARIOS {
+      ACCION
+      APELLIDO_MATERNO
+      APELLIDO_PATERNO
+      CORREO
+      DETALLE_MODIFICACIONES {
+        valorAnterior
+        valorNuevo
+      }
+      ESTADO
+      NOMBRE
+      ROL
+    }
   }
 }
 query ListAUDGENUSUARIOS(
@@ -12,6 +58,44 @@ query ListAUDGENUSUARIOS(
   listAUDGENUSUARIOS(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       ID
+      FECHA
+      CORREO
+      AREA_NEGOCIO
+      MODULO
+      ROL
+      USUARIO {
+        NOMBRE
+        INICIO_SESION
+        FIN_SESION
+        APELLIDO_PATERNO
+      }
+      SECCION {
+        NOMBRE
+        ACCION
+        SUBSECCION
+      }
+      PROCESOS {
+        NOMBRE
+        ACCION
+        DESCRIPCION
+        ESTADO
+        TIPO
+      }
+      CATALOGOS {
+        ACCION
+        DESCRIPCION
+        ESTADO
+        NOMBRE
+      }
+      PERMISOS_USUARIOS {
+        ACCION
+        APELLIDO_MATERNO
+        APELLIDO_PATERNO
+        CORREO
+        ESTADO
+        NOMBRE
+        ROL
+      }
     }
     nextToken
   }
