@@ -138,7 +138,7 @@ export type SiaGenAudEstadoProcesosDev = {
   __typename: "SiaGenAudEstadoProcesosDev";
   ESTADO?: string | null;
   ESTADO_EJECUCION?: string | null;
-  ETAPA?: siaGenAudEtapas;
+  ETAPA?: ETAPAS_PROCESO;
   FECHA_ACTUALIZACION?: string | null;
   FECHA_CREADO?: string | null;
   ID_PROCESO?: string;
@@ -147,15 +147,15 @@ export type SiaGenAudEstadoProcesosDev = {
   TIPO_PROCESO?: string | null;
 };
 
-export type siaGenAudEtapas = {
-  __typename: "siaGenAudEtapas";
-  INICIAL?: ETAPA;
-  PROCESAMIENTO?: ETAPA;
-  FINAL?: ETAPA;
+export type ETAPAS_PROCESO = {
+  __typename: "ETAPAS_PROCESO";
+  INICIAL?: ETAPA_ESTADO;
+  PROCESAMIENTO?: ETAPA_ESTADO;
+  FINAL?: ETAPA_ESTADO;
 };
 
-export type ETAPA = {
-  __typename: "ETAPA";
+export type ETAPA_ESTADO = {
+  __typename: "ETAPA_ESTADO";
   ESTADO?: string | null;
 };
 
@@ -511,17 +511,17 @@ export type CreateSiaGenAudEstadoProcesosDevMutation = {
   ESTADO?: string | null;
   ESTADO_EJECUCION?: string | null;
   ETAPA?: {
-    __typename: "siaGenAudEtapas";
+    __typename: "ETAPAS_PROCESO";
     INICIAL?: {
-      __typename: "ETAPA";
+      __typename: "ETAPA_ESTADO";
       ESTADO?: string | null;
     } | null;
     PROCESAMIENTO?: {
-      __typename: "ETAPA";
+      __typename: "ETAPA_ESTADO";
       ESTADO?: string | null;
     } | null;
     FINAL?: {
-      __typename: "ETAPA";
+      __typename: "ETAPA_ESTADO";
       ESTADO?: string | null;
     } | null;
   } | null;
@@ -538,17 +538,17 @@ export type UpdateSiaGenAudEstadoProcesosDevMutation = {
   ESTADO?: string | null;
   ESTADO_EJECUCION?: string | null;
   ETAPA?: {
-    __typename: "siaGenAudEtapas";
+    __typename: "ETAPAS_PROCESO";
     INICIAL?: {
-      __typename: "ETAPA";
+      __typename: "ETAPA_ESTADO";
       ESTADO?: string | null;
     } | null;
     PROCESAMIENTO?: {
-      __typename: "ETAPA";
+      __typename: "ETAPA_ESTADO";
       ESTADO?: string | null;
     } | null;
     FINAL?: {
-      __typename: "ETAPA";
+      __typename: "ETAPA_ESTADO";
       ESTADO?: string | null;
     } | null;
   } | null;
@@ -565,17 +565,17 @@ export type DeleteSiaGenAudEstadoProcesosDevMutation = {
   ESTADO?: string | null;
   ESTADO_EJECUCION?: string | null;
   ETAPA?: {
-    __typename: "siaGenAudEtapas";
+    __typename: "ETAPAS_PROCESO";
     INICIAL?: {
-      __typename: "ETAPA";
+      __typename: "ETAPA_ESTADO";
       ESTADO?: string | null;
     } | null;
     PROCESAMIENTO?: {
-      __typename: "ETAPA";
+      __typename: "ETAPA_ESTADO";
       ESTADO?: string | null;
     } | null;
     FINAL?: {
-      __typename: "ETAPA";
+      __typename: "ETAPA_ESTADO";
       ESTADO?: string | null;
     } | null;
   } | null;
@@ -858,17 +858,17 @@ export type GetSiaGenAudEstadoProcesosDevQuery = {
   ESTADO?: string | null;
   ESTADO_EJECUCION?: string | null;
   ETAPA?: {
-    __typename: "siaGenAudEtapas";
+    __typename: "ETAPAS_PROCESO";
     INICIAL?: {
-      __typename: "ETAPA";
+      __typename: "ETAPA_ESTADO";
       ESTADO?: string | null;
     } | null;
     PROCESAMIENTO?: {
-      __typename: "ETAPA";
+      __typename: "ETAPA_ESTADO";
       ESTADO?: string | null;
     } | null;
     FINAL?: {
-      __typename: "ETAPA";
+      __typename: "ETAPA_ESTADO";
       ESTADO?: string | null;
     } | null;
   } | null;
@@ -1149,17 +1149,17 @@ export type OnCreateSiaGenAudEstadoProcesosDevSubscription = {
   ESTADO?: string | null;
   ESTADO_EJECUCION?: string | null;
   ETAPA?: {
-    __typename: "siaGenAudEtapas";
+    __typename: "ETAPAS_PROCESO";
     INICIAL?: {
-      __typename: "ETAPA";
+      __typename: "ETAPA_ESTADO";
       ESTADO?: string | null;
     } | null;
     PROCESAMIENTO?: {
-      __typename: "ETAPA";
+      __typename: "ETAPA_ESTADO";
       ESTADO?: string | null;
     } | null;
     FINAL?: {
-      __typename: "ETAPA";
+      __typename: "ETAPA_ESTADO";
       ESTADO?: string | null;
     } | null;
   } | null;
@@ -1176,17 +1176,17 @@ export type OnUpdateSiaGenAudEstadoProcesosDevSubscription = {
   ESTADO?: string | null;
   ESTADO_EJECUCION?: string | null;
   ETAPA?: {
-    __typename: "siaGenAudEtapas";
+    __typename: "ETAPAS_PROCESO";
     INICIAL?: {
-      __typename: "ETAPA";
+      __typename: "ETAPA_ESTADO";
       ESTADO?: string | null;
     } | null;
     PROCESAMIENTO?: {
-      __typename: "ETAPA";
+      __typename: "ETAPA_ESTADO";
       ESTADO?: string | null;
     } | null;
     FINAL?: {
-      __typename: "ETAPA";
+      __typename: "ETAPA_ESTADO";
       ESTADO?: string | null;
     } | null;
   } | null;
@@ -1203,17 +1203,17 @@ export type OnDeleteSiaGenAudEstadoProcesosDevSubscription = {
   ESTADO?: string | null;
   ESTADO_EJECUCION?: string | null;
   ETAPA?: {
-    __typename: "siaGenAudEtapas";
+    __typename: "ETAPAS_PROCESO";
     INICIAL?: {
-      __typename: "ETAPA";
+      __typename: "ETAPA_ESTADO";
       ESTADO?: string | null;
     } | null;
     PROCESAMIENTO?: {
-      __typename: "ETAPA";
+      __typename: "ETAPA_ESTADO";
       ESTADO?: string | null;
     } | null;
     FINAL?: {
-      __typename: "ETAPA";
+      __typename: "ETAPA_ESTADO";
       ESTADO?: string | null;
     } | null;
   } | null;
