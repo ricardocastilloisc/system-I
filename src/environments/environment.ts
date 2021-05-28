@@ -9,12 +9,13 @@ export const environment = {
     secretAccessKey: "6luR2RVQcyRbuOgSd11CZo1W6kTUwIytlfi92o8K",
     region: "us-east-1",
   },
-  //urlExternalLogin: 'https://sia-app-up.auth.us-east-1.amazoncognito.com/oauth2/authorize?identity_provider=Azure&redirect_uri=http://localhost:4200/dashboard&response_type=code&client_id=5cvq4jop6octili7583n597kd1&state=usSu0K88JAUtvsDi9ldADWEezLdvFzqQ&code_challenge=GpAjcPWwYZ7Xrge2-dS2BdA7C4UNJcOfNzQVpdp2tN8&code_challenge_method=S256&scope=phone%20email%20openid%20profile',
-
-  urlExternalLogin:
-    'https://sia-app-up.auth.us-east-1.amazoncognito.com/oauth2/authorize?identity_provider=Azure&redirect_uri=http://localhost:4200/dashboard&response_type=code&client_id=5cvq4jop6octili7583n597kd1&scope=phone%20email%20openid%20profile',
+  
+  urlExternalLogin: 'https://sia-app-up.auth.us-east-1.amazoncognito.com/oauth2/authorize?identity_provider=Azure&redirect_uri=https://dev.d23mbxjbgl0msz.amplifyapp.com/&response_type=code&client_id=5cvq4jop6octili7583n597kd1&scope=phone%20email%20openid%20profile',
+  
+  //urlExternalLogin: 'https://sia-app-up.auth.us-east-1.amazoncognito.com/oauth2/authorize?identity_provider=Azure&redirect_uri=http://localhost:4200/dashboard&response_type=code&client_id=5cvq4jop6octili7583n597kd1&scope=phone%20email%20openid%20profile',
+  
   accessTokenUrl: 'https://sia-app-up.auth.us-east-1.amazoncognito.com/oauth2/token',
-  clientId: 'v0pu39f7uvsr127og546qjope',
+  
   clientSecret: 'b4g4f8k4imm3qmc3793cveeu76ikeql5uqgvfh9p56da7nsg0m1',
   amplifyConfig: {
     Auth: {
@@ -24,19 +25,19 @@ export const environment = {
       oauth: {
         domain: "sia-app-up.auth.us-east-1.amazoncognito.com",
         scope: ["phone", "email", "openid", "profile"],
-       /*
+        
         redirectSignIn: "https://dev.d23mbxjbgl0msz.amplifyapp.com/",
         redirectSignOut: "https://dev.d23mbxjbgl0msz.amplifyapp.com/",
-        */
+        /*
         redirectSignIn: "http://localhost:4200/dashboard",
         redirectSignOut: "http://localhost:4200",
-        
+        */
         responseType: "code"
       },
     }
   },
   ENPOINT_RES: {
-    catalogos: "https://ixsp0lvu2h.execute-api.us-east-1.amazonaws.com/dev/sia/"
+    catalogos: "https://ixsp0lvu2h.execute-api.us-east-1.amazonaws.com/dev/sia/utileria/"
   },
   API: {
     endpoints: [

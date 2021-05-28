@@ -1,3 +1,4 @@
+import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import Amplify, { Auth } from 'aws-amplify';
@@ -87,16 +88,23 @@ export class AuthService {
   signIn = () => {
 
     window.location.assign(environment.urlExternalLogin);
-    
+
   };
 
- 
+
+  userHeaders()
+  {
+    return new HttpHeaders({
+      'authorization': 'Bearer ' + this.getToken(),
+      'content-type': 'application/json'
+    });
+  }
 
 
 
   refreshToken = async () =>{
 
-    
+
     try {
       const cognitoUser = await Auth.currentAuthenticatedUser();
       console.log(cognitoUser)
@@ -111,7 +119,7 @@ export class AuthService {
       console.log('Unable to refresh Token', e);
     }
     console.log((await Auth.currentSession()).getRefreshToken())
-    
+
   }
 
   isAuth = () => {
