@@ -136,27 +136,25 @@ export type CreateSiaGenAudEstadoProcesosDevInput = {
 
 export type SiaGenAudEstadoProcesosDev = {
   __typename: "SiaGenAudEstadoProcesosDev";
-  ESTADO?: string | null;
   ESTADO_EJECUCION?: string | null;
-  ETAPA?: siaGenAudEtapas;
+  ETAPA_INICIAL?: ETAPAS_PROCESO;
+  ETAPA_FINAL?: ETAPAS_PROCESO;
+  ETAPA_PROCESAMIENTO?: ETAPAS_PROCESO;
   FECHA_ACTUALIZACION?: string | null;
   FECHA_CREADO?: string | null;
+  FECHA_FINALIZADO?: string | null;
   ID_PROCESO?: string;
   INSUMO?: string | null;
   INTERFAZ?: string | null;
   TIPO_PROCESO?: string | null;
 };
 
-export type siaGenAudEtapas = {
-  __typename: "siaGenAudEtapas";
-  INICIAL?: ETAPA;
-  PROCESAMIENTO?: ETAPA;
-  FINAL?: ETAPA;
-};
-
-export type ETAPA = {
-  __typename: "ETAPA";
-  ESTADO?: string | null;
+export type ETAPAS_PROCESO = {
+  __typename: "ETAPAS_PROCESO";
+  ESTADO_INICIAL?: string | null;
+  ESTADO_FINAL?: string | null;
+  FECHA_INICIAL?: string | null;
+  FECHA_FINAL?: string | null;
 };
 
 export type UpdateSiaGenAudEstadoProcesosDevInput = {
@@ -508,25 +506,31 @@ export type DeleteCATPERMISOSMutation = {
 
 export type CreateSiaGenAudEstadoProcesosDevMutation = {
   __typename: "SiaGenAudEstadoProcesosDev";
-  ESTADO?: string | null;
   ESTADO_EJECUCION?: string | null;
-  ETAPA?: {
-    __typename: "siaGenAudEtapas";
-    INICIAL?: {
-      __typename: "ETAPA";
-      ESTADO?: string | null;
-    } | null;
-    PROCESAMIENTO?: {
-      __typename: "ETAPA";
-      ESTADO?: string | null;
-    } | null;
-    FINAL?: {
-      __typename: "ETAPA";
-      ESTADO?: string | null;
-    } | null;
+  ETAPA_INICIAL?: {
+    __typename: "ETAPAS_PROCESO";
+    ESTADO_INICIAL?: string | null;
+    ESTADO_FINAL?: string | null;
+    FECHA_INICIAL?: string | null;
+    FECHA_FINAL?: string | null;
+  } | null;
+  ETAPA_FINAL?: {
+    __typename: "ETAPAS_PROCESO";
+    ESTADO_INICIAL?: string | null;
+    ESTADO_FINAL?: string | null;
+    FECHA_INICIAL?: string | null;
+    FECHA_FINAL?: string | null;
+  } | null;
+  ETAPA_PROCESAMIENTO?: {
+    __typename: "ETAPAS_PROCESO";
+    ESTADO_INICIAL?: string | null;
+    ESTADO_FINAL?: string | null;
+    FECHA_INICIAL?: string | null;
+    FECHA_FINAL?: string | null;
   } | null;
   FECHA_ACTUALIZACION?: string | null;
   FECHA_CREADO?: string | null;
+  FECHA_FINALIZADO?: string | null;
   ID_PROCESO: string;
   INSUMO?: string | null;
   INTERFAZ?: string | null;
@@ -535,25 +539,31 @@ export type CreateSiaGenAudEstadoProcesosDevMutation = {
 
 export type UpdateSiaGenAudEstadoProcesosDevMutation = {
   __typename: "SiaGenAudEstadoProcesosDev";
-  ESTADO?: string | null;
   ESTADO_EJECUCION?: string | null;
-  ETAPA?: {
-    __typename: "siaGenAudEtapas";
-    INICIAL?: {
-      __typename: "ETAPA";
-      ESTADO?: string | null;
-    } | null;
-    PROCESAMIENTO?: {
-      __typename: "ETAPA";
-      ESTADO?: string | null;
-    } | null;
-    FINAL?: {
-      __typename: "ETAPA";
-      ESTADO?: string | null;
-    } | null;
+  ETAPA_INICIAL?: {
+    __typename: "ETAPAS_PROCESO";
+    ESTADO_INICIAL?: string | null;
+    ESTADO_FINAL?: string | null;
+    FECHA_INICIAL?: string | null;
+    FECHA_FINAL?: string | null;
+  } | null;
+  ETAPA_FINAL?: {
+    __typename: "ETAPAS_PROCESO";
+    ESTADO_INICIAL?: string | null;
+    ESTADO_FINAL?: string | null;
+    FECHA_INICIAL?: string | null;
+    FECHA_FINAL?: string | null;
+  } | null;
+  ETAPA_PROCESAMIENTO?: {
+    __typename: "ETAPAS_PROCESO";
+    ESTADO_INICIAL?: string | null;
+    ESTADO_FINAL?: string | null;
+    FECHA_INICIAL?: string | null;
+    FECHA_FINAL?: string | null;
   } | null;
   FECHA_ACTUALIZACION?: string | null;
   FECHA_CREADO?: string | null;
+  FECHA_FINALIZADO?: string | null;
   ID_PROCESO: string;
   INSUMO?: string | null;
   INTERFAZ?: string | null;
@@ -562,25 +572,31 @@ export type UpdateSiaGenAudEstadoProcesosDevMutation = {
 
 export type DeleteSiaGenAudEstadoProcesosDevMutation = {
   __typename: "SiaGenAudEstadoProcesosDev";
-  ESTADO?: string | null;
   ESTADO_EJECUCION?: string | null;
-  ETAPA?: {
-    __typename: "siaGenAudEtapas";
-    INICIAL?: {
-      __typename: "ETAPA";
-      ESTADO?: string | null;
-    } | null;
-    PROCESAMIENTO?: {
-      __typename: "ETAPA";
-      ESTADO?: string | null;
-    } | null;
-    FINAL?: {
-      __typename: "ETAPA";
-      ESTADO?: string | null;
-    } | null;
+  ETAPA_INICIAL?: {
+    __typename: "ETAPAS_PROCESO";
+    ESTADO_INICIAL?: string | null;
+    ESTADO_FINAL?: string | null;
+    FECHA_INICIAL?: string | null;
+    FECHA_FINAL?: string | null;
+  } | null;
+  ETAPA_FINAL?: {
+    __typename: "ETAPAS_PROCESO";
+    ESTADO_INICIAL?: string | null;
+    ESTADO_FINAL?: string | null;
+    FECHA_INICIAL?: string | null;
+    FECHA_FINAL?: string | null;
+  } | null;
+  ETAPA_PROCESAMIENTO?: {
+    __typename: "ETAPAS_PROCESO";
+    ESTADO_INICIAL?: string | null;
+    ESTADO_FINAL?: string | null;
+    FECHA_INICIAL?: string | null;
+    FECHA_FINAL?: string | null;
   } | null;
   FECHA_ACTUALIZACION?: string | null;
   FECHA_CREADO?: string | null;
+  FECHA_FINALIZADO?: string | null;
   ID_PROCESO: string;
   INSUMO?: string | null;
   INTERFAZ?: string | null;
@@ -680,6 +696,11 @@ export type ListAUDGENUSUARIOSQuery = {
       __typename: "AUD_CATALOGOS";
       ACCION?: string | null;
       DESCRIPCION?: string | null;
+      DETALLE_MODIFICACIONES?: Array<{
+        __typename: "AUD_VALORES";
+        valorAnterior?: string | null;
+        valorNuevo?: string | null;
+      } | null> | null;
       ESTADO?: string | null;
       NOMBRE?: string | null;
     } | null;
@@ -689,6 +710,11 @@ export type ListAUDGENUSUARIOSQuery = {
       APELLIDO_MATERNO?: string | null;
       APELLIDO_PATERNO?: string | null;
       CORREO?: string | null;
+      DETALLE_MODIFICACIONES?: Array<{
+        __typename: "AUD_VALORES";
+        valorAnterior?: string | null;
+        valorNuevo?: string | null;
+      } | null> | null;
       ESTADO?: string | null;
       NOMBRE?: string | null;
       ROL?: string | null;
@@ -855,25 +881,31 @@ export type ListCATPERMISOSQuery = {
 
 export type GetSiaGenAudEstadoProcesosDevQuery = {
   __typename: "SiaGenAudEstadoProcesosDev";
-  ESTADO?: string | null;
   ESTADO_EJECUCION?: string | null;
-  ETAPA?: {
-    __typename: "siaGenAudEtapas";
-    INICIAL?: {
-      __typename: "ETAPA";
-      ESTADO?: string | null;
-    } | null;
-    PROCESAMIENTO?: {
-      __typename: "ETAPA";
-      ESTADO?: string | null;
-    } | null;
-    FINAL?: {
-      __typename: "ETAPA";
-      ESTADO?: string | null;
-    } | null;
+  ETAPA_INICIAL?: {
+    __typename: "ETAPAS_PROCESO";
+    ESTADO_INICIAL?: string | null;
+    ESTADO_FINAL?: string | null;
+    FECHA_INICIAL?: string | null;
+    FECHA_FINAL?: string | null;
+  } | null;
+  ETAPA_FINAL?: {
+    __typename: "ETAPAS_PROCESO";
+    ESTADO_INICIAL?: string | null;
+    ESTADO_FINAL?: string | null;
+    FECHA_INICIAL?: string | null;
+    FECHA_FINAL?: string | null;
+  } | null;
+  ETAPA_PROCESAMIENTO?: {
+    __typename: "ETAPAS_PROCESO";
+    ESTADO_INICIAL?: string | null;
+    ESTADO_FINAL?: string | null;
+    FECHA_INICIAL?: string | null;
+    FECHA_FINAL?: string | null;
   } | null;
   FECHA_ACTUALIZACION?: string | null;
   FECHA_CREADO?: string | null;
+  FECHA_FINALIZADO?: string | null;
   ID_PROCESO: string;
   INSUMO?: string | null;
   INTERFAZ?: string | null;
@@ -884,10 +916,31 @@ export type ListSiaGenAudEstadoProcesosDevsQuery = {
   __typename: "SiaGenAudEstadoProcesosDevConnection";
   items?: Array<{
     __typename: "SiaGenAudEstadoProcesosDev";
-    ESTADO?: string | null;
     ESTADO_EJECUCION?: string | null;
+    ETAPA_INICIAL?: {
+      __typename: "ETAPAS_PROCESO";
+      ESTADO_INICIAL?: string | null;
+      ESTADO_FINAL?: string | null;
+      FECHA_INICIAL?: string | null;
+      FECHA_FINAL?: string | null;
+    } | null;
+    ETAPA_FINAL?: {
+      __typename: "ETAPAS_PROCESO";
+      ESTADO_INICIAL?: string | null;
+      ESTADO_FINAL?: string | null;
+      FECHA_INICIAL?: string | null;
+      FECHA_FINAL?: string | null;
+    } | null;
+    ETAPA_PROCESAMIENTO?: {
+      __typename: "ETAPAS_PROCESO";
+      ESTADO_INICIAL?: string | null;
+      ESTADO_FINAL?: string | null;
+      FECHA_INICIAL?: string | null;
+      FECHA_FINAL?: string | null;
+    } | null;
     FECHA_ACTUALIZACION?: string | null;
     FECHA_CREADO?: string | null;
+    FECHA_FINALIZADO?: string | null;
     ID_PROCESO: string;
     INSUMO?: string | null;
     INTERFAZ?: string | null;
@@ -900,10 +953,31 @@ export type QuerySiaGenAudEstadoProcesosDevsByINTERFAZIndexQuery = {
   __typename: "SiaGenAudEstadoProcesosDevConnection";
   items?: Array<{
     __typename: "SiaGenAudEstadoProcesosDev";
-    ESTADO?: string | null;
     ESTADO_EJECUCION?: string | null;
+    ETAPA_INICIAL?: {
+      __typename: "ETAPAS_PROCESO";
+      ESTADO_INICIAL?: string | null;
+      ESTADO_FINAL?: string | null;
+      FECHA_INICIAL?: string | null;
+      FECHA_FINAL?: string | null;
+    } | null;
+    ETAPA_FINAL?: {
+      __typename: "ETAPAS_PROCESO";
+      ESTADO_INICIAL?: string | null;
+      ESTADO_FINAL?: string | null;
+      FECHA_INICIAL?: string | null;
+      FECHA_FINAL?: string | null;
+    } | null;
+    ETAPA_PROCESAMIENTO?: {
+      __typename: "ETAPAS_PROCESO";
+      ESTADO_INICIAL?: string | null;
+      ESTADO_FINAL?: string | null;
+      FECHA_INICIAL?: string | null;
+      FECHA_FINAL?: string | null;
+    } | null;
     FECHA_ACTUALIZACION?: string | null;
     FECHA_CREADO?: string | null;
+    FECHA_FINALIZADO?: string | null;
     ID_PROCESO: string;
     INSUMO?: string | null;
     INTERFAZ?: string | null;
@@ -916,10 +990,31 @@ export type ListSiaGenAudEstadoProcesosDevsPorFechaQuery = {
   __typename: "SiaGenAudEstadoProcesosDevConnection";
   items?: Array<{
     __typename: "SiaGenAudEstadoProcesosDev";
-    ESTADO?: string | null;
     ESTADO_EJECUCION?: string | null;
+    ETAPA_INICIAL?: {
+      __typename: "ETAPAS_PROCESO";
+      ESTADO_INICIAL?: string | null;
+      ESTADO_FINAL?: string | null;
+      FECHA_INICIAL?: string | null;
+      FECHA_FINAL?: string | null;
+    } | null;
+    ETAPA_FINAL?: {
+      __typename: "ETAPAS_PROCESO";
+      ESTADO_INICIAL?: string | null;
+      ESTADO_FINAL?: string | null;
+      FECHA_INICIAL?: string | null;
+      FECHA_FINAL?: string | null;
+    } | null;
+    ETAPA_PROCESAMIENTO?: {
+      __typename: "ETAPAS_PROCESO";
+      ESTADO_INICIAL?: string | null;
+      ESTADO_FINAL?: string | null;
+      FECHA_INICIAL?: string | null;
+      FECHA_FINAL?: string | null;
+    } | null;
     FECHA_ACTUALIZACION?: string | null;
     FECHA_CREADO?: string | null;
+    FECHA_FINALIZADO?: string | null;
     ID_PROCESO: string;
     INSUMO?: string | null;
     INTERFAZ?: string | null;
@@ -1146,25 +1241,31 @@ export type OnDeleteCATPERMISOSSubscription = {
 
 export type OnCreateSiaGenAudEstadoProcesosDevSubscription = {
   __typename: "SiaGenAudEstadoProcesosDev";
-  ESTADO?: string | null;
   ESTADO_EJECUCION?: string | null;
-  ETAPA?: {
-    __typename: "siaGenAudEtapas";
-    INICIAL?: {
-      __typename: "ETAPA";
-      ESTADO?: string | null;
-    } | null;
-    PROCESAMIENTO?: {
-      __typename: "ETAPA";
-      ESTADO?: string | null;
-    } | null;
-    FINAL?: {
-      __typename: "ETAPA";
-      ESTADO?: string | null;
-    } | null;
+  ETAPA_INICIAL?: {
+    __typename: "ETAPAS_PROCESO";
+    ESTADO_INICIAL?: string | null;
+    ESTADO_FINAL?: string | null;
+    FECHA_INICIAL?: string | null;
+    FECHA_FINAL?: string | null;
+  } | null;
+  ETAPA_FINAL?: {
+    __typename: "ETAPAS_PROCESO";
+    ESTADO_INICIAL?: string | null;
+    ESTADO_FINAL?: string | null;
+    FECHA_INICIAL?: string | null;
+    FECHA_FINAL?: string | null;
+  } | null;
+  ETAPA_PROCESAMIENTO?: {
+    __typename: "ETAPAS_PROCESO";
+    ESTADO_INICIAL?: string | null;
+    ESTADO_FINAL?: string | null;
+    FECHA_INICIAL?: string | null;
+    FECHA_FINAL?: string | null;
   } | null;
   FECHA_ACTUALIZACION?: string | null;
   FECHA_CREADO?: string | null;
+  FECHA_FINALIZADO?: string | null;
   ID_PROCESO: string;
   INSUMO?: string | null;
   INTERFAZ?: string | null;
@@ -1173,25 +1274,31 @@ export type OnCreateSiaGenAudEstadoProcesosDevSubscription = {
 
 export type OnUpdateSiaGenAudEstadoProcesosDevSubscription = {
   __typename: "SiaGenAudEstadoProcesosDev";
-  ESTADO?: string | null;
   ESTADO_EJECUCION?: string | null;
-  ETAPA?: {
-    __typename: "siaGenAudEtapas";
-    INICIAL?: {
-      __typename: "ETAPA";
-      ESTADO?: string | null;
-    } | null;
-    PROCESAMIENTO?: {
-      __typename: "ETAPA";
-      ESTADO?: string | null;
-    } | null;
-    FINAL?: {
-      __typename: "ETAPA";
-      ESTADO?: string | null;
-    } | null;
+  ETAPA_INICIAL?: {
+    __typename: "ETAPAS_PROCESO";
+    ESTADO_INICIAL?: string | null;
+    ESTADO_FINAL?: string | null;
+    FECHA_INICIAL?: string | null;
+    FECHA_FINAL?: string | null;
+  } | null;
+  ETAPA_FINAL?: {
+    __typename: "ETAPAS_PROCESO";
+    ESTADO_INICIAL?: string | null;
+    ESTADO_FINAL?: string | null;
+    FECHA_INICIAL?: string | null;
+    FECHA_FINAL?: string | null;
+  } | null;
+  ETAPA_PROCESAMIENTO?: {
+    __typename: "ETAPAS_PROCESO";
+    ESTADO_INICIAL?: string | null;
+    ESTADO_FINAL?: string | null;
+    FECHA_INICIAL?: string | null;
+    FECHA_FINAL?: string | null;
   } | null;
   FECHA_ACTUALIZACION?: string | null;
   FECHA_CREADO?: string | null;
+  FECHA_FINALIZADO?: string | null;
   ID_PROCESO: string;
   INSUMO?: string | null;
   INTERFAZ?: string | null;
@@ -1200,25 +1307,31 @@ export type OnUpdateSiaGenAudEstadoProcesosDevSubscription = {
 
 export type OnDeleteSiaGenAudEstadoProcesosDevSubscription = {
   __typename: "SiaGenAudEstadoProcesosDev";
-  ESTADO?: string | null;
   ESTADO_EJECUCION?: string | null;
-  ETAPA?: {
-    __typename: "siaGenAudEtapas";
-    INICIAL?: {
-      __typename: "ETAPA";
-      ESTADO?: string | null;
-    } | null;
-    PROCESAMIENTO?: {
-      __typename: "ETAPA";
-      ESTADO?: string | null;
-    } | null;
-    FINAL?: {
-      __typename: "ETAPA";
-      ESTADO?: string | null;
-    } | null;
+  ETAPA_INICIAL?: {
+    __typename: "ETAPAS_PROCESO";
+    ESTADO_INICIAL?: string | null;
+    ESTADO_FINAL?: string | null;
+    FECHA_INICIAL?: string | null;
+    FECHA_FINAL?: string | null;
+  } | null;
+  ETAPA_FINAL?: {
+    __typename: "ETAPAS_PROCESO";
+    ESTADO_INICIAL?: string | null;
+    ESTADO_FINAL?: string | null;
+    FECHA_INICIAL?: string | null;
+    FECHA_FINAL?: string | null;
+  } | null;
+  ETAPA_PROCESAMIENTO?: {
+    __typename: "ETAPAS_PROCESO";
+    ESTADO_INICIAL?: string | null;
+    ESTADO_FINAL?: string | null;
+    FECHA_INICIAL?: string | null;
+    FECHA_FINAL?: string | null;
   } | null;
   FECHA_ACTUALIZACION?: string | null;
   FECHA_CREADO?: string | null;
+  FECHA_FINALIZADO?: string | null;
   ID_PROCESO: string;
   INSUMO?: string | null;
   INTERFAZ?: string | null;
@@ -1559,25 +1672,31 @@ export class APIService {
     const statement = `mutation CreateSiaGenAudEstadoProcesosDev($input: CreateSiaGenAudEstadoProcesosDevInput!) {
         createSiaGenAudEstadoProcesosDev(input: $input) {
           __typename
-          ESTADO
           ESTADO_EJECUCION
-          ETAPA {
+          ETAPA_INICIAL {
             __typename
-            INICIAL {
-              __typename
-              ESTADO
-            }
-            PROCESAMIENTO {
-              __typename
-              ESTADO
-            }
-            FINAL {
-              __typename
-              ESTADO
-            }
+            ESTADO_INICIAL
+            ESTADO_FINAL
+            FECHA_INICIAL
+            FECHA_FINAL
+          }
+          ETAPA_FINAL {
+            __typename
+            ESTADO_INICIAL
+            ESTADO_FINAL
+            FECHA_INICIAL
+            FECHA_FINAL
+          }
+          ETAPA_PROCESAMIENTO {
+            __typename
+            ESTADO_INICIAL
+            ESTADO_FINAL
+            FECHA_INICIAL
+            FECHA_FINAL
           }
           FECHA_ACTUALIZACION
           FECHA_CREADO
+          FECHA_FINALIZADO
           ID_PROCESO
           INSUMO
           INTERFAZ
@@ -1600,25 +1719,31 @@ export class APIService {
     const statement = `mutation UpdateSiaGenAudEstadoProcesosDev($input: UpdateSiaGenAudEstadoProcesosDevInput!) {
         updateSiaGenAudEstadoProcesosDev(input: $input) {
           __typename
-          ESTADO
           ESTADO_EJECUCION
-          ETAPA {
+          ETAPA_INICIAL {
             __typename
-            INICIAL {
-              __typename
-              ESTADO
-            }
-            PROCESAMIENTO {
-              __typename
-              ESTADO
-            }
-            FINAL {
-              __typename
-              ESTADO
-            }
+            ESTADO_INICIAL
+            ESTADO_FINAL
+            FECHA_INICIAL
+            FECHA_FINAL
+          }
+          ETAPA_FINAL {
+            __typename
+            ESTADO_INICIAL
+            ESTADO_FINAL
+            FECHA_INICIAL
+            FECHA_FINAL
+          }
+          ETAPA_PROCESAMIENTO {
+            __typename
+            ESTADO_INICIAL
+            ESTADO_FINAL
+            FECHA_INICIAL
+            FECHA_FINAL
           }
           FECHA_ACTUALIZACION
           FECHA_CREADO
+          FECHA_FINALIZADO
           ID_PROCESO
           INSUMO
           INTERFAZ
@@ -1641,25 +1766,31 @@ export class APIService {
     const statement = `mutation DeleteSiaGenAudEstadoProcesosDev($input: DeleteSiaGenAudEstadoProcesosDevInput!) {
         deleteSiaGenAudEstadoProcesosDev(input: $input) {
           __typename
-          ESTADO
           ESTADO_EJECUCION
-          ETAPA {
+          ETAPA_INICIAL {
             __typename
-            INICIAL {
-              __typename
-              ESTADO
-            }
-            PROCESAMIENTO {
-              __typename
-              ESTADO
-            }
-            FINAL {
-              __typename
-              ESTADO
-            }
+            ESTADO_INICIAL
+            ESTADO_FINAL
+            FECHA_INICIAL
+            FECHA_FINAL
+          }
+          ETAPA_FINAL {
+            __typename
+            ESTADO_INICIAL
+            ESTADO_FINAL
+            FECHA_INICIAL
+            FECHA_FINAL
+          }
+          ETAPA_PROCESAMIENTO {
+            __typename
+            ESTADO_INICIAL
+            ESTADO_FINAL
+            FECHA_INICIAL
+            FECHA_FINAL
           }
           FECHA_ACTUALIZACION
           FECHA_CREADO
+          FECHA_FINALIZADO
           ID_PROCESO
           INSUMO
           INTERFAZ
@@ -1781,6 +1912,11 @@ export class APIService {
               __typename
               ACCION
               DESCRIPCION
+              DETALLE_MODIFICACIONES {
+                __typename
+                valorAnterior
+                valorNuevo
+              }
               ESTADO
               NOMBRE
             }
@@ -1790,6 +1926,11 @@ export class APIService {
               APELLIDO_MATERNO
               APELLIDO_PATERNO
               CORREO
+              DETALLE_MODIFICACIONES {
+                __typename
+                valorAnterior
+                valorNuevo
+              }
               ESTADO
               NOMBRE
               ROL
@@ -2058,25 +2199,31 @@ export class APIService {
     const statement = `query GetSiaGenAudEstadoProcesosDev($ID_PROCESO: String!) {
         getSiaGenAudEstadoProcesosDev(ID_PROCESO: $ID_PROCESO) {
           __typename
-          ESTADO
           ESTADO_EJECUCION
-          ETAPA {
+          ETAPA_INICIAL {
             __typename
-            INICIAL {
-              __typename
-              ESTADO
-            }
-            PROCESAMIENTO {
-              __typename
-              ESTADO
-            }
-            FINAL {
-              __typename
-              ESTADO
-            }
+            ESTADO_INICIAL
+            ESTADO_FINAL
+            FECHA_INICIAL
+            FECHA_FINAL
+          }
+          ETAPA_FINAL {
+            __typename
+            ESTADO_INICIAL
+            ESTADO_FINAL
+            FECHA_INICIAL
+            FECHA_FINAL
+          }
+          ETAPA_PROCESAMIENTO {
+            __typename
+            ESTADO_INICIAL
+            ESTADO_FINAL
+            FECHA_INICIAL
+            FECHA_FINAL
           }
           FECHA_ACTUALIZACION
           FECHA_CREADO
+          FECHA_FINALIZADO
           ID_PROCESO
           INSUMO
           INTERFAZ
@@ -2103,29 +2250,35 @@ export class APIService {
           __typename
           items {
             __typename
-            ESTADO
             ESTADO_EJECUCION
+            ETAPA_INICIAL {
+              __typename
+              ESTADO_INICIAL
+              ESTADO_FINAL
+              FECHA_INICIAL
+              FECHA_FINAL
+            }
+            ETAPA_FINAL {
+              __typename
+              ESTADO_INICIAL
+              ESTADO_FINAL
+              FECHA_INICIAL
+              FECHA_FINAL
+            }
+            ETAPA_PROCESAMIENTO {
+              __typename
+              ESTADO_INICIAL
+              ESTADO_FINAL
+              FECHA_INICIAL
+              FECHA_FINAL
+            }
             FECHA_ACTUALIZACION
             FECHA_CREADO
+            FECHA_FINALIZADO
             ID_PROCESO
             INSUMO
             INTERFAZ
             TIPO_PROCESO
-            ETAPA {
-              __typename
-              INICIAL {
-                __typename
-                ESTADO
-              }
-              PROCESAMIENTO {
-                __typename
-                ESTADO
-              }
-              FINAL {
-                __typename
-                ESTADO
-              }
-            }
           }
           nextToken
         }
@@ -2157,10 +2310,31 @@ export class APIService {
           __typename
           items {
             __typename
-            ESTADO
             ESTADO_EJECUCION
+            ETAPA_INICIAL {
+              __typename
+              ESTADO_INICIAL
+              ESTADO_FINAL
+              FECHA_INICIAL
+              FECHA_FINAL
+            }
+            ETAPA_FINAL {
+              __typename
+              ESTADO_INICIAL
+              ESTADO_FINAL
+              FECHA_INICIAL
+              FECHA_FINAL
+            }
+            ETAPA_PROCESAMIENTO {
+              __typename
+              ESTADO_INICIAL
+              ESTADO_FINAL
+              FECHA_INICIAL
+              FECHA_FINAL
+            }
             FECHA_ACTUALIZACION
             FECHA_CREADO
+            FECHA_FINALIZADO
             ID_PROCESO
             INSUMO
             INTERFAZ
@@ -2193,29 +2367,35 @@ export class APIService {
           __typename
           items {
             __typename
-            ESTADO
             ESTADO_EJECUCION
+            ETAPA_INICIAL {
+              __typename
+              ESTADO_INICIAL
+              ESTADO_FINAL
+              FECHA_INICIAL
+              FECHA_FINAL
+            }
+            ETAPA_FINAL {
+              __typename
+              ESTADO_INICIAL
+              ESTADO_FINAL
+              FECHA_INICIAL
+              FECHA_FINAL
+            }
+            ETAPA_PROCESAMIENTO {
+              __typename
+              ESTADO_INICIAL
+              ESTADO_FINAL
+              FECHA_INICIAL
+              FECHA_FINAL
+            }
             FECHA_ACTUALIZACION
             FECHA_CREADO
+            FECHA_FINALIZADO
             ID_PROCESO
             INSUMO
             INTERFAZ
             TIPO_PROCESO
-            ETAPA {
-              __typename
-              INICIAL {
-                __typename
-                ESTADO
-              }
-              PROCESAMIENTO {
-                __typename
-                ESTADO
-              }
-              FINAL {
-                __typename
-                ESTADO
-              }
-            }
           }
           nextToken
         }
@@ -2573,25 +2753,31 @@ export class APIService {
     const statement = `subscription OnCreateSiaGenAudEstadoProcesosDev($ID_PROCESO: String, $INTERFAZ: String) {
         onCreateSiaGenAudEstadoProcesosDev(ID_PROCESO: $ID_PROCESO, INTERFAZ: $INTERFAZ) {
           __typename
-          ESTADO
           ESTADO_EJECUCION
-          ETAPA {
+          ETAPA_INICIAL {
             __typename
-            INICIAL {
-              __typename
-              ESTADO
-            }
-            PROCESAMIENTO {
-              __typename
-              ESTADO
-            }
-            FINAL {
-              __typename
-              ESTADO
-            }
+            ESTADO_INICIAL
+            ESTADO_FINAL
+            FECHA_INICIAL
+            FECHA_FINAL
+          }
+          ETAPA_FINAL {
+            __typename
+            ESTADO_INICIAL
+            ESTADO_FINAL
+            FECHA_INICIAL
+            FECHA_FINAL
+          }
+          ETAPA_PROCESAMIENTO {
+            __typename
+            ESTADO_INICIAL
+            ESTADO_FINAL
+            FECHA_INICIAL
+            FECHA_FINAL
           }
           FECHA_ACTUALIZACION
           FECHA_CREADO
+          FECHA_FINALIZADO
           ID_PROCESO
           INSUMO
           INTERFAZ
@@ -2621,25 +2807,31 @@ export class APIService {
     const statement = `subscription OnUpdateSiaGenAudEstadoProcesosDev($ID_PROCESO: String, $INTERFAZ: String) {
         onUpdateSiaGenAudEstadoProcesosDev(ID_PROCESO: $ID_PROCESO, INTERFAZ: $INTERFAZ) {
           __typename
-          ESTADO
           ESTADO_EJECUCION
-          ETAPA {
+          ETAPA_INICIAL {
             __typename
-            INICIAL {
-              __typename
-              ESTADO
-            }
-            PROCESAMIENTO {
-              __typename
-              ESTADO
-            }
-            FINAL {
-              __typename
-              ESTADO
-            }
+            ESTADO_INICIAL
+            ESTADO_FINAL
+            FECHA_INICIAL
+            FECHA_FINAL
+          }
+          ETAPA_FINAL {
+            __typename
+            ESTADO_INICIAL
+            ESTADO_FINAL
+            FECHA_INICIAL
+            FECHA_FINAL
+          }
+          ETAPA_PROCESAMIENTO {
+            __typename
+            ESTADO_INICIAL
+            ESTADO_FINAL
+            FECHA_INICIAL
+            FECHA_FINAL
           }
           FECHA_ACTUALIZACION
           FECHA_CREADO
+          FECHA_FINALIZADO
           ID_PROCESO
           INSUMO
           INTERFAZ
@@ -2669,25 +2861,31 @@ export class APIService {
     const statement = `subscription OnDeleteSiaGenAudEstadoProcesosDev($ID_PROCESO: String, $INTERFAZ: String) {
         onDeleteSiaGenAudEstadoProcesosDev(ID_PROCESO: $ID_PROCESO, INTERFAZ: $INTERFAZ) {
           __typename
-          ESTADO
           ESTADO_EJECUCION
-          ETAPA {
+          ETAPA_INICIAL {
             __typename
-            INICIAL {
-              __typename
-              ESTADO
-            }
-            PROCESAMIENTO {
-              __typename
-              ESTADO
-            }
-            FINAL {
-              __typename
-              ESTADO
-            }
+            ESTADO_INICIAL
+            ESTADO_FINAL
+            FECHA_INICIAL
+            FECHA_FINAL
+          }
+          ETAPA_FINAL {
+            __typename
+            ESTADO_INICIAL
+            ESTADO_FINAL
+            FECHA_INICIAL
+            FECHA_FINAL
+          }
+          ETAPA_PROCESAMIENTO {
+            __typename
+            ESTADO_INICIAL
+            ESTADO_FINAL
+            FECHA_INICIAL
+            FECHA_FINAL
           }
           FECHA_ACTUALIZACION
           FECHA_CREADO
+          FECHA_FINALIZADO
           ID_PROCESO
           INSUMO
           INTERFAZ
