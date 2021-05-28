@@ -2201,6 +2201,21 @@ export class APIService {
             INSUMO
             INTERFAZ
             TIPO_PROCESO
+            ETAPA {
+              __typename
+              INICIAL {
+                __typename
+                ESTADO
+              }
+              PROCESAMIENTO {
+                __typename
+                ESTADO
+              }
+              FINAL {
+                __typename
+                ESTADO
+              }
+            }
           }
           nextToken
         }
