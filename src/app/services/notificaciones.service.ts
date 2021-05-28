@@ -18,8 +18,7 @@ export class NotificacionesService {
     this.api.ListSiaGenAudEstadoProcesosDevsPorFecha(moment('7:59', 'HH:mm').format().toString()).then(({ items }) => {
 
       let ArrayItems = [
-        ...items.filter((e) => e.ESTADO === 'EXITOSO'),
-        ...items.filter((e) => e.ESTADO === 'FALLIDO'),
+        ...items.filter((e) => e.ESTADO_EJECUCION === 'TERMINADO'),
       ];
 
       if (!JSON.parse(localStorage.getItem('Notificaciones'))) {

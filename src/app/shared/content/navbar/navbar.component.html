@@ -172,7 +172,7 @@
                   ">
                   <div class="notification-item">
                     <div class="item-title">
-                      <div>{{ Notificacion.ESTADO }}</div>
+                      <div>{{  verEstado(Notificacion) }}</div>
                       <button type="button" class="close" (click)="eliminarNotificacion(Notificacion.ID_PROCESO)">
                         <span style="
                             font-size: 15px;
@@ -186,7 +186,7 @@
                       {{ Notificacion.INTERFAZ }}
                     </div>
                     <div class="item-info">
-                      {{ Notificacion.FECHA_ACTUALIZACION | date: "medium" }}
+                      {{ replazarCaracterEspecial(Notificacion.FECHA_ACTUALIZACION) | date: "medium" }}
                     </div>
                   </div>
                 </div>

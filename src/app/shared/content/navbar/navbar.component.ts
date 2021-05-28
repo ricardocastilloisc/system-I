@@ -232,6 +232,27 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   };
 
+
+  verEstado = (data:NOTIFICACION_INTERFACE) => {
+    if(data.ETAPA_FINAL){
+      return data.ETAPA_FINAL.ESTADO_FINAL
+    }
+    if(data.ETAPA_PROCESAMIENTO){
+
+      if(data.ETAPA_PROCESAMIENTO.ESTADO_FINAL){
+        return data.ETAPA_PROCESAMIENTO.ESTADO_FINAL
+      }else{
+        return data.ETAPA_INICIAL.ESTADO_FINAL
+      }
+
+    }
+  }
+
+  replazarCaracterEspecial = (value) =>{
+    return value.replace('%S', '00')
+
+  }
+
   obtenerArea(): any {
     //console.log('obtenerArea');
     let area: String = '';
