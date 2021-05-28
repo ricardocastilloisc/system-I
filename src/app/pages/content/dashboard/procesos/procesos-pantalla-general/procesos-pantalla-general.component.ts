@@ -273,11 +273,11 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
 
 
 
-    //console.log('que hay aqui ', this.CATESTADOS)
+    console.log('que hay aqui ', this.CATESTADOS)
 
 
 
-    if (this.CATESTADOS[0]?.ESTADO_EJECUCION === 'TERMINADO' || this.CATESTADOS === []) {
+    if (this.CATESTADOS[0]?.ESTADO_EJECUCION === 'TERMINADO' || this.CATESTADOS.length === 0) {
       let idEjecucion = uuidv4();
       console.log(this.procesoEjecutar, correo, area, idEjecucion)
       try {
