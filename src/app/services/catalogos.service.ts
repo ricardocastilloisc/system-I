@@ -16,15 +16,16 @@ export class CatalogosService {
 
   constructor(
     private httpClient: HttpClient,
-     private store: Store<AppState>,
-     private auditoria: AuditoriaService,
-     private AuthService:AuthService) { }
+    private store: Store<AppState>,
+    private auditoria: AuditoriaService,
+    private AuthService: AuthService
+  ) {}
   getCatalogos = () => {
     let area = localStorage.getItem('area');
 
     if (area.split(',').includes(EArea.Soporte)) {
       return this.httpClient.get(this.UrlCatalogos + 'catalogos', {
-        headers: this.AuthService.userHeaders()
+        headers: this.AuthService.userHeaders(),
       });
     }
     let QueryParams = new HttpParams();
@@ -35,7 +36,7 @@ export class CatalogosService {
     QueryParams = QueryParams.append('area', localStorage.getItem('area'));
     return this.httpClient.get(this.UrlCatalogos + 'catalogos', {
       params: QueryParams,
-      headers: this.AuthService.userHeaders()
+      headers: this.AuthService.userHeaders(),
     });
   };
 
@@ -43,9 +44,9 @@ export class CatalogosService {
     let array = null;
 
     this.httpClient
-      .get(this.UrlCatalogos + 'catalogos/' + localStorage.getItem('nameCat'),{
+      .get(this.UrlCatalogos + 'catalogos/' + localStorage.getItem('nameCat'), {
         headers: this.AuthService.userHeaders(),
-      } )
+      })
       .toPromise()
       .then((res: any) => {
         let arrayTemp: STRUCTURE_CAT[] = [];
@@ -75,13 +76,13 @@ export class CatalogosService {
 
     let arrayRes = [];
 
-
     this.httpClient
       .get(
         this.UrlCatalogos +
-        'catalogos/' +
-        localStorage.getItem('nameCat') +
-        '/registros',{
+          'catalogos/' +
+          localStorage.getItem('nameCat') +
+          '/registros',
+        {
           headers: this.AuthService.userHeaders(),
         }
       )
@@ -104,9 +105,9 @@ export class CatalogosService {
             this.httpClient
               .get(
                 this.UrlCatalogos +
-                'catalogos/' +
-                localStorage.getItem('nameCat') +
-                '/registros',
+                  'catalogos/' +
+                  localStorage.getItem('nameCat') +
+                  '/registros',
                 {
                   params: QueryParams,
                   headers: this.AuthService.userHeaders(),
@@ -134,9 +135,9 @@ export class CatalogosService {
     return this.httpClient
       .put(
         this.UrlCatalogos +
-        'catalogos/' +
-        localStorage.getItem('nameCat') +
-        '/registros',
+          'catalogos/' +
+          localStorage.getItem('nameCat') +
+          '/registros',
         object,
         {
           headers: this.AuthService.userHeaders(),
@@ -149,9 +150,9 @@ export class CatalogosService {
     return this.httpClient
       .post(
         this.UrlCatalogos +
-        'catalogos/' +
-        localStorage.getItem('nameCat') +
-        '/registros',
+          'catalogos/' +
+          localStorage.getItem('nameCat') +
+          '/registros',
         object,
         {
           headers: this.AuthService.userHeaders(),
@@ -170,10 +171,10 @@ export class CatalogosService {
     return this.httpClient
       .delete(
         this.UrlCatalogos +
-        'catalogos/' +
-        localStorage.getItem('nameCat') +
-        '/registros/' +
-        window.btoa(unescape(encodeURIComponent(registro))),
+          'catalogos/' +
+          localStorage.getItem('nameCat') +
+          '/registros/' +
+          window.btoa(unescape(encodeURIComponent(registro))),
         {
           headers: this.AuthService.userHeaders(),
         }
@@ -182,7 +183,6 @@ export class CatalogosService {
   };
 
   generarAuditoria(estado: string): void {
-
     const catalogo = localStorage.getItem('nameCat');
     const newRegister = localStorage.getItem('ObjectNewRegister');
     const oldRegister = localStorage.getItem('ObjectOldRegister');
@@ -196,37 +196,48 @@ export class CatalogosService {
     let apellidoPaterno = '';
     let nombre = '';
 
-    this.store.select(({ usuario }) => usuario.user).subscribe(res => {
-      rol = res.attributes['custom:rol'];
-      correo = res.email;
-      nombre = res.attributes.given_name;
-      apellidoPaterno = res.attributes.family_name;
-    });
-    this.store.select(({ usuario }) => usuario.area).subscribe(res => {
-      //console.log(res)
-      area = res;
-    });
+    this.store
+      .select(({ usuario }) => usuario.user)
+      .subscribe((res) => {
+        rol = res.attributes['custom:rol'];
+        correo = res.email;
+        nombre = res.attributes.given_name;
+        apellidoPaterno = res.attributes.family_name;
+      });
+    this.store
+      .select(({ usuario }) => usuario.area)
+      .subscribe((res) => {
+        //console.log(res)
+        area = res;
+      });
 
     let payload = {
       areaNegocio: area,
       rol: rol,
       correo: correo,
       fecha: today,
-      modulo: "CATALOGOS",
+      modulo: 'CATALOGOS',
       usuario: {
         apellidoPaterno: apellidoPaterno,
-        nombre: nombre
+        nombre: nombre,
       },
       catalogos: {
         nombre: catalogo,
         accion: accion,
         estado: estado,
-        descripcion: ("Se realizó la acción de "+ accion + " sobre el catálogo " + catalogo + "."),
-        detalleModificaciones: [{
-          valorAnterior: JSON.parse(oldRegister),
-          valorNuevo: JSON.parse(newRegister)
-        }]
-      }
+        descripcion:
+          'Se realizó la acción de ' +
+          accion +
+          ' sobre el catálogo ' +
+          catalogo +
+          '.',
+        detalleModificaciones: [
+          {
+            valorAnterior: JSON.parse(oldRegister),
+            valorNuevo: JSON.parse(newRegister),
+          },
+        ],
+      },
     };
 
     //console.log("payload", payload);
