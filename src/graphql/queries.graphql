@@ -80,6 +80,10 @@ query ListAUDGENUSUARIOS($MODULO: String) {
       CATALOGOS {
         ACCION
         DESCRIPCION
+        DETALLE_MODIFICACIONES {
+          valorAnterior
+          valorNuevo
+        }
         ESTADO
         NOMBRE
       }
@@ -88,6 +92,10 @@ query ListAUDGENUSUARIOS($MODULO: String) {
         APELLIDO_MATERNO
         APELLIDO_PATERNO
         CORREO
+        DETALLE_MODIFICACIONES {
+          valorAnterior
+          valorNuevo
+        }
         ESTADO
         NOMBRE
         ROL
@@ -243,21 +251,28 @@ query ListCATPERMISOS($NEGOCIOS: [String], $AREA: String, $ROL: String) {
 }
 query GetSiaGenAudEstadoProcesosDev($ID_PROCESO: String!) {
   getSiaGenAudEstadoProcesosDev(ID_PROCESO: $ID_PROCESO) {
-    ESTADO
     ESTADO_EJECUCION
-    ETAPA {
-      INICIAL {
-        ESTADO
-      }
-      PROCESAMIENTO {
-        ESTADO
-      }
-      FINAL {
-        ESTADO
-      }
+    ETAPA_INICIAL {
+      ESTADO_INICIAL
+      ESTADO_FINAL
+      FECHA_INICIAL
+      FECHA_FINAL
+    }
+    ETAPA_FINAL {
+      ESTADO_INICIAL
+      ESTADO_FINAL
+      FECHA_INICIAL
+      FECHA_FINAL
+    }
+    ETAPA_PROCESAMIENTO {
+      ESTADO_INICIAL
+      ESTADO_FINAL
+      FECHA_INICIAL
+      FECHA_FINAL
     }
     FECHA_ACTUALIZACION
     FECHA_CREADO
+    FECHA_FINALIZADO
     ID_PROCESO
     INSUMO
     INTERFAZ
@@ -275,10 +290,28 @@ query ListSiaGenAudEstadoProcesosDevs(
     nextToken: $nextToken
   ) {
     items {
-      ESTADO
       ESTADO_EJECUCION
+      ETAPA_INICIAL {
+        ESTADO_INICIAL
+        ESTADO_FINAL
+        FECHA_INICIAL
+        FECHA_FINAL
+      }
+      ETAPA_FINAL {
+        ESTADO_INICIAL
+        ESTADO_FINAL
+        FECHA_INICIAL
+        FECHA_FINAL
+      }
+      ETAPA_PROCESAMIENTO {
+        ESTADO_INICIAL
+        ESTADO_FINAL
+        FECHA_INICIAL
+        FECHA_FINAL
+      }
       FECHA_ACTUALIZACION
       FECHA_CREADO
+      FECHA_FINALIZADO
       ID_PROCESO
       INSUMO
       INTERFAZ
@@ -298,10 +331,28 @@ query QuerySiaGenAudEstadoProcesosDevsByINTERFAZIndex(
     after: $after
   ) {
     items {
-      ESTADO
       ESTADO_EJECUCION
+      ETAPA_INICIAL {
+        ESTADO_INICIAL
+        ESTADO_FINAL
+        FECHA_INICIAL
+        FECHA_FINAL
+      }
+      ETAPA_FINAL {
+        ESTADO_INICIAL
+        ESTADO_FINAL
+        FECHA_INICIAL
+        FECHA_FINAL
+      }
+      ETAPA_PROCESAMIENTO {
+        ESTADO_INICIAL
+        ESTADO_FINAL
+        FECHA_INICIAL
+        FECHA_FINAL
+      }
       FECHA_ACTUALIZACION
       FECHA_CREADO
+      FECHA_FINALIZADO
       ID_PROCESO
       INSUMO
       INTERFAZ
@@ -313,10 +364,28 @@ query QuerySiaGenAudEstadoProcesosDevsByINTERFAZIndex(
 query ListSiaGenAudEstadoProcesosDevsPorFecha($FECHA: String) {
   listSiaGenAudEstadoProcesosDevsPorFecha(FECHA: $FECHA) {
     items {
-      ESTADO
       ESTADO_EJECUCION
+      ETAPA_INICIAL {
+        ESTADO_INICIAL
+        ESTADO_FINAL
+        FECHA_INICIAL
+        FECHA_FINAL
+      }
+      ETAPA_FINAL {
+        ESTADO_INICIAL
+        ESTADO_FINAL
+        FECHA_INICIAL
+        FECHA_FINAL
+      }
+      ETAPA_PROCESAMIENTO {
+        ESTADO_INICIAL
+        ESTADO_FINAL
+        FECHA_INICIAL
+        FECHA_FINAL
+      }
       FECHA_ACTUALIZACION
       FECHA_CREADO
+      FECHA_FINALIZADO
       ID_PROCESO
       INSUMO
       INTERFAZ

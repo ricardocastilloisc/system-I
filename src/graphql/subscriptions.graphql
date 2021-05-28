@@ -205,21 +205,28 @@ subscription OnCreateSiaGenAudEstadoProcesosDev(
     ID_PROCESO: $ID_PROCESO
     INTERFAZ: $INTERFAZ
   ) {
-    ESTADO
     ESTADO_EJECUCION
-    ETAPA {
-      INICIAL {
-        ESTADO
-      }
-      PROCESAMIENTO {
-        ESTADO
-      }
-      FINAL {
-        ESTADO
-      }
+    ETAPA_INICIAL {
+      ESTADO_INICIAL
+      ESTADO_FINAL
+      FECHA_INICIAL
+      FECHA_FINAL
+    }
+    ETAPA_FINAL {
+      ESTADO_INICIAL
+      ESTADO_FINAL
+      FECHA_INICIAL
+      FECHA_FINAL
+    }
+    ETAPA_PROCESAMIENTO {
+      ESTADO_INICIAL
+      ESTADO_FINAL
+      FECHA_INICIAL
+      FECHA_FINAL
     }
     FECHA_ACTUALIZACION
     FECHA_CREADO
+    FECHA_FINALIZADO
     ID_PROCESO
     INSUMO
     INTERFAZ
@@ -234,21 +241,28 @@ subscription OnUpdateSiaGenAudEstadoProcesosDev(
     ID_PROCESO: $ID_PROCESO
     INTERFAZ: $INTERFAZ
   ) {
-    ESTADO
     ESTADO_EJECUCION
-    ETAPA {
-      INICIAL {
-        ESTADO
-      }
-      PROCESAMIENTO {
-        ESTADO
-      }
-      FINAL {
-        ESTADO
-      }
+    ETAPA_INICIAL {
+      ESTADO_INICIAL
+      ESTADO_FINAL
+      FECHA_INICIAL
+      FECHA_FINAL
+    }
+    ETAPA_FINAL {
+      ESTADO_INICIAL
+      ESTADO_FINAL
+      FECHA_INICIAL
+      FECHA_FINAL
+    }
+    ETAPA_PROCESAMIENTO {
+      ESTADO_INICIAL
+      ESTADO_FINAL
+      FECHA_INICIAL
+      FECHA_FINAL
     }
     FECHA_ACTUALIZACION
     FECHA_CREADO
+    FECHA_FINALIZADO
     ID_PROCESO
     INSUMO
     INTERFAZ
@@ -263,21 +277,28 @@ subscription OnDeleteSiaGenAudEstadoProcesosDev(
     ID_PROCESO: $ID_PROCESO
     INTERFAZ: $INTERFAZ
   ) {
-    ESTADO
     ESTADO_EJECUCION
-    ETAPA {
-      INICIAL {
-        ESTADO
-      }
-      PROCESAMIENTO {
-        ESTADO
-      }
-      FINAL {
-        ESTADO
-      }
+    ETAPA_INICIAL {
+      ESTADO_INICIAL
+      ESTADO_FINAL
+      FECHA_INICIAL
+      FECHA_FINAL
+    }
+    ETAPA_FINAL {
+      ESTADO_INICIAL
+      ESTADO_FINAL
+      FECHA_INICIAL
+      FECHA_FINAL
+    }
+    ETAPA_PROCESAMIENTO {
+      ESTADO_INICIAL
+      ESTADO_FINAL
+      FECHA_INICIAL
+      FECHA_FINAL
     }
     FECHA_ACTUALIZACION
     FECHA_CREADO
+    FECHA_FINALIZADO
     ID_PROCESO
     INSUMO
     INTERFAZ

@@ -201,21 +201,28 @@ mutation CreateSiaGenAudEstadoProcesosDev(
   $input: CreateSiaGenAudEstadoProcesosDevInput!
 ) {
   createSiaGenAudEstadoProcesosDev(input: $input) {
-    ESTADO
     ESTADO_EJECUCION
-    ETAPA {
-      INICIAL {
-        ESTADO
-      }
-      PROCESAMIENTO {
-        ESTADO
-      }
-      FINAL {
-        ESTADO
-      }
+    ETAPA_INICIAL {
+      ESTADO_INICIAL
+      ESTADO_FINAL
+      FECHA_INICIAL
+      FECHA_FINAL
+    }
+    ETAPA_FINAL {
+      ESTADO_INICIAL
+      ESTADO_FINAL
+      FECHA_INICIAL
+      FECHA_FINAL
+    }
+    ETAPA_PROCESAMIENTO {
+      ESTADO_INICIAL
+      ESTADO_FINAL
+      FECHA_INICIAL
+      FECHA_FINAL
     }
     FECHA_ACTUALIZACION
     FECHA_CREADO
+    FECHA_FINALIZADO
     ID_PROCESO
     INSUMO
     INTERFAZ
@@ -226,21 +233,28 @@ mutation UpdateSiaGenAudEstadoProcesosDev(
   $input: UpdateSiaGenAudEstadoProcesosDevInput!
 ) {
   updateSiaGenAudEstadoProcesosDev(input: $input) {
-    ESTADO
     ESTADO_EJECUCION
-    ETAPA {
-      INICIAL {
-        ESTADO
-      }
-      PROCESAMIENTO {
-        ESTADO
-      }
-      FINAL {
-        ESTADO
-      }
+    ETAPA_INICIAL {
+      ESTADO_INICIAL
+      ESTADO_FINAL
+      FECHA_INICIAL
+      FECHA_FINAL
+    }
+    ETAPA_FINAL {
+      ESTADO_INICIAL
+      ESTADO_FINAL
+      FECHA_INICIAL
+      FECHA_FINAL
+    }
+    ETAPA_PROCESAMIENTO {
+      ESTADO_INICIAL
+      ESTADO_FINAL
+      FECHA_INICIAL
+      FECHA_FINAL
     }
     FECHA_ACTUALIZACION
     FECHA_CREADO
+    FECHA_FINALIZADO
     ID_PROCESO
     INSUMO
     INTERFAZ
@@ -251,21 +265,28 @@ mutation DeleteSiaGenAudEstadoProcesosDev(
   $input: DeleteSiaGenAudEstadoProcesosDevInput!
 ) {
   deleteSiaGenAudEstadoProcesosDev(input: $input) {
-    ESTADO
     ESTADO_EJECUCION
-    ETAPA {
-      INICIAL {
-        ESTADO
-      }
-      PROCESAMIENTO {
-        ESTADO
-      }
-      FINAL {
-        ESTADO
-      }
+    ETAPA_INICIAL {
+      ESTADO_INICIAL
+      ESTADO_FINAL
+      FECHA_INICIAL
+      FECHA_FINAL
+    }
+    ETAPA_FINAL {
+      ESTADO_INICIAL
+      ESTADO_FINAL
+      FECHA_INICIAL
+      FECHA_FINAL
+    }
+    ETAPA_PROCESAMIENTO {
+      ESTADO_INICIAL
+      ESTADO_FINAL
+      FECHA_INICIAL
+      FECHA_FINAL
     }
     FECHA_ACTUALIZACION
     FECHA_CREADO
+    FECHA_FINALIZADO
     ID_PROCESO
     INSUMO
     INTERFAZ
