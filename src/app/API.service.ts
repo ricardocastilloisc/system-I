@@ -130,8 +130,24 @@ export type DeleteCATPERMISOSInput = {
 };
 
 export type CreateSiaGenAudEstadoProcesosDevInput = {
+  ESTADO_EJECUCION?: string | null;
+  ETAPA_INICIAL?: ETAPAS_PROCESO_INPUT | null;
+  ETAPA_FINAL?: ETAPAS_PROCESO_INPUT | null;
+  ETAPA_PROCESAMIENTO?: ETAPAS_PROCESO_INPUT | null;
+  FECHA_ACTUALIZACION?: string | null;
+  FECHA_CREADO?: string | null;
+  FECHA_FINALIZADO?: string | null;
   ID_PROCESO: string;
+  INSUMO?: string | null;
   INTERFAZ?: string | null;
+  TIPO_PROCESO?: string | null;
+};
+
+export type ETAPAS_PROCESO_INPUT = {
+  ESTADO_INICIAL?: string | null;
+  ESTADO_FINAL?: string | null;
+  FECHA_INICIAL?: string | null;
+  FECHA_FINAL?: string | null;
 };
 
 export type SiaGenAudEstadoProcesosDev = {
@@ -158,8 +174,17 @@ export type ETAPAS_PROCESO = {
 };
 
 export type UpdateSiaGenAudEstadoProcesosDevInput = {
+  ESTADO_EJECUCION?: string | null;
+  ETAPA_INICIAL?: ETAPAS_PROCESO_INPUT | null;
+  ETAPA_FINAL?: ETAPAS_PROCESO_INPUT | null;
+  ETAPA_PROCESAMIENTO?: ETAPAS_PROCESO_INPUT | null;
+  FECHA_ACTUALIZACION?: string | null;
+  FECHA_CREADO?: string | null;
+  FECHA_FINALIZADO?: string | null;
   ID_PROCESO: string;
+  INSUMO?: string | null;
   INTERFAZ?: string | null;
+  TIPO_PROCESO?: string | null;
 };
 
 export type DeleteSiaGenAudEstadoProcesosDevInput = {
@@ -2744,14 +2769,12 @@ export class APIService {
     ) as Observable<SubscriptionResponse<OnDeleteCATPERMISOSSubscription>>;
   }
 
-  OnCreateSiaGenAudEstadoProcesosDevListener(
-    ID_PROCESO?: string,
-    INTERFAZ?: string
-  ): Observable<
+  OnCreateSiaGenAudEstadoProcesosDevListener: Observable<
     SubscriptionResponse<OnCreateSiaGenAudEstadoProcesosDevSubscription>
-  > {
-    const statement = `subscription OnCreateSiaGenAudEstadoProcesosDev($ID_PROCESO: String, $INTERFAZ: String) {
-        onCreateSiaGenAudEstadoProcesosDev(ID_PROCESO: $ID_PROCESO, INTERFAZ: $INTERFAZ) {
+  > = API.graphql(
+    graphqlOperation(
+      `subscription OnCreateSiaGenAudEstadoProcesosDev {
+        onCreateSiaGenAudEstadoProcesosDev {
           __typename
           ESTADO_EJECUCION
           ETAPA_INICIAL {
@@ -2783,29 +2806,18 @@ export class APIService {
           INTERFAZ
           TIPO_PROCESO
         }
-      }`;
-    const gqlAPIServiceArguments: any = {};
-    if (ID_PROCESO) {
-      gqlAPIServiceArguments.ID_PROCESO = ID_PROCESO;
-    }
-    if (INTERFAZ) {
-      gqlAPIServiceArguments.INTERFAZ = INTERFAZ;
-    }
-    return API.graphql(
-      graphqlOperation(statement, gqlAPIServiceArguments)
-    ) as Observable<
-      SubscriptionResponse<OnCreateSiaGenAudEstadoProcesosDevSubscription>
-    >;
-  }
+      }`
+    )
+  ) as Observable<
+    SubscriptionResponse<OnCreateSiaGenAudEstadoProcesosDevSubscription>
+  >;
 
-  OnUpdateSiaGenAudEstadoProcesosDevListener(
-    ID_PROCESO?: string,
-    INTERFAZ?: string
-  ): Observable<
+  OnUpdateSiaGenAudEstadoProcesosDevListener: Observable<
     SubscriptionResponse<OnUpdateSiaGenAudEstadoProcesosDevSubscription>
-  > {
-    const statement = `subscription OnUpdateSiaGenAudEstadoProcesosDev($ID_PROCESO: String, $INTERFAZ: String) {
-        onUpdateSiaGenAudEstadoProcesosDev(ID_PROCESO: $ID_PROCESO, INTERFAZ: $INTERFAZ) {
+  > = API.graphql(
+    graphqlOperation(
+      `subscription OnUpdateSiaGenAudEstadoProcesosDev {
+        onUpdateSiaGenAudEstadoProcesosDev {
           __typename
           ESTADO_EJECUCION
           ETAPA_INICIAL {
@@ -2837,29 +2849,18 @@ export class APIService {
           INTERFAZ
           TIPO_PROCESO
         }
-      }`;
-    const gqlAPIServiceArguments: any = {};
-    if (ID_PROCESO) {
-      gqlAPIServiceArguments.ID_PROCESO = ID_PROCESO;
-    }
-    if (INTERFAZ) {
-      gqlAPIServiceArguments.INTERFAZ = INTERFAZ;
-    }
-    return API.graphql(
-      graphqlOperation(statement, gqlAPIServiceArguments)
-    ) as Observable<
-      SubscriptionResponse<OnUpdateSiaGenAudEstadoProcesosDevSubscription>
-    >;
-  }
+      }`
+    )
+  ) as Observable<
+    SubscriptionResponse<OnUpdateSiaGenAudEstadoProcesosDevSubscription>
+  >;
 
-  OnDeleteSiaGenAudEstadoProcesosDevListener(
-    ID_PROCESO?: string,
-    INTERFAZ?: string
-  ): Observable<
+  OnDeleteSiaGenAudEstadoProcesosDevListener: Observable<
     SubscriptionResponse<OnDeleteSiaGenAudEstadoProcesosDevSubscription>
-  > {
-    const statement = `subscription OnDeleteSiaGenAudEstadoProcesosDev($ID_PROCESO: String, $INTERFAZ: String) {
-        onDeleteSiaGenAudEstadoProcesosDev(ID_PROCESO: $ID_PROCESO, INTERFAZ: $INTERFAZ) {
+  > = API.graphql(
+    graphqlOperation(
+      `subscription OnDeleteSiaGenAudEstadoProcesosDev {
+        onDeleteSiaGenAudEstadoProcesosDev {
           __typename
           ESTADO_EJECUCION
           ETAPA_INICIAL {
@@ -2891,18 +2892,9 @@ export class APIService {
           INTERFAZ
           TIPO_PROCESO
         }
-      }`;
-    const gqlAPIServiceArguments: any = {};
-    if (ID_PROCESO) {
-      gqlAPIServiceArguments.ID_PROCESO = ID_PROCESO;
-    }
-    if (INTERFAZ) {
-      gqlAPIServiceArguments.INTERFAZ = INTERFAZ;
-    }
-    return API.graphql(
-      graphqlOperation(statement, gqlAPIServiceArguments)
-    ) as Observable<
-      SubscriptionResponse<OnDeleteSiaGenAudEstadoProcesosDevSubscription>
-    >;
-  }
+      }`
+    )
+  ) as Observable<
+    SubscriptionResponse<OnDeleteSiaGenAudEstadoProcesosDevSubscription>
+  >;
 }

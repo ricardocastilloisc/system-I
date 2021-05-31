@@ -197,14 +197,8 @@ subscription OnDeleteCATPERMISOS($ID: String) {
     NEGOCIO
   }
 }
-subscription OnCreateSiaGenAudEstadoProcesosDev(
-  $ID_PROCESO: String
-  $INTERFAZ: String
-) {
-  onCreateSiaGenAudEstadoProcesosDev(
-    ID_PROCESO: $ID_PROCESO
-    INTERFAZ: $INTERFAZ
-  ) {
+subscription OnCreateSiaGenAudEstadoProcesosDev {
+  onCreateSiaGenAudEstadoProcesosDev {
     ESTADO_EJECUCION
     ETAPA_INICIAL {
       ESTADO_INICIAL
@@ -233,14 +227,8 @@ subscription OnCreateSiaGenAudEstadoProcesosDev(
     TIPO_PROCESO
   }
 }
-subscription OnUpdateSiaGenAudEstadoProcesosDev(
-  $ID_PROCESO: String
-  $INTERFAZ: String
-) {
-  onUpdateSiaGenAudEstadoProcesosDev(
-    ID_PROCESO: $ID_PROCESO
-    INTERFAZ: $INTERFAZ
-  ) {
+subscription OnUpdateSiaGenAudEstadoProcesosDev {
+  onUpdateSiaGenAudEstadoProcesosDev {
     ESTADO_EJECUCION
     ETAPA_INICIAL {
       ESTADO_INICIAL
@@ -269,14 +257,8 @@ subscription OnUpdateSiaGenAudEstadoProcesosDev(
     TIPO_PROCESO
   }
 }
-subscription OnDeleteSiaGenAudEstadoProcesosDev(
-  $ID_PROCESO: String
-  $INTERFAZ: String
-) {
-  onDeleteSiaGenAudEstadoProcesosDev(
-    ID_PROCESO: $ID_PROCESO
-    INTERFAZ: $INTERFAZ
-  ) {
+subscription OnDeleteSiaGenAudEstadoProcesosDev {
+  onDeleteSiaGenAudEstadoProcesosDev {
     ESTADO_EJECUCION
     ETAPA_INICIAL {
       ESTADO_INICIAL
