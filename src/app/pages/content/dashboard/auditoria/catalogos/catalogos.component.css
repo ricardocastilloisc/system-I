@@ -153,18 +153,6 @@ section {
   font: normal normal bold 20px/25px FS Elliot Pro;
 }
 
-.columna {
-  width: 33%;
-  float: left;
-}
-
-@media (max-width: 500px) {
-  .columna {
-    width: auto;
-    float: none;
-  }
-}
-
 .titulo {
   font: bold 18px FS Elliot Pro;
   color: #035fa4;

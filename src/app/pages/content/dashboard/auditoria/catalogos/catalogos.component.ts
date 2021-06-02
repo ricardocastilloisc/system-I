@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LoadAUDGENUSUARIOS, UnsetAUDGENUSUARIO } from './../../../../../ReduxStore/actions/usuarios/AUDGENUSUARIOS.actions';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../../ReduxStore/app.reducers';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { AUDGENUSUARIO_INTERFACE } from '../../../../../model/AUDGENUSUARIO.model';
 import { APIService } from '../../../../../API.service';
 import { map } from 'rxjs/operators';
@@ -25,10 +25,6 @@ export class CatalogosComponent implements OnInit, OnDestroy {
   SettingsFiltroDePermisos: IDropdownSettings = {};
   selectedItemsFiltroaPermisos = [];
 
-  dropdownList = [];
-  selectedItems = [];
-  dropdownSettings = {};
-
   constructor(
     private store: Store<AppState>,
     private api: APIService,
@@ -49,8 +45,9 @@ export class CatalogosComponent implements OnInit, OnDestroy {
   initSelects = () => {
 
     this.dropdownListFiltroPermisos = [
-      { item_id: "Administrador", item_text: "ERole Admin" },
-      { item_id: "Monitor", item_text: "ERole Mon" }
+      { item_id: "op1", item_text: "Opción uno" },
+      { item_id: "op2", item_text: "Opción dos" },
+      { item_id: "op3", item_text: "Opción tres" }
     ];
 
     this.SettingsFiltroDePermisos = {
@@ -85,37 +82,7 @@ export class CatalogosComponent implements OnInit, OnDestroy {
     this.spinner.hide();
   }
 
-
-  onItemSelect(item: any) {
-    console.log(item);
-  }
-  onSelectAll(items: any) {
-    console.log(items);
-  }
-
-
   ngOnInit(): void {
-
-    this.dropdownList = [
-      { item_id: 1, item_text: 'Mumbai' },
-      { item_id: 2, item_text: 'Bangaluru' },
-      { item_id: 3, item_text: 'Pune' },
-      { item_id: 4, item_text: 'Navsari' },
-      { item_id: 5, item_text: 'New Delhi' }
-    ];
-    this.selectedItems = [
-      { item_id: 3, item_text: 'Pune' },
-      { item_id: 4, item_text: 'Navsari' }
-    ];
-    this.dropdownSettings = {
-      singleSelection: false,
-      idField: 'item_id',
-      textField: 'item_text',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 3,
-      allowSearchFilter: true
-    };
 
     //console.log("Entrando a OnInit: Auditoria Catalogos");
     this.initSelects();
