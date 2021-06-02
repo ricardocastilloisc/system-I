@@ -9,3 +9,4 @@ export * from './CATPERMISOS.reducer';
 export * from './notificaciones.reducer';
 export * from './catalogos/catalogos.reducer';
 export * from './catalogos/catalogoDetail.reducer';
+export * from './usuarios/AUDGENUSUARIOS.reducer';

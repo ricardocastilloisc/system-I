@@ -22,7 +22,7 @@
 <!-- ********************************************************* -->
 <!-- ********************************************************* -->
 
-<div class="card-busqueda">
+<div class="card-busqueda" >
     <div class="mt-4">Buscar por</div>
     <div style="
         text-align: right;
@@ -47,7 +47,7 @@
         </section>
     </div>
 </div>
-<div class="row justify-content-center">
+<div class="row justify-content-center" *ngIf="AUDGENUSUARIOS$ | async as AUDGENUSUARIOS">
     <div class="d-flex col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12 justify-content-center">
         <div class="card-lista-design-general" style="overflow-x: auto">
             <table class="table listado-design-general">
@@ -58,14 +58,14 @@
                     <th style="padding-left: 40px; max-width: 150px">Acción</th>
                     <th style="padding-left: 40px; max-width: 150px"> </th>
                 </tr>
-                <tr>
-                    <td style="padding-left: 40px; max-width: 300px">1
+                <tr *ngFor="let AUDGENUSUARIO of AUDGENUSUARIOS">
+                    <td style="padding-left: 40px; max-width: 300px">{{AUDGENUSUARIO.USUARIO.NOMBRE}} {{AUDGENUSUARIO.USUARIO.APELLIDO_PATERNO}}
                     </td>
-                    <td style="padding-left: 40px; max-width: 300px">2
+                    <td style="padding-left: 40px; max-width: 300px">{{AUDGENUSUARIO.CORREO}}
                     </td>
-                    <td style="padding-left: 40px; max-width: 150px">3
+                    <td style="padding-left: 40px; max-width: 150px">{{AUDGENUSUARIO.FECHA | date :'dd/MM/yyyy'}} {{AUDGENUSUARIO.FECHA | date:'mediumTime'}} 
                     </td>
-                    <td style="padding-left: 40px; max-width: 150px">4
+                    <td style="padding-left: 40px; max-width: 150px">{{AUDGENUSUARIO.PERMISOS_USUARIOS.ACCION}}
                     </td>
                     <td style="width: 200px">
                         <img style="cursor: pointer" class="detalle-icon" />

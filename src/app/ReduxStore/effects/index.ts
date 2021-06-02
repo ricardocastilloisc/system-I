@@ -6,6 +6,7 @@ import { CATPROCESOSEfffects } from './CATPROCESOS.effects';
 import { CATPERMISOSEfffects } from './CATPERMISOS.effects';
 import { CatalogosEfffects } from './catalogos/catalogos.effects';
 import { CatalogoDetailEfffects } from './catalogos/catalogoDetail.effects';
+import { AUDGENUSUARIOSEfffects } from './usuarios/AUDGENUSUARIOS.effects';
 
 export const EffectsArrays: any[] = [
   AUDGENPROCESOSEfffects,
@@ -15,5 +16,6 @@ export const EffectsArrays: any[] = [
   CATPROCESOSEfffects,
   CatalogosEfffects,
   CATPERMISOSEfffects,
-  CatalogoDetailEfffects
+  CatalogoDetailEfffects,
+  AUDGENUSUARIOSEfffects
 ];

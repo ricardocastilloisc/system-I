@@ -104,7 +104,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    //this.authService.refreshToken();
+    this.authService.refreshToken();
 
     this.titulo = JSON.parse(
       localStorage.getItem('Titulo')
