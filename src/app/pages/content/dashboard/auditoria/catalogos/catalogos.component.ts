@@ -7,24 +7,33 @@ import { AUDGENUSUARIO_INTERFACE } from '../../../../../model/AUDGENUSUARIO.mode
 import { APIService } from '../../../../../API.service';
 import { map } from 'rxjs/operators';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { timeStamp } from 'node:console';
-
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-catalogos',
   templateUrl: './catalogos.component.html',
   styleUrls: ['./catalogos.component.css']
 })
-export class CatalogosComponent implements OnInit {
+export class CatalogosComponent implements OnInit, OnDestroy {
 
   itemsAntes = [];
   itemsDespues = [];
   itemsValor = [];
 
+  dropdownListFiltroPermisos = [];
+  SettingsFiltroDePermisos: IDropdownSettings = {};
+  selectedItemsFiltroaPermisos = [];
+
+  dropdownList = [];
+  selectedItems = [];
+  dropdownSettings = {};
+
   constructor(
     private store: Store<AppState>,
     private api: APIService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private spinner: NgxSpinnerService
   ) { }
 
   AUDGENUSUARIOS$: Observable<AUDGENUSUARIO_INTERFACE[]>;
@@ -37,8 +46,80 @@ export class CatalogosComponent implements OnInit {
     return false;
   }
 
+  initSelects = () => {
+
+    this.dropdownListFiltroPermisos = [
+      { item_id: "Administrador", item_text: "ERole Admin" },
+      { item_id: "Monitor", item_text: "ERole Mon" }
+    ];
+
+    this.SettingsFiltroDePermisos = {
+      singleSelection: false,
+      idField: 'item_id',
+      textField: 'item_text',
+      allowSearchFilter: false,
+      clearSearchFilter: false,
+      enableCheckAll: false,
+      maxHeight: 200,
+      itemsShowLimit: 3,
+    };
+
+
+  }
+
+  limpirarFiltro = () => {
+    this.selectedItemsFiltroaPermisos = [];
+  }
+
+  filtrar = () => {
+    this.spinner.show();
+    let FiltrarRol = null;
+    if (this.selectedItemsFiltroaPermisos.length !== 0) {
+      let arrayFiltroRol = [];
+      this.selectedItemsFiltroaPermisos.forEach((e) => {
+        arrayFiltroRol.push(e.item_id);
+      });
+
+      FiltrarRol = arrayFiltroRol;
+    }
+    this.spinner.hide();
+  }
+
+
+  onItemSelect(item: any) {
+    console.log(item);
+  }
+  onSelectAll(items: any) {
+    console.log(items);
+  }
+
+
   ngOnInit(): void {
-    console.log("Entrando a OnInit: Auditoria Catalogos");
+
+    this.dropdownList = [
+      { item_id: 1, item_text: 'Mumbai' },
+      { item_id: 2, item_text: 'Bangaluru' },
+      { item_id: 3, item_text: 'Pune' },
+      { item_id: 4, item_text: 'Navsari' },
+      { item_id: 5, item_text: 'New Delhi' }
+    ];
+    this.selectedItems = [
+      { item_id: 3, item_text: 'Pune' },
+      { item_id: 4, item_text: 'Navsari' }
+    ];
+    this.dropdownSettings = {
+      singleSelection: false,
+      idField: 'item_id',
+      textField: 'item_text',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      itemsShowLimit: 3,
+      allowSearchFilter: true
+    };
+
+    //console.log("Entrando a OnInit: Auditoria Catalogos");
+    this.initSelects();
+
     this.AUDGENUSUARIOS$ = this.store.select(
       ({ AUDGENUSUARIOS }) => AUDGENUSUARIOS.AUDGENUSUARIOS
     ).pipe(map(res => {
@@ -85,7 +166,7 @@ export class CatalogosComponent implements OnInit {
     if (cambiosDespues !== null) {
       cambiosDespues = cambiosDespues.replace('{', '');
       cambiosDespues = cambiosDespues.replace('}', '');
-      let arregloDespues = cambiosDespues.split(",");      
+      let arregloDespues = cambiosDespues.split(",");
       let resDespues = [];
       for (let i in arregloDespues) {
         let valor = arregloDespues[i].toString().split("=");
@@ -117,9 +198,9 @@ export class CatalogosComponent implements OnInit {
     }
 
 
-    console.log("itemsValor", this.itemsValor)
-    console.log("itemsAntes", this.itemsAntes)
-    console.log("itemsDespues", this.itemsDespues)
+    // console.log("itemsValor", this.itemsValor)
+    // console.log("itemsAntes", this.itemsAntes)
+    // console.log("itemsDespues", this.itemsDespues)
 
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
   }

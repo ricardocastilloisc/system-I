@@ -132,7 +132,7 @@ section {
 
 .detalle-icon {
   background: transparent
-    url("../../../../../../assets/icons/icono-detalle.svg") 0% 0% no-repeat
+    url("/../../../../assets/icons/icono-detalle.svg") 0% 0% no-repeat
     padding-box;
   width: 30px;
   height: 30px;
