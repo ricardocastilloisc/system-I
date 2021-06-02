@@ -12,4 +12,11 @@ export class ProcesosComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  enProgreso():boolean {
+    return true;
+  }
+  verAuditoria():boolean {
+    return false;
+  }
+  
 }

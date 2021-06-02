@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AuditoriaService } from '../../../../../services/auditoria.service';
 @Component({
   selector: 'app-auditoriageneral',
   templateUrl: './auditoriageneral.component.html',
@@ -7,10 +6,10 @@ import { AuditoriaService } from '../../../../../services/auditoria.service';
 })
 export class AuditoriageneralComponent implements OnInit {
 
-  constructor(private auditoria: AuditoriaService) { }
+  constructor() { }
 
   ngOnInit(): void {
-    this.auditoria.enviarMensaje();
+   
   }
 
 }

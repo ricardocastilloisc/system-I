@@ -28,6 +28,10 @@ export class CatalogosComponent implements OnInit, OnDestroy {
       'nameCat',
       nameCat
     );
+    localStorage.setItem(
+      'negocioCat',
+      negocioCat
+    );
     this.router.navigate(['/' + window.location.pathname + '/' + negocioCat]);
   }
 

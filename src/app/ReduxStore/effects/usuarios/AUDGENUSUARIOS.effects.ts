@@ -9,17 +9,17 @@ import * as AUDGENUSUARIOActions from '../../actions/usuarios/AUDGENUSUARIOS.act
 
 @Injectable()
 export class AUDGENUSUARIOSEfffects {
-  constructor(private actions$: Actions, private api: APIService) {}
+  constructor(private actions$: Actions, private api: APIService) { }
 
   loadAUDGENUSUARIO$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AUDGENUSUARIOActions.LoadAUDGENUSUARIOS),
       mergeMap(({ consult }) => {
-          console.log(consult)
+        console.log("AudGenUsuarios Effect - Modulo", consult)
         if (consult) {
           return fromPromise(this.api.ListAUDGENUSUARIOS(consult.MODULO)).pipe(
             map(({ items }: any) =>
-                AUDGENUSUARIOActions.LoadAUDGENUSUARIOSuccess({
+              AUDGENUSUARIOActions.LoadAUDGENUSUARIOSuccess({
                 AUDGENUSUARIOS: items,
               })
             ),
@@ -32,7 +32,7 @@ export class AUDGENUSUARIOSEfffects {
         } else {
           return fromPromise(this.api.ListAUDGENUSUARIOS()).pipe(
             map(({ items }: any) =>
-            AUDGENUSUARIOActions.LoadAUDGENUSUARIOSuccess({
+              AUDGENUSUARIOActions.LoadAUDGENUSUARIOSuccess({
                 AUDGENUSUARIOS: items,
               })
             ),

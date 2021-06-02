@@ -184,6 +184,7 @@ export class CatalogosService {
 
   generarAuditoria(estado: string): void {
     const catalogo = localStorage.getItem('nameCat');
+    const descripcion = localStorage.getItem('negocioCat');
     const newRegister = localStorage.getItem('ObjectNewRegister');
     const oldRegister = localStorage.getItem('ObjectOldRegister');
     const accion = localStorage.getItem('RegisterAction');
@@ -225,12 +226,7 @@ export class CatalogosService {
         nombre: catalogo,
         accion: accion,
         estado: estado,
-        descripcion:
-          'Se realizó la acción de ' +
-          accion +
-          ' sobre el catálogo ' +
-          catalogo +
-          '.',
+        descripcion: descripcion,
         detalleModificaciones: [
           {
             valorAnterior: JSON.parse(oldRegister),
