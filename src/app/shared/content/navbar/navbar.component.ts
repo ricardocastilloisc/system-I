@@ -1,17 +1,24 @@
 import { unSetnotificaciones } from './../../../ReduxStore/actions/notificaciones.actions';
 import { UsuariosService } from './../../../services/usuarios.service';
 import { rutasConNombres } from './../../../helpers/rutas';
-import { AfterViewInit, Component, HostListener, OnInit, OnDestroy } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  HostListener,
+  OnInit,
+  OnDestroy,
+} from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AuthService } from 'src/app/services/auth.service';
 import { AppState } from '../../../ReduxStore/app.reducers';
 import { Usuario } from '../../../model/usuario.model';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { ERole } from '../../../validators/roles';
 import { NotificacionesService } from '../../../services/notificaciones.service';
 import { map } from 'rxjs/operators';
 import { NOTIFICACION_INTERFACE } from './../../../model/notificacion.model';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 declare var $: any;
 
@@ -33,15 +40,21 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   Soporte = ERole.Soporte;
   Notificaciones$: Observable<NOTIFICACION_INTERFACE[]>;
 
+  Notificaciones: NOTIFICACION_INTERFACE[] = [];
+  NotificacionesEstaticos: NOTIFICACION_INTERFACE[] = [];
+  NotificacionesSub$: Subscription;
+
   constructor(
     private authService: AuthService,
     private store: Store<AppState>,
     private usuario: UsuariosService,
     private NotificacionesService: NotificacionesService,
-    private router: Router
-  ) { }
+    private router: Router,
+    private toastr: ToastrService
+  ) {}
   ngOnDestroy(): void {
-    this.store.dispatch(unSetnotificaciones())
+    this.store.dispatch(unSetnotificaciones());
+    this.NotificacionesSub$.unsubscribe();
   }
 
   ngAfterViewInit(): void {
@@ -186,13 +199,38 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     this.DataUser$ = this.store.select(({ usuario }) => usuario.user);
-    this.Notificaciones$ = this.store
+    this.NotificacionesSub$ = this.store
       .select(({ notificaciones }) => notificaciones.notificaciones)
-      .pipe(map((e) => e.filter((fl) => fl.LEIDO === false)));
+      .pipe(map((e) => e.filter((fl) => fl.LEIDO === false)))
+      .subscribe((res) => {
+        if (this.Notificaciones.length === 0) {
+          this.NotificacionesEstaticos = res;
+        } else {
+          let tempNotificaciones: NOTIFICACION_INTERFACE[] = res;
+
+          tempNotificaciones.forEach((e) => {
+            let ArrayComparacion = this.NotificacionesEstaticos.filter(
+              (f) => f.ID_PROCESO === e.ID_PROCESO
+            );
+            if (ArrayComparacion.length === 0) {
+              setTimeout(() => {
+                if (this.verEstado(e) === 'EXITOSO') {
+                  this.abrirToass(this.verEstado(e) + ' ' + e.INTERFAZ);
+                } else {
+                  this.abrirToassError(this.verEstado(e) + ' ' + e.INTERFAZ);
+                }
+              }, 500);
+            }
+          });
+
+          this.NotificacionesEstaticos = res;
+        }
+        this.Notificaciones = res;
+      });
   }
 
   signOut = () => {
-    localStorage.setItem("SIA", "false");
+    localStorage.setItem('SIA', 'false');
     this.authService.signOut();
     this.usuario.logout();
   };
@@ -232,29 +270,64 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   };
 
-
-  verEstado = (data:NOTIFICACION_INTERFACE) => {
-    if(data.ETAPA_FINAL)
-    {
-      if(data.ETAPA_FINAL.ESTADO_FINAL){
-        return data.ETAPA_FINAL.ESTADO_FINAL
+  verEstado = (data: NOTIFICACION_INTERFACE) => {
+    if (data.ETAPA_FINAL) {
+      if (data.ETAPA_FINAL.ESTADO_FINAL) {
+        return data.ETAPA_FINAL.ESTADO_FINAL;
       }
     }
-    if(data.ETAPA_PROCESAMIENTO){
-        if(data.ETAPA_PROCESAMIENTO.ESTADO_FINAL){
-          return data.ETAPA_PROCESAMIENTO.ESTADO_FINAL
-        }else{
-          return data.ETAPA_INICIAL.ESTADO_FINAL
-        }
+    if (data.ETAPA_PROCESAMIENTO) {
+      if (data.ETAPA_PROCESAMIENTO.ESTADO_FINAL) {
+        return data.ETAPA_PROCESAMIENTO.ESTADO_FINAL;
+      } else {
+        return data.ETAPA_INICIAL.ESTADO_FINAL;
       }
+    }
+  };
 
+  replazarCaracterEspecial = (value) => {
+    return value.replace('%S', '00');
+  };
 
-  }
+  abrirToassError = (err) => {
+    let mensaje =
+      '<div class="row justify-content-center align-items-center textoAddUpdateregistro"><div><img class="iconErrorRegistro"/>';
 
-  replazarCaracterEspecial = (value) =>{
-    return value.replace('%S', '00')
+    mensaje = mensaje + 'Se ha producido un error';
 
-  }
+    mensaje = mensaje + '</div><div class="descipcionError">';
+    mensaje = mensaje + err;
+    mensaje = mensaje + '</div></div>';
+
+    this.toastr.show(mensaje, null, {
+      timeOut: 3500,
+      toastClass: 'etiquetaErrorRegistro row justify-content-center',
+      positionClass: 'toast-top-right',
+      enableHtml: true,
+      progressBar: true,
+      progressAnimation: 'increasing',
+    });
+  };
+
+  abrirToass = (msn) => {
+    let mensaje =
+      '<div class="row justify-content-center align-items-center textoAddUpdateregistro"><img class="successRegistro"/>';
+
+    //mensaje = mensaje + 'Registro' 'exitoso';
+    mensaje = mensaje + msn;
+
+    mensaje = mensaje + '</div>';
+
+    this.toastr.show(mensaje, null, {
+      timeOut: 1500,
+      toastClass:
+        'etiquetaAddRegistro etiquetaAddRegistro row justify-content-center',
+      positionClass: 'toast-top-right',
+      enableHtml: true,
+      progressBar: true,
+      progressAnimation: 'increasing',
+    });
+  };
 
   obtenerArea(): any {
     //console.log('obtenerArea');

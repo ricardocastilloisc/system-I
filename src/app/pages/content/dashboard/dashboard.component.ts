@@ -27,6 +27,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.store.dispatch(unSetCatalogos());
   }
+  
 
   ngAfterViewInit(): void {
     window.history.replaceState(null, null, window.location.pathname);
