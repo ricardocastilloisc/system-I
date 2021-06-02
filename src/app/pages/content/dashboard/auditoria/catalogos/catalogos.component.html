@@ -64,35 +64,34 @@
             </section>
         </div>
     </div>
-    <div class="row justify-content-center" *ngIf="AUDGENUSUARIOS$ | async as AUDGENUSUARIOS">
-        <div class="d-flex col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12 justify-content-center">
-            <div class="card-lista-design-general" style="overflow-x: auto">
-                <table class="table listado-design-general">
-                    <tr>
-                        <th style="padding-left: 40px; max-width: 300px">Catalogo</th>
-                        <th style="padding-left: 40px; max-width: 300px">Usuario</th>
-                        <th style="padding-left: 40px; max-width: 150px">Fecha</th>
-                        <th style="padding-left: 40px; max-width: 150px">Acción</th>
-                        <th style="padding-left: 40px; max-width: 150px"> </th>
-                    </tr>
-                    <tr *ngFor="let AUDGENUSUARIO of AUDGENUSUARIOS">
-                        <td style="padding-left: 40px; max-width: 300px">{{AUDGENUSUARIO.CATALOGOS.DESCRIPCION}}
-                        </td>
-                        <td style="padding-left: 40px; max-width: 300px">{{AUDGENUSUARIO.USUARIO.NOMBRE}}
-                            {{AUDGENUSUARIO.USUARIO.APELLIDO_PATERNO}}
-                        </td>
-                        <td style="padding-left: 40px; max-width: 150px">{{AUDGENUSUARIO.FECHA | date :'dd/MM/yyyy'}}
-                            {{AUDGENUSUARIO.FECHA | date:'mediumTime'}}
-                        </td>
-                        <td style="padding-left: 40px; max-width: 150px">{{AUDGENUSUARIO.CATALOGOS.ACCION}}
-                        </td>
-                        <td style="width: 200px">
-                            <img style="cursor: pointer" class="detalle-icon"
-                                (click)="openModal(content, AUDGENUSUARIO)" />
-                        </td>
-                    </tr>
-                </table>
-            </div>
+    <div class="d-flex col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12 justify-content-center"
+        *ngIf="AUDGENUSUARIOS$ | async as AUDGENUSUARIOS">
+        <div class="card-lista-design-general" style="overflow-x: auto">
+            <table class="table listado-design-general">
+                <tr>
+                    <th style="padding-left: 40px; max-width: 300px">Catálogo</th>
+                    <th style="padding-left: 30px; max-width: 300px">Usuario</th>
+                    <th style="padding-left: 30px; max-width: 150px">Fecha</th>
+                    <th style="padding-left: 30px; max-width: 150px">Acción</th>
+                    <th style="padding-left: 30px; max-width: 150px"> Detalle</th>
+                </tr>
+                <tr *ngFor="let AUDGENUSUARIO of AUDGENUSUARIOS">
+                    <td style="padding-left: 40px; max-width: 300px">{{AUDGENUSUARIO.CATALOGOS.DESCRIPCION}}
+                    </td>
+                    <td style="padding-left: 30px; max-width: 300px">{{AUDGENUSUARIO.USUARIO.NOMBRE}}
+                        {{AUDGENUSUARIO.USUARIO.APELLIDO_PATERNO}}
+                    </td>
+                    <td style="padding-left: 30px; max-width: 150px">{{AUDGENUSUARIO.FECHA | date :'dd/MM/yyyy'}}
+                        {{AUDGENUSUARIO.FECHA | date:'mediumTime'}}
+                    </td>
+                    <td style="padding-left: 30px; max-width: 150px">{{AUDGENUSUARIO.CATALOGOS.ACCION}}
+                    </td>
+                    <td style="width: 200px" class="justify-content-center">
+                        <center><img style="cursor: pointer" class="detalle-icon"
+                                (click)="openModal(content, AUDGENUSUARIO)" /></center>
+                    </td>
+                </tr>
+            </table>
         </div>
     </div>
 </section>
