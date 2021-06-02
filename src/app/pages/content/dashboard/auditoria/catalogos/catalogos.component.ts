@@ -25,6 +25,10 @@ export class CatalogosComponent implements OnInit, OnDestroy {
   SettingsFiltroDePermisos: IDropdownSettings = {};
   selectedItemsFiltroaPermisos = [];
 
+  dropdownListFiltroAccion = [];
+  SettingsFiltroDeAccion: IDropdownSettings = {};
+  selectedItemsFiltroAccion = [];
+
   constructor(
     private store: Store<AppState>,
     private api: APIService,
@@ -44,6 +48,12 @@ export class CatalogosComponent implements OnInit, OnDestroy {
 
   initSelects = () => {
 
+    this.dropdownListFiltroAccion = [
+      { item_id: "AGREGAR", item_text: "AGREGAR" },
+      { item_id: "ACTUALIZAR", item_text: "ACTUALIZAR" },
+      { item_id: "ELIMINAR", item_text: "ELIMINAR" }
+    ];
+
     this.dropdownListFiltroPermisos = [
       { item_id: "op1", item_text: "Opción uno" },
       { item_id: "op2", item_text: "Opción dos" },
@@ -51,6 +61,17 @@ export class CatalogosComponent implements OnInit, OnDestroy {
     ];
 
     this.SettingsFiltroDePermisos = {
+      singleSelection: false,
+      idField: 'item_id',
+      textField: 'item_text',
+      allowSearchFilter: false,
+      clearSearchFilter: false,
+      enableCheckAll: false,
+      maxHeight: 200,
+      itemsShowLimit: 3,
+    };
+
+    this.SettingsFiltroDeAccion = {
       singleSelection: false,
       idField: 'item_id',
       textField: 'item_text',
