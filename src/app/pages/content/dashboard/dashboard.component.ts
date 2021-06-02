@@ -51,11 +51,19 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
 
+    /*
+    this.api.OnCreateSiaGenAudEstadoProcesosDevListener.subscribe({
+      next: ({ value }: any) => {
+        console.log(value)
+      },
+    });*/
 
-    this.api.OnDeleteCATPROCESOSListener().subscribe((res) => {
-      //console.log('OnDeleteCATPROCESOSListener');
-      //console.log('se elimino');
-      //console.log(res);
-    });
+    this.api.OnCreateSiaGenAudEstadoProcesosDevListener.subscribe( ({ value }: any) => {
+      const { data } = value;
+       console.log(data);
+      });
+
+
+
   }
 }
