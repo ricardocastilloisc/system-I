@@ -19,6 +19,7 @@ import { map } from 'rxjs/operators';
 import { NOTIFICACION_INTERFACE } from './../../../model/notificacion.model';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import * as moment from 'moment';
 
 declare var $: any;
 
@@ -286,7 +287,16 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   };
 
   replazarCaracterEspecial = (value) => {
-    return value.replace('%S', '00');
+
+
+    let stringDateArray = value.replace('%S', '00').split(".");
+
+    stringDateArray[stringDateArray.length-1] = stringDateArray[stringDateArray.length-1].slice(0,3) + 'Z'
+
+    stringDateArray.join('.')
+
+    //moment().subtract(2, 'hours');
+    return  new Date(stringDateArray.join('.')).toString();
   };
 
   abrirToassError = (err) => {
