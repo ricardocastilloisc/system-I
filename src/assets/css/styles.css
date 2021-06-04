@@ -1036,3 +1036,15 @@ table.listado-design-general td {
   opacity: 1;
   margin-top: -18px;
 }
+
+.etiquetasCatalogos {
+  border: 1px solid #035fa4;
+  margin-right: 4px;
+  background: #035fa4;
+  padding: 0 5px;
+  color: #fff;
+  border-radius: 2px;
+  float: left;
+  display: flex;
+  max-width: 130px;
+}

@@ -15,7 +15,7 @@ export class AUDGENUSUARIOSEfffects {
     this.actions$.pipe(
       ofType(AUDGENUSUARIOActions.LoadAUDGENUSUARIOS),
       mergeMap(({ consult }) => {
-        console.log("AudGenUsuarios Effect - Modulo", consult)
+        //console.log("AudGenUsuarios Effect - Modulo", consult)
         if (consult) {
           return fromPromise(this.api.ListAUDGENUSUARIOS(consult.MODULO)).pipe(
             map(({ items }: any) =>
