@@ -17,6 +17,7 @@
     </div>
 </section>
 <section *ngIf="!enProceso()">
+    <ngx-spinner bdColor = "rgba(0,0,0,0.5)" size = "default" color = "#fff" type = "ball-scale-ripple" [fullScreen] = "true"><p style="color: white" > Cargando... </p></ngx-spinner>
     <div class="card-busqueda">
         <div class="mt-4">Buscar por</div>
         <div style="
@@ -26,9 +27,9 @@
         direction: rtl;
       ">
             <div style="margin-right: 10%">
-                <a class="limpiarFiltro">Eliminar Filtro
-                    <img src="assets/icons/Eliminar.svg" class="tamanioFiltroIcono" /></a>
-            </div>
+                <a (click)="limpirarFiltro()" class="limpiarFiltro">Eliminar Filtro
+                  <img src="assets/icons/Eliminar.svg" class="tamanioFiltroIcono" /></a>
+              </div>
         </div>
         <div name="filtros">
             <section class="mt-3">

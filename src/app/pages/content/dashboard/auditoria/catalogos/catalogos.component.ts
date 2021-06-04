@@ -18,13 +18,14 @@ declare var $: any;
 })
 export class CatalogosComponent implements OnInit, OnDestroy {
 
- itemsCorreos = [];
- itemsCatalogos = [];
+  itemsCorreos = [];
+  itemsCatalogos = [];
+  itemsAcciones = [];
 
   itemsAntes = [];
   itemsDespues = [];
   itemsValor = [];
-  
+
   dropdownListFiltroCatalogo = [];
   SettingsFiltroDeCatalogo: IDropdownSettings = {};
   selectedItemsFiltroCatalogo = [];
@@ -45,6 +46,8 @@ export class CatalogosComponent implements OnInit, OnDestroy {
   ) { }
 
   AUDGENUSUARIOS$: Observable<AUDGENUSUARIO_INTERFACE[]>;
+  ListadoPantalla$: Observable<AUDGENUSUARIO_INTERFACE[]>;
+  ListadoOriginal$: Observable<AUDGENUSUARIO_INTERFACE[]>;
 
   ngOnDestroy(): void {
     this.store.dispatch(UnsetAUDGENUSUARIO());
@@ -56,23 +59,27 @@ export class CatalogosComponent implements OnInit, OnDestroy {
 
   initSelects = () => {
     //console.log(this.itemsCatalogos.length)
-    if(this.itemsCatalogos.length > 0) {
+    if (this.itemsCatalogos.length > 0) {
       let arregloCatalogos = [];
-      for (let i in this.itemsCatalogos){
+      for (let i in this.itemsCatalogos) {
         arregloCatalogos.push({ item_id: this.itemsCatalogos[i], item_text: this.itemsCatalogos[i] });
       }
       //console.log("arregloCatalogos", arregloCatalogos)
       this.dropdownListFiltroCatalogo = arregloCatalogos;
     }
-    this.dropdownListFiltroAccion = [
-      { item_id: "AGREGAR", item_text: "AGREGAR" },
-      { item_id: "ACTUALIZAR", item_text: "ACTUALIZAR" },
-      { item_id: "ELIMINAR", item_text: "ELIMINAR" }
-    ];
+    //console.log(this.itemsAcciones.length)
+    if (this.itemsAcciones.length > 0) {
+      let arregloAcciones = [];
+      for (let i in this.itemsAcciones) {
+        arregloAcciones.push({ item_id: this.itemsAcciones[i], item_text: this.itemsAcciones[i] });
+      }
+      //console.log("arregloAcciones", arregloAcciones)
+      this.dropdownListFiltroAccion = arregloAcciones;
+    }
     //console.log(this.itemsCorreos.length)
-    if(this.itemsCorreos.length > 0) {
+    if (this.itemsCorreos.length > 0) {
       let arregloCorreos = [];
-      for (let i in this.itemsCorreos){
+      for (let i in this.itemsCorreos) {
         arregloCorreos.push({ item_id: this.itemsCorreos[i], item_text: this.itemsCorreos[i] });
       }
       //console.log("arregloCorreos", arregloCorreos)
@@ -114,23 +121,51 @@ export class CatalogosComponent implements OnInit, OnDestroy {
   }
 
   limpirarFiltro = () => {
+    console.log("limpirarFiltro");
     this.selectedItemsFiltroCatalogo = [];
     this.selectedItemsFiltroAccion = [];
     this.selectedItemsFiltroCorreo = [];
+    this.ListadoPantalla$ = this.ListadoOriginal$;
   }
 
   filtrar = () => {
     this.spinner.show();
     let FiltrarCatalogo = null;
+    let FiltrarAccion = null;
+    let FiltrarCorreo = null;
     if (this.selectedItemsFiltroCatalogo.length !== 0) {
       let arrayFiltroCatalogo = [];
       this.selectedItemsFiltroCatalogo.forEach((e) => {
         arrayFiltroCatalogo.push(e.item_id);
       });
       FiltrarCatalogo = arrayFiltroCatalogo;
-      console.log("FiltrarCatalogo", FiltrarCatalogo);
+      //console.log("FiltrarCatalogo", FiltrarCatalogo);
     }
-    this.spinner.hide();
+    if (this.selectedItemsFiltroAccion.length !== 0) {
+      let arrayFiltroAccion = [];
+      this.selectedItemsFiltroAccion.forEach((e) => {
+        arrayFiltroAccion.push(e.item_id);
+      });
+      FiltrarAccion = arrayFiltroAccion;
+      //console.log("FiltrarAccion", FiltrarAccion);
+    }
+    if (this.selectedItemsFiltroCorreo.length !== 0) {
+      let arrayFiltroCorreo = [];
+      this.selectedItemsFiltroCorreo.forEach((e) => {
+        arrayFiltroCorreo.push(e.item_id);
+      });
+      FiltrarCorreo = arrayFiltroCorreo;
+      //console.log("FiltrarCorreo", FiltrarCorreo);
+    }
+    this.ListadoPantalla$ = this.filtrarCatalogosConAtributos(
+      this.ListadoOriginal$,
+      FiltrarCatalogo,
+      FiltrarAccion,
+      FiltrarCorreo
+    );
+    setTimeout(() => {
+      this.spinner.hide();
+    }, 300);
   }
 
   cambiarEtiquetaSeleccionadaGeneral(elemento) {
@@ -140,7 +175,6 @@ export class CatalogosComponent implements OnInit, OnDestroy {
         .attr('class', 'etiquetasCatalogos');
     }, 1);
   }
-
   ngOnInit(): void {
     //console.log("Entrando a OnInit: Auditoria Catalogos");    
     this.AUDGENUSUARIOS$ = this.store.select(
@@ -150,6 +184,10 @@ export class CatalogosComponent implements OnInit, OnDestroy {
       else return res.slice().sort(function (a, b) { return new Date(b.FECHA).getTime() - new Date(a.FECHA).getTime() })
     }
     ))
+
+    this.ListadoOriginal$ = this.AUDGENUSUARIOS$;
+    console.log("this.AUDGENUSUARIOS$", this.AUDGENUSUARIOS$)
+    
     this.store.select(
       ({ AUDGENUSUARIOS }) => AUDGENUSUARIOS.AUDGENUSUARIOS
     ).subscribe(res => {
@@ -168,6 +206,16 @@ export class CatalogosComponent implements OnInit, OnDestroy {
         }
       }
       //console.log("catalogos", this.itemsCatalogos.length);
+      for (let i in res) {
+        //console.log("for", res[i].CATALOGOS.ACCION);
+        if (!this.itemsAcciones.includes(res[i].CATALOGOS.ACCION)) {
+          this.itemsAcciones.push(res[i].CATALOGOS.ACCION);
+        }
+      }
+      //console.log("acciones", this.itemsAcciones.length);
+      this.itemsCatalogos.sort();
+      this.itemsAcciones.sort();
+      this.itemsCorreos.sort();
       this.initSelects();
     })
     this.store.dispatch(LoadAUDGENUSUARIOS({ consult: { MODULO: 'CATALOGOS' } }));
@@ -235,4 +283,58 @@ export class CatalogosComponent implements OnInit, OnDestroy {
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
   }
 
+  filtrarCatalogosConAtributos(ListadoOriginal, FiltrarCatalogo, FiltrarAccion, FiltrarCorreo):any{
+
+  }
+
+  filtrarUsuariosConAtributos = (
+    usuarios,
+    permiso,
+    areas,
+    Correo
+  ) => {
+    let Usuarios = [...usuarios];
+
+    if (Correo != null) {
+      let arrayTempCorreo = [];
+      Correo.forEach((Correo) => {
+        arrayTempCorreo = [
+          ...arrayTempCorreo,
+          ...Usuarios.filter((e) => e.Attributes['email'] === Correo),
+        ];
+      });
+      Usuarios = arrayTempCorreo;
+    }
+
+    if (permiso != null) {
+      let arrayTempPermiso = [];
+      permiso.forEach((permiso) => {
+        arrayTempPermiso = [
+          ...arrayTempPermiso,
+          ...Usuarios.filter((e) => e.Attributes['custom:rol'] === permiso),
+        ];
+      });
+      Usuarios = arrayTempPermiso;
+    }
+    if (areas != null) {
+      let arrayTempArea = [];
+
+      areas.forEach((area) => {
+        Usuarios.forEach((usuario) => {
+          let areaArrayAtributoTemp =
+            usuario.GrupoQuePertenece.trim().length === 0
+              ? []
+              : usuario.GrupoQuePertenece.split(',');
+
+          if (areaArrayAtributoTemp.includes(area)) {
+            arrayTempArea = [...arrayTempArea, usuario];
+          }
+        });
+      });
+
+      Usuarios = arrayTempArea;
+    }
+
+    return Usuarios;
+  };
 }
