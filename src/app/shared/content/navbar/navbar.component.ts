@@ -293,7 +293,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
     stringDateArray[stringDateArray.length-1] = stringDateArray[stringDateArray.length-1].slice(0,3) + 'Z'
 
-    stringDateArray.join('.')
+    //stringDateArray.join('.')
 
     //moment().subtract(2, 'hours');
     return  new Date(stringDateArray.join('.')).toString();

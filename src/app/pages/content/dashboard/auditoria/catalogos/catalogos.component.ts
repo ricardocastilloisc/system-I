@@ -9,6 +9,7 @@ import { map } from 'rxjs/operators';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { NgxSpinnerService } from 'ngx-spinner';
+declare var $: any;
 
 @Component({
   selector: 'app-catalogos',
@@ -17,17 +18,25 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class CatalogosComponent implements OnInit, OnDestroy {
 
+  itemsCorreos = [];
+  itemsCatalogos = [];
+  itemsAcciones = [];
+
   itemsAntes = [];
   itemsDespues = [];
   itemsValor = [];
 
-  dropdownListFiltroPermisos = [];
-  SettingsFiltroDePermisos: IDropdownSettings = {};
-  selectedItemsFiltroaPermisos = [];
+  dropdownListFiltroCatalogo = [];
+  SettingsFiltroDeCatalogo: IDropdownSettings = {};
+  selectedItemsFiltroCatalogo = [];
 
   dropdownListFiltroAccion = [];
   SettingsFiltroDeAccion: IDropdownSettings = {};
   selectedItemsFiltroAccion = [];
+
+  dropdownListFiltroCorreo = [];
+  SettingsFiltroDeCorreo: IDropdownSettings = {};
+  selectedItemsFiltroCorreo = [];
 
   constructor(
     private store: Store<AppState>,
@@ -37,6 +46,8 @@ export class CatalogosComponent implements OnInit, OnDestroy {
   ) { }
 
   AUDGENUSUARIOS$: Observable<AUDGENUSUARIO_INTERFACE[]>;
+  ListadoPantalla: AUDGENUSUARIO_INTERFACE[] = [];
+  ListadoOriginal: AUDGENUSUARIO_INTERFACE[] = [];
 
   ngOnDestroy(): void {
     this.store.dispatch(UnsetAUDGENUSUARIO());
@@ -47,20 +58,35 @@ export class CatalogosComponent implements OnInit, OnDestroy {
   }
 
   initSelects = () => {
+    //console.log(this.itemsCatalogos.length)
+    if (this.itemsCatalogos.length > 0) {
+      let arregloCatalogos = [];
+      for (let i in this.itemsCatalogos) {
+        arregloCatalogos.push({ item_id: this.itemsCatalogos[i], item_text: this.itemsCatalogos[i] });
+      }
+      //console.log("arregloCatalogos", arregloCatalogos)
+      this.dropdownListFiltroCatalogo = arregloCatalogos;
+    }
+    //console.log(this.itemsAcciones.length)
+    if (this.itemsAcciones.length > 0) {
+      let arregloAcciones = [];
+      for (let i in this.itemsAcciones) {
+        arregloAcciones.push({ item_id: this.itemsAcciones[i], item_text: this.itemsAcciones[i] });
+      }
+      //console.log("arregloAcciones", arregloAcciones)
+      this.dropdownListFiltroAccion = arregloAcciones;
+    }
+    //console.log(this.itemsCorreos.length)
+    if (this.itemsCorreos.length > 0) {
+      let arregloCorreos = [];
+      for (let i in this.itemsCorreos) {
+        arregloCorreos.push({ item_id: this.itemsCorreos[i], item_text: this.itemsCorreos[i] });
+      }
+      //console.log("arregloCorreos", arregloCorreos)
+      this.dropdownListFiltroCorreo = arregloCorreos;
+    }
 
-    this.dropdownListFiltroAccion = [
-      { item_id: "AGREGAR", item_text: "AGREGAR" },
-      { item_id: "ACTUALIZAR", item_text: "ACTUALIZAR" },
-      { item_id: "ELIMINAR", item_text: "ELIMINAR" }
-    ];
-
-    this.dropdownListFiltroPermisos = [
-      { item_id: "op1", item_text: "Opción uno" },
-      { item_id: "op2", item_text: "Opción dos" },
-      { item_id: "op3", item_text: "Opción tres" }
-    ];
-
-    this.SettingsFiltroDePermisos = {
+    this.SettingsFiltroDeCatalogo = {
       singleSelection: false,
       idField: 'item_id',
       textField: 'item_text',
@@ -82,32 +108,75 @@ export class CatalogosComponent implements OnInit, OnDestroy {
       itemsShowLimit: 3,
     };
 
-
+    this.SettingsFiltroDeCorreo = {
+      singleSelection: false,
+      idField: 'item_id',
+      textField: 'item_text',
+      allowSearchFilter: false,
+      clearSearchFilter: false,
+      enableCheckAll: false,
+      maxHeight: 200,
+      itemsShowLimit: 3,
+    };
   }
 
   limpirarFiltro = () => {
-    this.selectedItemsFiltroaPermisos = [];
+    console.log("limpirarFiltro");
+    this.selectedItemsFiltroCatalogo = [];
+    this.selectedItemsFiltroAccion = [];
+    this.selectedItemsFiltroCorreo = [];
+    this.ListadoPantalla = this.ListadoOriginal;
   }
 
   filtrar = () => {
     this.spinner.show();
-    let FiltrarRol = null;
-    if (this.selectedItemsFiltroaPermisos.length !== 0) {
-      let arrayFiltroRol = [];
-      this.selectedItemsFiltroaPermisos.forEach((e) => {
-        arrayFiltroRol.push(e.item_id);
+    let FiltrarCatalogo = null;
+    let FiltrarAccion = null;
+    let FiltrarCorreo = null;
+    if (this.selectedItemsFiltroCatalogo.length !== 0) {
+      let arrayFiltroCatalogo = [];
+      this.selectedItemsFiltroCatalogo.forEach((e) => {
+        arrayFiltroCatalogo.push(e.item_id);
       });
-
-      FiltrarRol = arrayFiltroRol;
+      FiltrarCatalogo = arrayFiltroCatalogo;
+      //console.log("FiltrarCatalogo", FiltrarCatalogo);
     }
-    this.spinner.hide();
+    if (this.selectedItemsFiltroAccion.length !== 0) {
+      let arrayFiltroAccion = [];
+      this.selectedItemsFiltroAccion.forEach((e) => {
+        arrayFiltroAccion.push(e.item_id);
+      });
+      FiltrarAccion = arrayFiltroAccion;
+      //console.log("FiltrarAccion", FiltrarAccion);
+    }
+    if (this.selectedItemsFiltroCorreo.length !== 0) {
+      let arrayFiltroCorreo = [];
+      this.selectedItemsFiltroCorreo.forEach((e) => {
+        arrayFiltroCorreo.push(e.item_id);
+      });
+      FiltrarCorreo = arrayFiltroCorreo;
+      //console.log("FiltrarCorreo", FiltrarCorreo);
+    }
+    this.ListadoPantalla = this.filtrarCatalogosConAtributos(
+      this.ListadoOriginal,
+      FiltrarCatalogo,
+      FiltrarAccion,
+      FiltrarCorreo
+    );
+    setTimeout(() => {
+      this.spinner.hide();
+    }, 300);
   }
 
+  cambiarEtiquetaSeleccionadaGeneral(elemento) {
+    setTimeout(() => {
+      $('#' + elemento)
+        .find('.selected-item')
+        .attr('class', 'etiquetasCatalogos');
+    }, 1);
+  }
   ngOnInit(): void {
-
-    //console.log("Entrando a OnInit: Auditoria Catalogos");
-    this.initSelects();
-
+    //console.log("Entrando a OnInit: Auditoria Catalogos");    
     this.AUDGENUSUARIOS$ = this.store.select(
       ({ AUDGENUSUARIOS }) => AUDGENUSUARIOS.AUDGENUSUARIOS
     ).pipe(map(res => {
@@ -115,27 +184,60 @@ export class CatalogosComponent implements OnInit, OnDestroy {
       else return res.slice().sort(function (a, b) { return new Date(b.FECHA).getTime() - new Date(a.FECHA).getTime() })
     }
     ))
-
+    //console.log("this.AUDGENUSUARIOS$", this.AUDGENUSUARIOS$)
+    //console.log("this.ListadoPantalla", this.ListadoPantalla)
     this.store.select(
       ({ AUDGENUSUARIOS }) => AUDGENUSUARIOS.AUDGENUSUARIOS
     ).subscribe(res => {
-      //console.log("Store Select AUDGENUSUARIOS", res) 
+      //console.log("Store Select AUDGENUSUARIOS", res)      
+      for (let i in res) {
+        //console.log("for", res[i].CORREO);
+        if (!this.itemsCorreos.includes(res[i].CORREO)) {
+          this.itemsCorreos.push(res[i].CORREO);
+        }
+      }
+      //console.log("correos", this.itemsCorreos)
+      for (let i in res) {
+        //console.log("for", res[i].CATALOGOS.DESCRIPCION);
+        if (!this.itemsCatalogos.includes(res[i].CATALOGOS.DESCRIPCION)) {
+          this.itemsCatalogos.push(res[i].CATALOGOS.DESCRIPCION);
+        }
+      }
+      //console.log("catalogos", this.itemsCatalogos.length);
+      for (let i in res) {
+        //console.log("for", res[i].CATALOGOS.ACCION);
+        if (!this.itemsAcciones.includes(res[i].CATALOGOS.ACCION)) {
+          this.itemsAcciones.push(res[i].CATALOGOS.ACCION);
+        }
+      }
+      //console.log("acciones", this.itemsAcciones.length);
+      this.itemsCatalogos.sort();
+      this.itemsAcciones.sort();
+      this.itemsCorreos.sort();
+      if (res === null) {
+        console.log("res", res)
+      }
+      else {
+        let resp = res.slice().sort(function (a, b) { return new Date(b.FECHA).getTime() - new Date(a.FECHA).getTime() })
+        console.log("resp", resp)
+        this.ListadoOriginal = resp;
+      }
+      this.ListadoPantalla = this.ListadoOriginal;
+      this.initSelects();
     })
-
     this.store.dispatch(LoadAUDGENUSUARIOS({ consult: { MODULO: 'CATALOGOS' } }));
-
+    /*
     this.api.ListAUDGENUSUARIOS('CATALOGOS').then(res => {
       //console.log("Response ListAUDGENUSUARIOS", res)
     })
+    */
   }
 
   openModal(content, objetoDetalle: AUDGENUSUARIO_INTERFACE) {
     this.itemsValor = [];
     this.itemsAntes = [];
     this.itemsDespues = [];
-
     //console.log("Entrando al modal", objetoDetalle)
-
     let cambiosAntes = objetoDetalle.CATALOGOS.DETALLE_MODIFICACIONES[0].valorAnterior;
     if (cambiosAntes !== null) {
       cambiosAntes = cambiosAntes.replace('{', '');
@@ -149,7 +251,6 @@ export class CatalogosComponent implements OnInit, OnDestroy {
       this.itemsAntes = resAntes;
       //console.log("cambiosAntes", arregloAntes)
     }
-
     let cambiosDespues = objetoDetalle.CATALOGOS.DETALLE_MODIFICACIONES[0].valorNuevo;
     if (cambiosDespues !== null) {
       cambiosDespues = cambiosDespues.replace('{', '');
@@ -163,7 +264,6 @@ export class CatalogosComponent implements OnInit, OnDestroy {
       this.itemsDespues = resDespues;
       //console.log("cambiosDespues", arregloDespues)
     }
-
     if (cambiosAntes !== null) {
       let getValor = cambiosAntes.split(",");
       let resultado = [];
@@ -184,13 +284,52 @@ export class CatalogosComponent implements OnInit, OnDestroy {
       this.itemsValor = resultado;
       //console.log("result", resultado)
     }
-
-
     // console.log("itemsValor", this.itemsValor)
     // console.log("itemsAntes", this.itemsAntes)
     // console.log("itemsDespues", this.itemsDespues)
-
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
+  }
+
+
+
+  filtrarCatalogosConAtributos(ListadoOriginal: AUDGENUSUARIO_INTERFACE[], FiltrarCatalogo, FiltrarAccion, FiltrarCorreo): any {
+    let response = ListadoOriginal;
+    if (FiltrarCatalogo != null) {
+      let arrayTempPermiso = [];
+      FiltrarCatalogo.forEach((FiltrarCatalogo) => {
+        arrayTempPermiso = [
+          ...arrayTempPermiso,
+          ...response.filter((e) => e.CATALOGOS.DESCRIPCION === FiltrarCatalogo),
+        ];
+      });
+      response = arrayTempPermiso;
+    }
+
+    if (FiltrarAccion != null) {
+      let arrayTempPermiso = [];
+      FiltrarAccion.forEach((FiltrarAccion) => {
+        arrayTempPermiso = [
+          ...arrayTempPermiso,
+          ...response.filter((e) => e.CATALOGOS.ACCION === FiltrarAccion),
+        ];
+      });
+      response = arrayTempPermiso;
+    }
+
+
+    if (FiltrarCorreo != null) {
+      let arrayTempPermiso = [];
+      FiltrarCorreo.forEach((FiltrarCorreo) => {
+        arrayTempPermiso = [
+          ...arrayTempPermiso,
+          ...response.filter((e) => e.CORREO === FiltrarCorreo),
+        ];
+      });
+      response = arrayTempPermiso;
+    }
+    const uniqueArr = [... new Set(response.map(data => data.ID))]
+    console.log(uniqueArr)
+    return response;
   }
 
 }
