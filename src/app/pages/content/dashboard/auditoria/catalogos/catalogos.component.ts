@@ -299,7 +299,7 @@ export class CatalogosComponent implements OnInit, OnDestroy {
       FiltrarCatalogo.forEach((FiltrarCatalogo) => {
         arrayTempPermiso = [
           ...arrayTempPermiso,
-          ...ListadoOriginal.filter((e) => e.CATALOGOS.DESCRIPCION === FiltrarCatalogo),
+          ...response.filter((e) => e.CATALOGOS.DESCRIPCION === FiltrarCatalogo),
         ];
       });
       response = arrayTempPermiso;
@@ -310,7 +310,7 @@ export class CatalogosComponent implements OnInit, OnDestroy {
       FiltrarAccion.forEach((FiltrarAccion) => {
         arrayTempPermiso = [
           ...arrayTempPermiso,
-          ...ListadoOriginal.filter((e) => e.CATALOGOS.ACCION === FiltrarAccion),
+          ...response.filter((e) => e.CATALOGOS.ACCION === FiltrarAccion),
         ];
       });
       response = arrayTempPermiso;
@@ -322,7 +322,7 @@ export class CatalogosComponent implements OnInit, OnDestroy {
       FiltrarCorreo.forEach((FiltrarCorreo) => {
         arrayTempPermiso = [
           ...arrayTempPermiso,
-          ...ListadoOriginal.filter((e) => e.CORREO === FiltrarCorreo),
+          ...response.filter((e) => e.CORREO === FiltrarCorreo),
         ];
       });
       response = arrayTempPermiso;
