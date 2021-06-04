@@ -60,13 +60,13 @@
                         name="fechaFiltrar" [value]="maxDate" max="{{ maxDate| date:'yyyy-MM-dd'}}" />
                 </div>
                 <div class="col2-row2">
-                    <button style="cursor: pointer">Buscar</button>
+                    <button style="cursor: pointer" (click)="filtrar()">Buscar</button>
                 </div>
             </section>
         </div>
     </div>
     <div class="d-flex col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12 justify-content-center"
-        *ngIf="AUDGENUSUARIOS$ | async as AUDGENUSUARIOS">
+        *ngIf="ListadoPantalla as ListadoPantalla">
         <div class="card-lista-design-general" style="overflow-x: auto">
             <table class="table listado-design-general">
                 <tr>
@@ -76,20 +76,20 @@
                     <th style="padding-left: 30px; max-width: 150px">Acción</th>
                     <th style="padding-left: 30px; max-width: 150px">Detalle</th>
                 </tr>
-                <tr *ngFor="let AUDGENUSUARIO of AUDGENUSUARIOS">
-                    <td style="padding-left: 40px; max-width: 300px">{{AUDGENUSUARIO.CATALOGOS.DESCRIPCION}}
+                <tr *ngFor="let itemAuditoria of ListadoPantalla">
+                    <td style="padding-left: 40px; max-width: 300px">{{itemAuditoria.CATALOGOS.DESCRIPCION}}
                     </td>
-                    <td style="padding-left: 30px; max-width: 300px">{{AUDGENUSUARIO.USUARIO.NOMBRE}}
-                        {{AUDGENUSUARIO.USUARIO.APELLIDO_PATERNO}}
+                    <td style="padding-left: 30px; max-width: 300px">{{itemAuditoria.USUARIO.NOMBRE}}
+                        {{itemAuditoria.USUARIO.APELLIDO_PATERNO}}
                     </td>
-                    <td style="padding-left: 30px; max-width: 150px">{{AUDGENUSUARIO.FECHA | date :'dd/MM/yyyy'}}
-                        {{AUDGENUSUARIO.FECHA | date:'mediumTime'}}
+                    <td style="padding-left: 30px; max-width: 150px">{{itemAuditoria.FECHA | date :'dd/MM/yyyy'}}
+                        {{itemAuditoria.FECHA | date:'mediumTime'}}
                     </td>
-                    <td style="padding-left: 30px; max-width: 150px">{{AUDGENUSUARIO.CATALOGOS.ACCION}}
+                    <td style="padding-left: 30px; max-width: 150px">{{itemAuditoria.CATALOGOS.ACCION}}
                     </td>
                     <td style="width: 200px" class="justify-content-center">
                         <center><img style="cursor: pointer" class="detalle-icon"
-                                (click)="openModal(content, AUDGENUSUARIO)" /></center>
+                                (click)="openModal(content, itemAuditoria)" /></center>
                     </td>
                 </tr>
             </table>

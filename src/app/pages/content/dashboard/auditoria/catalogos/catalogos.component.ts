@@ -46,8 +46,8 @@ export class CatalogosComponent implements OnInit, OnDestroy {
   ) { }
 
   AUDGENUSUARIOS$: Observable<AUDGENUSUARIO_INTERFACE[]>;
-  ListadoPantalla$: Observable<AUDGENUSUARIO_INTERFACE[]>;
-  ListadoOriginal$: Observable<AUDGENUSUARIO_INTERFACE[]>;
+  ListadoPantalla = [];
+  ListadoOriginal = [];
 
   ngOnDestroy(): void {
     this.store.dispatch(UnsetAUDGENUSUARIO());
@@ -125,7 +125,7 @@ export class CatalogosComponent implements OnInit, OnDestroy {
     this.selectedItemsFiltroCatalogo = [];
     this.selectedItemsFiltroAccion = [];
     this.selectedItemsFiltroCorreo = [];
-    this.ListadoPantalla$ = this.ListadoOriginal$;
+    this.ListadoPantalla = this.ListadoOriginal;
   }
 
   filtrar = () => {
@@ -157,8 +157,8 @@ export class CatalogosComponent implements OnInit, OnDestroy {
       FiltrarCorreo = arrayFiltroCorreo;
       //console.log("FiltrarCorreo", FiltrarCorreo);
     }
-    this.ListadoPantalla$ = this.filtrarCatalogosConAtributos(
-      this.ListadoOriginal$,
+    this.ListadoPantalla = this.filtrarCatalogosConAtributos(
+      this.ListadoOriginal,
       FiltrarCatalogo,
       FiltrarAccion,
       FiltrarCorreo
@@ -184,10 +184,8 @@ export class CatalogosComponent implements OnInit, OnDestroy {
       else return res.slice().sort(function (a, b) { return new Date(b.FECHA).getTime() - new Date(a.FECHA).getTime() })
     }
     ))
-
-    this.ListadoOriginal$ = this.AUDGENUSUARIOS$;
-    console.log("this.AUDGENUSUARIOS$", this.AUDGENUSUARIOS$)
-    
+    //console.log("this.AUDGENUSUARIOS$", this.AUDGENUSUARIOS$)
+    console.log("this.ListadoPantalla", this.ListadoPantalla)
     this.store.select(
       ({ AUDGENUSUARIOS }) => AUDGENUSUARIOS.AUDGENUSUARIOS
     ).subscribe(res => {
@@ -216,6 +214,15 @@ export class CatalogosComponent implements OnInit, OnDestroy {
       this.itemsCatalogos.sort();
       this.itemsAcciones.sort();
       this.itemsCorreos.sort();
+      if (res === null) {
+        console.log("res", res)
+      }
+      else {
+        let resp = res.slice().sort(function (a, b) { return new Date(b.FECHA).getTime() - new Date(a.FECHA).getTime() })
+        console.log("resp", resp)
+        this.ListadoOriginal = resp;
+      }
+      this.ListadoPantalla = this.ListadoOriginal;
       this.initSelects();
     })
     this.store.dispatch(LoadAUDGENUSUARIOS({ consult: { MODULO: 'CATALOGOS' } }));
@@ -283,58 +290,13 @@ export class CatalogosComponent implements OnInit, OnDestroy {
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
   }
 
-  filtrarCatalogosConAtributos(ListadoOriginal, FiltrarCatalogo, FiltrarAccion, FiltrarCorreo):any{
-
+  filtrarCatalogosConAtributos(ListadoOriginal, FiltrarCatalogo, FiltrarAccion, FiltrarCorreo): any {
+    let response = ListadoOriginal;
+    console.log("filtrar: ", response);
+    for (let i in response) {
+      response = response[i];
+    }
+    return response;
   }
 
-  filtrarUsuariosConAtributos = (
-    usuarios,
-    permiso,
-    areas,
-    Correo
-  ) => {
-    let Usuarios = [...usuarios];
-
-    if (Correo != null) {
-      let arrayTempCorreo = [];
-      Correo.forEach((Correo) => {
-        arrayTempCorreo = [
-          ...arrayTempCorreo,
-          ...Usuarios.filter((e) => e.Attributes['email'] === Correo),
-        ];
-      });
-      Usuarios = arrayTempCorreo;
-    }
-
-    if (permiso != null) {
-      let arrayTempPermiso = [];
-      permiso.forEach((permiso) => {
-        arrayTempPermiso = [
-          ...arrayTempPermiso,
-          ...Usuarios.filter((e) => e.Attributes['custom:rol'] === permiso),
-        ];
-      });
-      Usuarios = arrayTempPermiso;
-    }
-    if (areas != null) {
-      let arrayTempArea = [];
-
-      areas.forEach((area) => {
-        Usuarios.forEach((usuario) => {
-          let areaArrayAtributoTemp =
-            usuario.GrupoQuePertenece.trim().length === 0
-              ? []
-              : usuario.GrupoQuePertenece.split(',');
-
-          if (areaArrayAtributoTemp.includes(area)) {
-            arrayTempArea = [...arrayTempArea, usuario];
-          }
-        });
-      });
-
-      Usuarios = arrayTempArea;
-    }
-
-    return Usuarios;
-  };
 }
