@@ -21,56 +21,149 @@
 <!-- ********************************************************* -->
 <!-- ********************************************************* -->
 <!-- ********************************************************* -->
-
-<div class="card-busqueda" >
-    <div class="mt-4">Buscar por</div>
-    <div style="
+<section *ngIf="!enProceso()">
+    <div class="card-busqueda">
+        <div class="mt-4">Buscar por</div>
+        <div style="
         text-align: right;
         width: 100%;
         justify-content: flex-end;
         direction: rtl;
-      ">
-        <div style="margin-right: 10%">
-            <a class="limpiarFiltro">Eliminar Filtro
-                <img src="assets/icons/Eliminar.svg" class="tamanioFiltroIcono" /></a>
+    ">
+            <div style="margin-right: 10%">
+                <a class="limpiarFiltro">Eliminar Filtro
+                    <img src="assets/icons/Eliminar.svg" class="tamanioFiltroIcono" /></a>
+            </div>
+        </div>
+        <div name="filtros">
+            <section class="mt-3">
+                <div class="col2-row2">
+                    <ng-multiselect-dropdown style="width: 80%; padding-left: 10px" [placeholder]="'Nombre'"
+                        id="filtroPermiso" [settings]="SettingsFiltroDeNombres" [data]="dropdownListFiltroNombres"
+                        [(ngModel)]="selectedItemsFiltroNombress"
+                        (onSelect)="cambiarEtiquetaSeleccionadaGeneral('filtroPermiso')">
+                    </ng-multiselect-dropdown>
+                </div>
+                <div class="col2-row2">
+                    <ng-multiselect-dropdown style="width: 80%;" [placeholder]="'Acción'"
+                        id="filtroAccion" [settings]="SettingsFiltroDeAccion" [data]="dropdownListFiltroAccion"
+                        [(ngModel)]="selectedItemsFiltroAccion"
+                        (onSelect)="cambiarEtiquetaSeleccionadaGeneral('filtroAccion')">
+                    </ng-multiselect-dropdown>
+                </div>
+                <div class="col2-row2">
+                    <ng-multiselect-dropdown style="width: 80%; padding-left: 10px"
+                        [placeholder]="'Correo electrónico'" id="filtroCorreo" [settings]="SettingsFiltroDeCorreos"
+                        [data]="dropdownListFiltroCorreos" [(ngModel)]="selectedItemsFiltroCorreos"
+                        (onSelect)="cambiarEtiquetaSeleccionadaGeneral('filtroPermiso')">
+                    </ng-multiselect-dropdown>
+                </div>
+                <div class="col2-row2">
+                    <input style="width: 80%; padding-left: 10px" type="date" placeholder="dd-MM-yyyy"
+                        onfocus="(this.type='date')" formControlName="fechaFiltrar" id="fechaFiltrar"
+                        name="fechaFiltrar" [value]="maxDate" max="{{ maxDate| date:'yyyy-MM-dd'}}" />
+                </div>
+                <div class="col2-row2">
+                    <button style="cursor: pointer">Buscar</button>
+                </div>
+            </section>
         </div>
     </div>
-
-    <div>
-        <section class="mt-3">
-            <div class="col2-row2"><select>Opcion</select>
+    <div class="row justify-content-center" *ngIf="ListadoUsuariosPantalla as AUDGENUSUARIOS">
+        <div class="d-flex col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12 justify-content-center">
+            <div class="card-lista-design-general" style="overflow-x: auto">
+                <table class="table listado-design-general">
+                    <tr>
+                        <th style="padding-left: 40px; max-width: 300px">Nombre</th>
+                        <th style="padding-left: 40px; max-width: 300px">Usuario</th>
+                        <th style="padding-left: 40px; max-width: 150px">Fecha</th>
+                        <th style="padding-left: 40px; max-width: 150px">Acción</th>
+                        <th style="padding-left: 40px; max-width: 150px"> </th>
+                    </tr>
+                    <tr *ngFor="let AUDGENUSUARIO of AUDGENUSUARIOS | paginate
+                    : {
+                        id: 'Usuarios',
+                        itemsPerPage: 10,
+                        currentPage: paginaActualUsuarios
+                      };
+                index as i">
+                        <td style="padding-left: 40px; max-width: 300px">{{AUDGENUSUARIO.USUARIO.NOMBRE}} {{AUDGENUSUARIO.USUARIO.APELLIDO_PATERNO}}
+                        </td>
+                        <td style="padding-left: 40px; max-width: 300px">{{AUDGENUSUARIO.CORREO}}
+                        </td>
+                        <td style="padding-left: 40px; max-width: 150px">{{AUDGENUSUARIO.FECHA | date :'dd/MM/yyyy'}} {{AUDGENUSUARIO.FECHA | date:'mediumTime'}} 
+                        </td>
+                        <td style="padding-left: 40px; max-width: 150px">{{AUDGENUSUARIO.PERMISOS_USUARIOS.ACCION}}
+                        </td>
+                        <td style="width: 200px">
+                            <img style="cursor: pointer" class="detalle-icon" />
+                        </td>
+                    </tr>
+                </table>
             </div>
+        </div>
 
-            <div class="col2-row2">
-                <button style="cursor: pointer">Buscar</button>
-            </div>
-        </section>
+        
+
     </div>
-</div>
-<div class="row justify-content-center" *ngIf="AUDGENUSUARIOS$ | async as AUDGENUSUARIOS">
-    <div class="d-flex col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12 justify-content-center">
-        <div class="card-lista-design-general" style="overflow-x: auto">
-            <table class="table listado-design-general">
-                <tr>
-                    <th style="padding-left: 40px; max-width: 300px">Nombre</th>
-                    <th style="padding-left: 40px; max-width: 300px">Usuario</th>
-                    <th style="padding-left: 40px; max-width: 150px">Fecha</th>
-                    <th style="padding-left: 40px; max-width: 150px">Acción</th>
-                    <th style="padding-left: 40px; max-width: 150px"> </th>
-                </tr>
-                <tr *ngFor="let AUDGENUSUARIO of AUDGENUSUARIOS">
-                    <td style="padding-left: 40px; max-width: 300px">{{AUDGENUSUARIO.USUARIO.NOMBRE}} {{AUDGENUSUARIO.USUARIO.APELLIDO_PATERNO}}
-                    </td>
-                    <td style="padding-left: 40px; max-width: 300px">{{AUDGENUSUARIO.CORREO}}
-                    </td>
-                    <td style="padding-left: 40px; max-width: 150px">{{AUDGENUSUARIO.FECHA | date :'dd/MM/yyyy'}} {{AUDGENUSUARIO.FECHA | date:'mediumTime'}} 
-                    </td>
-                    <td style="padding-left: 40px; max-width: 150px">{{AUDGENUSUARIO.PERMISOS_USUARIOS.ACCION}}
-                    </td>
-                    <td style="width: 200px">
-                        <img style="cursor: pointer" class="detalle-icon" />
-                    </td>
-                </tr>
-            </table>
+
+    <pagination-template id="Usuarios" #p="paginationApi" *ngIf="verPaginado()"
+    (pageChange)="paginaActualUsuarios = $event" class="ngx-pagination">
+    <div class="custom-pagination">
+      <div class="pagination-previous" [class.disabled]="p.isFirstPage()">
+        <span *ngIf="!p.isFirstPage()" (click)="p.previous()">
+          << </span>
+      </div>
+      <div class="page-number" *ngFor="let page of p.pages" [class.current]="p.getCurrent() === page.value">
+        <span (click)="p.setCurrent(page.value)" *ngIf="p.getCurrent() !== page.value">{{ page.label }}</span>
+        <div *ngIf="p.getCurrent() === page.value">
+          <span>{{ page.label }}</span>
+        </div>
+      </div>
+      <div class="pagination-next" [class.disabled]="p.isLastPage()">
+        <span *ngIf="!p.isLastPage()" (click)="p.next()"> >> </span>
+      </div>
+    </div>
+  </pagination-template>
+    
+</section>
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">
+            <div>Detalle de los cambios</div>
+        </h4>
+        <button type="button" aria-label="Close" (click)="modal.dismiss()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm">
+                    <p class="titulo">Campo</p>
+                    <div *ngFor="let item of itemsValor">
+                        {{item}}
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <p class="titulo">Antes</p>
+                    <div *ngFor="let item of itemsAntes">
+                        {{item}}
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <p class="titulo">Después</p>
+                    <div *ngFor="let item of itemsDespues">
+                        {{item}}
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+    <div class="modal-footer">
+        <button type="button" class="btn bottonCerrarModal" data-dismiss="modal" (click)="modal.close()">
+            Cerrar
+        </button>
+    </div>
+</ng-template>
