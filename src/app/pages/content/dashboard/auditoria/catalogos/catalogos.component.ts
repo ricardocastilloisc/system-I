@@ -46,8 +46,8 @@ export class CatalogosComponent implements OnInit, OnDestroy {
   ) { }
 
   AUDGENUSUARIOS$: Observable<AUDGENUSUARIO_INTERFACE[]>;
-  ListadoPantalla = [];
-  ListadoOriginal = [];
+  ListadoPantalla: AUDGENUSUARIO_INTERFACE[] = [];
+  ListadoOriginal: AUDGENUSUARIO_INTERFACE[] = [];
 
   ngOnDestroy(): void {
     this.store.dispatch(UnsetAUDGENUSUARIO());
@@ -185,7 +185,7 @@ export class CatalogosComponent implements OnInit, OnDestroy {
     }
     ))
     //console.log("this.AUDGENUSUARIOS$", this.AUDGENUSUARIOS$)
-    console.log("this.ListadoPantalla", this.ListadoPantalla)
+    //console.log("this.ListadoPantalla", this.ListadoPantalla)
     this.store.select(
       ({ AUDGENUSUARIOS }) => AUDGENUSUARIOS.AUDGENUSUARIOS
     ).subscribe(res => {
@@ -290,12 +290,45 @@ export class CatalogosComponent implements OnInit, OnDestroy {
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
   }
 
-  filtrarCatalogosConAtributos(ListadoOriginal, FiltrarCatalogo, FiltrarAccion, FiltrarCorreo): any {
+
+
+  filtrarCatalogosConAtributos(ListadoOriginal: AUDGENUSUARIO_INTERFACE[], FiltrarCatalogo, FiltrarAccion, FiltrarCorreo): any {
     let response = ListadoOriginal;
-    console.log("filtrar: ", response);
-    for (let i in response) {
-      response = response[i];
+    if (FiltrarCatalogo != null) {
+      let arrayTempPermiso = [];
+      FiltrarCatalogo.forEach((FiltrarCatalogo) => {
+        arrayTempPermiso = [
+          ...arrayTempPermiso,
+          ...ListadoOriginal.filter((e) => e.CATALOGOS.DESCRIPCION === FiltrarCatalogo),
+        ];
+      });
+      response = arrayTempPermiso;
     }
+
+    if (FiltrarAccion != null) {
+      let arrayTempPermiso = [];
+      FiltrarAccion.forEach((FiltrarAccion) => {
+        arrayTempPermiso = [
+          ...arrayTempPermiso,
+          ...ListadoOriginal.filter((e) => e.CATALOGOS.ACCION === FiltrarAccion),
+        ];
+      });
+      response = arrayTempPermiso;
+    }
+
+
+    if (FiltrarCorreo != null) {
+      let arrayTempPermiso = [];
+      FiltrarCorreo.forEach((FiltrarCorreo) => {
+        arrayTempPermiso = [
+          ...arrayTempPermiso,
+          ...ListadoOriginal.filter((e) => e.CORREO === FiltrarCorreo),
+        ];
+      });
+      response = arrayTempPermiso;
+    }
+    const uniqueArr = [... new Set(response.map(data => data.ID))]
+    console.log(uniqueArr)
     return response;
   }
 
