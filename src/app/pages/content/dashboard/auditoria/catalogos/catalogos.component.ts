@@ -323,9 +323,12 @@ export class CatalogosComponent implements OnInit, OnDestroy {
       }
       tabla.push({ valor: this.itemsValor[i], antes: this.itemsAntes[i], despues: this.itemsDespues[i], cambio: banderaCambio })
     }
-    console.log("tabla", tabla);
+    
+    this.itemsTabla = tabla;
+    console.log("itemsTabla", this.itemsTabla);
     this.verModal = true;
     
+
     //this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
   }
 

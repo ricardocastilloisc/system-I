@@ -119,33 +119,33 @@
                     <p class="titulo-modal">Detalle de los cambios</p>
                 </div>
             </div>
-           
-            <div class="card-body" style="padding-left: 127px; padding-right: 127px">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-sm">
-                            <p class="titulo">Campo</p>
-                            <div *ngFor="let item of itemsValor">
-                                {{item}}
-                                <hr>
-                            </div>
-                        </div>
-                        <div class="col-sm">
-                            <p class="titulo">Antes</p>
-                            <div *ngFor="let item of itemsAntes">
-                                {{item}}
-                                <hr>
-                            </div>
-                        </div>
-                        <div class="col-sm">
-                            <p class="titulo">Después</p>
-                            <div *ngFor="let item of itemsDespues">
-                                {{item}}
-                                <hr>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
+
+
+
+
+            
+            <div class="card-lista-design-general" style="overflow-x: auto">
+
+                <table class="table listado-design-general">
+                    <tr>
+                        <th style="padding-left: 40px; max-width: 300px">Campo</th>
+                        <th style="padding-left: 30px; max-width: 300px">Antes</th>
+                        <th style="padding-left: 30px; max-width: 150px">Despues</th>
+                        <th style="padding-left: 30px; max-width: 150px">Bandera Cambio</th>
+                    </tr>
+                    <tr *ngFor="let item of itemsTabla">
+                        <td style="padding-left: 40px; max-width: 300px">{{item.valor}}
+                        </td>
+                        <td style="padding-left: 30px; max-width: 300px">{{item.antes}}
+                        </td>
+                        <td style="padding-left: 30px; max-width: 150px">{{item.despues}}
+                        </td>
+                        <td style="padding-left: 30px; max-width: 150px">{{item.cambio}}
+                        </td>
+                    </tr>
+                </table>
+
             </div>
             <div class="row aling-items-center text-center" style="margin-top: 20px; margin-bottom: 30px">
                 <div class="col-12">
