@@ -22,7 +22,7 @@ export class CatalogosComponent implements OnInit, OnDestroy {
 
   filtroAuditoriaCatalogosForm: FormGroup;
 
-  maxDate: Date;
+  maxDate: Date; 
 
   itemsCorreos = [];
   itemsCatalogos = [];
@@ -68,6 +68,9 @@ export class CatalogosComponent implements OnInit, OnDestroy {
   }
 
   initSelects = () => {
+    
+    this.maxDate = new Date();
+    
     this.filtroAuditoriaCatalogosForm = this.fb.group({
       filtroFecha: []
     })

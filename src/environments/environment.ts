@@ -10,9 +10,9 @@ export const environment = {
     region: "us-east-1",
   },
   
-  //urlExternalLogin: 'https://sia-app-up.auth.us-east-1.amazoncognito.com/oauth2/authorize?identity_provider=Azure&redirect_uri=https://dev.d23mbxjbgl0msz.amplifyapp.com/&response_type=code&client_id=5cvq4jop6octili7583n597kd1&scope=phone%20email%20openid%20profile',
+  urlExternalLogin: 'https://sia-app-up.auth.us-east-1.amazoncognito.com/oauth2/authorize?identity_provider=Azure&redirect_uri=https://dev.d23mbxjbgl0msz.amplifyapp.com/&response_type=code&client_id=5cvq4jop6octili7583n597kd1&scope=phone%20email%20openid%20profile',
   
-  urlExternalLogin: 'https://sia-app-up.auth.us-east-1.amazoncognito.com/oauth2/authorize?identity_provider=Azure&redirect_uri=http://localhost:4200/dashboard&response_type=code&client_id=5cvq4jop6octili7583n597kd1&scope=phone%20email%20openid%20profile',
+  //urlExternalLogin: 'https://sia-app-up.auth.us-east-1.amazoncognito.com/oauth2/authorize?identity_provider=Azure&redirect_uri=http://localhost:4200/dashboard&response_type=code&client_id=5cvq4jop6octili7583n597kd1&scope=phone%20email%20openid%20profile',
   
   accessTokenUrl: 'https://sia-app-up.auth.us-east-1.amazoncognito.com/oauth2/token',
   
@@ -25,13 +25,13 @@ export const environment = {
       oauth: {
         domain: "sia-app-up.auth.us-east-1.amazoncognito.com",
         scope: ["phone", "email", "openid", "profile"],
-        /*
+        
         redirectSignIn: "https://dev.d23mbxjbgl0msz.amplifyapp.com/",
         redirectSignOut: "https://dev.d23mbxjbgl0msz.amplifyapp.com/",
-        */
+        /*
         redirectSignIn: "http://localhost:4200/dashboard",
         redirectSignOut: "http://localhost:4200",
-        
+        */
         responseType: "code"
       },
     }
@@ -56,6 +56,14 @@ export const environment = {
       {
         name: 'INT CASH',
         endpoint: 'https://ixsp0lvu2h.execute-api.us-east-1.amazonaws.com/dev/sia/afore/intcash'
+      },
+      {
+        name: 'MO',
+        endpoint: 'https://ixsp0lvu2h.execute-api.us-east-1.amazonaws.com/dev/sia/afore/mo'
+      },
+      {
+        name: 'CRD',
+        endpoint: 'https://ixsp0lvu2h.execute-api.us-east-1.amazonaws.com/dev/sia/fondos/crd'
       }
     ],
   },

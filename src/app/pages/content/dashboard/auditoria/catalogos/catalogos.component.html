@@ -86,7 +86,7 @@
         </div>
 
 
-        <div class="card-lista-design-general" style="overflow-x: auto"  *ngIf=" ListadoPantalla.length !== 0">           
+        <div class="card-lista-design-general" style="overflow-x: auto" *ngIf=" ListadoPantalla.length !== 0">
             <table class="table listado-design-general">
                 <tr>
                     <th style="padding-left: 40px; max-width: 300px">Catálogo</th>
@@ -118,14 +118,18 @@
                     </td>
                 </tr>
             </table>
-            <div class="paginator align-items-left "></div><pagination-template id="auditoria" #p="paginationApi" (pageChange)="paginaActual = $event" class="ngx-pagination">
+            <div class="paginator align-items-left"></div>
+            <pagination-template id="auditoria" #p="paginationApi" (pageChange)="paginaActual = $event"
+                class="ngx-pagination">
                 <div class="custom-pagination">
                     <div class="pagination-previous" [class.disabled]="p.isFirstPage()">
                         <span *ngIf="!p.isFirstPage()" (click)="p.previous()">
                             << </span>
                     </div>
-                    <div class="page-number" *ngFor="let page of p.pages" [class.current]="p.getCurrent() === page.value">
-                        <span (click)="p.setCurrent(page.value)" *ngIf="p.getCurrent() !== page.value">{{ page.label }}</span>
+                    <div class="page-number" *ngFor="let page of p.pages"
+                        [class.current]="p.getCurrent() === page.value">
+                        <span (click)="p.setCurrent(page.value)" *ngIf="p.getCurrent() !== page.value">{{ page.label
+                            }}</span>
                         <div *ngIf="p.getCurrent() === page.value">
                             <span>{{ page.label }}</span>
                         </div>
@@ -140,7 +144,7 @@
 
 
 
-   
+
 
 
 </section>
