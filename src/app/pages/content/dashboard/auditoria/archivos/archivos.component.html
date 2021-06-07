@@ -1,28 +1,154 @@
 <section id="optionshome">
-
-  <div class="container-fluid" >
+  <div class="container-fluid">
     <div class="d-flex" style="width: 100%">
       <div class="row contentCards">
-        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-          <div class="card cardAzulFuerte" style="padding-left: 10px">
-
+        <div
+          class="
+            col-lg-6 col-md-12 col-sm-12 col-xs-12
+            d-flex
+            justify-content-center
+          "
+        >
+          <div
+            class="card cardAzulFuerte justify-content-center"
+            style="padding-left: 10px"
+          >
             <div class="card-body cardCatalogosArchivos">
-              <div class="d-flex flex-column align-items-center justify-content-center">
+              <div
+                class="
+                  d-flex
+                  flex-column
+                  align-items-center
+                  justify-content-center
+                "
+              >
+                <div
+                  style="width: 100%"
+                  class="d-flex flex-column justify-content-center"
+                >
+                  <div
+                    class="
+                      archivosTitulo
+                      d-flex
+                      flex-column
+                      justify-content-center
+                    "
+                    style="text-align: center"
+                  >
+                    Resumen del día archivos
+                  </div>
+                  <div
+                    class="d-flex flex-row justify-content-center"
+                    style="width: 100%"
+                  >
+                    <div
+                      class="col-6 textosCatidadesArchivo"
+                      style="text-align: right"
+                    >
+                      Procesados:
+                    </div>
+                    <div class="col-6 textosCatidadesArchivo">15</div>
+                  </div>
+                  <div
+                    class="d-flex flex-row justify-content-center"
+                    style="width: 100%"
+                  >
+                    <div
+                      class="col-6 textosCatidadesArchivo"
+                      style="text-align: right"
+                    >
+                      Con éxito:
+                    </div>
+                    <div class="col-6 textosCatidadesArchivo">15</div>
+                  </div>
+                  <div
+                    class="d-flex flex-row justify-content-center"
+                    style="width: 100%"
+                  >
+                    <div
+                      class="col-6 textosCatidadesArchivo"
+                      style="text-align: right"
+                    >
+                      Procesados:
+                    </div>
+                    <div class="col-6 textosCatidadesArchivo">15</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="
+            col-lg-6 col-md-12 col-sm-12 col-xs-12
+            d-flex
+            justify-content-center
+            marginResponsibe
+          "
+        >
+          <div class="card cardAzulFuerte" style="padding-left: 10px">
+            <div class="card-body cardCatalogosArchivos">
+              <div
+                class="
+                  d-flex
+                  flex-column
+                  align-items-center
+                  justify-content-center
+                "
+              >
                 <div>
                   <div
-                    class="elementsMenus d-flex flex-column justify-content-center">
-                    <div>
-                      <a routerLinkActive="active" routerLink="/administracion/catalogos">
-                        <img src="assets/imgs/icons/inicio/items/catalogo.png" class="itemsTextoImagenCentro" />
-                        Catálogos</a>
+                    class="
+                      elementsMenus
+                      d-flex
+                      flex-column
+                      justify-content-center
+                    "
+                  >
+                    <div class="archivosTitulo">Buscar por:</div>
+                  </div>
+                  <div
+                    class="
+                      elementsMenus
+                      d-flex
+                      flex-column
+                      justify-content-center
+                    "
+                  >
+                    <div>Multiselect</div>
+                  </div>
+                  <div
+                    class="
+                      elementsMenus
+                      d-flex
+                      flex-column
+                      justify-content-center
+                    "
+                  >
+                    <div class="form-group">
+                      <input
+                        class="form-control"
+                        style="width: 100%; padding-left: 10px"
+                        type="date"
+                        placeholder="dd-MM-yyyy"
+                        onfocus="(this.type='date')"
+                        id="fechaFiltrar"
+                        name="fechaFiltrar"
+                      />
                     </div>
                   </div>
                   <div
-                    class="elementsMenus d-flex flex-column justify-content-center">
+                    class="
+                      elementsMenus
+                      d-flex
+                      flex-column
+                      justify-content-center
+                    "
+                  >
                     <div>
-                      <a routerLinkActive="active" routerLink="/administracion/usuarios">
-                        <img src="assets/imgs/icons/inicio/items/usuarios.png" class="itemsTextoImagenCentro" />
-                        Usuarios</a>
+                      <button class="btn bottonBuscarFiltroArchivos">
+                        Buscar
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -30,63 +156,31 @@
             </div>
           </div>
         </div>
-        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 marginResponsibe">
-          <div class="card cardAzulFuerte" style="padding-left: 10px">
-
-
-            <div class="card-body cardCatalogosArchivos">
-              <div class="d-flex flex-column align-items-center justify-content-center">
-                <div>
-                  <div class="elementsMenus d-flex flex-column justify-content-center">
-                    <div>
-                      <a routerLinkActive="active" routerLink="/procesos/diurno">
-                        <img src="assets/imgs/icons/inicio/items/feather-sun.png" class="itemsTextoImagenCentro" />
-                        Diurnos</a>
-                    </div>
-                  </div>
-                  <div class="elementsMenus d-flex flex-column justify-content-center">
-                    <div>
-                      <a routerLinkActive="active" routerLink="/procesos/nocturno">
-                        <img src="assets/imgs/icons/inicio/items/feather-moon.png" class="itemsTextoImagenCentro" />
-                        Nocturno</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
       </div>
-
-
     </div>
 
-
-    <div class="row">
-      ''''
-    </div>
+    <div class="row">''''</div>
     <div class="row justify-content-center">
-      <div class="d-flex col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12 justify-content-center">
-        <div class="card-lista-design-general" style="overflow-x: auto">
-
-
-          <table class="table listado-design-general" >
+      <div
+        class="
+          d-flex
+          col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12
+          justify-content-center
+        "
+      >
+        <div
+          class="card-lista-design-general"
+          style="overflow-x: auto; width: 90%"
+        >
+          <table class="table listado-design-generalArchivo">
             <tr>
-              <th style="padding-left: 40px; max-width: 300px">Nombre</th>
-              <th style="padding-left: 40px; max-width: 300px">Correo</th>
-              <th style="padding-left: 40px; max-width: 150px">Área</th>
-              <th style="padding-left: 40px; max-width: 150px">Permisos</th>
-              <th style="padding-left: 40px; max-width: 150px">Negocio</th>
-              <th style="padding-left: 40px; max-width: 150px">Acciones</th>
+              <th>Archivo</th>
+              <th>Fecha</th>
+              <th>Descripción</th>
             </tr>
-
           </table>
         </div>
       </div>
-
-
-
     </div>
   </div>
 </section>
