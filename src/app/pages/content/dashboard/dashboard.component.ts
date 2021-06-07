@@ -4,7 +4,10 @@ import Auth from '@aws-amplify/auth';
 import { convertToObject } from 'typescript';
 import { APIService } from '../../../API.service';
 import { NotificacionesService } from '../../../services/notificaciones.service';
-import { cargarCatalogos, unSetCatalogos } from '../../../ReduxStore/actions/catalogos/catalogos.actions';
+import {
+  cargarCatalogos,
+  unSetCatalogos,
+} from '../../../ReduxStore/actions/catalogos/catalogos.actions';
 import { Store } from '@ngrx/store';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Subscription } from 'rxjs';
@@ -15,7 +18,6 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
-
   LoadingDetailCatalogos$: Subscription;
 
   constructor(
@@ -23,34 +25,32 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     private store: Store<AppState>,
     private NotificacionesService: NotificacionesService,
     private spinner: NgxSpinnerService
-    ) { }
+  ) {}
   ngOnDestroy(): void {
     this.store.dispatch(unSetCatalogos());
   }
-  
 
   ngAfterViewInit(): void {
     window.history.replaceState(null, null, window.location.pathname);
   }
   ngOnInit(): void {
-
     this.store.dispatch(cargarCatalogos());
 
     this.NotificacionesService.obtenerListadoDeNotificaciones();
 
-    setInterval(() =>{
+    setInterval(() => {
       this.NotificacionesService.obtenerListadoDeNotificaciones();
     }, 50000);
 
     this.LoadingDetailCatalogos$ = this.store
-    .select(({ DetailCatalogos }) => DetailCatalogos.loading)
-    .subscribe((res) => {
-      if (res) {
-        this.spinner.show();
-      } else {
-        this.spinner.hide();
-      }
-    });
+      .select(({ DetailCatalogos }) => DetailCatalogos.loading)
+      .subscribe((res) => {
+        if (res) {
+          this.spinner.show();
+        } else {
+          this.spinner.hide();
+        }
+      });
 
     /*
     this.api.OnCreateSiaGenAudEstadoProcesosDevListener.subscribe({
@@ -59,12 +59,25 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
       },
     });*/
 
-    this.api.OnCreateSiaGenAudEstadoProcesosDevListener.subscribe( ({ value }: any) => {
-      const { data } = value;
-       console.log(data);
-      });
+    this.api.OnCreateSiaGenAudEstadoProcesosDevListener.subscribe(
+      ({ value }: any) => {
+        const { data } = value;
+        console.log('-----');
+        console.log('-------');
+        console.log('OnCreateSiaGenAudEstadoProcesosDevListener');
+        console.log(data);
+        console.log('-------');
+        console.log('-------');
+      }
+    );
 
-
-
+    this.api.OnUpdateSiaGenAudEstadoProcesosDevListener.subscribe((res) => {
+      console.log('++++++++++++++');
+      console.log('++++++++++++++');
+      console.log('OnUpdateSiaGenAudEstadoProcesosDevListener');
+      console.log(res);
+      console.log('++++++++++++++');
+      console.log('++++++++++++++');
+    });
   }
 }
