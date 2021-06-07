@@ -45,7 +45,7 @@ export class CatalogosComponent implements OnInit, OnDestroy {
   selectedItemsFiltroCorreo = [];
 
   paginaActual: number = 1;
-  
+
   constructor(
     private store: Store<AppState>,
     private api: APIService,
@@ -135,6 +135,7 @@ export class CatalogosComponent implements OnInit, OnDestroy {
     this.selectedItemsFiltroAccion = [];
     this.selectedItemsFiltroCorreo = [];
     this.ListadoPantalla = this.ListadoOriginal;
+    this.filtroAuditoriaCatalogosForm.reset();
   }
 
   filtrar = () => {

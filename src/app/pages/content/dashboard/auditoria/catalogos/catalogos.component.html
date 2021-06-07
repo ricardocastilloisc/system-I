@@ -70,7 +70,23 @@
     </div>
     <div class="d-flex col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12 justify-content-center"
         *ngIf="ListadoPantalla as ListadoPantalla">
-        <div class="card-lista-design-general" style="overflow-x: auto">
+
+        <div class="row justify-content-center" *ngIf=" ListadoPantalla.length === 0">
+            <div class=" align-self-center">
+                <div class="d-flex flex-column" style="width: 504px;">
+                    <div class="descripcionNoAuditoria" style="margin-top:34px">
+                        <div class="row">
+                            <div class="col-12">
+                                <p> No existen registros para esta búsqueda.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="card-lista-design-general" style="overflow-x: auto"  *ngIf=" ListadoPantalla.length !== 0">           
             <table class="table listado-design-general">
                 <tr>
                     <th style="padding-left: 40px; max-width: 300px">Catálogo</th>
