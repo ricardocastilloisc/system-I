@@ -97,10 +97,10 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     //console.log(nombreRuta);
     if (nombreRuta.includes('Administración')) {
       returnColor = 'verde';
-    } else if (nombreRuta.includes('Procesos')) {
-      returnColor = 'morado';
     } else if (nombreRuta.includes('Auditoría')) {
       returnColor = 'azul';
+    } else if (nombreRuta.includes('Procesos')) {
+      returnColor = 'morado';
     } else {
       returnColor = 'verde';
     }
