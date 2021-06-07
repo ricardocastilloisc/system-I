@@ -22,7 +22,7 @@ export class CatalogosComponent implements OnInit, OnDestroy {
 
   filtroAuditoriaCatalogosForm: FormGroup;
 
-  maxDate: Date; 
+  maxDate: Date;
 
   itemsCorreos = [];
   itemsCatalogos = [];
@@ -31,6 +31,7 @@ export class CatalogosComponent implements OnInit, OnDestroy {
   itemsAntes = [];
   itemsDespues = [];
   itemsValor = [];
+  itemsTabla = [];
 
   dropdownListFiltroCatalogo = [];
   SettingsFiltroDeCatalogo: IDropdownSettings = {};
@@ -45,6 +46,7 @@ export class CatalogosComponent implements OnInit, OnDestroy {
   selectedItemsFiltroCorreo = [];
 
   paginaActual: number = 1;
+  verModal = false;
 
   constructor(
     private store: Store<AppState>,
@@ -67,10 +69,14 @@ export class CatalogosComponent implements OnInit, OnDestroy {
     return false;
   }
 
+  mostrarDetalle(): boolean {
+    return this.verModal;
+  }
+
   initSelects = () => {
-    
+
     this.maxDate = new Date();
-    
+
     this.filtroAuditoriaCatalogosForm = this.fb.group({
       filtroFecha: []
     })
@@ -247,6 +253,10 @@ export class CatalogosComponent implements OnInit, OnDestroy {
     */
   }
 
+  ocultarModal(): void {
+    this.verModal = false;
+  }
+
   openModal(content, objetoDetalle: AUDGENUSUARIO_INTERFACE) {
     this.itemsValor = [];
     this.itemsAntes = [];
@@ -298,8 +308,27 @@ export class CatalogosComponent implements OnInit, OnDestroy {
       this.itemsValor = resultado;
 
     }
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
+
+    console.log("itemsValor", this.itemsValor);
+    console.log("itemsAntes", this.itemsAntes);
+    console.log("itemsDespues", this.itemsDespues);
+
+    let tabla = [];
+    let banderaCambio = false;
+    for (let i in this.itemsValor) {
+      if(this.itemsAntes[i] === this.itemsDespues[i]){
+        banderaCambio = false;
+      } else {
+        banderaCambio = true;
+      }
+      tabla.push({ valor: this.itemsValor[i], antes: this.itemsAntes[i], despues: this.itemsDespues[i], cambio: banderaCambio })
+    }
+    console.log("tabla", tabla);
+    this.verModal = true;
+    
+    //this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
   }
+
 
   filtrarCatalogosConAtributos(ListadoOriginal: AUDGENUSUARIO_INTERFACE[], FiltrarCatalogo, FiltrarAccion, FiltrarCorreo, FiltrarFecha): any {
     let response = ListadoOriginal;

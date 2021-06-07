@@ -157,6 +157,10 @@ section {
   font: bold 18px FS Elliot Pro;
   color: #035fa4;
 }
+.titulo-modal {
+  font: bold 24px FS Elliot Pro;
+  color: #035fa4;
+}
 
 .paginator{
   margin-left: 5%;
