@@ -9,6 +9,8 @@ import { map } from 'rxjs/operators';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { AuthService } from 'src/app/services/auth.service';
 declare var $: any;
 
 @Component({
@@ -17,6 +19,10 @@ declare var $: any;
   styleUrls: ['./catalogos.component.css']
 })
 export class CatalogosComponent implements OnInit, OnDestroy {
+
+  filtroAuditoriaCatalogosForm: FormGroup;
+
+  maxDate: Date;
 
   itemsCorreos = [];
   itemsCatalogos = [];
@@ -42,7 +48,9 @@ export class CatalogosComponent implements OnInit, OnDestroy {
     private store: Store<AppState>,
     private api: APIService,
     private modalService: NgbModal,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private fb: FormBuilder,
+    private authService: AuthService
   ) { }
 
   AUDGENUSUARIOS$: Observable<AUDGENUSUARIO_INTERFACE[]>;
@@ -58,31 +66,31 @@ export class CatalogosComponent implements OnInit, OnDestroy {
   }
 
   initSelects = () => {
-    //console.log(this.itemsCatalogos.length)
+    this.filtroAuditoriaCatalogosForm = this.fb.group({
+      filtroFecha: []
+    })
     if (this.itemsCatalogos.length > 0) {
       let arregloCatalogos = [];
       for (let i in this.itemsCatalogos) {
         arregloCatalogos.push({ item_id: this.itemsCatalogos[i], item_text: this.itemsCatalogos[i] });
       }
-      //console.log("arregloCatalogos", arregloCatalogos)
       this.dropdownListFiltroCatalogo = arregloCatalogos;
     }
-    //console.log(this.itemsAcciones.length)
     if (this.itemsAcciones.length > 0) {
       let arregloAcciones = [];
       for (let i in this.itemsAcciones) {
         arregloAcciones.push({ item_id: this.itemsAcciones[i], item_text: this.itemsAcciones[i] });
       }
-      //console.log("arregloAcciones", arregloAcciones)
+
       this.dropdownListFiltroAccion = arregloAcciones;
     }
-    //console.log(this.itemsCorreos.length)
+
     if (this.itemsCorreos.length > 0) {
       let arregloCorreos = [];
       for (let i in this.itemsCorreos) {
         arregloCorreos.push({ item_id: this.itemsCorreos[i], item_text: this.itemsCorreos[i] });
       }
-      //console.log("arregloCorreos", arregloCorreos)
+
       this.dropdownListFiltroCorreo = arregloCorreos;
     }
 
@@ -133,13 +141,15 @@ export class CatalogosComponent implements OnInit, OnDestroy {
     let FiltrarCatalogo = null;
     let FiltrarAccion = null;
     let FiltrarCorreo = null;
+    let FiltrarFecha = this.filtroAuditoriaCatalogosForm.get('filtroFecha').value; //yyyy-mm-dd
+
     if (this.selectedItemsFiltroCatalogo.length !== 0) {
       let arrayFiltroCatalogo = [];
       this.selectedItemsFiltroCatalogo.forEach((e) => {
         arrayFiltroCatalogo.push(e.item_id);
       });
       FiltrarCatalogo = arrayFiltroCatalogo;
-      //console.log("FiltrarCatalogo", FiltrarCatalogo);
+
     }
     if (this.selectedItemsFiltroAccion.length !== 0) {
       let arrayFiltroAccion = [];
@@ -147,7 +157,6 @@ export class CatalogosComponent implements OnInit, OnDestroy {
         arrayFiltroAccion.push(e.item_id);
       });
       FiltrarAccion = arrayFiltroAccion;
-      //console.log("FiltrarAccion", FiltrarAccion);
     }
     if (this.selectedItemsFiltroCorreo.length !== 0) {
       let arrayFiltroCorreo = [];
@@ -155,13 +164,13 @@ export class CatalogosComponent implements OnInit, OnDestroy {
         arrayFiltroCorreo.push(e.item_id);
       });
       FiltrarCorreo = arrayFiltroCorreo;
-      //console.log("FiltrarCorreo", FiltrarCorreo);
     }
     this.ListadoPantalla = this.filtrarCatalogosConAtributos(
       this.ListadoOriginal,
       FiltrarCatalogo,
       FiltrarAccion,
-      FiltrarCorreo
+      FiltrarCorreo,
+      FiltrarFecha
     );
     setTimeout(() => {
       this.spinner.hide();
@@ -176,7 +185,7 @@ export class CatalogosComponent implements OnInit, OnDestroy {
     }, 1);
   }
   ngOnInit(): void {
-    //console.log("Entrando a OnInit: Auditoria Catalogos");    
+
     this.AUDGENUSUARIOS$ = this.store.select(
       ({ AUDGENUSUARIOS }) => AUDGENUSUARIOS.AUDGENUSUARIOS
     ).pipe(map(res => {
@@ -184,33 +193,31 @@ export class CatalogosComponent implements OnInit, OnDestroy {
       else return res.slice().sort(function (a, b) { return new Date(b.FECHA).getTime() - new Date(a.FECHA).getTime() })
     }
     ))
-    //console.log("this.AUDGENUSUARIOS$", this.AUDGENUSUARIOS$)
-    //console.log("this.ListadoPantalla", this.ListadoPantalla)
     this.store.select(
       ({ AUDGENUSUARIOS }) => AUDGENUSUARIOS.AUDGENUSUARIOS
     ).subscribe(res => {
-      //console.log("Store Select AUDGENUSUARIOS", res)      
+
       for (let i in res) {
-        //console.log("for", res[i].CORREO);
+
         if (!this.itemsCorreos.includes(res[i].CORREO)) {
           this.itemsCorreos.push(res[i].CORREO);
         }
       }
-      //console.log("correos", this.itemsCorreos)
+
       for (let i in res) {
-        //console.log("for", res[i].CATALOGOS.DESCRIPCION);
+
         if (!this.itemsCatalogos.includes(res[i].CATALOGOS.DESCRIPCION)) {
           this.itemsCatalogos.push(res[i].CATALOGOS.DESCRIPCION);
         }
       }
-      //console.log("catalogos", this.itemsCatalogos.length);
+
       for (let i in res) {
-        //console.log("for", res[i].CATALOGOS.ACCION);
+
         if (!this.itemsAcciones.includes(res[i].CATALOGOS.ACCION)) {
           this.itemsAcciones.push(res[i].CATALOGOS.ACCION);
         }
       }
-      //console.log("acciones", this.itemsAcciones.length);
+
       this.itemsCatalogos.sort();
       this.itemsAcciones.sort();
       this.itemsCorreos.sort();
@@ -237,7 +244,7 @@ export class CatalogosComponent implements OnInit, OnDestroy {
     this.itemsValor = [];
     this.itemsAntes = [];
     this.itemsDespues = [];
-    //console.log("Entrando al modal", objetoDetalle)
+
     let cambiosAntes = objetoDetalle.CATALOGOS.DETALLE_MODIFICACIONES[0].valorAnterior;
     if (cambiosAntes !== null) {
       cambiosAntes = cambiosAntes.replace('{', '');
@@ -249,7 +256,7 @@ export class CatalogosComponent implements OnInit, OnDestroy {
         resAntes.push(valor[1]);
       }
       this.itemsAntes = resAntes;
-      //console.log("cambiosAntes", arregloAntes)
+
     }
     let cambiosDespues = objetoDetalle.CATALOGOS.DETALLE_MODIFICACIONES[0].valorNuevo;
     if (cambiosDespues !== null) {
@@ -262,7 +269,7 @@ export class CatalogosComponent implements OnInit, OnDestroy {
         resDespues.push(valor[1]);
       }
       this.itemsDespues = resDespues;
-      //console.log("cambiosDespues", arregloDespues)
+
     }
     if (cambiosAntes !== null) {
       let getValor = cambiosAntes.split(",");
@@ -272,7 +279,7 @@ export class CatalogosComponent implements OnInit, OnDestroy {
         resultado.push(valor[0]);
       }
       this.itemsValor = resultado;
-      //console.log("result", resultado)
+
     }
     else if (cambiosDespues !== null) {
       let getValor = cambiosDespues.split(",");
@@ -282,17 +289,14 @@ export class CatalogosComponent implements OnInit, OnDestroy {
         resultado.push(valor[0]);
       }
       this.itemsValor = resultado;
-      //console.log("result", resultado)
+
     }
-    // console.log("itemsValor", this.itemsValor)
-    // console.log("itemsAntes", this.itemsAntes)
-    // console.log("itemsDespues", this.itemsDespues)
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
   }
 
 
 
-  filtrarCatalogosConAtributos(ListadoOriginal: AUDGENUSUARIO_INTERFACE[], FiltrarCatalogo, FiltrarAccion, FiltrarCorreo): any {
+  filtrarCatalogosConAtributos(ListadoOriginal: AUDGENUSUARIO_INTERFACE[], FiltrarCatalogo, FiltrarAccion, FiltrarCorreo, FiltrarFecha): any {
     let response = ListadoOriginal;
     if (FiltrarCatalogo != null) {
       let arrayTempPermiso = [];
@@ -316,7 +320,6 @@ export class CatalogosComponent implements OnInit, OnDestroy {
       response = arrayTempPermiso;
     }
 
-
     if (FiltrarCorreo != null) {
       let arrayTempPermiso = [];
       FiltrarCorreo.forEach((FiltrarCorreo) => {
@@ -327,6 +330,15 @@ export class CatalogosComponent implements OnInit, OnDestroy {
       });
       response = arrayTempPermiso;
     }
+
+    if (FiltrarFecha != null) {
+      let arrayTempFecha = [];
+      console.log("FiltrarFecha", FiltrarFecha)
+      arrayTempFecha = response.filter((e) => e.FECHA.includes(FiltrarFecha))
+      console.log("arrayTempFecha", arrayTempFecha)
+      response = arrayTempFecha;
+    }
+
     const uniqueArr = [... new Set(response.map(data => data.ID))]
     console.log(uniqueArr)
     return response;
