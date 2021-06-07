@@ -868,10 +868,21 @@ table.listado-design-general td {
   border-radius: 30px;
   opacity: 1;
 }
+.cardCatalogosArchivos {
+  /*height: 515px;*/
+  overflow: auto;
+  background: #ffffff 0% 0% no-repeat padding-box;
+  box-shadow: 4px 4px 10px #00000029;
+  border-radius: 30px;
+  opacity: 1;
+}
 
 .cardAzul {
   background: #0a8299 0% 0% no-repeat padding-box;
   opacity: 1;
+}
+.cardAzulFuerte {
+  background: #125FA4;
 }
 
 .tituloPrincipalCatalogos {
