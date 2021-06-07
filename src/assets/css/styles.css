@@ -227,7 +227,7 @@ a[data-toggle="collapse"] {
 
 @media(min-width: 1200px){
   .tamanoGrafica{
-    height: 120px,
+    height: 120px;
     width: 1200px
   }
 }
@@ -860,6 +860,13 @@ table.listado-design-general td {
   opacity: 1;
 }
 
+.descripcionNoAuditoria {
+  text-align: center;
+  font: normal normal normal 20px/28px FS Elliot Pro;
+  letter-spacing: 0px;
+  color: #035fa4;
+  opacity: 1;
+}
 .cardCatalogos {
   height: 515px;
   overflow: auto;

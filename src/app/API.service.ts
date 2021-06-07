@@ -25,9 +25,9 @@ export type AUDGENPROCESOS = {
   MENSAJE_NEGOCIO?: string | null;
   MENSAJE_SOPORTE?: string | null;
   NEGOCIO?: string | null;
-  PROCESO?: PROCESO | null;
+  PROCESO?: PROCESO;
   SERVICIOAWS?: string | null;
-  USUARIO?: USUARIO | null;
+  USUARIO?: USUARIO;
   TIPO?: string | null;
   NIVEL?: string | null;
   STEP?: string | null;
@@ -60,7 +60,7 @@ export type CreateCATPROCESOSInput = {
 
 export type CATPROCESOS = {
   __typename: "CATPROCESOS";
-  PROCESO: string;
+  PROCESO?: string;
   ARRANQUE?: string | null;
   DESCRIPCION?: string | null;
   NEGOCIO?: string | null;
@@ -81,14 +81,14 @@ export type CreateCATPERMISOSInput = {
 
 export type CATPERMISOS = {
   __typename: "CATPERMISOS";
-  ID: string;
+  ID?: string;
   AREA?: string | null;
-  AUDITORIA?: AUDITORIA | null;
-  CATALOGOS?: CATALOGOS | null;
+  AUDITORIA?: AUDITORIA;
+  CATALOGOS?: CATALOGOS;
   FLUJO?: string | null;
-  PROCESOS?: PROCESOS | null;
+  PROCESOS?: PROCESOS;
   ROL?: string | null;
-  USUARIOS?: USUARIOS | null;
+  USUARIOS?: USUARIOS;
   NEGOCIO?: string | null;
 };
 
@@ -131,9 +131,18 @@ export type DeleteCATPERMISOSInput = {
 
 export type CreateSiaGenAudEstadoProcesosDevInput = {
   ESTADO_EJECUCION?: string | null;
-  ETAPA_INICIAL?: ETAPAS_PROCESO_INPUT | null;
-  ETAPA_FINAL?: ETAPAS_PROCESO_INPUT | null;
-  ETAPA_PROCESAMIENTO?: ETAPAS_PROCESO_INPUT | null;
+  ETAPA_INICIAL_ESTADO_INICIAL?: string | null;
+  ETAPA_INICIAL_ESTADO_FINAL?: string | null;
+  ETAPA_INICIAL_FECHA_INICIAL?: string | null;
+  ETAPA_INICIAL_FECHA_FINAL?: string | null;
+  ETAPA_FINAL_ESTADO_INICIAL?: string | null;
+  ETAPA_FINAL_ESTADO_FINAL?: string | null;
+  ETAPA_FINAL_FECHA_INICIAL?: string | null;
+  ETAPA_FINAL_FECHA_FINAL?: string | null;
+  ETAPA_PROCESAMIENTO_ESTADO_INICIAL?: string | null;
+  ETAPA_PROCESAMIENTO_ESTADO_FINAL?: string | null;
+  ETAPA_PROCESAMIENTO_FECHA_INICIAL?: string | null;
+  ETAPA_PROCESAMIENTO_FECHA_FINAL?: string | null;
   FECHA_ACTUALIZACION?: string | null;
   FECHA_CREADO?: string | null;
   FECHA_FINALIZADO?: string | null;
@@ -141,43 +150,46 @@ export type CreateSiaGenAudEstadoProcesosDevInput = {
   INSUMO?: string | null;
   INTERFAZ?: string | null;
   TIPO_PROCESO?: string | null;
-};
-
-export type ETAPAS_PROCESO_INPUT = {
-  ESTADO_INICIAL?: string | null;
-  ESTADO_FINAL?: string | null;
-  FECHA_INICIAL?: string | null;
-  FECHA_FINAL?: string | null;
 };
 
 export type SiaGenAudEstadoProcesosDev = {
   __typename: "SiaGenAudEstadoProcesosDev";
   ESTADO_EJECUCION?: string | null;
-  ETAPA_INICIAL?: ETAPAS_PROCESO | null;
-  ETAPA_FINAL?: ETAPAS_PROCESO | null;
-  ETAPA_PROCESAMIENTO?: ETAPAS_PROCESO | null;
+  ETAPA_INICIAL_ESTADO_INICIAL?: string | null;
+  ETAPA_INICIAL_ESTADO_FINAL?: string | null;
+  ETAPA_INICIAL_FECHA_INICIAL?: string | null;
+  ETAPA_INICIAL_FECHA_FINAL?: string | null;
+  ETAPA_FINAL_ESTADO_INICIAL?: string | null;
+  ETAPA_FINAL_ESTADO_FINAL?: string | null;
+  ETAPA_FINAL_FECHA_INICIAL?: string | null;
+  ETAPA_FINAL_FECHA_FINAL?: string | null;
+  ETAPA_PROCESAMIENTO_ESTADO_INICIAL?: string | null;
+  ETAPA_PROCESAMIENTO_ESTADO_FINAL?: string | null;
+  ETAPA_PROCESAMIENTO_FECHA_INICIAL?: string | null;
+  ETAPA_PROCESAMIENTO_FECHA_FINAL?: string | null;
   FECHA_ACTUALIZACION?: string | null;
   FECHA_CREADO?: string | null;
   FECHA_FINALIZADO?: string | null;
-  ID_PROCESO: string;
+  ID_PROCESO?: string;
   INSUMO?: string | null;
   INTERFAZ?: string | null;
   TIPO_PROCESO?: string | null;
 };
 
-export type ETAPAS_PROCESO = {
-  __typename: "ETAPAS_PROCESO";
-  ESTADO_INICIAL?: string | null;
-  ESTADO_FINAL?: string | null;
-  FECHA_INICIAL?: string | null;
-  FECHA_FINAL?: string | null;
-};
-
 export type UpdateSiaGenAudEstadoProcesosDevInput = {
   ESTADO_EJECUCION?: string | null;
-  ETAPA_INICIAL?: ETAPAS_PROCESO_INPUT | null;
-  ETAPA_FINAL?: ETAPAS_PROCESO_INPUT | null;
-  ETAPA_PROCESAMIENTO?: ETAPAS_PROCESO_INPUT | null;
+  ETAPA_INICIAL_ESTADO_INICIAL?: string | null;
+  ETAPA_INICIAL_ESTADO_FINAL?: string | null;
+  ETAPA_INICIAL_FECHA_INICIAL?: string | null;
+  ETAPA_INICIAL_FECHA_FINAL?: string | null;
+  ETAPA_FINAL_ESTADO_INICIAL?: string | null;
+  ETAPA_FINAL_ESTADO_FINAL?: string | null;
+  ETAPA_FINAL_FECHA_INICIAL?: string | null;
+  ETAPA_FINAL_FECHA_FINAL?: string | null;
+  ETAPA_PROCESAMIENTO_ESTADO_INICIAL?: string | null;
+  ETAPA_PROCESAMIENTO_ESTADO_FINAL?: string | null;
+  ETAPA_PROCESAMIENTO_FECHA_INICIAL?: string | null;
+  ETAPA_PROCESAMIENTO_FECHA_FINAL?: string | null;
   FECHA_ACTUALIZACION?: string | null;
   FECHA_CREADO?: string | null;
   FECHA_FINALIZADO?: string | null;
@@ -193,17 +205,17 @@ export type DeleteSiaGenAudEstadoProcesosDevInput = {
 
 export type AUDGENUSUARIOS = {
   __typename: "AUDGENUSUARIOS";
-  ID: string;
+  ID?: string;
   FECHA?: string | null;
   CORREO?: string | null;
   AREA_NEGOCIO?: string | null;
   MODULO?: string | null;
   ROL?: string | null;
-  USUARIO?: AUD_USER | null;
-  SECCION?: AUD_SECCION | null;
-  PROCESOS?: AUD_PROCESOS | null;
-  CATALOGOS?: AUD_CATALOGOS | null;
-  PERMISOS_USUARIOS?: AUD_PERMISOS | null;
+  USUARIO?: AUD_USER;
+  SECCION?: AUD_SECCION;
+  PROCESOS?: AUD_PROCESOS;
+  CATALOGOS?: AUD_CATALOGOS;
+  PERMISOS_USUARIOS?: AUD_PERMISOS;
 };
 
 export type AUD_USER = {
@@ -532,27 +544,18 @@ export type DeleteCATPERMISOSMutation = {
 export type CreateSiaGenAudEstadoProcesosDevMutation = {
   __typename: "SiaGenAudEstadoProcesosDev";
   ESTADO_EJECUCION?: string | null;
-  ETAPA_INICIAL?: {
-    __typename: "ETAPAS_PROCESO";
-    ESTADO_INICIAL?: string | null;
-    ESTADO_FINAL?: string | null;
-    FECHA_INICIAL?: string | null;
-    FECHA_FINAL?: string | null;
-  } | null;
-  ETAPA_FINAL?: {
-    __typename: "ETAPAS_PROCESO";
-    ESTADO_INICIAL?: string | null;
-    ESTADO_FINAL?: string | null;
-    FECHA_INICIAL?: string | null;
-    FECHA_FINAL?: string | null;
-  } | null;
-  ETAPA_PROCESAMIENTO?: {
-    __typename: "ETAPAS_PROCESO";
-    ESTADO_INICIAL?: string | null;
-    ESTADO_FINAL?: string | null;
-    FECHA_INICIAL?: string | null;
-    FECHA_FINAL?: string | null;
-  } | null;
+  ETAPA_INICIAL_ESTADO_INICIAL?: string | null;
+  ETAPA_INICIAL_ESTADO_FINAL?: string | null;
+  ETAPA_INICIAL_FECHA_INICIAL?: string | null;
+  ETAPA_INICIAL_FECHA_FINAL?: string | null;
+  ETAPA_FINAL_ESTADO_INICIAL?: string | null;
+  ETAPA_FINAL_ESTADO_FINAL?: string | null;
+  ETAPA_FINAL_FECHA_INICIAL?: string | null;
+  ETAPA_FINAL_FECHA_FINAL?: string | null;
+  ETAPA_PROCESAMIENTO_ESTADO_INICIAL?: string | null;
+  ETAPA_PROCESAMIENTO_ESTADO_FINAL?: string | null;
+  ETAPA_PROCESAMIENTO_FECHA_INICIAL?: string | null;
+  ETAPA_PROCESAMIENTO_FECHA_FINAL?: string | null;
   FECHA_ACTUALIZACION?: string | null;
   FECHA_CREADO?: string | null;
   FECHA_FINALIZADO?: string | null;
@@ -565,27 +568,18 @@ export type CreateSiaGenAudEstadoProcesosDevMutation = {
 export type UpdateSiaGenAudEstadoProcesosDevMutation = {
   __typename: "SiaGenAudEstadoProcesosDev";
   ESTADO_EJECUCION?: string | null;
-  ETAPA_INICIAL?: {
-    __typename: "ETAPAS_PROCESO";
-    ESTADO_INICIAL?: string | null;
-    ESTADO_FINAL?: string | null;
-    FECHA_INICIAL?: string | null;
-    FECHA_FINAL?: string | null;
-  } | null;
-  ETAPA_FINAL?: {
-    __typename: "ETAPAS_PROCESO";
-    ESTADO_INICIAL?: string | null;
-    ESTADO_FINAL?: string | null;
-    FECHA_INICIAL?: string | null;
-    FECHA_FINAL?: string | null;
-  } | null;
-  ETAPA_PROCESAMIENTO?: {
-    __typename: "ETAPAS_PROCESO";
-    ESTADO_INICIAL?: string | null;
-    ESTADO_FINAL?: string | null;
-    FECHA_INICIAL?: string | null;
-    FECHA_FINAL?: string | null;
-  } | null;
+  ETAPA_INICIAL_ESTADO_INICIAL?: string | null;
+  ETAPA_INICIAL_ESTADO_FINAL?: string | null;
+  ETAPA_INICIAL_FECHA_INICIAL?: string | null;
+  ETAPA_INICIAL_FECHA_FINAL?: string | null;
+  ETAPA_FINAL_ESTADO_INICIAL?: string | null;
+  ETAPA_FINAL_ESTADO_FINAL?: string | null;
+  ETAPA_FINAL_FECHA_INICIAL?: string | null;
+  ETAPA_FINAL_FECHA_FINAL?: string | null;
+  ETAPA_PROCESAMIENTO_ESTADO_INICIAL?: string | null;
+  ETAPA_PROCESAMIENTO_ESTADO_FINAL?: string | null;
+  ETAPA_PROCESAMIENTO_FECHA_INICIAL?: string | null;
+  ETAPA_PROCESAMIENTO_FECHA_FINAL?: string | null;
   FECHA_ACTUALIZACION?: string | null;
   FECHA_CREADO?: string | null;
   FECHA_FINALIZADO?: string | null;
@@ -598,27 +592,18 @@ export type UpdateSiaGenAudEstadoProcesosDevMutation = {
 export type DeleteSiaGenAudEstadoProcesosDevMutation = {
   __typename: "SiaGenAudEstadoProcesosDev";
   ESTADO_EJECUCION?: string | null;
-  ETAPA_INICIAL?: {
-    __typename: "ETAPAS_PROCESO";
-    ESTADO_INICIAL?: string | null;
-    ESTADO_FINAL?: string | null;
-    FECHA_INICIAL?: string | null;
-    FECHA_FINAL?: string | null;
-  } | null;
-  ETAPA_FINAL?: {
-    __typename: "ETAPAS_PROCESO";
-    ESTADO_INICIAL?: string | null;
-    ESTADO_FINAL?: string | null;
-    FECHA_INICIAL?: string | null;
-    FECHA_FINAL?: string | null;
-  } | null;
-  ETAPA_PROCESAMIENTO?: {
-    __typename: "ETAPAS_PROCESO";
-    ESTADO_INICIAL?: string | null;
-    ESTADO_FINAL?: string | null;
-    FECHA_INICIAL?: string | null;
-    FECHA_FINAL?: string | null;
-  } | null;
+  ETAPA_INICIAL_ESTADO_INICIAL?: string | null;
+  ETAPA_INICIAL_ESTADO_FINAL?: string | null;
+  ETAPA_INICIAL_FECHA_INICIAL?: string | null;
+  ETAPA_INICIAL_FECHA_FINAL?: string | null;
+  ETAPA_FINAL_ESTADO_INICIAL?: string | null;
+  ETAPA_FINAL_ESTADO_FINAL?: string | null;
+  ETAPA_FINAL_FECHA_INICIAL?: string | null;
+  ETAPA_FINAL_FECHA_FINAL?: string | null;
+  ETAPA_PROCESAMIENTO_ESTADO_INICIAL?: string | null;
+  ETAPA_PROCESAMIENTO_ESTADO_FINAL?: string | null;
+  ETAPA_PROCESAMIENTO_FECHA_INICIAL?: string | null;
+  ETAPA_PROCESAMIENTO_FECHA_FINAL?: string | null;
   FECHA_ACTUALIZACION?: string | null;
   FECHA_CREADO?: string | null;
   FECHA_FINALIZADO?: string | null;
@@ -907,27 +892,18 @@ export type ListCATPERMISOSQuery = {
 export type GetSiaGenAudEstadoProcesosDevQuery = {
   __typename: "SiaGenAudEstadoProcesosDev";
   ESTADO_EJECUCION?: string | null;
-  ETAPA_INICIAL?: {
-    __typename: "ETAPAS_PROCESO";
-    ESTADO_INICIAL?: string | null;
-    ESTADO_FINAL?: string | null;
-    FECHA_INICIAL?: string | null;
-    FECHA_FINAL?: string | null;
-  } | null;
-  ETAPA_FINAL?: {
-    __typename: "ETAPAS_PROCESO";
-    ESTADO_INICIAL?: string | null;
-    ESTADO_FINAL?: string | null;
-    FECHA_INICIAL?: string | null;
-    FECHA_FINAL?: string | null;
-  } | null;
-  ETAPA_PROCESAMIENTO?: {
-    __typename: "ETAPAS_PROCESO";
-    ESTADO_INICIAL?: string | null;
-    ESTADO_FINAL?: string | null;
-    FECHA_INICIAL?: string | null;
-    FECHA_FINAL?: string | null;
-  } | null;
+  ETAPA_INICIAL_ESTADO_INICIAL?: string | null;
+  ETAPA_INICIAL_ESTADO_FINAL?: string | null;
+  ETAPA_INICIAL_FECHA_INICIAL?: string | null;
+  ETAPA_INICIAL_FECHA_FINAL?: string | null;
+  ETAPA_FINAL_ESTADO_INICIAL?: string | null;
+  ETAPA_FINAL_ESTADO_FINAL?: string | null;
+  ETAPA_FINAL_FECHA_INICIAL?: string | null;
+  ETAPA_FINAL_FECHA_FINAL?: string | null;
+  ETAPA_PROCESAMIENTO_ESTADO_INICIAL?: string | null;
+  ETAPA_PROCESAMIENTO_ESTADO_FINAL?: string | null;
+  ETAPA_PROCESAMIENTO_FECHA_INICIAL?: string | null;
+  ETAPA_PROCESAMIENTO_FECHA_FINAL?: string | null;
   FECHA_ACTUALIZACION?: string | null;
   FECHA_CREADO?: string | null;
   FECHA_FINALIZADO?: string | null;
@@ -942,27 +918,18 @@ export type ListSiaGenAudEstadoProcesosDevsQuery = {
   items?: Array<{
     __typename: "SiaGenAudEstadoProcesosDev";
     ESTADO_EJECUCION?: string | null;
-    ETAPA_INICIAL?: {
-      __typename: "ETAPAS_PROCESO";
-      ESTADO_INICIAL?: string | null;
-      ESTADO_FINAL?: string | null;
-      FECHA_INICIAL?: string | null;
-      FECHA_FINAL?: string | null;
-    } | null;
-    ETAPA_FINAL?: {
-      __typename: "ETAPAS_PROCESO";
-      ESTADO_INICIAL?: string | null;
-      ESTADO_FINAL?: string | null;
-      FECHA_INICIAL?: string | null;
-      FECHA_FINAL?: string | null;
-    } | null;
-    ETAPA_PROCESAMIENTO?: {
-      __typename: "ETAPAS_PROCESO";
-      ESTADO_INICIAL?: string | null;
-      ESTADO_FINAL?: string | null;
-      FECHA_INICIAL?: string | null;
-      FECHA_FINAL?: string | null;
-    } | null;
+    ETAPA_INICIAL_ESTADO_INICIAL?: string | null;
+    ETAPA_INICIAL_ESTADO_FINAL?: string | null;
+    ETAPA_INICIAL_FECHA_INICIAL?: string | null;
+    ETAPA_INICIAL_FECHA_FINAL?: string | null;
+    ETAPA_FINAL_ESTADO_INICIAL?: string | null;
+    ETAPA_FINAL_ESTADO_FINAL?: string | null;
+    ETAPA_FINAL_FECHA_INICIAL?: string | null;
+    ETAPA_FINAL_FECHA_FINAL?: string | null;
+    ETAPA_PROCESAMIENTO_ESTADO_INICIAL?: string | null;
+    ETAPA_PROCESAMIENTO_ESTADO_FINAL?: string | null;
+    ETAPA_PROCESAMIENTO_FECHA_INICIAL?: string | null;
+    ETAPA_PROCESAMIENTO_FECHA_FINAL?: string | null;
     FECHA_ACTUALIZACION?: string | null;
     FECHA_CREADO?: string | null;
     FECHA_FINALIZADO?: string | null;
@@ -979,27 +946,18 @@ export type QuerySiaGenAudEstadoProcesosDevsByINTERFAZIndexQuery = {
   items?: Array<{
     __typename: "SiaGenAudEstadoProcesosDev";
     ESTADO_EJECUCION?: string | null;
-    ETAPA_INICIAL?: {
-      __typename: "ETAPAS_PROCESO";
-      ESTADO_INICIAL?: string | null;
-      ESTADO_FINAL?: string | null;
-      FECHA_INICIAL?: string | null;
-      FECHA_FINAL?: string | null;
-    } | null;
-    ETAPA_FINAL?: {
-      __typename: "ETAPAS_PROCESO";
-      ESTADO_INICIAL?: string | null;
-      ESTADO_FINAL?: string | null;
-      FECHA_INICIAL?: string | null;
-      FECHA_FINAL?: string | null;
-    } | null;
-    ETAPA_PROCESAMIENTO?: {
-      __typename: "ETAPAS_PROCESO";
-      ESTADO_INICIAL?: string | null;
-      ESTADO_FINAL?: string | null;
-      FECHA_INICIAL?: string | null;
-      FECHA_FINAL?: string | null;
-    } | null;
+    ETAPA_INICIAL_ESTADO_INICIAL?: string | null;
+    ETAPA_INICIAL_ESTADO_FINAL?: string | null;
+    ETAPA_INICIAL_FECHA_INICIAL?: string | null;
+    ETAPA_INICIAL_FECHA_FINAL?: string | null;
+    ETAPA_FINAL_ESTADO_INICIAL?: string | null;
+    ETAPA_FINAL_ESTADO_FINAL?: string | null;
+    ETAPA_FINAL_FECHA_INICIAL?: string | null;
+    ETAPA_FINAL_FECHA_FINAL?: string | null;
+    ETAPA_PROCESAMIENTO_ESTADO_INICIAL?: string | null;
+    ETAPA_PROCESAMIENTO_ESTADO_FINAL?: string | null;
+    ETAPA_PROCESAMIENTO_FECHA_INICIAL?: string | null;
+    ETAPA_PROCESAMIENTO_FECHA_FINAL?: string | null;
     FECHA_ACTUALIZACION?: string | null;
     FECHA_CREADO?: string | null;
     FECHA_FINALIZADO?: string | null;
@@ -1016,27 +974,18 @@ export type ListSiaGenAudEstadoProcesosDevsPorFechaQuery = {
   items?: Array<{
     __typename: "SiaGenAudEstadoProcesosDev";
     ESTADO_EJECUCION?: string | null;
-    ETAPA_INICIAL?: {
-      __typename: "ETAPAS_PROCESO";
-      ESTADO_INICIAL?: string | null;
-      ESTADO_FINAL?: string | null;
-      FECHA_INICIAL?: string | null;
-      FECHA_FINAL?: string | null;
-    } | null;
-    ETAPA_FINAL?: {
-      __typename: "ETAPAS_PROCESO";
-      ESTADO_INICIAL?: string | null;
-      ESTADO_FINAL?: string | null;
-      FECHA_INICIAL?: string | null;
-      FECHA_FINAL?: string | null;
-    } | null;
-    ETAPA_PROCESAMIENTO?: {
-      __typename: "ETAPAS_PROCESO";
-      ESTADO_INICIAL?: string | null;
-      ESTADO_FINAL?: string | null;
-      FECHA_INICIAL?: string | null;
-      FECHA_FINAL?: string | null;
-    } | null;
+    ETAPA_INICIAL_ESTADO_INICIAL?: string | null;
+    ETAPA_INICIAL_ESTADO_FINAL?: string | null;
+    ETAPA_INICIAL_FECHA_INICIAL?: string | null;
+    ETAPA_INICIAL_FECHA_FINAL?: string | null;
+    ETAPA_FINAL_ESTADO_INICIAL?: string | null;
+    ETAPA_FINAL_ESTADO_FINAL?: string | null;
+    ETAPA_FINAL_FECHA_INICIAL?: string | null;
+    ETAPA_FINAL_FECHA_FINAL?: string | null;
+    ETAPA_PROCESAMIENTO_ESTADO_INICIAL?: string | null;
+    ETAPA_PROCESAMIENTO_ESTADO_FINAL?: string | null;
+    ETAPA_PROCESAMIENTO_FECHA_INICIAL?: string | null;
+    ETAPA_PROCESAMIENTO_FECHA_FINAL?: string | null;
     FECHA_ACTUALIZACION?: string | null;
     FECHA_CREADO?: string | null;
     FECHA_FINALIZADO?: string | null;
@@ -1267,27 +1216,18 @@ export type OnDeleteCATPERMISOSSubscription = {
 export type OnCreateSiaGenAudEstadoProcesosDevSubscription = {
   __typename: "SiaGenAudEstadoProcesosDev";
   ESTADO_EJECUCION?: string | null;
-  ETAPA_INICIAL?: {
-    __typename: "ETAPAS_PROCESO";
-    ESTADO_INICIAL?: string | null;
-    ESTADO_FINAL?: string | null;
-    FECHA_INICIAL?: string | null;
-    FECHA_FINAL?: string | null;
-  } | null;
-  ETAPA_FINAL?: {
-    __typename: "ETAPAS_PROCESO";
-    ESTADO_INICIAL?: string | null;
-    ESTADO_FINAL?: string | null;
-    FECHA_INICIAL?: string | null;
-    FECHA_FINAL?: string | null;
-  } | null;
-  ETAPA_PROCESAMIENTO?: {
-    __typename: "ETAPAS_PROCESO";
-    ESTADO_INICIAL?: string | null;
-    ESTADO_FINAL?: string | null;
-    FECHA_INICIAL?: string | null;
-    FECHA_FINAL?: string | null;
-  } | null;
+  ETAPA_INICIAL_ESTADO_INICIAL?: string | null;
+  ETAPA_INICIAL_ESTADO_FINAL?: string | null;
+  ETAPA_INICIAL_FECHA_INICIAL?: string | null;
+  ETAPA_INICIAL_FECHA_FINAL?: string | null;
+  ETAPA_FINAL_ESTADO_INICIAL?: string | null;
+  ETAPA_FINAL_ESTADO_FINAL?: string | null;
+  ETAPA_FINAL_FECHA_INICIAL?: string | null;
+  ETAPA_FINAL_FECHA_FINAL?: string | null;
+  ETAPA_PROCESAMIENTO_ESTADO_INICIAL?: string | null;
+  ETAPA_PROCESAMIENTO_ESTADO_FINAL?: string | null;
+  ETAPA_PROCESAMIENTO_FECHA_INICIAL?: string | null;
+  ETAPA_PROCESAMIENTO_FECHA_FINAL?: string | null;
   FECHA_ACTUALIZACION?: string | null;
   FECHA_CREADO?: string | null;
   FECHA_FINALIZADO?: string | null;
@@ -1300,27 +1240,18 @@ export type OnCreateSiaGenAudEstadoProcesosDevSubscription = {
 export type OnUpdateSiaGenAudEstadoProcesosDevSubscription = {
   __typename: "SiaGenAudEstadoProcesosDev";
   ESTADO_EJECUCION?: string | null;
-  ETAPA_INICIAL?: {
-    __typename: "ETAPAS_PROCESO";
-    ESTADO_INICIAL?: string | null;
-    ESTADO_FINAL?: string | null;
-    FECHA_INICIAL?: string | null;
-    FECHA_FINAL?: string | null;
-  } | null;
-  ETAPA_FINAL?: {
-    __typename: "ETAPAS_PROCESO";
-    ESTADO_INICIAL?: string | null;
-    ESTADO_FINAL?: string | null;
-    FECHA_INICIAL?: string | null;
-    FECHA_FINAL?: string | null;
-  } | null;
-  ETAPA_PROCESAMIENTO?: {
-    __typename: "ETAPAS_PROCESO";
-    ESTADO_INICIAL?: string | null;
-    ESTADO_FINAL?: string | null;
-    FECHA_INICIAL?: string | null;
-    FECHA_FINAL?: string | null;
-  } | null;
+  ETAPA_INICIAL_ESTADO_INICIAL?: string | null;
+  ETAPA_INICIAL_ESTADO_FINAL?: string | null;
+  ETAPA_INICIAL_FECHA_INICIAL?: string | null;
+  ETAPA_INICIAL_FECHA_FINAL?: string | null;
+  ETAPA_FINAL_ESTADO_INICIAL?: string | null;
+  ETAPA_FINAL_ESTADO_FINAL?: string | null;
+  ETAPA_FINAL_FECHA_INICIAL?: string | null;
+  ETAPA_FINAL_FECHA_FINAL?: string | null;
+  ETAPA_PROCESAMIENTO_ESTADO_INICIAL?: string | null;
+  ETAPA_PROCESAMIENTO_ESTADO_FINAL?: string | null;
+  ETAPA_PROCESAMIENTO_FECHA_INICIAL?: string | null;
+  ETAPA_PROCESAMIENTO_FECHA_FINAL?: string | null;
   FECHA_ACTUALIZACION?: string | null;
   FECHA_CREADO?: string | null;
   FECHA_FINALIZADO?: string | null;
@@ -1333,27 +1264,18 @@ export type OnUpdateSiaGenAudEstadoProcesosDevSubscription = {
 export type OnDeleteSiaGenAudEstadoProcesosDevSubscription = {
   __typename: "SiaGenAudEstadoProcesosDev";
   ESTADO_EJECUCION?: string | null;
-  ETAPA_INICIAL?: {
-    __typename: "ETAPAS_PROCESO";
-    ESTADO_INICIAL?: string | null;
-    ESTADO_FINAL?: string | null;
-    FECHA_INICIAL?: string | null;
-    FECHA_FINAL?: string | null;
-  } | null;
-  ETAPA_FINAL?: {
-    __typename: "ETAPAS_PROCESO";
-    ESTADO_INICIAL?: string | null;
-    ESTADO_FINAL?: string | null;
-    FECHA_INICIAL?: string | null;
-    FECHA_FINAL?: string | null;
-  } | null;
-  ETAPA_PROCESAMIENTO?: {
-    __typename: "ETAPAS_PROCESO";
-    ESTADO_INICIAL?: string | null;
-    ESTADO_FINAL?: string | null;
-    FECHA_INICIAL?: string | null;
-    FECHA_FINAL?: string | null;
-  } | null;
+  ETAPA_INICIAL_ESTADO_INICIAL?: string | null;
+  ETAPA_INICIAL_ESTADO_FINAL?: string | null;
+  ETAPA_INICIAL_FECHA_INICIAL?: string | null;
+  ETAPA_INICIAL_FECHA_FINAL?: string | null;
+  ETAPA_FINAL_ESTADO_INICIAL?: string | null;
+  ETAPA_FINAL_ESTADO_FINAL?: string | null;
+  ETAPA_FINAL_FECHA_INICIAL?: string | null;
+  ETAPA_FINAL_FECHA_FINAL?: string | null;
+  ETAPA_PROCESAMIENTO_ESTADO_INICIAL?: string | null;
+  ETAPA_PROCESAMIENTO_ESTADO_FINAL?: string | null;
+  ETAPA_PROCESAMIENTO_FECHA_INICIAL?: string | null;
+  ETAPA_PROCESAMIENTO_FECHA_FINAL?: string | null;
   FECHA_ACTUALIZACION?: string | null;
   FECHA_CREADO?: string | null;
   FECHA_FINALIZADO?: string | null;
@@ -1698,27 +1620,18 @@ export class APIService {
         createSiaGenAudEstadoProcesosDev(input: $input) {
           __typename
           ESTADO_EJECUCION
-          ETAPA_INICIAL {
-            __typename
-            ESTADO_INICIAL
-            ESTADO_FINAL
-            FECHA_INICIAL
-            FECHA_FINAL
-          }
-          ETAPA_FINAL {
-            __typename
-            ESTADO_INICIAL
-            ESTADO_FINAL
-            FECHA_INICIAL
-            FECHA_FINAL
-          }
-          ETAPA_PROCESAMIENTO {
-            __typename
-            ESTADO_INICIAL
-            ESTADO_FINAL
-            FECHA_INICIAL
-            FECHA_FINAL
-          }
+          ETAPA_INICIAL_ESTADO_INICIAL
+          ETAPA_INICIAL_ESTADO_FINAL
+          ETAPA_INICIAL_FECHA_INICIAL
+          ETAPA_INICIAL_FECHA_FINAL
+          ETAPA_FINAL_ESTADO_INICIAL
+          ETAPA_FINAL_ESTADO_FINAL
+          ETAPA_FINAL_FECHA_INICIAL
+          ETAPA_FINAL_FECHA_FINAL
+          ETAPA_PROCESAMIENTO_ESTADO_INICIAL
+          ETAPA_PROCESAMIENTO_ESTADO_FINAL
+          ETAPA_PROCESAMIENTO_FECHA_INICIAL
+          ETAPA_PROCESAMIENTO_FECHA_FINAL
           FECHA_ACTUALIZACION
           FECHA_CREADO
           FECHA_FINALIZADO
@@ -1745,27 +1658,18 @@ export class APIService {
         updateSiaGenAudEstadoProcesosDev(input: $input) {
           __typename
           ESTADO_EJECUCION
-          ETAPA_INICIAL {
-            __typename
-            ESTADO_INICIAL
-            ESTADO_FINAL
-            FECHA_INICIAL
-            FECHA_FINAL
-          }
-          ETAPA_FINAL {
-            __typename
-            ESTADO_INICIAL
-            ESTADO_FINAL
-            FECHA_INICIAL
-            FECHA_FINAL
-          }
-          ETAPA_PROCESAMIENTO {
-            __typename
-            ESTADO_INICIAL
-            ESTADO_FINAL
-            FECHA_INICIAL
-            FECHA_FINAL
-          }
+          ETAPA_INICIAL_ESTADO_INICIAL
+          ETAPA_INICIAL_ESTADO_FINAL
+          ETAPA_INICIAL_FECHA_INICIAL
+          ETAPA_INICIAL_FECHA_FINAL
+          ETAPA_FINAL_ESTADO_INICIAL
+          ETAPA_FINAL_ESTADO_FINAL
+          ETAPA_FINAL_FECHA_INICIAL
+          ETAPA_FINAL_FECHA_FINAL
+          ETAPA_PROCESAMIENTO_ESTADO_INICIAL
+          ETAPA_PROCESAMIENTO_ESTADO_FINAL
+          ETAPA_PROCESAMIENTO_FECHA_INICIAL
+          ETAPA_PROCESAMIENTO_FECHA_FINAL
           FECHA_ACTUALIZACION
           FECHA_CREADO
           FECHA_FINALIZADO
@@ -1792,27 +1696,18 @@ export class APIService {
         deleteSiaGenAudEstadoProcesosDev(input: $input) {
           __typename
           ESTADO_EJECUCION
-          ETAPA_INICIAL {
-            __typename
-            ESTADO_INICIAL
-            ESTADO_FINAL
-            FECHA_INICIAL
-            FECHA_FINAL
-          }
-          ETAPA_FINAL {
-            __typename
-            ESTADO_INICIAL
-            ESTADO_FINAL
-            FECHA_INICIAL
-            FECHA_FINAL
-          }
-          ETAPA_PROCESAMIENTO {
-            __typename
-            ESTADO_INICIAL
-            ESTADO_FINAL
-            FECHA_INICIAL
-            FECHA_FINAL
-          }
+          ETAPA_INICIAL_ESTADO_INICIAL
+          ETAPA_INICIAL_ESTADO_FINAL
+          ETAPA_INICIAL_FECHA_INICIAL
+          ETAPA_INICIAL_FECHA_FINAL
+          ETAPA_FINAL_ESTADO_INICIAL
+          ETAPA_FINAL_ESTADO_FINAL
+          ETAPA_FINAL_FECHA_INICIAL
+          ETAPA_FINAL_FECHA_FINAL
+          ETAPA_PROCESAMIENTO_ESTADO_INICIAL
+          ETAPA_PROCESAMIENTO_ESTADO_FINAL
+          ETAPA_PROCESAMIENTO_FECHA_INICIAL
+          ETAPA_PROCESAMIENTO_FECHA_FINAL
           FECHA_ACTUALIZACION
           FECHA_CREADO
           FECHA_FINALIZADO
@@ -2225,27 +2120,18 @@ export class APIService {
         getSiaGenAudEstadoProcesosDev(ID_PROCESO: $ID_PROCESO) {
           __typename
           ESTADO_EJECUCION
-          ETAPA_INICIAL {
-            __typename
-            ESTADO_INICIAL
-            ESTADO_FINAL
-            FECHA_INICIAL
-            FECHA_FINAL
-          }
-          ETAPA_FINAL {
-            __typename
-            ESTADO_INICIAL
-            ESTADO_FINAL
-            FECHA_INICIAL
-            FECHA_FINAL
-          }
-          ETAPA_PROCESAMIENTO {
-            __typename
-            ESTADO_INICIAL
-            ESTADO_FINAL
-            FECHA_INICIAL
-            FECHA_FINAL
-          }
+          ETAPA_INICIAL_ESTADO_INICIAL
+          ETAPA_INICIAL_ESTADO_FINAL
+          ETAPA_INICIAL_FECHA_INICIAL
+          ETAPA_INICIAL_FECHA_FINAL
+          ETAPA_FINAL_ESTADO_INICIAL
+          ETAPA_FINAL_ESTADO_FINAL
+          ETAPA_FINAL_FECHA_INICIAL
+          ETAPA_FINAL_FECHA_FINAL
+          ETAPA_PROCESAMIENTO_ESTADO_INICIAL
+          ETAPA_PROCESAMIENTO_ESTADO_FINAL
+          ETAPA_PROCESAMIENTO_FECHA_INICIAL
+          ETAPA_PROCESAMIENTO_FECHA_FINAL
           FECHA_ACTUALIZACION
           FECHA_CREADO
           FECHA_FINALIZADO
@@ -2276,27 +2162,18 @@ export class APIService {
           items {
             __typename
             ESTADO_EJECUCION
-            ETAPA_INICIAL {
-              __typename
-              ESTADO_INICIAL
-              ESTADO_FINAL
-              FECHA_INICIAL
-              FECHA_FINAL
-            }
-            ETAPA_FINAL {
-              __typename
-              ESTADO_INICIAL
-              ESTADO_FINAL
-              FECHA_INICIAL
-              FECHA_FINAL
-            }
-            ETAPA_PROCESAMIENTO {
-              __typename
-              ESTADO_INICIAL
-              ESTADO_FINAL
-              FECHA_INICIAL
-              FECHA_FINAL
-            }
+            ETAPA_INICIAL_ESTADO_INICIAL
+            ETAPA_INICIAL_ESTADO_FINAL
+            ETAPA_INICIAL_FECHA_INICIAL
+            ETAPA_INICIAL_FECHA_FINAL
+            ETAPA_FINAL_ESTADO_INICIAL
+            ETAPA_FINAL_ESTADO_FINAL
+            ETAPA_FINAL_FECHA_INICIAL
+            ETAPA_FINAL_FECHA_FINAL
+            ETAPA_PROCESAMIENTO_ESTADO_INICIAL
+            ETAPA_PROCESAMIENTO_ESTADO_FINAL
+            ETAPA_PROCESAMIENTO_FECHA_INICIAL
+            ETAPA_PROCESAMIENTO_FECHA_FINAL
             FECHA_ACTUALIZACION
             FECHA_CREADO
             FECHA_FINALIZADO
@@ -2336,27 +2213,18 @@ export class APIService {
           items {
             __typename
             ESTADO_EJECUCION
-            ETAPA_INICIAL {
-              __typename
-              ESTADO_INICIAL
-              ESTADO_FINAL
-              FECHA_INICIAL
-              FECHA_FINAL
-            }
-            ETAPA_FINAL {
-              __typename
-              ESTADO_INICIAL
-              ESTADO_FINAL
-              FECHA_INICIAL
-              FECHA_FINAL
-            }
-            ETAPA_PROCESAMIENTO {
-              __typename
-              ESTADO_INICIAL
-              ESTADO_FINAL
-              FECHA_INICIAL
-              FECHA_FINAL
-            }
+            ETAPA_INICIAL_ESTADO_INICIAL
+            ETAPA_INICIAL_ESTADO_FINAL
+            ETAPA_INICIAL_FECHA_INICIAL
+            ETAPA_INICIAL_FECHA_FINAL
+            ETAPA_FINAL_ESTADO_INICIAL
+            ETAPA_FINAL_ESTADO_FINAL
+            ETAPA_FINAL_FECHA_INICIAL
+            ETAPA_FINAL_FECHA_FINAL
+            ETAPA_PROCESAMIENTO_ESTADO_INICIAL
+            ETAPA_PROCESAMIENTO_ESTADO_FINAL
+            ETAPA_PROCESAMIENTO_FECHA_INICIAL
+            ETAPA_PROCESAMIENTO_FECHA_FINAL
             FECHA_ACTUALIZACION
             FECHA_CREADO
             FECHA_FINALIZADO
@@ -2393,27 +2261,18 @@ export class APIService {
           items {
             __typename
             ESTADO_EJECUCION
-            ETAPA_INICIAL {
-              __typename
-              ESTADO_INICIAL
-              ESTADO_FINAL
-              FECHA_INICIAL
-              FECHA_FINAL
-            }
-            ETAPA_FINAL {
-              __typename
-              ESTADO_INICIAL
-              ESTADO_FINAL
-              FECHA_INICIAL
-              FECHA_FINAL
-            }
-            ETAPA_PROCESAMIENTO {
-              __typename
-              ESTADO_INICIAL
-              ESTADO_FINAL
-              FECHA_INICIAL
-              FECHA_FINAL
-            }
+            ETAPA_INICIAL_ESTADO_INICIAL
+            ETAPA_INICIAL_ESTADO_FINAL
+            ETAPA_INICIAL_FECHA_INICIAL
+            ETAPA_INICIAL_FECHA_FINAL
+            ETAPA_FINAL_ESTADO_INICIAL
+            ETAPA_FINAL_ESTADO_FINAL
+            ETAPA_FINAL_FECHA_INICIAL
+            ETAPA_FINAL_FECHA_FINAL
+            ETAPA_PROCESAMIENTO_ESTADO_INICIAL
+            ETAPA_PROCESAMIENTO_ESTADO_FINAL
+            ETAPA_PROCESAMIENTO_FECHA_INICIAL
+            ETAPA_PROCESAMIENTO_FECHA_FINAL
             FECHA_ACTUALIZACION
             FECHA_CREADO
             FECHA_FINALIZADO
@@ -2777,27 +2636,18 @@ export class APIService {
         onCreateSiaGenAudEstadoProcesosDev {
           __typename
           ESTADO_EJECUCION
-          ETAPA_INICIAL {
-            __typename
-            ESTADO_INICIAL
-            ESTADO_FINAL
-            FECHA_INICIAL
-            FECHA_FINAL
-          }
-          ETAPA_FINAL {
-            __typename
-            ESTADO_INICIAL
-            ESTADO_FINAL
-            FECHA_INICIAL
-            FECHA_FINAL
-          }
-          ETAPA_PROCESAMIENTO {
-            __typename
-            ESTADO_INICIAL
-            ESTADO_FINAL
-            FECHA_INICIAL
-            FECHA_FINAL
-          }
+          ETAPA_INICIAL_ESTADO_INICIAL
+          ETAPA_INICIAL_ESTADO_FINAL
+          ETAPA_INICIAL_FECHA_INICIAL
+          ETAPA_INICIAL_FECHA_FINAL
+          ETAPA_FINAL_ESTADO_INICIAL
+          ETAPA_FINAL_ESTADO_FINAL
+          ETAPA_FINAL_FECHA_INICIAL
+          ETAPA_FINAL_FECHA_FINAL
+          ETAPA_PROCESAMIENTO_ESTADO_INICIAL
+          ETAPA_PROCESAMIENTO_ESTADO_FINAL
+          ETAPA_PROCESAMIENTO_FECHA_INICIAL
+          ETAPA_PROCESAMIENTO_FECHA_FINAL
           FECHA_ACTUALIZACION
           FECHA_CREADO
           FECHA_FINALIZADO
@@ -2820,27 +2670,18 @@ export class APIService {
         onUpdateSiaGenAudEstadoProcesosDev {
           __typename
           ESTADO_EJECUCION
-          ETAPA_INICIAL {
-            __typename
-            ESTADO_INICIAL
-            ESTADO_FINAL
-            FECHA_INICIAL
-            FECHA_FINAL
-          }
-          ETAPA_FINAL {
-            __typename
-            ESTADO_INICIAL
-            ESTADO_FINAL
-            FECHA_INICIAL
-            FECHA_FINAL
-          }
-          ETAPA_PROCESAMIENTO {
-            __typename
-            ESTADO_INICIAL
-            ESTADO_FINAL
-            FECHA_INICIAL
-            FECHA_FINAL
-          }
+          ETAPA_INICIAL_ESTADO_INICIAL
+          ETAPA_INICIAL_ESTADO_FINAL
+          ETAPA_INICIAL_FECHA_INICIAL
+          ETAPA_INICIAL_FECHA_FINAL
+          ETAPA_FINAL_ESTADO_INICIAL
+          ETAPA_FINAL_ESTADO_FINAL
+          ETAPA_FINAL_FECHA_INICIAL
+          ETAPA_FINAL_FECHA_FINAL
+          ETAPA_PROCESAMIENTO_ESTADO_INICIAL
+          ETAPA_PROCESAMIENTO_ESTADO_FINAL
+          ETAPA_PROCESAMIENTO_FECHA_INICIAL
+          ETAPA_PROCESAMIENTO_FECHA_FINAL
           FECHA_ACTUALIZACION
           FECHA_CREADO
           FECHA_FINALIZADO
@@ -2863,27 +2704,18 @@ export class APIService {
         onDeleteSiaGenAudEstadoProcesosDev {
           __typename
           ESTADO_EJECUCION
-          ETAPA_INICIAL {
-            __typename
-            ESTADO_INICIAL
-            ESTADO_FINAL
-            FECHA_INICIAL
-            FECHA_FINAL
-          }
-          ETAPA_FINAL {
-            __typename
-            ESTADO_INICIAL
-            ESTADO_FINAL
-            FECHA_INICIAL
-            FECHA_FINAL
-          }
-          ETAPA_PROCESAMIENTO {
-            __typename
-            ESTADO_INICIAL
-            ESTADO_FINAL
-            FECHA_INICIAL
-            FECHA_FINAL
-          }
+          ETAPA_INICIAL_ESTADO_INICIAL
+          ETAPA_INICIAL_ESTADO_FINAL
+          ETAPA_INICIAL_FECHA_INICIAL
+          ETAPA_INICIAL_FECHA_FINAL
+          ETAPA_FINAL_ESTADO_INICIAL
+          ETAPA_FINAL_ESTADO_FINAL
+          ETAPA_FINAL_FECHA_INICIAL
+          ETAPA_FINAL_FECHA_FINAL
+          ETAPA_PROCESAMIENTO_ESTADO_INICIAL
+          ETAPA_PROCESAMIENTO_ESTADO_FINAL
+          ETAPA_PROCESAMIENTO_FECHA_INICIAL
+          ETAPA_PROCESAMIENTO_FECHA_FINAL
           FECHA_ACTUALIZACION
           FECHA_CREADO
           FECHA_FINALIZADO
