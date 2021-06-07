@@ -81,7 +81,6 @@ export class CatalogosComponent implements OnInit, OnDestroy {
       for (let i in this.itemsAcciones) {
         arregloAcciones.push({ item_id: this.itemsAcciones[i], item_text: this.itemsAcciones[i] });
       }
-
       this.dropdownListFiltroAccion = arregloAcciones;
     }
 
@@ -222,11 +221,11 @@ export class CatalogosComponent implements OnInit, OnDestroy {
       this.itemsAcciones.sort();
       this.itemsCorreos.sort();
       if (res === null) {
-        console.log("res", res)
+        //console.log("response", res)
       }
       else {
         let resp = res.slice().sort(function (a, b) { return new Date(b.FECHA).getTime() - new Date(a.FECHA).getTime() })
-        console.log("resp", resp)
+        //console.log("response slice", resp)
         this.ListadoOriginal = resp;
       }
       this.ListadoPantalla = this.ListadoOriginal;
@@ -294,8 +293,6 @@ export class CatalogosComponent implements OnInit, OnDestroy {
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
   }
 
-
-
   filtrarCatalogosConAtributos(ListadoOriginal: AUDGENUSUARIO_INTERFACE[], FiltrarCatalogo, FiltrarAccion, FiltrarCorreo, FiltrarFecha): any {
     let response = ListadoOriginal;
     if (FiltrarCatalogo != null) {
@@ -333,14 +330,12 @@ export class CatalogosComponent implements OnInit, OnDestroy {
 
     if (FiltrarFecha != null) {
       let arrayTempFecha = [];
-      console.log("FiltrarFecha", FiltrarFecha)
       arrayTempFecha = response.filter((e) => e.FECHA.includes(FiltrarFecha))
-      console.log("arrayTempFecha", arrayTempFecha)
       response = arrayTempFecha;
     }
 
     const uniqueArr = [... new Set(response.map(data => data.ID))]
-    console.log(uniqueArr)
+    //console.log(uniqueArr)
     return response;
   }
 
