@@ -11,6 +11,9 @@ import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { NgxSpinnerService } from 'ngx-spinner';
 
 import { ValorFiltrarAcciones } from 'src/app/validators/opcionesDeFiltroAccionesAuditoriaUsuariios';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
+declare var $: any;
 
 @Component({
   selector: 'app-usuarios',
@@ -19,11 +22,15 @@ import { ValorFiltrarAcciones } from 'src/app/validators/opcionesDeFiltroAccione
 })
 export class UsuariosComponent implements OnInit {
 
+  filtroAuditoriaUsuariosForm: FormGroup;
+  maxDate: Date;
+  
   itemsAntes = [];
   itemsDespues = [];
   itemsValor = [];
 
   listadoUsuarios: AUDGENUSUARIO_INTERFACE[];
+  listadoOriginalUsuarios: AUDGENUSUARIO_INTERFACE[];
 
   ListadoUsuariosPantalla: AUDGENUSUARIO_INTERFACE[] = [];
 
@@ -49,6 +56,7 @@ export class UsuariosComponent implements OnInit {
     private store: Store<AppState>,
     private api: APIService,
     private modalService: NgbModal,
+    private fb: FormBuilder,
     private spinner: NgxSpinnerService
   ) {}
 
@@ -65,16 +73,16 @@ export class UsuariosComponent implements OnInit {
   }
   initSelects = () => {
 
+    this.maxDate = new Date();
+    
+    this.filtroAuditoriaUsuariosForm = this.fb.group({
+      filtroFecha: []
+    })
+
     this.dropdownListFiltroAccion = [
       { item_id: ValorFiltrarAcciones.Actualizar, item_text: ValorFiltrarAcciones.Actualizar },
       { item_id: ValorFiltrarAcciones.Eliminar, item_text: ValorFiltrarAcciones.Eliminar }
     ]
-
-    this.dropdownListFiltroPermisos = [
-      { item_id: "op1", item_text: "Opción uno" },
-      { item_id: "op2", item_text: "Opción dos" },
-      { item_id: "op3", item_text: "Opción tres" }
-    ];
 
     this.SettingsFiltroDePermisos = {
       singleSelection: false,
@@ -125,12 +133,56 @@ export class UsuariosComponent implements OnInit {
 
   }
 
-  limpirarFiltro = () => {
-    this.selectedItemsFiltroaPermisos = [];
+  limpiarFiltro = () => {
+    this.selectedItemsFiltroNombres = [];
+    this.selectedItemsFiltroAccion = [];
+    this.selectedItemsFiltroCorreos = [];
+    this.ListadoUsuariosPantalla = this.listadoOriginalUsuarios;
+    this.filtroAuditoriaUsuariosForm.reset();
   }
 
   filtrar = () => {
     this.spinner.show();
+
+    let FiltrarNombre = null;
+    let FiltrarAccion = null;
+    let FiltrarCorreo = null;
+    let FiltrarFecha = this.filtroAuditoriaUsuariosForm.get('filtroFecha').value;
+
+    console.log(this.selectedItemsFiltroNombres)
+
+    if (this.selectedItemsFiltroNombres.length !== 0) {
+      let arrayFiltroNombres = [];
+      this.selectedItemsFiltroNombres.forEach((e) => {
+        arrayFiltroNombres.push(e.item_id);
+      });
+      FiltrarNombre = arrayFiltroNombres;
+      
+
+    }
+
+    
+    if (this.selectedItemsFiltroAccion.length !== 0) {
+      let arrayFiltroAccion = [];
+      this.selectedItemsFiltroAccion.forEach((e) => {
+        arrayFiltroAccion.push(e.item_id);
+      });
+      FiltrarAccion = arrayFiltroAccion;
+    }
+    if (this.selectedItemsFiltroCorreos.length !== 0) {
+      let arrayFiltroCorreo = [];
+      this.selectedItemsFiltroCorreos.forEach((e) => {
+        arrayFiltroCorreo.push(e.item_id);
+      });
+      FiltrarCorreo = arrayFiltroCorreo;
+    }
+    this.ListadoUsuariosPantalla = this.FiltrarNombresConAtributos(
+      this.listadoOriginalUsuarios,
+      FiltrarNombre,
+      FiltrarAccion,
+      FiltrarCorreo,
+      FiltrarFecha
+    )
 
     
     setTimeout(() => {
@@ -140,8 +192,10 @@ export class UsuariosComponent implements OnInit {
 
   ngOnInit(): void {
 
+
     this.initSelects();
 
+    console.log('Acciones: ',this.dropdownListFiltroAccion)
     this.AUDGENUSUARIOS$ = this.store.select(
       ({ AUDGENUSUARIOS }) => AUDGENUSUARIOS.AUDGENUSUARIOS
     ).pipe(map(res => {
@@ -152,7 +206,6 @@ export class UsuariosComponent implements OnInit {
     )).subscribe( usuarios => {
       this.listadoUsuarios = usuarios;
 
-      console.log(this.listadoUsuarios)
       let arrayCorreos = [];
       let arrayNombres = [];
       if(this.listadoUsuarios){
@@ -167,12 +220,12 @@ export class UsuariosComponent implements OnInit {
             index === -1 ? arrayCorreos.push({
               item_id: e.CORREO,
               item_text: e.CORREO,
-            }) : console.log("Ya existe este objeto ")
+            }) : null
 
             index === -1 ? arrayNombres.push({
               item_id: e.USUARIO.NOMBRE + e.USUARIO.APELLIDO_PATERNO,
               item_text: e.USUARIO.NOMBRE + ' ' + e.USUARIO.APELLIDO_PATERNO
-            }): console.log("Ya existe este objeto ")
+            }): null
           }
         });
         if (this.dropdownListFiltroCorreos.length === 0) {
@@ -180,28 +233,34 @@ export class UsuariosComponent implements OnInit {
           this.dropdownListFiltroNombres = [...new Set(arrayNombres)];
         }
 
-        console.log(this.dropdownListFiltroCorreos)
+
 
       }
 
       this.ListadoUsuariosPantalla = usuarios;
+      this.listadoOriginalUsuarios = usuarios;
+
     })
 
-    this.store.select(
-      ({ AUDGENUSUARIOS }) => AUDGENUSUARIOS.AUDGENUSUARIOS
-    ).subscribe(res => { console.log(res)})
+    // this.store.select(
+    //   ({ AUDGENUSUARIOS }) => AUDGENUSUARIOS.AUDGENUSUARIOS
+    // ).subscribe(res => { console.log(res)})
 
-    let body = {
-      MODULO: { eq: 'USUARIOS' } 
-    }
     
     this.store.dispatch(LoadAUDGENUSUARIOS({ consult: { MODULO: 'USUARIOS'}}));
 
-    this.api.ListAUDGENUSUARIOS('USUARIOS').then(res => {
-      console.log(res)
-    })
+    // this.api.ListAUDGENUSUARIOS('USUARIOS').then(res => {
+    //   console.log(res)
+    // })
   }
 
+  cambiarEtiquetaSeleccionadaGeneral(elemento) {
+    setTimeout(() => {
+      $('#' + elemento)
+        .find('.selected-item')
+        .attr('class', 'etiquetasCatalogos');
+    }, 1);
+  }
 
   openModal(content, objetoDetalle: AUDGENUSUARIO_INTERFACE) {
     this.itemsValor = [];
@@ -210,7 +269,7 @@ export class UsuariosComponent implements OnInit {
 
     //console.log("Entrando al modal", objetoDetalle)
 
-    let cambiosAntes = objetoDetalle.CATALOGOS.DETALLE_MODIFICACIONES[0].valorAnterior;
+    let cambiosAntes = objetoDetalle.PERMISOS_USUARIOS[0].DETALLE_MODIFICACIONES[0].valorAnterior;
     if (cambiosAntes !== null) {
       cambiosAntes = cambiosAntes.replace('{', '');
       cambiosAntes = cambiosAntes.replace('}', '');
@@ -224,7 +283,7 @@ export class UsuariosComponent implements OnInit {
       //console.log("cambiosAntes", arregloAntes)
     }
 
-    let cambiosDespues = objetoDetalle.CATALOGOS.DETALLE_MODIFICACIONES[0].valorNuevo;
+    let cambiosDespues = objetoDetalle.PERMISOS_USUARIOS[0].DETALLE_MODIFICACIONES[0].valorNuevo;
     if (cambiosDespues !== null) {
       cambiosDespues = cambiosDespues.replace('{', '');
       cambiosDespues = cambiosDespues.replace('}', '');
@@ -281,6 +340,55 @@ export class UsuariosComponent implements OnInit {
       return false;
     }
   };
+
+  FiltrarNombresConAtributos(ListadoOriginal: AUDGENUSUARIO_INTERFACE[], FiltrarNombre, FiltrarAccion, FiltrarCorreo, FiltrarFecha): any {
+    let response = ListadoOriginal;
+    if (FiltrarNombre != null) {
+      let arrayTempPermiso = [];
+      FiltrarNombre.forEach((FiltrarNombre) => {
+        arrayTempPermiso = [
+          ...arrayTempPermiso,
+          ...response.filter((e) => e.USUARIO.NOMBRE + e.USUARIO.APELLIDO_PATERNO === FiltrarNombre),
+        ];
+      });
+      response = arrayTempPermiso;
+    }
+
+    console.log('Filtro Acción: ', FiltrarAccion)
+    if (FiltrarAccion != null) {
+      let arrayTempPermiso = [];
+      FiltrarAccion.forEach((FiltrarAccion) => {
+        arrayTempPermiso = [
+          ...arrayTempPermiso,
+          ...response.filter((e) => e.PERMISOS_USUARIOS[0].ACCION === FiltrarAccion.toUpperCase()),
+        ];
+      });
+      response = arrayTempPermiso;
+    }
+
+    if (FiltrarCorreo != null) {
+      let arrayTempPermiso = [];
+      FiltrarCorreo.forEach((FiltrarCorreo) => {
+        arrayTempPermiso = [
+          ...arrayTempPermiso,
+          ...response.filter((e) => e.CORREO === FiltrarCorreo),
+        ];
+      });
+      response = arrayTempPermiso;
+    }
+
+    console.log(FiltrarFecha)
+
+    if (FiltrarFecha != null) {
+      let arrayTempFecha = [];
+      arrayTempFecha = response.filter((e) => e.FECHA.includes(FiltrarFecha))
+      response = arrayTempFecha;
+    }
+
+    const uniqueArr = [... new Set(response.map(data => data.ID))]
+    //console.log(uniqueArr)
+    return response;
+  }
 
   
 }

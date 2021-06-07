@@ -215,7 +215,7 @@ export type AUDGENUSUARIOS = {
   SECCION?: AUD_SECCION;
   PROCESOS?: AUD_PROCESOS;
   CATALOGOS?: AUD_CATALOGOS;
-  PERMISOS_USUARIOS?: AUD_PERMISOS;
+  PERMISOS_USUARIOS?: Array<AUD_PERMISOS | null> | null;
 };
 
 export type AUD_USER = {
@@ -654,7 +654,7 @@ export type GetAUDGENUSUARIOSQuery = {
     ESTADO?: string | null;
     NOMBRE?: string | null;
   } | null;
-  PERMISOS_USUARIOS?: {
+  PERMISOS_USUARIOS?: Array<{
     __typename: "AUD_PERMISOS";
     ACCION?: string | null;
     APELLIDO_MATERNO?: string | null;
@@ -668,7 +668,7 @@ export type GetAUDGENUSUARIOSQuery = {
     ESTADO?: string | null;
     NOMBRE?: string | null;
     ROL?: string | null;
-  } | null;
+  } | null> | null;
 };
 
 export type ListAUDGENUSUARIOSQuery = {
@@ -714,7 +714,7 @@ export type ListAUDGENUSUARIOSQuery = {
       ESTADO?: string | null;
       NOMBRE?: string | null;
     } | null;
-    PERMISOS_USUARIOS?: {
+    PERMISOS_USUARIOS?: Array<{
       __typename: "AUD_PERMISOS";
       ACCION?: string | null;
       APELLIDO_MATERNO?: string | null;
@@ -728,7 +728,7 @@ export type ListAUDGENUSUARIOSQuery = {
       ESTADO?: string | null;
       NOMBRE?: string | null;
       ROL?: string | null;
-    } | null;
+    } | null> | null;
   } | null> | null;
   nextToken?: string | null;
 };

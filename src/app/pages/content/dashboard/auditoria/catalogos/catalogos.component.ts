@@ -153,6 +153,8 @@ export class CatalogosComponent implements OnInit, OnDestroy {
       FiltrarCatalogo = arrayFiltroCatalogo;
 
     }
+
+    console.log(this.selectedItemsFiltroAccion)
     if (this.selectedItemsFiltroAccion.length !== 0) {
       let arrayFiltroAccion = [];
       this.selectedItemsFiltroAccion.forEach((e) => {
