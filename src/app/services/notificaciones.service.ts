@@ -92,8 +92,6 @@ export class NotificacionesService {
     this.store.dispatch(
       setnotificaciones({ notificaciones: notificacionesRedux })
     );
-
-    console.log(tempNoticicaciones);
   };
 
   eliminarNoticiaciones = (ID_PROCESO: string) => {
