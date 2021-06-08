@@ -115,8 +115,8 @@
                     <td style="padding-left: 30px; max-width: 150px">{{itemAuditoria.CATALOGOS.ACCION}}
                     </td>
                     <td style="width: 200px" class="justify-content-center">
-                        <center><img style="cursor: pointer" class="detalle-icon"
-                                (click)="openModal(content, itemAuditoria)" /></center>
+                        <center><img style="cursor: pointer" class="detalle-icon" (click)="openModal(itemAuditoria)" />
+                        </center>
                     </td>
                 </tr>
             </table>
@@ -159,14 +159,17 @@
                 <tr>
                     <th style="padding-left: 40px; max-width: 300px">Campo</th>
                     <th style="padding-left: 30px; max-width: 300px">Valor previo</th>
-                    <th style="padding-left: 30px; max-width: 150px">Valor actualizado</th>
+                    <th style="padding-left: 30px; max-width: 150px">Valor actual</th>
                 </tr>
                 <tr *ngFor="let item of itemsTabla">
-                    <td style="padding-left: 30px; max-width: 150px; background-color:#0091DA; color: #ffffff" *ngIf="item.cambio">{{item.valor}}
+                    <td style="padding-left: 30px; max-width: 150px; background-color:#0091DA; color: #ffffff"
+                        *ngIf="item.cambio">{{item.valor}}
                     </td>
-                    <td style="padding-left: 30px; max-width: 150px; background-color:#0091DA; color: #ffffff" *ngIf="item.cambio">{{item.antes}}
+                    <td style="padding-left: 30px; max-width: 150px; background-color:#0091DA; color: #ffffff"
+                        *ngIf="item.cambio">{{item.antes}}
                     </td>
-                    <td style="padding-left: 30px; max-width: 150px; background-color:#0091DA; color: #ffffff" *ngIf="item.cambio">{{item.despues}}
+                    <td style="padding-left: 30px; max-width: 150px; background-color:#0091DA; color: #ffffff"
+                        *ngIf="item.cambio">{{item.despues}}
                     </td>
                     <td style="padding-left: 30px; max-width: 150px" *ngIf="!item.cambio">{{item.valor}}
                     </td>
