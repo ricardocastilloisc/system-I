@@ -275,7 +275,7 @@
                             }" class=" step-1-proceso">
                 <span>
                     <div>PROCESAMIENTO</div>
-                    <div *ngIf="AUDGENEJECUCIONPROCESO[0]?.ETAPA_INICIAL_ESTADO_FINAL  == 'EXITOSO'">
+                    <div >
                         <div class="separador-titulos"></div>
                         <div
                             *ngIf="AUDGENEJECUCIONPROCESO[0]?.ETAPA_PROCESAMIENTO_ESTADO_FINAL === 'EXITOSO'">
@@ -296,7 +296,7 @@
                             }" class="step-4-proceso">
                 <span>
                     <div>FINAL</div>
-                    <div *ngIf="AUDGENEJECUCIONPROCESO[0]?.ETAPA_PROCESAMIENTO_ESTADO_FINAL === 'EXITOSO'">
+                    <div>
                         <div class="separador-titulos"></div>
                         <div
                             *ngIf="AUDGENEJECUCIONPROCESO[0]?.ETAPA_FINAL_ESTADO_FINAL === 'EXITOSO'">
