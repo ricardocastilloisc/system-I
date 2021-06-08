@@ -6,83 +6,154 @@
     <ul class="lisst-unstyled components">
       <p class="text-title-menu">Sistema Integral Automtizado</p>
       <li>
-        <a routerLinkActive="active" routerLink="/"><img src="../assets/imgs/inicio.svg"
-            class="alineadoTextoImagenCentro" />Inicio</a>
+        <a routerLinkActive="active" routerLink="/"
+          ><img
+            src="../assets/imgs/inicio.svg"
+            class="alineadoTextoImagenCentro"
+          />Inicio</a
+        >
       </li>
       <li class="active">
-        <a href="#administracion" class="dropdown-toggle" data-toggle="collapse" data-target="#administracion"
-          aria-expanded="false" *ngIf="usuario.validarRolUsuario()">
-          <img src="../assets/imgs/administracion.svg" class="alineadoTextoImagenCentro" />
+        <a
+          href="#administracion"
+          class="dropdown-toggle"
+          data-toggle="collapse"
+          data-target="#administracion"
+          aria-expanded="false"
+          *ngIf="usuario.validarRolUsuario()"
+        >
+          <img
+            src="../assets/imgs/administracion.svg"
+            class="alineadoTextoImagenCentro"
+          />
           Administración
         </a>
         <ul class="collapse lisst-unstyled" id="administracion">
           <li *ngIf="perfilValido(DataUser, [Administrador, Monitor, Soporte])">
             <a routerLinkActive="active" routerLink="/administracion/catalogos">
-              <img src="../assets/imgs/icons/catalogo.svg" class="alineadoTextoImagenCentro" />
-              Catálogos</a>
+              <img
+                src="../assets/imgs/icons/catalogo.svg"
+                class="alineadoTextoImagenCentro"
+              />
+              Catálogos</a
+            >
           </li>
           <li *ngIf="perfilValido(DataUser, [Soporte])">
             <a routerLinkActive="active" routerLink="/administracion/usuarios">
-              <img src="../assets/imgs/icons/usuarios.svg" class="alineadoTextoImagenCentro" />
-              Usuarios</a>
+              <img
+                src="../assets/imgs/icons/usuarios.svg"
+                class="alineadoTextoImagenCentro"
+              />
+              Usuarios</a
+            >
           </li>
         </ul>
       </li>
-      <li class="active" *ngIf="perfilValido(DataUser, [Administrador, Soporte])">
-        <a href="#auditoria" class="dropdown-toggle" data-toggle="collapse" data-target="#auditoria"
-          aria-expanded="false" routerLink="/auditoria/">
-          <img src="../assets/imgs/auditoria.svg" class="alineadoTextoImagenCentro" />Auditoria
+      <li
+        class="active"
+        *ngIf="perfilValido(DataUser, [Administrador, Soporte])"
+      >
+        <a
+          href="#auditoria"
+          class="dropdown-toggle"
+          data-toggle="collapse"
+          data-target="#auditoria"
+          aria-expanded="false"
+          routerLink="/auditoria/"
+        >
+          <img
+            src="../assets/imgs/auditoria.svg"
+            class="alineadoTextoImagenCentro"
+          />Auditoria
         </a>
         <ul class="collapse lisst-unstyled" id="auditoria">
           <li>
             <a routerLinkActive="active" routerLink="/auditoria/archivos">
-              <img src="../assets/imgs/icons/archivos.svg" class="alineadoTextoImagenCentro" />
-              Archivos</a>
+              <img
+                src="../assets/imgs/icons/archivos.svg"
+                class="alineadoTextoImagenCentro"
+              />
+              Archivos</a
+            >
           </li>
           <li>
             <a routerLinkActive="active" routerLink="/auditoria/catalogos">
-              <img src="../assets/imgs/icons/catalogo.svg" class="alineadoTextoImagenCentro" />
-              Catálogos</a>
+              <img
+                src="../assets/imgs/icons/catalogo.svg"
+                class="alineadoTextoImagenCentro"
+              />
+              Catálogos</a
+            >
           </li>
           <li>
             <a routerLinkActive="active" routerLink="/auditoria/procesos">
-              <img src="../assets/imgs/icons/procesos.svg" class="alineadoTextoImagenCentro" />
-              Procesos</a>
+              <img
+                src="../assets/imgs/icons/procesos.svg"
+                class="alineadoTextoImagenCentro"
+              />
+              Procesos</a
+            >
           </li>
           <li>
             <a routerLinkActive="active" routerLink="/auditoria/usuarios">
-              <img src="../assets/imgs/icons/usuarios.svg" class="alineadoTextoImagenCentro" />
-              Usuarios</a>
+              <img
+                src="../assets/imgs/icons/usuarios.svg"
+                class="alineadoTextoImagenCentro"
+              />
+              Usuarios</a
+            >
           </li>
         </ul>
       </li>
       <li class="active" *ngIf="usuario.validarRolUsuario()">
-        <a href="#procesos" class="dropdown-toggle" data-toggle="collapse" data-target="#procesos"
-          aria-expanded="false">
-          <img src="../assets/imgs/procesos.svg" class="alineadoTextoImagenCentro" />Procesos
+        <a
+          href="#procesos"
+          class="dropdown-toggle"
+          data-toggle="collapse"
+          data-target="#procesos"
+          aria-expanded="false"
+        >
+          <img
+            src="../assets/imgs/procesos.svg"
+            class="alineadoTextoImagenCentro"
+          />Procesos
         </a>
         <ul class="collapse lisst-unstyled" id="procesos">
           <li>
             <a routerLinkActive="active" routerLink="/procesos/diurno">
-              <img src="../assets/imgs/icons/sun.svg" class="alineadoTextoImagenCentro" />
-              Diurnos</a>
+              <img
+                src="../assets/imgs/icons/sun.svg"
+                class="alineadoTextoImagenCentro"
+              />
+              Diurnos</a
+            >
           </li>
           <li>
             <a routerLinkActive="active" routerLink="/procesos/nocturno">
-              <img src="../assets/imgs/icons/moon.svg" class="alineadoTextoImagenCentro" />
-              Nocturnos</a>
+              <img
+                src="../assets/imgs/icons/moon.svg"
+                class="alineadoTextoImagenCentro"
+              />
+              Nocturnos</a
+            >
           </li>
         </ul>
       </li>
       <li>
-        <a (click)="signOut()" style="cursor: pointer"><img src="../assets/imgs/cerrar-sesion.svg"
-            class="alineadoTextoImagenCentro" />Cerrar sesión</a>
+        <a (click)="signOut()" style="cursor: pointer"
+          ><img
+            src="../assets/imgs/cerrar-sesion.svg"
+            class="alineadoTextoImagenCentro"
+          />Cerrar sesión</a
+        >
       </li>
     </ul>
   </nav>
   <!-- INICIO  HEADER -->
   <div id="content">
-    <nav id="headernav"  class="
+    <nav
+      id="headernav"
+      class="
         margin-navbar-barra
         navbar navbar-expand-lg navbar-light
         bg-light
@@ -108,7 +179,7 @@
                     *ngIf="
                       arrayRuta().length > 2 && i !== arrayRuta().length - 1
                     "
-                    style="cursor: pointer; text-decoration-line: underline;"
+                    style="cursor: pointer; text-decoration-line: underline"
                     (click)="irRutaDeStringRuta(i)"
                     >{{ arrayRuta()[i] }}/</a
                   >
@@ -116,7 +187,8 @@
                     *ngIf="
                       arrayRuta().length < 3 || i === arrayRuta().length - 1
                     "
-                  >{{ arrayRuta()[i] }}/</span>
+                    >{{ arrayRuta()[i] }}/</span
+                  >
                 </span>
                 <span *ngIf="arrayRuta().length === 0">Inicio</span>
               </p>
@@ -124,22 +196,23 @@
           </div>
         </div>
         <div
-        [ngClass]="retornarClaseCorrectaDrecha()"
-        class="
-            col-3
-            align-self-end
-            texto-responsivo-usuario
-          ">
+          [ngClass]="retornarClaseCorrectaDrecha()"
+          class="col-3 align-self-end texto-responsivo-usuario"
+        >
           <div class="centrado">
-            <strong><b>{{ DataUser.attributes.given_name }}
-                {{ DataUser.attributes.family_name }}</b></strong>
+            <strong
+              ><b
+                >{{ DataUser.attributes.given_name }}
+                {{ DataUser.attributes.family_name }}</b
+              ></strong
+            >
             <div [ngClass]="retornarClaseCorrectaLinea()"></div>
             <p *ngIf="usuario.validarRolUsuario()">
               {{ obtenerArea() }} /
               {{
-              DataUser.attributes.hasOwnProperty("custom:rol")
-              ? DataUser.attributes["custom:rol"]
-              : ""
+                DataUser.attributes.hasOwnProperty("custom:rol")
+                  ? DataUser.attributes["custom:rol"]
+                  : ""
               }}
             </p>
           </div>
@@ -160,25 +233,39 @@
               >{{ Notificaciones.length }}</span
             >
 
-            <ul class="dropdown-menu notifications" role="menu" aria-labelledby="dLabel">
+            <ul
+              class="dropdown-menu notifications"
+              role="menu"
+              aria-labelledby="dLabel"
+            >
               <div class="notification-heading dropdown-item">
                 <h4 class="menu-title">Notificaciones</h4>
               </div>
               <li class="divider"></li>
               <div class="notifications-wrapper">
-                <div class="content" *ngFor="
+                <div
+                  class="content"
+                  *ngFor="
                     let Notificacion of Notificaciones
                       | ordenarNotificacionesFecha
-                  ">
+                  "
+                >
                   <div class="notification-item">
                     <div class="item-title">
-                      <div>{{  verEstado(Notificacion) }}</div>
-                      <button type="button" class="close" (click)="eliminarNotificacion(Notificacion.ID_PROCESO)">
-                        <span style="
+                      <div>{{ verEstado(Notificacion) }}</div>
+                      <button
+                        type="button"
+                        class="close"
+                        (click)="eliminarNotificacion(Notificacion.ID_PROCESO)"
+                      >
+                        <span
+                          style="
                             font-size: 15px;
                             color: black;
                             background-color: transparent;
-                          ">&times;</span>
+                          "
+                          >&times;</span
+                        >
                       </button>
                     </div>
 
@@ -186,7 +273,10 @@
                       {{ Notificacion.INTERFAZ }}
                     </div>
                     <div class="item-info">
-                      {{ replazarCaracterEspecial(Notificacion.FECHA_ACTUALIZACION) | date: "medium" }}
+                      {{
+                        replazarCaracterEspecial(Notificacion.FECHA_FINALIZADO)
+                          | date: "medium"
+                      }}
                     </div>
                   </div>
                 </div>
