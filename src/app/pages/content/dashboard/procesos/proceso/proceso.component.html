@@ -194,7 +194,7 @@
                             (click)="consultarDetalle(AUDGENESTADOPROCESO.ID_PROCESO, AUDGENESTADOPROCESO.FECHA_CREADO )">
                             <td>{{AUDGENESTADOPROCESO.ID_PROCESO}}</td>
                             <td>{{AUDGENESTADOPROCESO.FECHA_ACTUALIZACION | date :'dd/MM/yyyy'}}
-                                {{AUDGENESTADOPROCESO.FECHA_ACTUALIZACION | date:'mediumTime':'-11:00'}} </td>
+                                {{AUDGENESTADOPROCESO.FECHA_ACTUALIZACION | date:'mediumTime':'-10:00'}} </td>
                             <td [ngClass]="{'error-log': (AUDGENESTADOPROCESO.ETAPA_FINAL_ESTADO_FINAL == 'FALLIDO' || AUDGENESTADOPROCESO.ETAPA_PROCESAMIENTO_ESTADO_FINAL == 'FALLIDO' || AUDGENESTADOPROCESO.ETAPA_INICIAL_ESTADO_FINAL == 'FALLIDO') && AUDGENESTADOPROCESO.ESTADO_EJECUCION == 'TERMINADO', 'success-log': AUDGENESTADOPROCESO.ETAPA_FINAL_ESTADO_FINAL == 'EXITOSO' && AUDGENESTADOPROCESO.ESTADO_EJECUCION == 'TERMINADO'}">
                                 {{AUDGENESTADOPROCESO.ESTADO_EJECUCION}}</td>
                         </tr>
@@ -275,7 +275,7 @@
                             }" class=" step-1-proceso">
                 <span>
                     <div>PROCESAMIENTO</div>
-                    <div *ngIf="AUDGENEJECUCIONPROCESO[0]?.ETAPA_INICIAL_ESTADO_FINAL  == 'EXITOSO'">
+                    <div >
                         <div class="separador-titulos"></div>
                         <div
                             *ngIf="AUDGENEJECUCIONPROCESO[0]?.ETAPA_PROCESAMIENTO_ESTADO_FINAL === 'EXITOSO'">
@@ -296,7 +296,7 @@
                             }" class="step-4-proceso">
                 <span>
                     <div>FINAL</div>
-                    <div *ngIf="AUDGENEJECUCIONPROCESO[0]?.ETAPA_PROCESAMIENTO_ESTADO_FINAL === 'EXITOSO'">
+                    <div>
                         <div class="separador-titulos"></div>
                         <div
                             *ngIf="AUDGENEJECUCIONPROCESO[0]?.ETAPA_FINAL_ESTADO_FINAL === 'EXITOSO'">
@@ -336,7 +336,7 @@
                             <td
                                 [ngClass]="{'error-log': AUDGENPROCESO.NIVEL === 'FALLIDO', 'info-log': AUDGENPROCESO.NIVEL === 'INFO' , 'aviso-log': AUDGENPROCESO.NIVEL === 'AVISO' }">
                                 {{AUDGENPROCESO.NIVEL}}</td>
-                            <td>{{AUDGENPROCESO.FECHA | date :'dd/MM/yyyy'}} {{AUDGENPROCESO.FECHA | date:'mediumTime':'-11:00'}}
+                            <td>{{AUDGENPROCESO.FECHA | date :'dd/MM/yyyy'}} {{AUDGENPROCESO.FECHA | date:'mediumTime':'-10:00'}}
                             </td>
                             <td>{{AUDGENPROCESO.ACTIVIDAD}}</td>
                             <td colspan="9" [ngClass]="{'error-log': AUDGENPROCESO.NIVEL === 'FALLIDO'}">
@@ -360,7 +360,7 @@
                         <tr
                             *ngFor="let AUDGENPROCESO of AUDGENPROCESOS | paginate: { id: 'detalleEjecucion', itemsPerPage: 10, currentPage: paginaActualProceso} ; index as i">
                             <td>{{i + 1 }}</td>
-                            <td>{{AUDGENPROCESO.FECHA | date :'dd/MM/yyyy'}} {{AUDGENPROCESO.FECHA | date:'mediumTime':'-11:00'}}
+                            <td>{{AUDGENPROCESO.FECHA | date :'dd/MM/yyyy'}} {{AUDGENPROCESO.FECHA | date:'mediumTime':'-10:00'}}
                             </td>
                             <td>{{AUDGENPROCESO.ACTIVIDAD}}</td>
                             <td colspan="9" [ngClass]="{'error-log': AUDGENPROCESO.NIVEL === 'FALLIDO'} ">

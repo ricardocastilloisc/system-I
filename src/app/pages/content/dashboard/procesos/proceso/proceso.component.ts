@@ -51,6 +51,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
   paginaActualProceso: number = 1;
   mostrarEjecucionesProcesos: boolean = true;
   maxDate: Date;
+  today: string;
   Administrador = ERole.Administrador;
   Ejecutor = ERole.Monitor;
   DataUser: any;
@@ -129,6 +130,12 @@ export class ProcesoComponent implements OnInit, OnDestroy {
     //   )
 
     this.maxDate = new Date();
+    var dd = String(this.maxDate. getDate()). padStart(2, '0');
+    var mm = String(this.maxDate. getMonth() + 1). padStart(2, '0'); 
+    var yyyy = this.maxDate. getFullYear();
+    ​
+    this.today = yyyy + '-' + mm + '-' + dd ;
+    //console.log('Fecha: ',today)
     this.DataUser$ = this.store.select(({ usuario }) => usuario.user);
 
 
@@ -151,11 +158,11 @@ export class ProcesoComponent implements OnInit, OnDestroy {
 
     }
     ))
-/*
-    this.store.select(
-      ({ AUDGENESTADOPROCESOS }) => AUDGENESTADOPROCESOS.AUDGENESTADOPROCESO
-    ).subscribe(res => console.log('que hay',res))
-*/
+
+    // this.store.select(
+    //   ({ AUDGENESTADOPROCESOS }) => AUDGENESTADOPROCESOS.AUDGENESTADOPROCESO
+    // ).subscribe(res => console.log('que hay',res))
+
 
 
     this.store.select(
@@ -167,9 +174,10 @@ export class ProcesoComponent implements OnInit, OnDestroy {
       ({ AUDGENESTADOPROCESOS }) => AUDGENESTADOPROCESOS.AUDGENESTADOPROCESO
     )
 
+    
 
     let body = {
-      filter: { INTERFAZ: { eq: this.rutaActiva.snapshot.params.id } },
+      filter: { INTERFAZ: { eq: this.rutaActiva.snapshot.params.id }, FECHA_ACTUALIZACION: { contains: this.today } },
       limit: 999999999
     }
 
@@ -240,7 +248,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
     
 
     let body = {
-      filter: { INTERFAZ: { eq: this.rutaActiva.snapshot.params.id } },
+      filter: { INTERFAZ: { eq: this.rutaActiva.snapshot.params.id }, FECHA_ACTUALIZACION: { contains: this.today} },
       limit: 999999999
     }
 
