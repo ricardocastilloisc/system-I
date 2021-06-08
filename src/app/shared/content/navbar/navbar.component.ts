@@ -13,7 +13,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { AppState } from '../../../ReduxStore/app.reducers';
 import { Usuario } from '../../../model/usuario.model';
 import { Observable, Subscription } from 'rxjs';
-import { ERole } from '../../../validators/roles';
+import { EArea, ERole } from '../../../validators/roles';
 import { NotificacionesService } from '../../../services/notificaciones.service';
 import { map } from 'rxjs/operators';
 import { NOTIFICACION_INTERFACE } from './../../../model/notificacion.model';
@@ -47,6 +47,23 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   NotificacionesSub$: Subscription;
   NotificacionesSubActivo$;
 
+  DataUser: Usuario;
+
+  DataUserValidartor;
+
+  negocios = [];
+  area: string;
+
+  ValidadoresDeInterfaces;
+
+  Areas = [
+    EArea.Contabilidad,
+    EArea.Custodia,
+    EArea.Inversiones_Riesgos,
+    EArea.Tesoreria,
+    EArea.Soporte,
+  ];
+
   constructor(
     private authService: AuthService,
     private store: Store<AppState>,
@@ -59,7 +76,11 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.NotificacionesSubActivo$.unsubscribe();
     this.store.dispatch(unSetnotificaciones());
-    this.NotificacionesSub$.unsubscribe();
+
+    if (this.NotificacionesSub$) {
+      this.NotificacionesSub$.unsubscribe();
+    }
+    this.DataUserValidartor.unsubscribe();
   }
 
   ngAfterViewInit(): void {
@@ -209,38 +230,100 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(map((e) => e.filter((fl) => fl.LEIDO === false)))
       .subscribe((res) => {
         this.Notificaciones = res;
+
+        if (this.Notificaciones.length > 0) {
+          new Promise((resolve) => {
+            const intervalo = setInterval(() => {
+              if (this.ValidadoresDeInterfaces) {
+                resolve('ok');
+                clearInterval(intervalo);
+              }
+            }, 100);
+          }).then(() => {
+            let NotificacionFinal = [];
+            this.ValidadoresDeInterfaces.forEach((e) => {
+              let array = this.Notificaciones.filter(
+                (f) => f['INTERFAZ'] === e['FLUJO']
+              );
+              if (array.length > 0) {
+                NotificacionFinal = [...NotificacionFinal, ...array];
+              }
+            });
+            localStorage.setItem(
+              'Notificaciones',
+              JSON.stringify(NotificacionFinal)
+            );
+            this.Notificaciones = NotificacionFinal;
+          });
+        }
       });
 
-    this.NotificacionesSubActivo$ =
-      this.api.OnUpdateSiaGenAudEstadoProcesosDevListener.subscribe(
-        ({ value }: any) => {
-          const { data } = value;
-          const { onUpdateSiaGenAudEstadoProcesosDev } = data;
+    this.DataUserValidartor = this.store
+      .select(({ usuario }) => usuario.user)
+      .subscribe((res) => {
+        if (res) {
+          this.DataUser = res;
 
-          if (
-            onUpdateSiaGenAudEstadoProcesosDev['ESTADO_EJECUCION'] ===
-            'TERMINADO'
-          ) {
-            if (
-              this.verEstado(onUpdateSiaGenAudEstadoProcesosDev) === 'EXITOSO'
-            ) {
-              this.abrirToass(
-                this.verEstado(onUpdateSiaGenAudEstadoProcesosDev),
-                onUpdateSiaGenAudEstadoProcesosDev.INTERFAZ
-              );
-            } else {
-              this.abrirToassError(
-                this.verEstado(onUpdateSiaGenAudEstadoProcesosDev),
-                onUpdateSiaGenAudEstadoProcesosDev.INTERFAZ
-              );
-            }
+          this.area = this.obtenerAreaValidacion();
 
-            this.NotificacionesService.newNotificacion(
-              onUpdateSiaGenAudEstadoProcesosDev
-            );
-          }
+          this.negocios = this.DataUser.attributes['custom:negocio'].split(',');
+
+          this.negocios = this.negocios.map((negocio) => {
+            return negocio.toUpperCase();
+          });
+
+          this.api
+            .ListCATPERMISOS(
+              this.negocios,
+              this.area,
+              this.DataUser.attributes['custom:rol'].toUpperCase()
+            )
+            .then(({ items }: any) => {
+              this.ValidadoresDeInterfaces = items;
+
+              this.NotificacionesSubActivo$ =
+                this.api.OnUpdateSiaGenAudEstadoProcesosDevListener.subscribe(
+                  ({ value }: any) => {
+                    const { data } = value;
+                    const { onUpdateSiaGenAudEstadoProcesosDev } = data;
+
+                    let arrayValidador = this.ValidadoresDeInterfaces.filter(
+                      (e) =>
+                        e['FLUJO'] ===
+                        onUpdateSiaGenAudEstadoProcesosDev['INTERFAZ']
+                    );
+
+                    if (arrayValidador.length > 0) {
+                      if (
+                        onUpdateSiaGenAudEstadoProcesosDev[
+                          'ESTADO_EJECUCION'
+                        ] === 'TERMINADO'
+                      ) {
+                        if (
+                          this.verEstado(onUpdateSiaGenAudEstadoProcesosDev) ===
+                          'EXITOSO'
+                        ) {
+                          this.abrirToass(
+                            this.verEstado(onUpdateSiaGenAudEstadoProcesosDev),
+                            onUpdateSiaGenAudEstadoProcesosDev.INTERFAZ
+                          );
+                        } else {
+                          this.abrirToassError(
+                            this.verEstado(onUpdateSiaGenAudEstadoProcesosDev),
+                            onUpdateSiaGenAudEstadoProcesosDev.INTERFAZ
+                          );
+                        }
+
+                        this.NotificacionesService.newNotificacion(
+                          onUpdateSiaGenAudEstadoProcesosDev
+                        );
+                      }
+                    }
+                  }
+                );
+            });
         }
-      );
+      });
   }
 
   signOut = () => {
@@ -343,6 +426,20 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
       progressAnimation: 'increasing',
     });
   };
+
+  obtenerAreaValidacion(): string {
+    let arrayTempArea = [];
+
+    this.DataUser.groups.forEach((area) => {
+      this.Areas.forEach((areaDef) => {
+        if (area === areaDef) {
+          arrayTempArea.push(area);
+        }
+      });
+    });
+    if (arrayTempArea.length > 0) return arrayTempArea[0].toUpperCase();
+    else 'N/D';
+  }
 
   obtenerArea(): any {
     //console.log('obtenerArea');

@@ -257,7 +257,7 @@ export class CatalogosComponent implements OnInit, OnDestroy {
   openModal(objetoDetalle: AUDGENUSUARIO_INTERFACE): void {
 
     this.itemsTabla = [];
-    const accion = objetoDetalle.CATALOGOS.ACCION;
+    let accion = objetoDetalle.CATALOGOS.ACCION;
     let valores = [];
     let tabla = [];
     let arregloAntes = [];
@@ -284,7 +284,7 @@ export class CatalogosComponent implements OnInit, OnDestroy {
     }
 
     if (accion === 'ELIMINAR') {
-      const getValor = cambiosAntes.split(',');
+      let getValor = cambiosAntes.split(',');
       for (let i in getValor) {
         if (getValor) {
           let valor = getValor[i].toString().split('=');
@@ -293,7 +293,7 @@ export class CatalogosComponent implements OnInit, OnDestroy {
       }
       arregloAntes = cambiosAntes.split(',');
     } else {
-      const getValor = cambiosDespues.split(',');
+      let getValor = cambiosDespues.split(',');
       for (let i in getValor) {
         if (getValor) {
           let valor = getValor[i].toString().split('=');
@@ -302,6 +302,8 @@ export class CatalogosComponent implements OnInit, OnDestroy {
       }
       if (cambiosAntes !== null) {
         arregloAntes = cambiosAntes.split(',');
+        arregloDespues = cambiosDespues.split(',');
+      } else {
         arregloDespues = cambiosDespues.split(',');
       }
     }
