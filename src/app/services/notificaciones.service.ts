@@ -13,66 +13,87 @@ export class NotificacionesService {
   constructor(private api: APIService, private store: Store<AppState>) {}
 
   obtenerListadoDeNotificaciones = () => {
+    this.api
+      .ListSiaGenAudEstadoProcesosDevsPorFecha(
+        moment('7:59', 'HH:mm').format().toString()
+      )
+      .then(({ items }) => {
+        let ArrayItems = [
+          ...items.filter((e) => e.ESTADO_EJECUCION === 'TERMINADO'),
+        ];
 
+        if (!JSON.parse(localStorage.getItem('Notificaciones'))) {
+          let notificacionesTemportal = [];
 
-    this.api.ListSiaGenAudEstadoProcesosDevsPorFecha(moment('7:59', 'HH:mm').format().toString()).then(({ items }) => {
-
-      let ArrayItems = [
-        ...items.filter((e) => e.ESTADO_EJECUCION === 'TERMINADO'),
-      ];
-
-      if (!JSON.parse(localStorage.getItem('Notificaciones'))) {
-        let notificacionesTemportal = [];
-
-        ArrayItems.forEach((e) => {
-          notificacionesTemportal.push({
-            ...e,
-            LEIDO: false,
+          ArrayItems.forEach((e) => {
+            notificacionesTemportal.push({
+              ...e,
+              LEIDO: false,
+            });
           });
-        });
 
-        localStorage.setItem(
-          'Notificaciones',
-          JSON.stringify(notificacionesTemportal)
-        );
-      } else {
-        let tempNoticicaciones = JSON.parse(
+          localStorage.setItem(
+            'Notificaciones',
+            JSON.stringify(notificacionesTemportal)
+          );
+        } else {
+          let tempNoticicaciones = JSON.parse(
+            localStorage.getItem('Notificaciones')
+          );
+
+          let NuevasNotificaciones = [];
+
+          ArrayItems.forEach((elementoArray) => {
+            let ArrayComparacion = tempNoticicaciones.filter(
+              (e) => e.ID_PROCESO === elementoArray.ID_PROCESO
+            );
+            if (ArrayComparacion.length === 0) {
+              NuevasNotificaciones.push({
+                ...elementoArray,
+                LEIDO: false,
+              });
+            }
+          });
+
+          let notificacionesTemportal = [
+            ...NuevasNotificaciones,
+            ...tempNoticicaciones,
+          ];
+
+          localStorage.setItem(
+            'Notificaciones',
+            JSON.stringify(notificacionesTemportal)
+          );
+        }
+
+        let notificacionesRedux = JSON.parse(
           localStorage.getItem('Notificaciones')
         );
 
-        let NuevasNotificaciones = [];
-
-        ArrayItems.forEach((elementoArray) => {
-          let ArrayComparacion = tempNoticicaciones.filter(
-            (e) => e.ID_PROCESO === elementoArray.ID_PROCESO
-          );
-          if (ArrayComparacion.length === 0) {
-            NuevasNotificaciones.push({
-              ...elementoArray,
-              LEIDO: false,
-            });
-          }
-        });
-
-        let notificacionesTemportal = [
-          ...NuevasNotificaciones,
-          ...tempNoticicaciones,
-        ];
-
-        localStorage.setItem(
-          'Notificaciones',
-          JSON.stringify(notificacionesTemportal)
+        this.store.dispatch(
+          setnotificaciones({ notificaciones: notificacionesRedux })
         );
-      }
+      });
+  };
 
-      let notificacionesRedux = JSON.parse(
-        localStorage.getItem('Notificaciones')
-      );
-
-      this.store.dispatch(
-        setnotificaciones({ notificaciones: notificacionesRedux })
-      );
+  newNotificacion = (newElemet) => {
+    let tempNoticicaciones = JSON.parse(localStorage.getItem('Notificaciones'));
+    tempNoticicaciones.push({
+      ...newElemet,
+      LEIDO: false,
     });
+
+    localStorage.setItem('Notificaciones', JSON.stringify(tempNoticicaciones));
+
+    let notificacionesRedux = JSON.parse(
+      localStorage.getItem('Notificaciones')
+    );
+
+    this.store.dispatch(
+      setnotificaciones({ notificaciones: notificacionesRedux })
+    );
+
+    console.log(tempNoticicaciones);
   };
 
   eliminarNoticiaciones = (ID_PROCESO: string) => {

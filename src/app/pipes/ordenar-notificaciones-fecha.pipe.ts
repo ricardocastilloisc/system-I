@@ -11,16 +11,16 @@ export class OrdenarNotificacionesFechaPipe implements PipeTransform {
   transform(Notificaciones: NOTIFICACION_INTERFACE []): NOTIFICACION_INTERFACE[] {
     return  [...Notificaciones].sort((a, b) => {
       if (
-        !a.hasOwnProperty('FECHA_ACTUALIZACION') ||
-        !b.hasOwnProperty('FECHA_ACTUALIZACION')
+        !a.hasOwnProperty('FECHA_FINALIZADO') ||
+        !b.hasOwnProperty('FECHA_FINALIZADO')
       ) {
         // property doesn't exist on either object
         return 0;
       }
 
-      const varA = moment(a.FECHA_ACTUALIZACION)
+      const varA = moment(a.FECHA_FINALIZADO)
 
-      const varB = moment(b.FECHA_ACTUALIZACION)
+      const varB = moment(b.FECHA_FINALIZADO)
 
 
       let comparison = 0;
