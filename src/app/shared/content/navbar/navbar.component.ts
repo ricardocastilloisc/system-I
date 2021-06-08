@@ -230,6 +230,32 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(map((e) => e.filter((fl) => fl.LEIDO === false)))
       .subscribe((res) => {
         this.Notificaciones = res;
+
+        if (this.Notificaciones.length > 0) {
+          new Promise((resolve) => {
+            const intervalo = setInterval(() => {
+              if (this.ValidadoresDeInterfaces) {
+                resolve('ok');
+                clearInterval(intervalo);
+              }
+            }, 100);
+          }).then(() => {
+            let NotificacionFinal = [];
+            this.ValidadoresDeInterfaces.forEach((e) => {
+              let array = this.Notificaciones.filter(
+                (f) => f['INTERFAZ'] === e['FLUJO']
+              );
+              if (array.length > 0) {
+                NotificacionFinal = [...NotificacionFinal, ...array];
+              }
+            });
+            localStorage.setItem(
+              'Notificaciones',
+              JSON.stringify(NotificacionFinal)
+            );
+            this.Notificaciones = NotificacionFinal;
+          });
+        }
       });
 
     this.DataUserValidartor = this.store
