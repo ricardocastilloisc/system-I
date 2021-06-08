@@ -147,19 +147,23 @@
                     <th style="padding-left: 40px; max-width: 300px">Campo</th>
                     <th style="padding-left: 30px; max-width: 300px">Valor previo</th>
                     <th style="padding-left: 30px; max-width: 150px">Valor actualizado</th>
-                    <th style="padding-left: 30px; max-width: 150px">Bandera Cambio</th>
                 </tr>
                 <tr *ngFor="let item of itemsTabla">
-                    <td style="padding-left: 40px; max-width: 300px">{{item.valor}}
+
+                    <td style="padding-left: 30px; max-width: 150px; background-color:#0091DA; color: #ffffff" *ngIf="item.cambio">{{item.valor}}
                     </td>
-                    <td style="padding-left: 30px; max-width: 300px">{{item.antes}}
+                    <td style="padding-left: 30px; max-width: 150px; background-color:#0091DA; color: #ffffff" *ngIf="item.cambio">{{item.antes}}
                     </td>
-                    <td style="padding-left: 30px; max-width: 150px">{{item.despues}}
+                    <td style="padding-left: 30px; max-width: 150px; background-color:#0091DA; color: #ffffff" *ngIf="item.cambio">{{item.despues}}
                     </td>
-                    <td style="padding-left: 30px; max-width: 150px" *ngIf="item.cambio"> :)
+
+                    <td style="padding-left: 30px; max-width: 150px" *ngIf="!item.cambio">{{item.valor}}
                     </td>
-                    <td style="padding-left: 30px; max-width: 150px" *ngIf="!item.cambio">
+                    <td style="padding-left: 30px; max-width: 150px" *ngIf="!item.cambio">{{item.antes}}
                     </td>
+                    <td style="padding-left: 30px; max-width: 150px" *ngIf="!item.cambio">{{item.despues}}
+                    </td>
+
                 </tr>
             </table>
             <div class="col-12">
