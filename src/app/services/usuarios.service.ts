@@ -159,36 +159,44 @@ export class UsuariosService {
       let ObjectUsers = [];
       let UserList = [];
       this.consultaSinFiltroYConFiltro(parametro).then(({ Users }) => {
-        ObjectUsers = [...Users];
+        for (let i in Users) {
+          if (Users[i].UserStatus === 'EXTERNAL_PROVIDER') {
+            ObjectUsers.push(Users[i]);
+          }
+        }
+        //ObjectUsers = [...Users];
+        //console.log("TST ...Users", ObjectUsers)
         if (ObjectUsers.length === 0) {
           resolve(ObjectUsers);
         }
         const flagDeTerminado = ObjectUsers.length;
         let comparacion = 0;
         ObjectUsers.forEach((UserElement, index) => {
-          this.obtenerGrupoUsuarioPromise(UserElement.Username).then(
-            ({ Groups }) => {
-              Groups.forEach((e, indexGroup) => {
-                let tempString = '';
-                if (e.hasOwnProperty('GroupName')) {
-                  tempString = e.GroupName;
-                }
-                this.Areas.forEach((validador) => {
-                  if (validador === tempString) {
-                    ObjectUsers[index].GrupoQuePertenece = tempString;
+          if (UserElement.UserStatus === 'EXTERNAL_PROVIDER') {
+            this.obtenerGrupoUsuarioPromise(UserElement.Username).then(
+              ({ Groups }) => {
+                Groups.forEach((e, indexGroup) => {
+                  let tempString = '';
+                  if (e.hasOwnProperty('GroupName')) {
+                    tempString = e.GroupName;
+                  }
+                  this.Areas.forEach((validador) => {
+                    if (validador === tempString) {
+                      ObjectUsers[index].GrupoQuePertenece = tempString;
+                    }
+                  });
+                  if (indexGroup + 1 === Groups.length) {
+                    UserList.push(
+                      this.reformatearArrayDeUsuarios(ObjectUsers[index])
+                    );
+                  }
+                  if (indexGroup + 1 === Groups.length) {
+                    comparacion = comparacion + 1;
                   }
                 });
-                if (indexGroup + 1 === Groups.length) {
-                  UserList.push(
-                    this.reformatearArrayDeUsuarios(ObjectUsers[index])
-                  );
-                }
-                if (indexGroup + 1 === Groups.length) {
-                  comparacion = comparacion + 1;
-                }
-              });
-            }
-          );
+              }
+            );
+          }
         });
         new Promise((resolve2) => {
           const intervalo = setInterval(() => {

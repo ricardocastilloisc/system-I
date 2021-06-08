@@ -132,14 +132,12 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       .select(({ ListaUsuarios }) => ListaUsuarios.loading)
       .subscribe((res) => {
         this.loading = res;
-
         if (res) {
           this.spinner.show();
         } else {
           this.spinner.hide();
         }
       });
-
     this.ListadoUsuarios$ = this.store
       .select(({ ListaUsuarios }) => ListaUsuarios.ListaUsuarios)
       .subscribe((ListadoDeUsuarios) => {
@@ -171,6 +169,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
           this.filtrar();
         }
       });
+
 
     this.store.dispatch(LoadListaUsuarios({ consulta: null }));
 
@@ -527,7 +526,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       localStorage.setItem('ObjectDataUser', JSON.stringify(datosUsuario));
 
       this.UsuariosService.generarAuditoria();
-      
+
       this.cerrarModales();
       this.store.dispatch(LoadListaUsuarios({ consulta: null }));
     })
