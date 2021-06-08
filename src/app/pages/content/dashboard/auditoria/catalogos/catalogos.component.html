@@ -155,7 +155,8 @@
                     <p class="titulo-modal">Detalle de cambios sobre {{detalleCambios.catalogo}}</p>
                 </div>
                 <div class="row justify-content-center">
-                    <p class="texto-modal"> Realizados por {{detalleCambios.usuario}} el {{detalleCambios.fecha}}.</p>
+                    <p class="texto-modal"> Realizados por {{detalleCambios.usuario}} el {{detalleCambios.fecha | date :'dd/MM/yyyy'}} a las 
+                        {{detalleCambios.fecha | date:'mediumTime'}} hrs.</p>
                 </div>
             </div>
             <table class="table listado-design-general">
@@ -188,7 +189,6 @@
                         Cerrar
                     </button>
                 </div>
-                <br>
             </div>
         </div>
     </div>
