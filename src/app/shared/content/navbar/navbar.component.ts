@@ -301,26 +301,16 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   };
 
   replazarCaracterEspecial = (value) => {
-    let stringDateArray = value.replace('%S', '00').split('.');
-
-    stringDateArray[stringDateArray.length - 1] =
-      stringDateArray[stringDateArray.length - 1].slice(0, 3) + 'Z';
-
-    //stringDateArray.join('.')
-
-    //moment().subtract(2, 'hours');
-    return new Date(stringDateArray.join('.')).toString();
+    return new Date(value + 'Z').toString();
   };
 
   abrirToassError = (estado, err) => {
     let mensaje =
-      '<div class="row justify-content-center align-items-center textoAddUpdateregistro"><div class="col-12" style="height: 10px;"><img class="iconErrorRegistro"/>PROCESO ';
-
-    mensaje = mensaje + estado + '</div> <div class="col-12 tamanioFont">';
-
-    mensaje = mensaje + err;
-
-    mensaje = mensaje + '</div>';
+      '<div class="row justify-content-center align-items-center textoAddUpdateregistro"><div><img class="iconErrorRegistro"/>';
+    mensaje = mensaje + estado;
+    mensaje = mensaje + '</div><div class="descipcionError">';
+    mensaje = mensaje = mensaje + err;
+    mensaje = mensaje + '</div></div>';
 
     this.toastr.show(mensaje, null, {
       toastClass: 'etiquetaErrorRegistro row justify-content-center',
