@@ -75,7 +75,20 @@
     </div>
     <div class="d-flex col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12 justify-content-center"
         *ngIf="ListadoPantalla as ListadoPantalla">
-        <div class="card-lista-design-general" style="overflow-x: auto">
+        <div class="row justify-content-center" *ngIf=" ListadoPantalla.length === 0">
+            <div class=" align-self-center">
+                <div class="d-flex flex-column" style="width: 504px;">
+                    <div class="descripcionNoAuditoria" style="margin-top:34px">
+                        <div class="row">
+                            <div class="col-12">
+                                <p> No existen registros para esta búsqueda.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-lista-design-general" style="overflow-x: auto" *ngIf=" ListadoPantalla.length !== 0">
             <table class="table listado-design-general">
                 <tr>
                     <th style="padding-left: 40px; max-width: 300px">Catálogo</th>
@@ -139,7 +152,7 @@
         <div class="card-lista-design-general" style="overflow-x: auto">
             <div class="col-12">
                 <div class="row justify-content-center">
-                    <p class="titulo-modal">Detalle de los cambios</p>
+                    <p class="titulo-modal">Detalle de cambios</p>
                 </div>
             </div>
             <table class="table listado-design-general">
@@ -149,21 +162,18 @@
                     <th style="padding-left: 30px; max-width: 150px">Valor actualizado</th>
                 </tr>
                 <tr *ngFor="let item of itemsTabla">
-
                     <td style="padding-left: 30px; max-width: 150px; background-color:#0091DA; color: #ffffff" *ngIf="item.cambio">{{item.valor}}
                     </td>
                     <td style="padding-left: 30px; max-width: 150px; background-color:#0091DA; color: #ffffff" *ngIf="item.cambio">{{item.antes}}
                     </td>
                     <td style="padding-left: 30px; max-width: 150px; background-color:#0091DA; color: #ffffff" *ngIf="item.cambio">{{item.despues}}
                     </td>
-
                     <td style="padding-left: 30px; max-width: 150px" *ngIf="!item.cambio">{{item.valor}}
                     </td>
                     <td style="padding-left: 30px; max-width: 150px" *ngIf="!item.cambio">{{item.antes}}
                     </td>
                     <td style="padding-left: 30px; max-width: 150px" *ngIf="!item.cambio">{{item.despues}}
                     </td>
-
                 </tr>
             </table>
             <div class="col-12">
