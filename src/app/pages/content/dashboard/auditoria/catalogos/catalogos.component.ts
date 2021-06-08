@@ -29,6 +29,7 @@ export class CatalogosComponent implements OnInit, OnDestroy {
   itemsAcciones = [];
 
   itemsTabla = [];
+  detalleCambios: any;
 
   dropdownListFiltroCatalogo = [];
   SettingsFiltroDeCatalogo: IDropdownSettings = {};
@@ -266,6 +267,11 @@ export class CatalogosComponent implements OnInit, OnDestroy {
     let valorAntes;
     let valorDespues;
     let banderaCambio = false;
+    this.detalleCambios = {
+      catalogo: objetoDetalle.CATALOGOS.DESCRIPCION,
+      usuario: objetoDetalle.USUARIO.NOMBRE + ' ' + objetoDetalle.USUARIO.APELLIDO_PATERNO,
+      fecha: objetoDetalle.FECHA
+    };
 
     if (cambiosAntes !== null) {
       cambiosAntes = cambiosAntes.replace('{', '');
@@ -277,11 +283,11 @@ export class CatalogosComponent implements OnInit, OnDestroy {
       cambiosDespues = cambiosDespues.replace('}', '');
     }
 
-    if (accion === "ELIMINAR") {
+    if (accion === 'ELIMINAR') {
       const getValor = cambiosAntes.split(',');
       for (let i in getValor) {
         if (getValor) {
-          let valor = getValor[i].toString().split("=");
+          let valor = getValor[i].toString().split('=');
           valores.push(valor[0]);
         }
       }

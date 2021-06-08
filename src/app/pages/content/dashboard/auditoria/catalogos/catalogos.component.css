@@ -116,6 +116,7 @@ section {
   text-decoration: underline #0091da !important;
   color: #0091da !important;
 }
+
 .limpiarFiltro:hover {
   cursor: pointer;
 }
@@ -131,9 +132,8 @@ section {
 }
 
 .detalle-icon {
-  background: transparent
-    url("/../../../../assets/icons/icono-detalle.svg") 0% 0% no-repeat
-    padding-box;
+  background: transparent url("/../../../../assets/icons/icono-detalle.svg") 0%
+    0% no-repeat padding-box;
   width: 30px;
   height: 30px;
   opacity: 1;
@@ -157,12 +157,18 @@ section {
   font: bold 18px FS Elliot Pro;
   color: #035fa4;
 }
+
 .titulo-modal {
   font: bold 24px FS Elliot Pro;
   color: #035fa4;
 }
 
-.paginator{
+.texto-modal {
+  font: 18px FS Elliot Pro;
+  color: #035fa4;
+}
+
+.paginator {
   margin-left: 5%;
   margin-right: 5%;
   margin-bottom: 5%;

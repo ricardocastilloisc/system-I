@@ -508,7 +508,7 @@ img.itemsTextoImagenCentro {
 table.listado-design-general {
   color: white;
   width: 100%;
-  margin: 25px 0;
+  margin: 0px 0;
   margin-left: 5%;
   margin-right: 5%;
   border-collapse: separate;
@@ -522,10 +522,12 @@ table.listado-design-general td {
   height: 40px;
   margin: 6px 0px;
 }
+
 .listado-design-general tr td:first-of-type {
   border-top-left-radius: 25px;
   border-bottom-left-radius: 25px;
 }
+
 .listado-design-general tr td:last-of-type {
   border-top-right-radius: 25px;
   border-bottom-right-radius: 25px;
@@ -586,6 +588,7 @@ table.listado-design-general td {
 .pagination-previous:hover {
   cursor: pointer;
 }
+
 .etiquetaSelecetCustom {
   border: 1px solid #00c4d9;
   margin-right: 4px;
@@ -602,6 +605,7 @@ table.listado-design-general td {
   /*padre*/
   width: 100%;
 }
+
 #tabla .A,
 #tabla .B {
   /*hijos*/
@@ -1116,8 +1120,7 @@ table.listado-design-generalArchivo td {
   border-bottom-right-radius: 25px;
 }
 
-
-.tamanioFont{
+.tamanioFont {
   height: 10px;
   margin-bottom: 10px;
 }
