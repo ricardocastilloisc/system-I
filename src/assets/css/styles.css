@@ -1115,3 +1115,9 @@ table.listado-design-generalArchivo td {
   border-top-right-radius: 25px;
   border-bottom-right-radius: 25px;
 }
+
+
+.tamanioFont{
+  height: 10px;
+  margin-bottom: 10px;
+}

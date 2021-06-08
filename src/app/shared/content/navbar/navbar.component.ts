@@ -20,6 +20,7 @@ import { NOTIFICACION_INTERFACE } from './../../../model/notificacion.model';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import * as moment from 'moment';
+import { APIService } from '../../../API.service';
 
 declare var $: any;
 
@@ -44,6 +45,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   Notificaciones: NOTIFICACION_INTERFACE[] = [];
   NotificacionesEstaticos: NOTIFICACION_INTERFACE[] = [];
   NotificacionesSub$: Subscription;
+  NotificacionesSubActivo$;
 
   constructor(
     private authService: AuthService,
@@ -51,9 +53,11 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     private usuario: UsuariosService,
     private NotificacionesService: NotificacionesService,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private api: APIService
   ) {}
   ngOnDestroy(): void {
+    this.NotificacionesSubActivo$.unsubscribe();
     this.store.dispatch(unSetnotificaciones());
     this.NotificacionesSub$.unsubscribe();
   }
@@ -204,30 +208,39 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
       .select(({ notificaciones }) => notificaciones.notificaciones)
       .pipe(map((e) => e.filter((fl) => fl.LEIDO === false)))
       .subscribe((res) => {
-        if (this.Notificaciones.length === 0) {
-          this.NotificacionesEstaticos = res;
-        } else {
-          let tempNotificaciones: NOTIFICACION_INTERFACE[] = res;
-
-          tempNotificaciones.forEach((e) => {
-            let ArrayComparacion = this.NotificacionesEstaticos.filter(
-              (f) => f.ID_PROCESO === e.ID_PROCESO
-            );
-            if (ArrayComparacion.length === 0) {
-              setTimeout(() => {
-                if (this.verEstado(e) === 'EXITOSO') {
-                  this.abrirToass(this.verEstado(e) + ' ' + e.INTERFAZ);
-                } else {
-                  this.abrirToassError(this.verEstado(e) + ' ' + e.INTERFAZ);
-                }
-              }, 500);
-            }
-          });
-
-          this.NotificacionesEstaticos = res;
-        }
         this.Notificaciones = res;
       });
+
+    this.NotificacionesSubActivo$ =
+      this.api.OnUpdateSiaGenAudEstadoProcesosDevListener.subscribe(
+        ({ value }: any) => {
+          const { data } = value;
+          const { onUpdateSiaGenAudEstadoProcesosDev } = data;
+
+          if (
+            onUpdateSiaGenAudEstadoProcesosDev['ESTADO_EJECUCION'] ===
+            'TERMINADO'
+          ) {
+            if (
+              this.verEstado(onUpdateSiaGenAudEstadoProcesosDev) === 'EXITOSO'
+            ) {
+              this.abrirToass(
+                this.verEstado(onUpdateSiaGenAudEstadoProcesosDev),
+                onUpdateSiaGenAudEstadoProcesosDev.INTERFAZ
+              );
+            } else {
+              this.abrirToassError(
+                this.verEstado(onUpdateSiaGenAudEstadoProcesosDev),
+                onUpdateSiaGenAudEstadoProcesosDev.INTERFAZ
+              );
+            }
+
+            this.NotificacionesService.newNotificacion(
+              onUpdateSiaGenAudEstadoProcesosDev
+            );
+          }
+        }
+      );
   }
 
   signOut = () => {
@@ -272,67 +285,69 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   };
 
   verEstado = (data: NOTIFICACION_INTERFACE) => {
-    if (data.ETAPA_FINAL) {
-      if (data.ETAPA_FINAL.ESTADO_FINAL) {
-        return data.ETAPA_FINAL.ESTADO_FINAL;
-      }
+    if (data.ETAPA_FINAL_ESTADO_FINAL) {
+      return data.ETAPA_FINAL_ESTADO_FINAL;
     }
-    if (data.ETAPA_PROCESAMIENTO) {
-      if (data.ETAPA_PROCESAMIENTO.ESTADO_FINAL) {
-        return data.ETAPA_PROCESAMIENTO.ESTADO_FINAL;
-      } else {
-        return data.ETAPA_INICIAL.ESTADO_FINAL;
-      }
+
+    if (data.ETAPA_PROCESAMIENTO_ESTADO_FINAL) {
+      return data.ETAPA_PROCESAMIENTO_ESTADO_FINAL;
     }
+
+    if (data.ETAPA_INICIAL_ESTADO_FINAL) {
+      return data.ETAPA_INICIAL_ESTADO_FINAL;
+    }
+
+    return '';
   };
 
   replazarCaracterEspecial = (value) => {
+    let stringDateArray = value.replace('%S', '00').split('.');
 
-
-    let stringDateArray = value.replace('%S', '00').split(".");
-
-    stringDateArray[stringDateArray.length-1] = stringDateArray[stringDateArray.length-1].slice(0,3) + 'Z'
+    stringDateArray[stringDateArray.length - 1] =
+      stringDateArray[stringDateArray.length - 1].slice(0, 3) + 'Z';
 
     //stringDateArray.join('.')
 
     //moment().subtract(2, 'hours');
-    return  new Date(stringDateArray.join('.')).toString();
+    return new Date(stringDateArray.join('.')).toString();
   };
 
-  abrirToassError = (err) => {
+  abrirToassError = (estado, err) => {
     let mensaje =
-      '<div class="row justify-content-center align-items-center textoAddUpdateregistro"><div><img class="iconErrorRegistro"/>';
+      '<div class="row justify-content-center align-items-center textoAddUpdateregistro"><div class="col-12" style="height: 10px;"><img class="iconErrorRegistro"/>PROCESO ';
 
-    mensaje = mensaje + 'Se ha producido un error';
+    mensaje = mensaje + estado + '</div> <div class="col-12 tamanioFont">';
 
-    mensaje = mensaje + '</div><div class="descipcionError">';
     mensaje = mensaje + err;
-    mensaje = mensaje + '</div></div>';
+
+    mensaje = mensaje + '</div>';
 
     this.toastr.show(mensaje, null, {
-      timeOut: 3500,
       toastClass: 'etiquetaErrorRegistro row justify-content-center',
       positionClass: 'toast-top-right',
+      timeOut: 3500,
       enableHtml: true,
       progressBar: true,
       progressAnimation: 'increasing',
     });
   };
 
-  abrirToass = (msn) => {
+  abrirToass = (estado, msn) => {
     let mensaje =
-      '<div class="row justify-content-center align-items-center textoAddUpdateregistro"><img class="successRegistro"/>';
+      '<div class="row justify-content-center align-items-center textoAddUpdateregistro"><div class="col-12 tamanioFont" ><img class="successRegistro"/>PROCESO ';
 
     //mensaje = mensaje + 'Registro' 'exitoso';
+    mensaje = mensaje + estado + '</div> <div class="col-12 tamanioFont">';
+
     mensaje = mensaje + msn;
 
     mensaje = mensaje + '</div>';
 
     this.toastr.show(mensaje, null, {
-      timeOut: 1500,
       toastClass:
         'etiquetaAddRegistro etiquetaAddRegistro row justify-content-center',
       positionClass: 'toast-top-right',
+      timeOut: 3500,
       enableHtml: true,
       progressBar: true,
       progressAnimation: 'increasing',

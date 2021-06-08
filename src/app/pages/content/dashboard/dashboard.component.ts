@@ -19,6 +19,7 @@ import { Subscription } from 'rxjs';
 })
 export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   LoadingDetailCatalogos$: Subscription;
+  Noticaciones$: any;
 
   constructor(
     private api: APIService,
@@ -37,7 +38,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     this.store.dispatch(cargarCatalogos());
 
     this.NotificacionesService.obtenerListadoDeNotificaciones();
-
+    /*
     setInterval(() => {
       this.NotificacionesService.obtenerListadoDeNotificaciones();
     }, 50000);
@@ -51,14 +52,14 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
           this.spinner.hide();
         }
       });
-
+*/
     /*
     this.api.OnCreateSiaGenAudEstadoProcesosDevListener.subscribe({
       next: ({ value }: any) => {
         console.log(value)
       },
     });*/
-
+    /*
     this.api.OnCreateSiaGenAudEstadoProcesosDevListener.subscribe(
       ({ value }: any) => {
         const { data } = value;
@@ -70,14 +71,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
         console.log('-------');
       }
     );
+*/
 
-    this.api.OnUpdateSiaGenAudEstadoProcesosDevListener.subscribe((res) => {
-      console.log('++++++++++++++');
-      console.log('++++++++++++++');
-      console.log('OnUpdateSiaGenAudEstadoProcesosDevListener');
-      console.log(res);
-      console.log('++++++++++++++');
-      console.log('++++++++++++++');
-    });
+
   }
 }
