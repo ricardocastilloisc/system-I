@@ -264,6 +264,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
       limit: 10000000
     }
 
+    this.authService.refreshToken();
 
     await this.api.ListSiaGenAudEstadoProcesosDevs(body.filter, body.limit).then(res => {
 
@@ -279,10 +280,12 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
 
     if (this.CATESTADOS[0]?.ESTADO_EJECUCION === 'TERMINADO' || this.CATESTADOS.length === 0) {
       let idEjecucion = uuidv4();
+      this.authService.refreshToken();
       console.log(this.procesoEjecutar, correo, area, idEjecucion)
       try {
         const response = await this.serviciosProcesos.iniciarProceso(this.procesoEjecutar, correo, area)
 
+        
         if (response.codigo == 'EXITO') {
           this.spinner.hide();
           this.modalMensaje("modalEstado", "Se inicio el proceso")

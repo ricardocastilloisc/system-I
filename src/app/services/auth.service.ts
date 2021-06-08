@@ -105,20 +105,21 @@ export class AuthService {
   refreshToken = async () =>{
 
 
-    try {
-      const cognitoUser = await Auth.currentAuthenticatedUser();
-      console.log(cognitoUser)
-      const currentSession = await Auth.currentSession();
-      console.log(currentSession)
-      // cognitoUser.refreshSession(currentSession.refreshToken, (err, session) => {
-      //   console.log('session', err, session);
-      //   const { idToken, refreshToken, accessToken } = session;
-      //   // do whatever you want to do now :)
-      // });
-    } catch (e) {
-      console.log('Unable to refresh Token', e);
-    }
-    console.log((await Auth.currentSession()).getRefreshToken())
+    this.initAuthData()
+    // try {
+    //   const cognitoUser = await Auth.currentAuthenticatedUser({bypassCache: true});
+    //   console.log(cognitoUser)
+    //   const currentSession = await Auth.currentSession();
+    //   console.log(currentSession)
+    //   cognitoUser.refreshSession(currentSession.getRefreshToken(), (err, session) => {
+    //     console.log('session', err, session);
+    //     const { idToken, refreshToken, accessToken } = session;
+    //     // do whatever you want to do now :)
+    //   });
+    // } catch (e) {
+    //   console.log('Unable to refresh Token', e);
+    // }
+    // console.log((await Auth.currentSession()).getRefreshToken())
 
   }
 
