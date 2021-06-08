@@ -28,6 +28,8 @@ export class UsuariosComponent implements OnInit {
   itemsAntes = [];
   itemsDespues = [];
   itemsValor = [];
+  itemsTabla = [];
+  detalleCambios: any;
 
   listadoUsuarios: AUDGENUSUARIO_INTERFACE[];
   listadoOriginalUsuarios: AUDGENUSUARIO_INTERFACE[];
@@ -52,6 +54,8 @@ export class UsuariosComponent implements OnInit {
   SettingsFiltroDeAccion: IDropdownSettings = {};
   selectedItemsFiltroAccion = [];
 
+  verModal = false;
+
   constructor(
     private store: Store<AppState>,
     private api: APIService,
@@ -74,7 +78,7 @@ export class UsuariosComponent implements OnInit {
   initSelects = () => {
 
     this.maxDate = new Date();
-    
+
     this.filtroAuditoriaUsuariosForm = this.fb.group({
       filtroFecha: []
     })
@@ -262,14 +266,47 @@ export class UsuariosComponent implements OnInit {
     }, 1);
   }
 
-  openModal(content, objetoDetalle: AUDGENUSUARIO_INTERFACE) {
+  mostrarDetalle(): boolean {
+    return this.verModal;
+  }
+
+  
+  ocultarModal(): void {
+    this.verModal = false;
+  }
+
+  openModal(objetoDetalle: AUDGENUSUARIO_INTERFACE): void {
+
+    console.log(objetoDetalle)
+
+    this.itemsTabla = [];
+    const accion = objetoDetalle.PERMISOS_USUARIOS[0].ACCION;
+    let valores = [];
+    let tabla = [];
+    let arregloAntes = [];
+    let arregloDespues = [];
+    let cambiosAntes = objetoDetalle.PERMISOS_USUARIOS[0].DETALLE_MODIFICACIONES[0].valorAnterior;
+    let cambiosDespues = objetoDetalle.PERMISOS_USUARIOS[0].DETALLE_MODIFICACIONES[0].valorNuevo;
+    let valorAntes;
+    let valorDespues;
+    let banderaCambio = false;
+    this.detalleCambios = {
+      nombre: objetoDetalle.PERMISOS_USUARIOS[0].NOMBRE + ' ' + objetoDetalle.PERMISOS_USUARIOS[0].APELLIDO_PATERNO  ,
+      usuario: objetoDetalle.USUARIO.NOMBRE + ' ' + objetoDetalle.USUARIO.APELLIDO_PATERNO,
+      fecha: objetoDetalle.FECHA
+    };
+
+
+
     this.itemsValor = [];
     this.itemsAntes = [];
     this.itemsDespues = [];
 
+
+
+
     //console.log("Entrando al modal", objetoDetalle)
 
-    let cambiosAntes = objetoDetalle.PERMISOS_USUARIOS[0].DETALLE_MODIFICACIONES[0].valorAnterior;
     if (cambiosAntes !== null) {
       cambiosAntes = cambiosAntes.replace('{', '');
       cambiosAntes = cambiosAntes.replace('}', '');
@@ -283,47 +320,120 @@ export class UsuariosComponent implements OnInit {
       //console.log("cambiosAntes", arregloAntes)
     }
 
-    let cambiosDespues = objetoDetalle.PERMISOS_USUARIOS[0].DETALLE_MODIFICACIONES[0].valorNuevo;
+
+    if (cambiosAntes !== null) {
+      cambiosAntes = cambiosAntes.replace('{', '');
+      cambiosAntes = cambiosAntes.replace('}', '');
+    }
+
     if (cambiosDespues !== null) {
       cambiosDespues = cambiosDespues.replace('{', '');
       cambiosDespues = cambiosDespues.replace('}', '');
-      let arregloDespues = cambiosDespues.split(",");
-      let resDespues = [];
-      for (let i in arregloDespues) {
-        let valor = arregloDespues[i].toString().split("=");
-        resDespues.push(valor[1]);
-      }
-      this.itemsDespues = resDespues;
-      //console.log("cambiosDespues", arregloDespues)
     }
 
-    if (cambiosAntes !== null) {
-      let getValor = cambiosAntes.split(",");
-      let resultado = [];
+    if (accion === 'ELIMINAR') {
+      const getValor = cambiosAntes.split(', ');
       for (let i in getValor) {
-        let valor = getValor[i].toString().split("=");
-        resultado.push(valor[0]);
+        if (getValor) {
+          let valor = getValor[i].toString().split('=');
+          valores.push(valor[0][0].toUpperCase() + valor[0].slice(1));
+        }
       }
-      this.itemsValor = resultado;
-      //console.log("result", resultado)
-    }
-    else if (cambiosDespues !== null) {
-      let getValor = cambiosDespues.split(",");
-      let resultado = [];
+      arregloAntes = cambiosAntes.split(', ');
+
+    } else {
+      const getValor = cambiosDespues.split(', ');
+      console.log('getValor: ', getValor)
       for (let i in getValor) {
-        let valor = getValor[i].toString().split("=");
-        resultado.push(valor[0]);
+        
+        if (getValor) {
+          let valor = getValor[i].toString().split('=');
+          //console.log('Valor',valor[0])
+          valores.push(valor[0]);
+        }
       }
-      this.itemsValor = resultado;
-      //console.log("result", resultado)
+      if (cambiosAntes !== null) {
+        arregloAntes = cambiosAntes.split(', ');
+        arregloDespues = cambiosDespues.split(', ');
+      }
     }
 
+    if (valores !== null) {
+      console.log('Valores: ',valores)
+      for (let i in valores) {
+        if (valores) {
+          if (arregloAntes.length > 0) {
 
-    // console.log("itemsValor", this.itemsValor)
-    // console.log("itemsAntes", this.itemsAntes)
-    // console.log("itemsDespues", this.itemsDespues)
+            // if(!arregloAntes.find(e => e.includes(valores[i])).split('=')[1]){
+            //   valorAntes = ''
+            // }else
+              // console.log('Valores i: ', valores[i])
+              // console.log(arregloAntes.length)
 
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
+              // console.log('Que es este valor: ', arregloAntes.find(e => e.includes(valores[i])).split('='))
+
+              valorAntes = arregloAntes.find(e => e.includes(valores[i])) ? arregloAntes.find(e => e.includes(valores[i])).split('=')[1] : '' ;
+          } else {
+            valorAntes = '';
+          }
+          if (arregloDespues.length > 0) {
+            valorDespues = arregloDespues.find(e => e.includes(valores[i])) ? arregloDespues.find(e => e.includes(valores[i])).split('=')[1] : '';
+          } else {
+            valorDespues = '';
+          }
+          if (valorAntes === valorDespues) { banderaCambio = false; }
+          else { banderaCambio = true; }
+          tabla.push({ valor: valores[i], antes: valorAntes, despues: valorDespues, cambio: banderaCambio })
+        }
+      }
+    }
+    this.itemsTabla = tabla;
+
+    console.log(this.itemsTabla)
+    this.verModal = true;
+
+    console.log(this.verModal)
+
+    // if (cambiosDespues !== null) {
+    //   cambiosDespues = cambiosDespues.replace('{', '');
+    //   cambiosDespues = cambiosDespues.replace('}', '');
+    //   let arregloDespues = cambiosDespues.split(",");
+    //   let resDespues = [];
+    //   for (let i in arregloDespues) {
+    //     let valor = arregloDespues[i].toString().split("=");
+    //     resDespues.push(valor[1]);
+    //   }
+    //   this.itemsDespues = resDespues;
+    //   //console.log("cambiosDespues", arregloDespues)
+    // }
+
+    // if (cambiosAntes !== null) {
+    //   let getValor = cambiosAntes.split(",");
+    //   let resultado = [];
+    //   for (let i in getValor) {
+    //     let valor = getValor[i].toString().split("=");
+    //     resultado.push(valor[0]);
+    //   }
+    //   this.itemsValor = resultado;
+    //   //console.log("result", resultado)
+    // }
+    // else if (cambiosDespues !== null) {
+    //   let getValor = cambiosDespues.split(",");
+    //   let resultado = [];
+    //   for (let i in getValor) {
+    //     let valor = getValor[i].toString().split("=");
+    //     resultado.push(valor[0]);
+    //   }
+    //   this.itemsValor = resultado;
+    //   //console.log("result", resultado)
+    // }
+
+
+    // // console.log("itemsValor", this.itemsValor)
+    // // console.log("itemsAntes", this.itemsAntes)
+    // // console.log("itemsDespues", this.itemsDespues)
+
+    // this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
   }
 
 

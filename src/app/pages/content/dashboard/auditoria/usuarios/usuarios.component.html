@@ -21,7 +21,7 @@
 <!-- ********************************************************* -->
 <!-- ********************************************************* -->
 <!-- ********************************************************* -->
-<section *ngIf="!enProceso()">
+<section  *ngIf="!mostrarDetalle()">
     <div class="card-busqueda">
         <div class="mt-4">Buscar por</div>
         <div style="
@@ -113,7 +113,7 @@
                         </td>
                         <td style="width: 200px" class="justify-content-center">
                             <center><img style="cursor: pointer" class="detalle-icon"
-                                    (click)="openModal(content, AUDGENUSUARIO)" /></center>
+                                    (click)="openModal(AUDGENUSUARIO)" /></center>
                         </td>
                     </tr>
                 </table>
@@ -144,6 +144,55 @@
   </pagination-template>
     
 </section>
+
+
+<section *ngIf="mostrarDetalle()">
+    <div class="d-flex col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12 justify-content-center">
+        <div class="card-lista-design-general" style="overflow-x: auto">
+            <div class="col-12">
+                <div class="row justify-content-center">
+                    <p class="titulo-modal">Detalle de cambios sobre usuario {{detalleCambios.nombre}}</p>
+                </div>
+                <div class="row justify-content-center">
+                    <p class="texto-modal"> Realizados por {{detalleCambios.usuario}} el {{detalleCambios.fecha | date :'dd/MM/yyyy'}} a las {{detalleCambios.fecha | date:'mediumTime'}}.</p>
+                </div>
+            </div>
+            <table class="table listado-design-general">
+                <tr>
+                    <th style="padding-left: 40px; max-width: 300px">Campo</th>
+                    <th style="padding-left: 30px; max-width: 300px">Valor previo</th>
+                    <th style="padding-left: 30px; max-width: 150px">Valor actual</th>
+                </tr>
+                <tr *ngFor="let item of itemsTabla">
+                    <td style="padding-left: 30px; max-width: 150px; background-color:#0091DA; color: #ffffff"
+                        *ngIf="item.cambio">{{item.valor | titlecase}}
+                    </td>
+                    <td style="padding-left: 30px; max-width: 150px; background-color:#0091DA; color: #ffffff"
+                        *ngIf="item.cambio">{{item.antes}}
+                    </td>
+                    <td style="padding-left: 30px; max-width: 150px; background-color:#0091DA; color: #ffffff"
+                        *ngIf="item.cambio">{{item.despues}}
+                    </td>
+                    <td style="padding-left: 30px; max-width: 150px" *ngIf="!item.cambio">{{item.valor | titlecase}}
+                    </td>
+                    <td style="padding-left: 30px; max-width: 150px" *ngIf="!item.cambio">{{item.antes}}
+                    </td>
+                    <td style="padding-left: 30px; max-width: 150px" *ngIf="!item.cambio">{{item.despues}}
+                    </td>
+                </tr>
+            </table>
+            <div class="col-12">
+                <div class="row justify-content-center">
+                    <button class="btn bottonCerrarModal" (click)="ocultarModal()">
+                        Cerrar
+                    </button>
+                </div>
+                <br>
+            </div>
+        </div>
+    </div>
+</section>
+
 
 <ng-template #content let-modal>
     <div class="modal-header">
