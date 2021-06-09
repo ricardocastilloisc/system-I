@@ -286,7 +286,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
                   ({ value }: any) => {
                     const { data } = value;
                     const { onUpdateSiaGenAudEstadoProcesosDev } = data;
-
                     let arrayValidador = this.ValidadoresDeInterfaces.filter(
                       (e) =>
                         e['FLUJO'] ===
@@ -389,11 +388,12 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   abrirToassError = (estado, err) => {
     let mensaje =
-      '<div class="row justify-content-center align-items-center textoAddUpdateregistro"><div><img class="iconErrorRegistro"/>';
-    mensaje = mensaje + estado;
-    mensaje = mensaje + '</div><div class="descipcionError">';
-    mensaje = mensaje = mensaje + err;
-    mensaje = mensaje + '</div></div>';
+      '<div class="row justify-content-center align-items-center textoAddUpdateregistro"><div class="col-12 tamanioFont" ><img class="iconErrorRegistro"/>PROCESO ';
+    mensaje = mensaje + estado + '</div> <div class="col-12">';
+
+    mensaje = mensaje + err;
+
+    mensaje = mensaje + '</div>';
 
     this.toastr.show(mensaje, null, {
       toastClass: 'etiquetaErrorRegistro row justify-content-center',
