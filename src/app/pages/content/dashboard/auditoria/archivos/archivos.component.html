@@ -33,7 +33,7 @@
                       flex-column
                       justify-content-center
                     "
-                    style="text-align: center"
+                    style="text-align: center; margin-bottom: 30px"
                   >
                     Resumen del día archivos
                   </div>
@@ -96,7 +96,10 @@
                   justify-content-center
                 "
               >
-                <div>
+                <div
+                  style="width: 70%"
+                  class="align-items-center justify-content-center"
+                >
                   <div
                     class="
                       elementsMenus
@@ -115,7 +118,17 @@
                       justify-content-center
                     "
                   >
-                    <div>Multiselect</div>
+                    <div>
+                      <ng-multiselect-dropdown
+                        style="width: 100%"
+                        id="Proceso"
+                        [placeholder]="'Proceso'"
+                        [settings]="SettingsProceso"
+                        [data]="dropdownListProceso"
+                        [(ngModel)]="selectedItemsProceso"
+                      >
+                      </ng-multiselect-dropdown>
+                    </div>
                   </div>
                   <div
                     class="
@@ -125,15 +138,25 @@
                       justify-content-center
                     "
                   >
-                    <div class="form-group">
+                    <div
+                      class="
+                        form-group
+                        d-flex
+                        align-items-center
+                        justify-content-center
+                      "
+                    >
                       <input
                         class="form-control"
                         style="width: 100%; padding-left: 10px"
                         type="date"
                         placeholder="dd-MM-yyyy"
                         onfocus="(this.type='date')"
-                        id="fechaFiltrar"
-                        name="fechaFiltrar"
+                        [formControl]="filtroFecha"
+                        id="filtroFecha"
+                        name="filtroFecha"
+                        [value]="maxDate"
+                        max="{{ maxDate | date: 'yyyy-MM-dd' }}"
                       />
                     </div>
                   </div>
@@ -145,8 +168,13 @@
                       justify-content-center
                     "
                   >
-                    <div>
-                      <button class="btn bottonBuscarFiltroArchivos">
+                    <div
+                      class="d-flex align-items-center justify-content-center"
+                    >
+                      <button
+                        (click)="valor()"
+                        class="btn bottonBuscarFiltroArchivos"
+                      >
                         Buscar
                       </button>
                     </div>
@@ -159,7 +187,19 @@
       </div>
     </div>
 
-    <div class="row">''''</div>
+    <div class="row justify-content-center">
+      <div
+        class="tituloAzulArchivos"
+        style="
+          width: 90%;
+          padding-right: 15px;
+          padding-left: 15px;
+          margin-top: 30px;
+        "
+      >
+        Archivos procesados con éxito
+      </div>
+    </div>
     <div class="row justify-content-center">
       <div
         class="
