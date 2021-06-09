@@ -36,7 +36,7 @@ export class AuthService {
         //console.log('Usser result: ',JSON.stringify(result));
         if (result.getSignInUserSession().isValid()) {
           const user = Usuario.fromAmplify(new User(result));
-          if (!this.getToken()) {
+          if (this.getToken()) {
             localStorage.setItem(
               'access',
               (await Auth.currentSession())
