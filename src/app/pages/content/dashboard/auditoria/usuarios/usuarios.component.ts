@@ -336,7 +336,7 @@ export class UsuariosComponent implements OnInit {
       for (let i in getValor) {
         if (getValor) {
           let valor = getValor[i].toString().split('=');
-          valores.push(valor[0][0].toUpperCase() + valor[0].slice(1));
+          valores.push(valor[0]);
         }
       }
       arregloAntes = cambiosAntes.split(', ');
