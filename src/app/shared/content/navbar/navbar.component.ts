@@ -298,24 +298,40 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
                           'ESTADO_EJECUCION'
                         ] === 'TERMINADO'
                       ) {
+                        let tempNoticicaciones = JSON.parse(
+                          localStorage.getItem('Notificaciones')
+                        );
                         if (
-                          this.verEstado(onUpdateSiaGenAudEstadoProcesosDev) ===
-                          'EXITOSO'
+                          tempNoticicaciones.filter(
+                            (e) =>
+                              e.ID_PROCESO ===
+                              onUpdateSiaGenAudEstadoProcesosDev.ID_PROCESO
+                          ).length < 1
                         ) {
-                          this.abrirToass(
-                            this.verEstado(onUpdateSiaGenAudEstadoProcesosDev),
-                            onUpdateSiaGenAudEstadoProcesosDev.INTERFAZ
-                          );
-                        } else {
-                          this.abrirToassError(
-                            this.verEstado(onUpdateSiaGenAudEstadoProcesosDev),
-                            onUpdateSiaGenAudEstadoProcesosDev.INTERFAZ
+                          if (
+                            this.verEstado(
+                              onUpdateSiaGenAudEstadoProcesosDev
+                            ) === 'EXITOSO'
+                          ) {
+                            this.abrirToass(
+                              this.verEstado(
+                                onUpdateSiaGenAudEstadoProcesosDev
+                              ),
+                              onUpdateSiaGenAudEstadoProcesosDev.INTERFAZ
+                            );
+                          } else {
+                            this.abrirToassError(
+                              this.verEstado(
+                                onUpdateSiaGenAudEstadoProcesosDev
+                              ),
+                              onUpdateSiaGenAudEstadoProcesosDev.INTERFAZ
+                            );
+                          }
+
+                          this.NotificacionesService.newNotificacion(
+                            onUpdateSiaGenAudEstadoProcesosDev
                           );
                         }
-
-                        this.NotificacionesService.newNotificacion(
-                          onUpdateSiaGenAudEstadoProcesosDev
-                        );
                       }
                     }
                   }
