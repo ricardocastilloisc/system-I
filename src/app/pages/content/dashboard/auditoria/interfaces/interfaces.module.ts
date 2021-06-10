@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChartsModule } from 'ng2-charts';
 
 import { InterfacesRoutingModule } from './interfaces-routing.module';
 import { InterfacesComponent } from './interfaces.component';
@@ -11,7 +12,8 @@ import { InterfacesComponent } from './interfaces.component';
   ],
   imports: [
     CommonModule,
-    InterfacesRoutingModule
+    InterfacesRoutingModule,
+    ChartsModule
   ]
 })
 export class InterfacesModule { }

@@ -141,4 +141,7 @@
     padding: 15px;
   }
   
-  
+  .titulo {
+    font: bold 24px FS Elliot Pro;
+    color: #035fa4;
+  }

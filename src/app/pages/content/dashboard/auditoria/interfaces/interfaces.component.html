@@ -1,17 +1,40 @@
-<section id="optionshome">
-    <div class="container-fluid">
-        <div class="row justify-content-center" style="height: 60vh; width: 100%">
-            <div class=" align-self-center">
-                <div class="d-flex flex-column" style="width: 504px;">
-                    <div class="descripcionPrimerLogin" style="margin-top:34px">
-                        <div class="row">
-                            <div class="col-10">
-                                <img src="assets/icons/ico-residencial.png" width="30%" class="center">
-                                <p>Esta página se encuentra en construcción.</p>
-                            </div>
-                        </div>
+<section>
+    <div class="col-12 row justify-content-center">
+        <p class="titulo">Ejecuciones de las interfaces durante 2021</p>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-4"><p class="text-center">Opciones de filtrado. <span class="badge badge-secondary">TBD</span></p></div>
+            <div class="col-8"><div class="input-group">
+                <input type="text" class="form-control" aria-label="Text input with segmented dropdown button">
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-outline-secondary">Filtrar</button>
+                    <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item">Item 1</a>
+                        <a class="dropdown-item">Item 2</a>
+                        <a class="dropdown-item">Item 3</a>
+                        <div role="separator" class="dropdown-divider"></div>
+                        <a class="dropdown-item">Default</a>
                     </div>
                 </div>
+            </div></div>
+          </div>
+    </div>
+    <div class="card-busqueda">
+        <div class="row justify-content-center">
+            <div class="col-12 col-sm-6 col-md-8">
+                <canvas baseChart width="300" height="300" [datasets]="lineChartData" [labels]="lineChartLabels"
+                    [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend"
+                    [chartType]="lineChartType" [plugins]="lineChartPlugins">
+                </canvas>
+            </div>
+            <div class="col-6 col-md-4">
+                <canvas width="400" height="400" id="pieChart">
+                </canvas>
             </div>
         </div>
     </div>
