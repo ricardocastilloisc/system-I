@@ -254,6 +254,13 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
     console.log(this.procesoEjecutar)
     let CATESTADOS;
     let todayDate = new Date()
+    let fechaInicio = new Date();
+    fechaInicio.setHours(0,0,0,0);
+
+    // console.log('FechaInicio: ', fechaInicio)
+     console.log('FechaInicioUTC: ', fechaInicio.toISOString())
+    let fechaFin = new Date();
+    fechaFin.setHours(23,59,59,999);
 
     console.log(this.datePipe.transform(todayDate, "dd-MM-yyyy"))
 
@@ -263,9 +270,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
       INTERFAZ: this.procesoEjecutar ,
     }
 
-    this.authService.refreshToken();
-
-    await this.api.ListSiaGenAudEstadoProcesosDevs(body.INTERFAZ).then(res => {
+    await this.api.ListSiaGenAudEstadoProcesosDevs(body.INTERFAZ, fechaInicio.toISOString().replace('0Z', ''),fechaFin.toISOString().replace('9Z', '')).then(res => {
 
       this.CATESTADOS = res.items.slice().sort(function (a, b) { return new Date(b.FECHA_ACTUALIZACION).getTime() - new Date(a.FECHA_ACTUALIZACION).getTime() })
 
