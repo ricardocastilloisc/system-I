@@ -9,13 +9,13 @@ export const environment = {
     secretAccessKey: "6luR2RVQcyRbuOgSd11CZo1W6kTUwIytlfi92o8K",
     region: "us-east-1",
   },
-  
+
   //urlExternalLogin: 'https://sia-app-up.auth.us-east-1.amazoncognito.com/oauth2/authorize?identity_provider=Azure&redirect_uri=https://dev.d23mbxjbgl0msz.amplifyapp.com/&response_type=code&client_id=5cvq4jop6octili7583n597kd1&scope=phone%20email%20openid%20profile',
-  
+
   urlExternalLogin: 'https://sia-app-up.auth.us-east-1.amazoncognito.com/oauth2/authorize?identity_provider=Azure&redirect_uri=http://localhost:4200/dashboard&response_type=code&client_id=5cvq4jop6octili7583n597kd1&scope=phone%20email%20openid%20profile',
-  
+
   accessTokenUrl: 'https://sia-app-up.auth.us-east-1.amazoncognito.com/oauth2/token',
-  
+
   clientSecret: 'b4g4f8k4imm3qmc3793cveeu76ikeql5uqgvfh9p56da7nsg0m1',
   amplifyConfig: {
     Auth: {
@@ -25,7 +25,7 @@ export const environment = {
       oauth: {
         domain: "sia-app-up.auth.us-east-1.amazoncognito.com",
         scope: ["phone", "email", "openid", "profile"],
-        /*
+/*
         redirectSignIn: "https://dev.d23mbxjbgl0msz.amplifyapp.com/",
         redirectSignOut: "https://dev.d23mbxjbgl0msz.amplifyapp.com/",
         */
@@ -56,6 +56,18 @@ export const environment = {
       {
         name: 'INT CASH',
         endpoint: 'https://ixsp0lvu2h.execute-api.us-east-1.amazonaws.com/dev/sia/afore/intcash'
+      },
+      {
+        name: 'MO',
+        endpoint: 'https://ixsp0lvu2h.execute-api.us-east-1.amazonaws.com/dev/sia/afore/mo'
+      },
+      {
+        name: 'CRD',
+        endpoint: 'https://ixsp0lvu2h.execute-api.us-east-1.amazonaws.com/dev/sia/fondos/crd'
+      },
+      {
+        name: 'MANDATOS',
+        endpoint: 'https://ixsp0lvu2h.execute-api.us-east-1.amazonaws.com/dev/sia/fondos/mandatos'
       }
     ],
   },

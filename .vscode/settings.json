@@ -9,20 +9,20 @@
     "amplify/backend/awscloudformation": true
   },
   "workbench.colorCustomizations": {
-    "activityBar.activeBackground": "#3fb78f",
-    "activityBar.activeBorder": "#f2e7f7",
-    "activityBar.background": "#3fb78f",
-    "activityBar.foreground": "#15202b",
-    "activityBar.inactiveForeground": "#15202b99",
-    "activityBarBadge.background": "#f2e7f7",
-    "activityBarBadge.foreground": "#15202b",
-    "statusBar.background": "#329171",
+    "activityBar.activeBackground": "#650429",
+    "activityBar.activeBorder": "#327b05",
+    "activityBar.background": "#650429",
+    "activityBar.foreground": "#e7e7e7",
+    "activityBar.inactiveForeground": "#e7e7e799",
+    "activityBarBadge.background": "#327b05",
+    "activityBarBadge.foreground": "#e7e7e7",
+    "statusBar.background": "#340215",
     "statusBar.foreground": "#e7e7e7",
-    "statusBarItem.hoverBackground": "#3fb78f",
-    "titleBar.activeBackground": "#329171",
+    "statusBarItem.hoverBackground": "#650429",
+    "titleBar.activeBackground": "#340215",
     "titleBar.activeForeground": "#e7e7e7",
-    "titleBar.inactiveBackground": "#32917199",
+    "titleBar.inactiveBackground": "#34021599",
     "titleBar.inactiveForeground": "#e7e7e799"
   },
-  "peacock.color": "#329171"
+  "peacock.color": "#340215"
 }
