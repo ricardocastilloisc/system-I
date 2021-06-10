@@ -395,12 +395,34 @@ export class ProcesoComponent implements OnInit, OnDestroy {
 
   busquedaFiltros() {
     this.paginaActualEjecucionesProceso = 1;
-    if (this.filtroEjecucionesForm.valid) {
+    if (this.filtroEjecucionesForm.valid ) {
 
-      let fechaFiltro = new Date();
-      fechaFiltro.setDate(this.filtroEjecucionesForm.get('fechaFiltrar').value);
-      fechaFiltro.setHours(0,0,0,0)
-      console.log('FEcha filtrar: ', fechaFiltro)
+
+      let fechaInicialFiltro = this.filtroEjecucionesForm.get('fechaFiltrar').value;
+      let fechaFinalFiltro = fechaInicialFiltro;
+
+      if(  this.filtroEjecucionesForm.get('fechaFiltrar').value != null ){
+
+        let fechaInicialParseada =  Date.parse(this.filtroEjecucionesForm.get('fechaFiltrar').value);
+
+
+
+      fechaInicialFiltro = new Date(fechaInicialParseada)
+      fechaInicialFiltro.setMinutes(fechaInicialFiltro.getMinutes() + fechaInicialFiltro.getTimezoneOffset() );
+    
+      console.log('FEcha filtrar: ', fechaInicialFiltro.toISOString())
+
+
+      fechaFinalFiltro = fechaInicialFiltro;
+
+      fechaFinalFiltro.setHours(23,59,59,999)
+
+      console.log('FEcha filtrar final: ', fechaFinalFiltro.toISOString())
+
+      }
+      
+
+
 
 
       let idProceso = this.filtroEjecucionesForm.get('idProceso').value;
@@ -422,28 +444,28 @@ export class ProcesoComponent implements OnInit, OnDestroy {
         ({ AUDGENEJECUCIONESPROCESO }) => AUDGENEJECUCIONESPROCESO.AUDGENEJECUCIONESPROCESO
       ).subscribe(res => console.log(res))
 
-      if(fechaFiltro === null && idProceso === null){
+      if(fechaInicialFiltro === null && idProceso === null){
 
         this.openModal()
 
-      }else if( fechaFiltro === null && idProceso !== null){
+      }else if( fechaInicialFiltro === null && idProceso !== null){
 
         let body = {
           filter: { ID_PROCESO: { eq: idProceso } },
           limit: 999999999
         }
         this.store.dispatch(LoadAUDGENESTADOPROCESOS({ consult: body }));
-      }else if( fechaFiltro !== null && idProceso === null){
+      }else if( fechaInicialFiltro !== null && idProceso === null){
         let body = {
-          filter: { FECHA_ACTUALIZACION: { contains: fechaFiltro }, INTERFAZ: { eq: this.rutaActiva.snapshot.params.id } },
-          limit: 999999999
+          INTERFAZ: this.rutaActiva.snapshot.params.id, FECHA_INICIO: fechaInicialFiltro.toISOString().replace('0Z', ''), FECHA_FIN: fechaFinalFiltro.toISOString().replace('9Z', '')  ,
+          
         }
         this.store.dispatch(LoadAUDGENESTADOPROCESOS({ consult: body }));
       }else {
         console.log('else')
         console.log(idProceso)
         let body = {
-          filter: { FECHA_ACTUALIZACION: { contains: fechaFiltro }, ID_PROCESO: { eq:  idProceso } },
+          filter: { FECHA_ACTUALIZACION: { contains: fechaInicialFiltro }, ID_PROCESO: { eq:  idProceso } },
           limit: 999999999
         }
         this.store.dispatch(LoadAUDGENESTADOPROCESOS({ consult: body }));
@@ -454,6 +476,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
 
       
     }
+
   }
 
   ejecucionesInexistentesModal(){
