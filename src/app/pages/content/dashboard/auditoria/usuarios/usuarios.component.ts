@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { LoadAUDGENUSUARIOS, UnsetAUDGENUSUARIO  } from './../../../../../ReduxStore/actions/usuarios/AUDGENUSUARIOS.actions';
+import { LoadAUDGENUSUARIOS, UnsetAUDGENUSUARIO } from './../../../../../ReduxStore/actions/usuarios/AUDGENUSUARIOS.actions';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../../ReduxStore/app.reducers';
 import { Observable, Subscription } from 'rxjs';
@@ -24,7 +24,7 @@ export class UsuariosComponent implements OnInit {
 
   filtroAuditoriaUsuariosForm: FormGroup;
   maxDate: Date;
-  
+
   itemsAntes = [];
   itemsDespues = [];
   itemsValor = [];
@@ -39,15 +39,15 @@ export class UsuariosComponent implements OnInit {
   dropdownListFiltroPermisos = [];
   SettingsFiltroDePermisos: IDropdownSettings = {};
   selectedItemsFiltroaPermisos = [];
-  
-  dropdownListFiltroCorreos= [];
+
+  dropdownListFiltroCorreos = [];
   SettingsFiltroDeCorreos: IDropdownSettings = {};
-  selectedItemsFiltroCorreos= [];
+  selectedItemsFiltroCorreos = [];
 
 
-  dropdownListFiltroNombres= [];
+  dropdownListFiltroNombres = [];
   SettingsFiltroDeNombres: IDropdownSettings = {};
-  selectedItemsFiltroNombres= [];
+  selectedItemsFiltroNombres = [];
 
 
   dropdownListFiltroAccion = [];
@@ -62,7 +62,7 @@ export class UsuariosComponent implements OnInit {
     private modalService: NgbModal,
     private fb: FormBuilder,
     private spinner: NgxSpinnerService
-  ) {}
+  ) { }
 
 
   AUDGENUSUARIOS$: Subscription;
@@ -110,7 +110,7 @@ export class UsuariosComponent implements OnInit {
       itemsShowLimit: 3,
     };
 
-    this.SettingsFiltroDeCorreos ={
+    this.SettingsFiltroDeCorreos = {
       singleSelection: false,
       idField: 'item_id',
       textField: 'item_text',
@@ -122,7 +122,7 @@ export class UsuariosComponent implements OnInit {
       searchPlaceholderText: 'Buscar Correo electrónico',
     };
 
-    this.SettingsFiltroDeNombres ={
+    this.SettingsFiltroDeNombres = {
       singleSelection: false,
       idField: 'item_id',
       textField: 'item_text',
@@ -161,11 +161,11 @@ export class UsuariosComponent implements OnInit {
         arrayFiltroNombres.push(e.item_id);
       });
       FiltrarNombre = arrayFiltroNombres;
-      
+
 
     }
 
-    
+
     if (this.selectedItemsFiltroAccion.length !== 0) {
       let arrayFiltroAccion = [];
       this.selectedItemsFiltroAccion.forEach((e) => {
@@ -188,7 +188,7 @@ export class UsuariosComponent implements OnInit {
       FiltrarFecha
     )
 
-    
+
     setTimeout(() => {
       this.spinner.hide();
     }, 300);
@@ -199,7 +199,7 @@ export class UsuariosComponent implements OnInit {
 
     this.initSelects();
 
-    console.log('Acciones: ',this.dropdownListFiltroAccion)
+    console.log('Acciones: ', this.dropdownListFiltroAccion)
     this.AUDGENUSUARIOS$ = this.store.select(
       ({ AUDGENUSUARIOS }) => AUDGENUSUARIOS.AUDGENUSUARIOS
     ).pipe(map(res => {
@@ -207,14 +207,14 @@ export class UsuariosComponent implements OnInit {
       else return res.slice().sort(function (a, b) { return new Date(b.FECHA).getTime() - new Date(a.FECHA).getTime() })
 
     }
-    )).subscribe( usuarios => {
+    )).subscribe(usuarios => {
       this.listadoUsuarios = usuarios;
 
       let arrayCorreos = [];
       let arrayNombres = [];
-      if(this.listadoUsuarios){
+      if (this.listadoUsuarios) {
         this.listadoUsuarios.forEach((e) => {
-          if(
+          if (
             this.dropdownListFiltroCorreos.filter(
               (f) => f.item_id == e.CORREO
             ).length === 0
@@ -229,7 +229,7 @@ export class UsuariosComponent implements OnInit {
             index === -1 ? arrayNombres.push({
               item_id: e.USUARIO.NOMBRE + e.USUARIO.APELLIDO_PATERNO,
               item_text: e.USUARIO.NOMBRE + ' ' + e.USUARIO.APELLIDO_PATERNO
-            }): null
+            }) : null
           }
         });
         if (this.dropdownListFiltroCorreos.length === 0) {
@@ -250,8 +250,8 @@ export class UsuariosComponent implements OnInit {
     //   ({ AUDGENUSUARIOS }) => AUDGENUSUARIOS.AUDGENUSUARIOS
     // ).subscribe(res => { console.log(res)})
 
-    
-    this.store.dispatch(LoadAUDGENUSUARIOS({ consult: { MODULO: 'USUARIOS'}}));
+
+    this.store.dispatch(LoadAUDGENUSUARIOS({ consult: { MODULO: 'USUARIOS' } }));
 
     // this.api.ListAUDGENUSUARIOS('USUARIOS').then(res => {
     //   console.log(res)
@@ -270,7 +270,7 @@ export class UsuariosComponent implements OnInit {
     return this.verModal;
   }
 
-  
+
   ocultarModal(): void {
     this.verModal = false;
   }
@@ -291,7 +291,7 @@ export class UsuariosComponent implements OnInit {
     let valorDespues;
     let banderaCambio = false;
     this.detalleCambios = {
-      nombre: objetoDetalle.PERMISOS_USUARIOS[0].NOMBRE + ' ' + objetoDetalle.PERMISOS_USUARIOS[0].APELLIDO_PATERNO  ,
+      nombre: objetoDetalle.PERMISOS_USUARIOS[0].NOMBRE + ' ' + objetoDetalle.PERMISOS_USUARIOS[0].APELLIDO_PATERNO,
       usuario: objetoDetalle.USUARIO.NOMBRE + ' ' + objetoDetalle.USUARIO.APELLIDO_PATERNO,
       fecha: objetoDetalle.FECHA
     };
@@ -345,10 +345,10 @@ export class UsuariosComponent implements OnInit {
       const getValor = cambiosDespues.split(', ');
       console.log('getValor: ', getValor)
       for (let i in getValor) {
-        
+
         if (getValor) {
           let valor = getValor[i].toString().split('=');
-          //console.log('Valor',valor[0])
+          //console.log('Valor',valor[0])          
           valores.push(valor[0]);
         }
       }
@@ -359,7 +359,7 @@ export class UsuariosComponent implements OnInit {
     }
 
     if (valores !== null) {
-      console.log('Valores: ',valores)
+      console.log('Valores: ', valores)
       for (let i in valores) {
         if (valores) {
           if (arregloAntes.length > 0) {
@@ -367,22 +367,26 @@ export class UsuariosComponent implements OnInit {
             // if(!arregloAntes.find(e => e.includes(valores[i])).split('=')[1]){
             //   valorAntes = ''
             // }else
-              // console.log('Valores i: ', valores[i])
-              // console.log(arregloAntes.length)
+            // console.log('Valores i: ', valores[i])
+            // console.log(arregloAntes.length)
 
-              // console.log('Que es este valor: ', arregloAntes.find(e => e.includes(valores[i])).split('='))
+            // console.log('Que es este valor: ', arregloAntes.find(e => e.includes(valores[i])).split('='))
 
-              valorAntes = arregloAntes.find(e => e.includes(valores[i])) ? arregloAntes.find(e => e.includes(valores[i])).split('=')[1] : '' ;
+            valorAntes = arregloAntes.find(e => e.includes(valores[i])) ? arregloAntes.find(e => e.includes(valores[i])).split('=')[1] : '';
           } else {
             valorAntes = '';
           }
           if (arregloDespues.length > 0) {
+
             valorDespues = arregloDespues.find(e => e.includes(valores[i])) ? arregloDespues.find(e => e.includes(valores[i])).split('=')[1] : '';
           } else {
             valorDespues = '';
           }
           if (valorAntes === valorDespues) { banderaCambio = false; }
           else { banderaCambio = true; }
+          if (valores[i] === 'area') {
+            valores[i] = 'área';
+          }
           tabla.push({ valor: valores[i], antes: valorAntes, despues: valorDespues, cambio: banderaCambio })
         }
       }
@@ -437,7 +441,7 @@ export class UsuariosComponent implements OnInit {
   }
 
 
-  
+
 
   verPaginado = () => {
     if (this.ListadoUsuariosPantalla) {
@@ -500,5 +504,5 @@ export class UsuariosComponent implements OnInit {
     return response;
   }
 
-  
+
 }
