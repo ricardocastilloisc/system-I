@@ -1,31 +1,45 @@
-import { LoadAUDGENPROCESOS, UnsetAUDGENPROCESO } from './../../../../../ReduxStore/actions/AUDGENPROCESO.actions';
-import { Component, OnInit, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
+import {
+  LoadAUDGENPROCESOS,
+  UnsetAUDGENPROCESO,
+} from './../../../../../ReduxStore/actions/AUDGENPROCESO.actions';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../../ReduxStore/app.reducers';
 import { Observable, Subscription } from 'rxjs';
 import { AUDGENPROCESO_INERFACE } from '../../../../../model/AUDGENPROCESO.model';
 import { AUDGENESTADOPROCESO_INTERFACE } from '../../../../../model/AUDGENESTADOPROCESO.model';
-import { map } from "rxjs/operators";
+import { map } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
 import { Usuario } from '../../../../../model/usuario.model';
 import { EArea, ERole } from '../../../../../validators/roles';
-import { LoadAUDGENESTADOPROCESOS, UnsetAUDGENESTADOPROCESO, LoadAUDGENEJECUCIONESPROCESO, UnsetAUDGENEJECUCIONPROCESO } from 'src/app/ReduxStore/actions';
+import {
+  LoadAUDGENESTADOPROCESOS,
+  UnsetAUDGENESTADOPROCESO,
+  LoadAUDGENEJECUCIONESPROCESO,
+  UnsetAUDGENEJECUCIONPROCESO,
+} from 'src/app/ReduxStore/actions';
 import { APIService } from '../../../../../API.service';
 import { UsuariosService } from '../../../../../services/usuarios.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { DatePipe } from '@angular/common'
+import { DatePipe } from '@angular/common';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
 
 @Component({
   selector: 'app-proceso',
   templateUrl: './proceso.component.html',
-  styleUrls: ['./proceso.component.css']
+  styleUrls: ['./proceso.component.css'],
 })
 export class ProcesoComponent implements OnInit, OnDestroy {
   @ViewChild('modalEstado') templateRef: TemplateRef<any>;
-  @ViewChild('ejecucionesInexistentes') templateRefEjecuciones: TemplateRef<any>;
+  @ViewChild('ejecucionesInexistentes')
+  templateRefEjecuciones: TemplateRef<any>;
   filtroEjecucionesForm: FormGroup;
 
   Areas = [
@@ -33,7 +47,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
     EArea.Custodia,
     EArea.Inversiones_Riesgos,
     EArea.Tesoreria,
-    EArea.Soporte
+    EArea.Soporte,
   ];
 
   DataUser$: Observable<Usuario>;
@@ -55,7 +69,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
   Administrador = ERole.Administrador;
   Ejecutor = ERole.Monitor;
   DataUser: any;
-  ejemplo
+  ejemplo;
   fechaBusqueda: Date;
 
   constructor(
@@ -67,26 +81,20 @@ export class ProcesoComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private modalService: NgbModal,
     private datepipe: DatePipe
-  ) { 
-
-    this.Loading$ =  this.store.select(
-      ({ AUDGENESTADOPROCESOS }) => AUDGENESTADOPROCESOS.error
-    ).subscribe( (res => {
-
-      if(res){
-
-        //this.authService.signOut()
- 
-      }else{
-
-      }
-    }))
-
+  ) {
+    this.Loading$ = this.store
+      .select(({ AUDGENESTADOPROCESOS }) => AUDGENESTADOPROCESOS.error)
+      .subscribe((res) => {
+        if (res) {
+          //this.authService.signOut()
+        } else {
+        }
+      });
   }
 
   AUDGENPROCESOS$: Observable<AUDGENPROCESO_INERFACE[]>;
   AUDGENEJECUCIONPROCESO$: Observable<AUDGENPROCESO_INERFACE[]>;
-  AUDGENESTADOPROCESOS$: Observable<AUDGENESTADOPROCESO_INTERFACE[]>
+  AUDGENESTADOPROCESOS$: Observable<AUDGENESTADOPROCESO_INTERFACE[]>;
 
   ngOnDestroy(): void {
     this.store.dispatch(UnsetAUDGENPROCESO());
@@ -95,265 +103,316 @@ export class ProcesoComponent implements OnInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-
     // this.rutaActiva.queryParams
     //   .subscribe(res =>{ console.log(res); this.titulo = res['titulo'] || 0 })
     //   console.log('titulo', this.titulo)
-    
-    
   }
 
   ngOnInit(): void {
-
     this.authService.refreshToken();
 
-    this.titulo = JSON.parse(
-      localStorage.getItem('Titulo')
-    );
-
+    this.titulo = JSON.parse(localStorage.getItem('Titulo'));
 
     // this.rutaActiva.queryParams
     //   .subscribe(res =>{ console.log(res); this.titulo = res['titulo'] || 0 })
     //   console.log('titulo', this.titulo)
 
-    this.ocultarbusqueda = false
+    this.ocultarbusqueda = false;
     this.paginaActualProceso = 1;
     this.paginaActualEjecucionesProceso = 1;
     this.filtroEjecucionesForm = this.fb.group({
       fechaFiltrar: [],
-      idProceso: []
-    })
+      idProceso: [],
+    });
 
-
-    // this.api.OnUpdateAUDGENESTADOPROCESOListener().subscribe(res => 
+    // this.api.OnUpdateAUDGENESTADOPROCESOListener().subscribe(res =>
     //   console.log(res)
     //   )
 
     this.maxDate = new Date();
-    var dd = String(this.maxDate. getDate()). padStart(2, '0');
-    var mm = String(this.maxDate. getMonth() + 1). padStart(2, '0'); 
-    var yyyy = this.maxDate. getFullYear();
-    ​
-    this.today = yyyy + '-' + mm + '-' + dd ;
+    var dd = String(this.maxDate.getDate()).padStart(2, '0');
+    var mm = String(this.maxDate.getMonth() + 1).padStart(2, '0');
+    var yyyy = this.maxDate.getFullYear();
+    this.today = yyyy + '-' + mm + '-' + dd;
     //console.log('Fecha: ',today)
     this.DataUser$ = this.store.select(({ usuario }) => usuario.user);
 
+    this.DataUser$.subscribe((res) => (this.DataUser = res)).unsubscribe();
 
-    this.DataUser$.subscribe(res => this.DataUser = res).unsubscribe()
-
-
-
-    console.log(this.DataUser.attributes['custom:negocio'])
-    this.AUDGENESTADOPROCESOS$ = this.store.select(
-      ({ AUDGENESTADOPROCESOS }) => AUDGENESTADOPROCESOS.AUDGENESTADOPROCESO
-    ).pipe(map(res => {
-      if (res === null) return res
-      else return res.slice().sort(function (a, b) { return new Date(b.FECHA_ACTUALIZACION).getTime() - new Date(a.FECHA_ACTUALIZACION).getTime() }).filter((item, i, res) => {
-        return res.indexOf(res.find(t => t.ID_PROCESO === item.ID_PROCESO)) === i
-      })
-      // .filter(item => {
-      //   return item.ETAPA != ""
-      // })
-
-
-    }
-    ))
+    console.log(this.DataUser.attributes['custom:negocio']);
+    this.AUDGENESTADOPROCESOS$ = this.store
+      .select(
+        ({ AUDGENESTADOPROCESOS }) => AUDGENESTADOPROCESOS.AUDGENESTADOPROCESO
+      )
+      .pipe(
+        map((res) => {
+          if (res === null) return res;
+          else
+            return res
+              .slice()
+              .sort(function (a, b) {
+                return (
+                  new Date(b.FECHA_ACTUALIZACION).getTime() -
+                  new Date(a.FECHA_ACTUALIZACION).getTime()
+                );
+              })
+              .filter((item, i, res) => {
+                return (
+                  res.indexOf(
+                    res.find((t) => t.ID_PROCESO === item.ID_PROCESO)
+                  ) === i
+                );
+              });
+          // .filter(item => {
+          //   return item.ETAPA != ""
+          // })
+        })
+      );
 
     // this.store.select(
     //   ({ AUDGENESTADOPROCESOS }) => AUDGENESTADOPROCESOS.AUDGENESTADOPROCESO
     // ).subscribe(res => console.log('que hay',res))
 
-
-
-    this.store.select(
-      ({ AUDGENPROCESOS }) => AUDGENPROCESOS.AUDGENPROCESOS
-    )
-
+    this.store.select(({ AUDGENPROCESOS }) => AUDGENPROCESOS.AUDGENPROCESOS);
 
     this.store.select(
       ({ AUDGENESTADOPROCESOS }) => AUDGENESTADOPROCESOS.AUDGENESTADOPROCESO
-    )
-
-    
+    );
 
     let body = {
-      filter: { INTERFAZ: { eq: this.rutaActiva.snapshot.params.id }, FECHA_ACTUALIZACION: { contains: this.today } },
-      limit: 999999999
-    }
-
-
+      filter: {
+        INTERFAZ: { eq: this.rutaActiva.snapshot.params.id },
+        FECHA_ACTUALIZACION: { contains: this.today },
+      },
+      limit: 999999999,
+    };
 
     this.store.dispatch(LoadAUDGENESTADOPROCESOS({ consult: body }));
 
     // this.llenarTabla(this.page);
 
-    this.AUDGENESTADOPROCESOS$.subscribe(res => { if(res && res.length === 0){
-      this.ejecucionesInexistentesModal()
-      //this.modalService.open(this.templateRefEjecuciones, { ariaLabelledBy: 'modal-basic-title' });
-      }else this.cerrarModales();
-    })
+    this.AUDGENESTADOPROCESOS$.subscribe((res) => {
+      if (res && res.length === 0) {
+        this.ejecucionesInexistentesModal();
+        //this.modalService.open(this.templateRefEjecuciones, { ariaLabelledBy: 'modal-basic-title' });
+      } else this.cerrarModales();
+    });
 
+    let NotificacionSelect = JSON.parse(
+      localStorage.getItem('NotificacionSelect')
+    );
+
+    if (NotificacionSelect) {
+      setTimeout(() => {
+        this.consultarDetalle(
+          NotificacionSelect.ID_PROCESO,
+          NotificacionSelect.FECHA_CREADO
+        );
+        localStorage.removeItem('NotificacionSelect');
+      }, 300);
+    }
   }
 
-  openModal(){
-
-    this.modalService.open(this.templateRef, { ariaLabelledBy: 'modal-basic-title' });
-
+  openModal() {
+    this.modalService.open(this.templateRef, {
+      ariaLabelledBy: 'modal-basic-title',
+    });
   }
 
-  
-
-  obtenerArea(): string{
+  obtenerArea(): string {
     let arrayTempArea = [];
 
     this.DataUser.groups.forEach((area) => {
-        
-        this.Areas.forEach(areaDef =>
-          {
-            if(area === areaDef){
-              arrayTempArea.push(area);
-            }            
-          })
-
-    })
-    if(arrayTempArea.length > 0)
-      return arrayTempArea[0].toUpperCase()
-    else "N/D"
-
-
+      this.Areas.forEach((areaDef) => {
+        if (area === areaDef) {
+          arrayTempArea.push(area);
+        }
+      });
+    });
+    if (arrayTempArea.length > 0) return arrayTempArea[0].toUpperCase();
+    else 'N/D';
   }
 
-  recargarEjecuciones(){
-    if(this.mostrarEjecucionesProcesos == false){
-      this.mostrarEjecucionesProcesos = !this.mostrarEjecucionesProcesos 
+  recargarEjecuciones() {
+    if (this.mostrarEjecucionesProcesos == false) {
+      this.mostrarEjecucionesProcesos = !this.mostrarEjecucionesProcesos;
     }
-    
+
     this.ocultarbusqueda = false;
 
-    this.AUDGENESTADOPROCESOS$ = this.store.select(
-      ({ AUDGENESTADOPROCESOS }) => AUDGENESTADOPROCESOS.AUDGENESTADOPROCESO
-    ).pipe(map(res => {
-      if (res === null) return res
-      else return res.slice().sort(function (a, b) { return new Date(b.FECHA_ACTUALIZACION).getTime() - new Date(a.FECHA_ACTUALIZACION).getTime() }).filter((item, i, res) => {
-        return res.indexOf(res.find(t => t.ID_PROCESO === item.ID_PROCESO)) === i
-      })
-      // .filter(item => {
-      //   return item.ETAPA != ""
-      // })
-
-
-    }
-    ))
-
-    
+    this.AUDGENESTADOPROCESOS$ = this.store
+      .select(
+        ({ AUDGENESTADOPROCESOS }) => AUDGENESTADOPROCESOS.AUDGENESTADOPROCESO
+      )
+      .pipe(
+        map((res) => {
+          if (res === null) return res;
+          else
+            return res
+              .slice()
+              .sort(function (a, b) {
+                return (
+                  new Date(b.FECHA_ACTUALIZACION).getTime() -
+                  new Date(a.FECHA_ACTUALIZACION).getTime()
+                );
+              })
+              .filter((item, i, res) => {
+                return (
+                  res.indexOf(
+                    res.find((t) => t.ID_PROCESO === item.ID_PROCESO)
+                  ) === i
+                );
+              });
+          // .filter(item => {
+          //   return item.ETAPA != ""
+          // })
+        })
+      );
 
     let body = {
-      filter: { INTERFAZ: { eq: this.rutaActiva.snapshot.params.id }, FECHA_ACTUALIZACION: { contains: this.today} },
-      limit: 999999999
-    }
+      filter: {
+        INTERFAZ: { eq: this.rutaActiva.snapshot.params.id },
+        FECHA_ACTUALIZACION: { contains: this.today },
+      },
+      limit: 999999999,
+    };
 
     this.store.dispatch(LoadAUDGENESTADOPROCESOS({ consult: body }));
 
-    this.filtroEjecucionesForm.reset()
-
+    this.filtroEjecucionesForm.reset();
   }
 
   consultarDetalle(idProceso, fecha) {
-
-    this.area= this.obtenerArea();
-    console.log(this.area)
+    this.area = this.obtenerArea();
+    console.log(this.area);
 
     this.ocultarbusqueda = true;
 
-    console.log(fecha)
+    console.log(fecha);
 
-    let format = this.datepipe.transform(fecha, 'yyyy-MM-dd')
+    let format = this.datepipe.transform(fecha, 'yyyy-MM-dd');
 
-    console.log(format)
+    console.log(format);
     this.paginaActualProceso = 1;
 
-    this.api.ListAUDGENPROCESOS(idProceso, format).then(res => console.log('Resultado', res))
+    this.api
+      .ListAUDGENPROCESOS(idProceso, format)
+      .then((res) => console.log('Resultado', res));
 
-    this.AUDGENEJECUCIONPROCESO$ = this.store.select(
-      ({ AUDGENEJECUCIONESPROCESO }) => AUDGENEJECUCIONESPROCESO.AUDGENEJECUCIONESPROCESO
-    ).pipe(map(res => {
-      if (res == null) return res
-      else
-        return res.filter((item, i, res) => {
-          return res.indexOf(res.find(t => t.ID_PROCESO === item.ID_PROCESO)) === i
+    this.AUDGENEJECUCIONPROCESO$ = this.store
+      .select(
+        ({ AUDGENEJECUCIONESPROCESO }) =>
+          AUDGENEJECUCIONESPROCESO.AUDGENEJECUCIONESPROCESO
+      )
+      .pipe(
+        map((res) => {
+          if (res == null) return res;
+          else
+            return res.filter((item, i, res) => {
+              return (
+                res.indexOf(
+                  res.find((t) => t.ID_PROCESO === item.ID_PROCESO)
+                ) === i
+              );
+            });
         })
-    }))
+      );
 
-    this.store.select(
-      ({ AUDGENEJECUCIONESPROCESO }) => AUDGENEJECUCIONESPROCESO.AUDGENEJECUCIONESPROCESO
-    ).pipe(map(res => {
-      if (res == null) return res
-      else
-        return res.filter((item, i, res) => {
-          return res.indexOf(res.find(t => t.ID_PROCESO === item.ID_PROCESO)) === i
+    this.store
+      .select(
+        ({ AUDGENEJECUCIONESPROCESO }) =>
+          AUDGENEJECUCIONESPROCESO.AUDGENEJECUCIONESPROCESO
+      )
+      .pipe(
+        map((res) => {
+          if (res == null) return res;
+          else
+            return res.filter((item, i, res) => {
+              return (
+                res.indexOf(
+                  res.find((t) => t.ID_PROCESO === item.ID_PROCESO)
+                ) === i
+              );
+            });
         })
-    })).subscribe(res => console.log(res))
+      )
+      .subscribe((res) => console.log(res));
 
+    this.store
+      .select(({ AUDGENPROCESOS }) => AUDGENPROCESOS.AUDGENPROCESOS)
+      .pipe(
+        map((res) => {
+          if (res === null) return res;
+          else
+            return res.slice().sort(function (a, b) {
+              return new Date(b.FECHA).getTime() - new Date(a.FECHA).getTime();
+            });
+        })
+      )
+      .subscribe((res) => console.log(res));
 
-    this.store.select(
-      ({ AUDGENPROCESOS }) => AUDGENPROCESOS.AUDGENPROCESOS
-    ).pipe(map(res => {
-      if (res === null) return res
-      else return res.slice().sort(function (a, b) { return new Date(b.FECHA).getTime() - new Date(a.FECHA).getTime() })
-    }
-
-    )).subscribe(res => console.log(res))
-
-
-
-    if(this.rolesValids(this.DataUser, [this.Administrador] ) && this.area == 'SOPORTE'){
-
-      this.AUDGENPROCESOS$ = this.store.select(
-        ({ AUDGENPROCESOS }) => AUDGENPROCESOS.AUDGENPROCESOS
-      ).pipe(map(res => {
-        if (res === null) return res
-        else return res.slice().sort(function (a, b) { return new Date(b.FECHA).getTime() - new Date(a.FECHA).getTime() })
-      }
-
-      ))
-
-    }else 
-    if (this.rolesValids(this.DataUser, [this.Administrador])) {
-      console.log('entre al admin')
-      this.AUDGENPROCESOS$ = this.store.select(
-        ({ AUDGENPROCESOS }) => AUDGENPROCESOS.AUDGENPROCESOS
-      ).pipe(map(res => {
-        if (res === null) return res
-        else return res.slice().sort(function (a, b) { return new Date(b.FECHA).getTime() - new Date(a.FECHA).getTime() })
-          .filter(item => {
-            return item.MENSAJE_NEGOCIO != ""
+    if (
+      this.rolesValids(this.DataUser, [this.Administrador]) &&
+      this.area == 'SOPORTE'
+    ) {
+      this.AUDGENPROCESOS$ = this.store
+        .select(({ AUDGENPROCESOS }) => AUDGENPROCESOS.AUDGENPROCESOS)
+        .pipe(
+          map((res) => {
+            if (res === null) return res;
+            else
+              return res.slice().sort(function (a, b) {
+                return (
+                  new Date(b.FECHA).getTime() - new Date(a.FECHA).getTime()
+                );
+              });
           })
-      }
-
-      ))
+        );
+    } else if (this.rolesValids(this.DataUser, [this.Administrador])) {
+      console.log('entre al admin');
+      this.AUDGENPROCESOS$ = this.store
+        .select(({ AUDGENPROCESOS }) => AUDGENPROCESOS.AUDGENPROCESOS)
+        .pipe(
+          map((res) => {
+            if (res === null) return res;
+            else
+              return res
+                .slice()
+                .sort(function (a, b) {
+                  return (
+                    new Date(b.FECHA).getTime() - new Date(a.FECHA).getTime()
+                  );
+                })
+                .filter((item) => {
+                  return item.MENSAJE_NEGOCIO != '';
+                });
+          })
+        );
+    } else {
+      this.AUDGENPROCESOS$ = this.store
+        .select(({ AUDGENPROCESOS }) => AUDGENPROCESOS.AUDGENPROCESOS)
+        .pipe(
+          map((res) => {
+            if (res === null) return res;
+            else
+              return res.slice().sort(function (a, b) {
+                return (
+                  new Date(b.FECHA).getTime() - new Date(a.FECHA).getTime()
+                );
+              });
+          })
+        );
     }
-
-    else {
-      this.AUDGENPROCESOS$ = this.store.select(
-        ({ AUDGENPROCESOS }) => AUDGENPROCESOS.AUDGENPROCESOS
-      ).pipe(map(res => {
-        if (res === null) return res
-        else return res.slice().sort(function (a, b) { return new Date(b.FECHA).getTime() - new Date(a.FECHA).getTime() })
-      }
-
-      ))
-    }
-
 
     let body = {
       filter: { ID_PROCESO: { eq: idProceso } },
-      limit: 999999999
-    }
+      limit: 999999999,
+    };
 
     let bodyProcesos = {
       ID_PROCESO: idProceso,
-      FECHA: format
-    }
+      FECHA: format,
+    };
 
     this.store.dispatch(LoadAUDGENEJECUCIONESPROCESO({ consult: body }));
     this.store.dispatch(LoadAUDGENPROCESOS({ consult: bodyProcesos }));
@@ -362,103 +421,120 @@ export class ProcesoComponent implements OnInit, OnDestroy {
   }
 
   rolesValids = (User: Usuario, roles: any[]): boolean => {
-
     return this.authService.rolesValids(User, roles);
   };
-
-
 
   busquedaFiltros() {
     this.paginaActualEjecucionesProceso = 1;
     if (this.filtroEjecucionesForm.valid) {
-
       let fechaFiltro = this.filtroEjecucionesForm.get('fechaFiltrar').value;
-      console.log(this.filtroEjecucionesForm.get('fechaFiltrar').value)
+      console.log(this.filtroEjecucionesForm.get('fechaFiltrar').value);
 
       let idProceso = this.filtroEjecucionesForm.get('idProceso').value;
-      console.log(this.filtroEjecucionesForm.get('idProceso').value)
+      console.log(this.filtroEjecucionesForm.get('idProceso').value);
 
-      this.AUDGENESTADOPROCESOS$ = this.store.select(
-        ({ AUDGENESTADOPROCESOS }) => AUDGENESTADOPROCESOS.AUDGENESTADOPROCESO
-      ).pipe(map(res => {
-        if (res === null) return res
-        else return res.slice().sort(function (a, b) { return new Date(b.FECHA_ACTUALIZACION).getTime() - new Date(a.FECHA_ACTUALIZACION).getTime() }).filter((item, i, res) => {
-          return res.indexOf(res.find(t => t.ID_PROCESO === item.ID_PROCESO)) === i
-        })
-        // .filter(item => {
-        //   return item.ETAPA != ""
-        // })
-      }
-      ))
-      this.store.select(
-        ({ AUDGENEJECUCIONESPROCESO }) => AUDGENEJECUCIONESPROCESO.AUDGENEJECUCIONESPROCESO
-      ).pipe(map(res => {
-        if (res == null) return res
-        else
-          return res.filter((item, i, res) => {
-            return res.indexOf(res.find(t => t.ID_PROCESO === item.ID_PROCESO)) === i
+      this.AUDGENESTADOPROCESOS$ = this.store
+        .select(
+          ({ AUDGENESTADOPROCESOS }) => AUDGENESTADOPROCESOS.AUDGENESTADOPROCESO
+        )
+        .pipe(
+          map((res) => {
+            if (res === null) return res;
+            else
+              return res
+                .slice()
+                .sort(function (a, b) {
+                  return (
+                    new Date(b.FECHA_ACTUALIZACION).getTime() -
+                    new Date(a.FECHA_ACTUALIZACION).getTime()
+                  );
+                })
+                .filter((item, i, res) => {
+                  return (
+                    res.indexOf(
+                      res.find((t) => t.ID_PROCESO === item.ID_PROCESO)
+                    ) === i
+                  );
+                });
+            // .filter(item => {
+            //   return item.ETAPA != ""
+            // })
           })
-      })).subscribe(res => console.log(res))
+        );
+      this.store
+        .select(
+          ({ AUDGENEJECUCIONESPROCESO }) =>
+            AUDGENEJECUCIONESPROCESO.AUDGENEJECUCIONESPROCESO
+        )
+        .pipe(
+          map((res) => {
+            if (res == null) return res;
+            else
+              return res.filter((item, i, res) => {
+                return (
+                  res.indexOf(
+                    res.find((t) => t.ID_PROCESO === item.ID_PROCESO)
+                  ) === i
+                );
+              });
+          })
+        )
+        .subscribe((res) => console.log(res));
 
-      if(fechaFiltro === null && idProceso === null){
-
-        this.openModal()
-
-      }else if( fechaFiltro === null && idProceso !== null){
-
+      if (fechaFiltro === null && idProceso === null) {
+        this.openModal();
+      } else if (fechaFiltro === null && idProceso !== null) {
         let body = {
           filter: { ID_PROCESO: { eq: idProceso } },
-          limit: 999999999
-        }
+          limit: 999999999,
+        };
         this.store.dispatch(LoadAUDGENESTADOPROCESOS({ consult: body }));
-      }else if( fechaFiltro !== null && idProceso === null){
+      } else if (fechaFiltro !== null && idProceso === null) {
         let body = {
-          filter: { FECHA_ACTUALIZACION: { contains: fechaFiltro }, INTERFAZ: { eq: this.rutaActiva.snapshot.params.id } },
-          limit: 999999999
-        }
+          filter: {
+            FECHA_ACTUALIZACION: { contains: fechaFiltro },
+            INTERFAZ: { eq: this.rutaActiva.snapshot.params.id },
+          },
+          limit: 999999999,
+        };
         this.store.dispatch(LoadAUDGENESTADOPROCESOS({ consult: body }));
-      }else {
-        console.log('else')
-        console.log(idProceso)
+      } else {
+        console.log('else');
+        console.log(idProceso);
         let body = {
-          filter: { FECHA_ACTUALIZACION: { contains: fechaFiltro }, ID_PROCESO: { eq:  idProceso } },
-          limit: 999999999
-        }
+          filter: {
+            FECHA_ACTUALIZACION: { contains: fechaFiltro },
+            ID_PROCESO: { eq: idProceso },
+          },
+          limit: 999999999,
+        };
         this.store.dispatch(LoadAUDGENESTADOPROCESOS({ consult: body }));
       }
-
-      
-      
-
-      
     }
   }
 
-  ejecucionesInexistentesModal(){
-    
-      this.modalService.open(this.templateRefEjecuciones, { ariaLabelledBy: 'modal-basic-title' });
-      
-
+  ejecucionesInexistentesModal() {
+    this.modalService.open(this.templateRefEjecuciones, {
+      ariaLabelledBy: 'modal-basic-title',
+    });
   }
 
-  cerrarModales = () =>{
+  cerrarModales = () => {
     this.modalService.dismissAll();
-  }
-
-
+  };
 
   obtenerNotificaciones(fechaInicioSesion) {
     if (fechaInicioSesion) {
       let body = {
         filter: { FECHA_ACTUALIZACION: { gt: fechaInicioSesion } },
-        limit: 1000
-      }
+        limit: 1000,
+      };
       this.store.dispatch(LoadAUDGENESTADOPROCESOS({ consult: body }));
     }
   }
-/* EJEMPLO RESPONSE */
+  /* EJEMPLO RESPONSE */
 
-/*
+  /*
 {
   "data": {
     "ListSiaGenAudEstadoProcesosDevs": {
@@ -469,7 +545,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
           "ESTADO_EJECUCION": "EJECUCION",  --> MAPEO
           "ETAPA": "INICIAL",
           "TIPO_PROCESO": "INTRADIA (INT)",
-          "INTERFAZ": "AIMS Y EXCEDENTES",  --> MAPEO 
+          "INTERFAZ": "AIMS Y EXCEDENTES",  --> MAPEO
           "INSUMO": "API TRADES",
           "ID_PROCESO": "eb1cbf63-9df9-47b4-97fa-8ca41856a1dd",
           "FECHA_CREADO": "2021-05-06T18:18:21.692317-05:00",
@@ -501,6 +577,5 @@ export class ProcesoComponent implements OnInit, OnDestroy {
     }
   }
 }
- */ 
-
+ */
 }
