@@ -49,6 +49,14 @@
                         Usuarios</a>
                     </div>
                   </div>
+                  <div *ngIf="perfilValido(DataUser, [Administrador, Soporte])"
+                    class="elementsMenus d-flex flex-column justify-content-center">
+                    <div>
+                      <a routerLinkActive="active" routerLink="/administracion/notificaciones">
+                        <img src="assets/imgs/icons/inicio/items/bell-2.png" class="itemsTextoImagenCentro" />
+                        Notificaciones</a>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -99,9 +107,9 @@
                 <div>
                   <div class="elementsMenus d-flex flex-column justify-content-center">
                     <div>
-                      <a routerLinkActive="active" routerLink="/auditoria/archivos">
+                      <a routerLinkActive="active" routerLink="/auditoria/interfaces">
                         <img src="assets/imgs/icons/inicio/items/archivos.png" class="itemsTextoImagenCentro" />
-                        Archivos</a>
+                        Interfaces</a>
                     </div>
                   </div>
                   <div class="elementsMenus d-flex flex-column justify-content-center">

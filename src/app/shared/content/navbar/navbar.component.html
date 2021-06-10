@@ -47,6 +47,15 @@
               Usuarios</a
             >
           </li>
+          <li *ngIf="perfilValido(DataUser, [Administrador, Soporte])">
+            <a routerLinkActive="active" routerLink="/administracion/notificaciones">
+              <img
+                src="../assets/icons/notificacion.svg"
+                class="alineadoTextoImagenCentro"
+              />
+              Notificaciones</a
+            >
+          </li>
         </ul>
       </li>
       <li
@@ -68,12 +77,12 @@
         </a>
         <ul class="collapse lisst-unstyled" id="auditoria">
           <li>
-            <a routerLinkActive="active" routerLink="/auditoria/archivos">
+            <a routerLinkActive="active" routerLink="/auditoria/interfaces">
               <img
                 src="../assets/imgs/icons/archivos.svg"
                 class="alineadoTextoImagenCentro"
               />
-              Archivos</a
+              Interfaces</a
             >
           </li>
           <li>
@@ -250,26 +259,13 @@
                       | ordenarNotificacionesFecha
                   "
                 >
-                  <div class="notification-item">
+                  <div class="notification-item" (click)="irAlProceso(Notificacion)">
                     <div class="item-title">
                       <div>{{ verEstado(Notificacion) }}</div>
-                      <button
-                        type="button"
-                        class="close"
-                        (click)="eliminarNotificacion(Notificacion.ID_PROCESO)"
-                      >
-                        <span
-                          style="
-                            font-size: 15px;
-                            color: black;
-                            background-color: transparent;
-                          "
-                          >&times;</span
-                        >
-                      </button>
+
                     </div>
 
-                    <div class="item-info">
+                    <div class="item-info" >
                       {{ Notificacion.INTERFAZ }}
                     </div>
                     <div class="item-info">
@@ -279,6 +275,21 @@
                       }}
                     </div>
                   </div>
+                  <button
+                  style="margin-top: -55px; margin-right: 20px;"
+                    type="button"
+                    class="close"
+                    (click)="eliminarNotificacion(Notificacion.ID_PROCESO)"
+                  >
+                    <span
+                      style="
+                        font-size: 15px;
+                        color: black;
+                        background-color: transparent;
+                      "
+                      >&times;</span
+                    >
+                  </button>
                 </div>
               </div>
               <li class="divider"></li>

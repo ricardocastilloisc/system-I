@@ -382,6 +382,23 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   };
 
+
+  irAlProceso = (data: NOTIFICACION_INTERFACE) => {
+    const url = 'procesos/diurno/'+data.INTERFAZ
+
+    localStorage.setItem(
+      'NotificacionSelect',
+      JSON.stringify(data)
+    );
+
+    this.router.navigateByUrl(url).then( () => {
+      this.eliminarNotificacion(data.ID_PROCESO);
+    })
+
+  }
+
+  //procesos/diurno  this.router.navigate(['/' + window.location.pathname + '/' + idProceso]); this.router.navigateByUrl(url);
+
   verEstado = (data: NOTIFICACION_INTERFACE) => {
     if (data.ETAPA_FINAL_ESTADO_FINAL) {
       return data.ETAPA_FINAL_ESTADO_FINAL;
