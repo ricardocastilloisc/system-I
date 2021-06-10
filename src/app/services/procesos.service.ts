@@ -115,5 +115,7 @@ export class ProcesosService {
     this.auditoria.enviarBitacoraUsuarios(payloadString);
 
     localStorage.removeItem('proceso');
+    localStorage.removeItem('tipoProceso');
+
   }
 }
