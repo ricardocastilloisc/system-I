@@ -15,9 +15,9 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'archivos',
+        path: 'interfaces',
         loadChildren: () =>
-          import('./archivos/archivos.module').then((m) => m.ArchivosModule),
+          import('./interfaces/interfaces.module').then((m) => m.InterfacesModule),
       },
       {
         path: 'catalogos',

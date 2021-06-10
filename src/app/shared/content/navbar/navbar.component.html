@@ -47,6 +47,15 @@
               Usuarios</a
             >
           </li>
+          <li *ngIf="perfilValido(DataUser, [Administrador, Soporte])">
+            <a routerLinkActive="active" routerLink="/administracion/notificaciones">
+              <img
+                src="../assets/icons/notificacion.svg"
+                class="alineadoTextoImagenCentro"
+              />
+              Notificaciones</a
+            >
+          </li>
         </ul>
       </li>
       <li
@@ -68,12 +77,12 @@
         </a>
         <ul class="collapse lisst-unstyled" id="auditoria">
           <li>
-            <a routerLinkActive="active" routerLink="/auditoria/archivos">
+            <a routerLinkActive="active" routerLink="/auditoria/interfaces">
               <img
                 src="../assets/imgs/icons/archivos.svg"
                 class="alineadoTextoImagenCentro"
               />
-              Archivos</a
+              Interfaces</a
             >
           </li>
           <li>

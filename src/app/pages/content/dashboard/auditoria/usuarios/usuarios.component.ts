@@ -199,7 +199,7 @@ export class UsuariosComponent implements OnInit {
 
     this.initSelects();
 
-    console.log('Acciones: ', this.dropdownListFiltroAccion)
+    //console.log('Acciones: ', this.dropdownListFiltroAccion)
     this.AUDGENUSUARIOS$ = this.store.select(
       ({ AUDGENUSUARIOS }) => AUDGENUSUARIOS.AUDGENUSUARIOS
     ).pipe(map(res => {
