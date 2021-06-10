@@ -274,14 +274,14 @@ query GetSiaGenAudEstadoProcesosDev($ID_PROCESO: String!) {
   }
 }
 query ListSiaGenAudEstadoProcesosDevs(
-  $filter: TableSiaGenAudEstadoProcesosDevFilterInput
-  $limit: Int
-  $nextToken: String
+  $INTERFAZ: String
+  $FECHA_INICIO: String
+  $FECHA_FIN: String
 ) {
   listSiaGenAudEstadoProcesosDevs(
-    filter: $filter
-    limit: $limit
-    nextToken: $nextToken
+    INTERFAZ: $INTERFAZ
+    FECHA_INICIO: $FECHA_INICIO
+    FECHA_FIN: $FECHA_FIN
   ) {
     items {
       ESTADO_EJECUCION

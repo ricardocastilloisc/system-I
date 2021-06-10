@@ -312,13 +312,6 @@ export type CATPERMISOSConnection = {
   nextToken?: string | null;
 };
 
-export type TableSiaGenAudEstadoProcesosDevFilterInput = {
-  FECHA_CREADO?: TableStringFilterInput | null;
-  ID_PROCESO?: TableStringFilterInput | null;
-  INTERFAZ?: TableStringFilterInput | null;
-  FECHA_ACTUALIZACION?: TableStringFilterInput | null;
-};
-
 export type SiaGenAudEstadoProcesosDevConnection = {
   __typename: "SiaGenAudEstadoProcesosDevConnection";
   items?: Array<SiaGenAudEstadoProcesosDev | null> | null;
@@ -2152,12 +2145,12 @@ export class APIService {
     );
   }
   async ListSiaGenAudEstadoProcesosDevs(
-    filter?: TableSiaGenAudEstadoProcesosDevFilterInput,
-    limit?: number,
-    nextToken?: string
+    INTERFAZ?: string,
+    FECHA_INICIO?: string,
+    FECHA_FIN?: string
   ): Promise<ListSiaGenAudEstadoProcesosDevsQuery> {
-    const statement = `query ListSiaGenAudEstadoProcesosDevs($filter: TableSiaGenAudEstadoProcesosDevFilterInput, $limit: Int, $nextToken: String) {
-        listSiaGenAudEstadoProcesosDevs(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    const statement = `query ListSiaGenAudEstadoProcesosDevs($INTERFAZ: String, $FECHA_INICIO: String, $FECHA_FIN: String) {
+        listSiaGenAudEstadoProcesosDevs(INTERFAZ: $INTERFAZ, FECHA_INICIO: $FECHA_INICIO, FECHA_FIN: $FECHA_FIN) {
           __typename
           items {
             __typename
@@ -2186,14 +2179,14 @@ export class APIService {
         }
       }`;
     const gqlAPIServiceArguments: any = {};
-    if (filter) {
-      gqlAPIServiceArguments.filter = filter;
+    if (INTERFAZ) {
+      gqlAPIServiceArguments.INTERFAZ = INTERFAZ;
     }
-    if (limit) {
-      gqlAPIServiceArguments.limit = limit;
+    if (FECHA_INICIO) {
+      gqlAPIServiceArguments.FECHA_INICIO = FECHA_INICIO;
     }
-    if (nextToken) {
-      gqlAPIServiceArguments.nextToken = nextToken;
+    if (FECHA_FIN) {
+      gqlAPIServiceArguments.FECHA_FIN = FECHA_FIN;
     }
     const response = (await API.graphql(
       graphqlOperation(statement, gqlAPIServiceArguments)

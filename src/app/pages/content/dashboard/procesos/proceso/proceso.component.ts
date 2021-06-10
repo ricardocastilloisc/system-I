@@ -85,7 +85,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
   }
 
   AUDGENPROCESOS$: Observable<AUDGENPROCESO_INERFACE[]>;
-  AUDGENEJECUCIONPROCESO$: Observable<AUDGENPROCESO_INERFACE[]>;
+  AUDGENEJECUCIONPROCESO$: Observable<AUDGENPROCESO_INERFACE>;
   AUDGENESTADOPROCESOS$: Observable<AUDGENESTADOPROCESO_INTERFACE[]>
 
   ngOnDestroy(): void {
@@ -102,6 +102,11 @@ export class ProcesoComponent implements OnInit, OnDestroy {
     
     
   }
+
+  replazarCaracterEspecial = (value) => {
+    return new Date(value + 'Z').toString();
+  };
+
 
   ngOnInit(): void {
 
@@ -130,6 +135,25 @@ export class ProcesoComponent implements OnInit, OnDestroy {
     //   )
 
     this.maxDate = new Date();
+
+    let fechaInicio = new Date();
+    fechaInicio.setHours(0,0,0,0)
+
+    // console.log('FechaInicio: ', fechaInicio)
+     console.log('FechaInicioUTC: ', fechaInicio.toISOString())
+    let fechaFin = new Date();
+    fechaFin.setHours(23,59,59,999)
+
+    // console.log('FechaFin: ', fechaFin)
+     console.log('FechaFinUTC: ', fechaFin.toISOString().replace('Z', ''))
+
+    let fecha = this.replazarCaracterEspecial(this.maxDate);
+
+    //console.log('Fecha que es: ', fecha)
+
+    //this.today = this.maxDate.toISOString()
+    //console.log(this.today)
+
     var dd = String(this.maxDate. getDate()). padStart(2, '0');
     var mm = String(this.maxDate. getMonth() + 1). padStart(2, '0'); 
     var yyyy = this.maxDate. getFullYear();
@@ -159,9 +183,9 @@ export class ProcesoComponent implements OnInit, OnDestroy {
     }
     ))
 
-    // this.store.select(
-    //   ({ AUDGENESTADOPROCESOS }) => AUDGENESTADOPROCESOS.AUDGENESTADOPROCESO
-    // ).subscribe(res => console.log('que hay',res))
+    this.store.select(
+      ({ AUDGENESTADOPROCESOS }) => AUDGENESTADOPROCESOS.AUDGENESTADOPROCESO
+    ).subscribe(res => console.log('que hay',res))
 
 
 
@@ -177,8 +201,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
     
 
     let body = {
-      filter: { INTERFAZ: { eq: this.rutaActiva.snapshot.params.id }, FECHA_ACTUALIZACION: { contains: this.today } },
-      limit: 999999999
+      INTERFAZ: this.rutaActiva.snapshot.params.id, FECHA_INICIO: fechaInicio.toISOString().replace('0Z', ''), FECHA_FIN: fechaFin.toISOString().replace('9Z', ''),
     }
 
 
@@ -193,8 +216,13 @@ export class ProcesoComponent implements OnInit, OnDestroy {
       }else this.cerrarModales();
     })
 
-  }
+    this.api.ListSiaGenAudEstadoProcesosDevs(this.rutaActiva.snapshot.params.id, fechaInicio.toISOString().replace('0Z', ''),fechaFin.toISOString().replace('9Z', '')).then(res => {
+      console.log('Respuesta api: ', res)
+    })
 
+  }
+  
+  
   openModal(){
 
     this.modalService.open(this.templateRef, { ariaLabelledBy: 'modal-basic-title' });
@@ -276,33 +304,28 @@ export class ProcesoComponent implements OnInit, OnDestroy {
 
     this.AUDGENEJECUCIONPROCESO$ = this.store.select(
       ({ AUDGENEJECUCIONESPROCESO }) => AUDGENEJECUCIONESPROCESO.AUDGENEJECUCIONESPROCESO
-    ).pipe(map(res => {
-      if (res == null) return res
-      else
-        return res.filter((item, i, res) => {
-          return res.indexOf(res.find(t => t.ID_PROCESO === item.ID_PROCESO)) === i
-        })
-    }))
+    )
+    // .pipe(map(res => {
+    //   if (res == null) return res
+    //   else
+    //     return res.filter((item, i, res) => {
+    //       return res.indexOf(res.find(t => t.ID_PROCESO === item.ID_PROCESO)) === i
+    //     })
+    // }))
 
-    this.store.select(
-      ({ AUDGENEJECUCIONESPROCESO }) => AUDGENEJECUCIONESPROCESO.AUDGENEJECUCIONESPROCESO
-    ).pipe(map(res => {
-      if (res == null) return res
-      else
-        return res.filter((item, i, res) => {
-          return res.indexOf(res.find(t => t.ID_PROCESO === item.ID_PROCESO)) === i
-        })
-    })).subscribe(res => console.log(res))
+    // this.store.select(
+    //   ({ AUDGENEJECUCIONESPROCESO }) => AUDGENEJECUCIONESPROCESO.AUDGENEJECUCIONESPROCESO
+    // ).subscribe(res => console.log('AUDGENEJECUCIONESPROCESO',res))
 
 
-    this.store.select(
-      ({ AUDGENPROCESOS }) => AUDGENPROCESOS.AUDGENPROCESOS
-    ).pipe(map(res => {
-      if (res === null) return res
-      else return res.slice().sort(function (a, b) { return new Date(b.FECHA).getTime() - new Date(a.FECHA).getTime() })
-    }
+    // this.store.select(
+    //   ({ AUDGENPROCESOS }) => AUDGENPROCESOS.AUDGENPROCESOS
+    // ).pipe(map(res => {
+    //   if (res === null) return res
+    //   else return res.slice().sort(function (a, b) { return new Date(b.FECHA).getTime() - new Date(a.FECHA).getTime() })
+    // }
 
-    )).subscribe(res => console.log(res))
+    // )).subscribe(res => console.log(res))
 
 
 
@@ -346,14 +369,16 @@ export class ProcesoComponent implements OnInit, OnDestroy {
 
 
     let body = {
-      filter: { ID_PROCESO: { eq: idProceso } },
-      limit: 999999999
+      ID_PROCESO: idProceso,
+     
     }
 
     let bodyProcesos = {
       ID_PROCESO: idProceso,
       FECHA: format
     }
+
+    // this.api.GetSiaGenAudEstadoProcesosDev(idProceso).then(res => { console.log('GetItem:', res)})
 
     this.store.dispatch(LoadAUDGENEJECUCIONESPROCESO({ consult: body }));
     this.store.dispatch(LoadAUDGENPROCESOS({ consult: bodyProcesos }));
@@ -372,8 +397,11 @@ export class ProcesoComponent implements OnInit, OnDestroy {
     this.paginaActualEjecucionesProceso = 1;
     if (this.filtroEjecucionesForm.valid) {
 
-      let fechaFiltro = this.filtroEjecucionesForm.get('fechaFiltrar').value;
-      console.log(this.filtroEjecucionesForm.get('fechaFiltrar').value)
+      let fechaFiltro = new Date();
+      fechaFiltro.setDate(this.filtroEjecucionesForm.get('fechaFiltrar').value);
+      fechaFiltro.setHours(0,0,0,0)
+      console.log('FEcha filtrar: ', fechaFiltro)
+
 
       let idProceso = this.filtroEjecucionesForm.get('idProceso').value;
       console.log(this.filtroEjecucionesForm.get('idProceso').value)
@@ -392,13 +420,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
       ))
       this.store.select(
         ({ AUDGENEJECUCIONESPROCESO }) => AUDGENEJECUCIONESPROCESO.AUDGENEJECUCIONESPROCESO
-      ).pipe(map(res => {
-        if (res == null) return res
-        else
-          return res.filter((item, i, res) => {
-            return res.indexOf(res.find(t => t.ID_PROCESO === item.ID_PROCESO)) === i
-          })
-      })).subscribe(res => console.log(res))
+      ).subscribe(res => console.log(res))
 
       if(fechaFiltro === null && idProceso === null){
 

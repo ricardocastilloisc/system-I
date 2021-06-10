@@ -260,13 +260,12 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
     this.spinner.show();
 
     let body = {
-      filter: { INTERFAZ: { eq: this.procesoEjecutar } },
-      limit: 10000000
+      INTERFAZ: this.procesoEjecutar ,
     }
 
     this.authService.refreshToken();
 
-    await this.api.ListSiaGenAudEstadoProcesosDevs(body.filter, body.limit).then(res => {
+    await this.api.ListSiaGenAudEstadoProcesosDevs(body.INTERFAZ).then(res => {
 
       this.CATESTADOS = res.items.slice().sort(function (a, b) { return new Date(b.FECHA_ACTUALIZACION).getTime() - new Date(a.FECHA_ACTUALIZACION).getTime() })
 
@@ -278,6 +277,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
 
 
 
+    console.log(this.CATESTADOS.length)
     if (this.CATESTADOS[0]?.ESTADO_EJECUCION === 'TERMINADO' || this.CATESTADOS.length === 0) {
       let idEjecucion = uuidv4();
       this.authService.refreshToken();

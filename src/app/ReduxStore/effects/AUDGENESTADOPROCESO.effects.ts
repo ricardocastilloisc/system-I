@@ -16,7 +16,7 @@ export class AUDGENESTADOPROCESOEfffects {
       ofType(AUDGENESTADOPROCESOActions.LoadAUDGENESTADOPROCESOS),
       mergeMap(({ consult }) => {
         if (consult) {
-          return fromPromise(this.api.ListSiaGenAudEstadoProcesosDevs(consult.filter, consult.limit)).pipe(
+          return fromPromise(this.api.ListSiaGenAudEstadoProcesosDevs(consult.INTERFAZ, consult.FECHA_INICIO, consult.FECHA_FIN)).pipe(
             map(({ items }: any) =>
             AUDGENESTADOPROCESOActions.LoadAUDGENESTADOPROCESOSuccess({
                 AUDGENESTADOPROCESOS: items,

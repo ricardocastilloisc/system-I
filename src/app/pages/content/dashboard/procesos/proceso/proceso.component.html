@@ -2,7 +2,7 @@
     <div class="flex-row-reverse justify-content-center" style="height: 50vh; width: 100%"
         *ngIf="AUDGENESTADOPROCESOS$ | async as AUDGENESTADOPROCESOS">
         <div class="row justify-content-center">
-            <div class="titulo-proceso">{{titulo}}</div>
+            <div class="titulo-proceso">{{titulo}} {{maxDate | date: "medium"}}</div>
         </div>
 
         <div class="row justify-content-center" *ngIf="!ocultarbusqueda">
@@ -193,8 +193,9 @@
                             class='clickable'
                             (click)="consultarDetalle(AUDGENESTADOPROCESO.ID_PROCESO, AUDGENESTADOPROCESO.FECHA_CREADO )">
                             <td>{{AUDGENESTADOPROCESO.ID_PROCESO}}</td>
-                            <td>{{AUDGENESTADOPROCESO.FECHA_ACTUALIZACION | date :'dd/MM/yyyy'}}
-                                {{AUDGENESTADOPROCESO.FECHA_ACTUALIZACION | date:'mediumTime':'-10:00'}} </td>
+                            <td>{{ replazarCaracterEspecial(AUDGENESTADOPROCESO.FECHA_ACTUALIZACION) | date: "medium" }}
+
+                            </td>
                             <td [ngClass]="{'error-log': (AUDGENESTADOPROCESO.ETAPA_FINAL_ESTADO_FINAL == 'FALLIDO' || AUDGENESTADOPROCESO.ETAPA_PROCESAMIENTO_ESTADO_FINAL == 'FALLIDO' || AUDGENESTADOPROCESO.ETAPA_INICIAL_ESTADO_FINAL == 'FALLIDO') && AUDGENESTADOPROCESO.ESTADO_EJECUCION == 'TERMINADO', 'success-log': AUDGENESTADOPROCESO.ETAPA_FINAL_ESTADO_FINAL == 'EXITOSO' && AUDGENESTADOPROCESO.ESTADO_EJECUCION == 'TERMINADO'}">
                                 {{AUDGENESTADOPROCESO.ESTADO_EJECUCION}}</td>
                         </tr>
@@ -254,58 +255,58 @@
             class="d-flex col-md-9 col-xs-9 col-sm-9 col-lg-9 mr-9 col-9 align-items-center justify-content-center container-progeso show-ejecuciones"
             style="height: 45px;" #detalleProceso
             [ngClass]="{'show-ejecuciones': mostrarEjecucionesProcesos == false, 'hide-ejecuciones': mostrarEjecucionesProcesos == true}">
-            <div [ngClass]="{'step-completado': AUDGENEJECUCIONPROCESO[0]?.ETAPA_INICIAL_ESTADO_FINAL == 'EXITOSO', 'step-incompleto': AUDGENEJECUCIONPROCESO[0]?.ETAPA_INICIAL_ESTADO_FINAL == 'FALLIDO' }"
+            <div [ngClass]="{'step-completado': AUDGENEJECUCIONPROCESO?.ETAPA_INICIAL_ESTADO_FINAL == 'EXITOSO', 'step-incompleto': AUDGENEJECUCIONPROCESO?.ETAPA_INICIAL_ESTADO_FINAL == 'FALLIDO' }"
                 class="step-proceso step-proceso-enabled" style="margin-left: -0px;">
                 <span>
                     <div>INICIAL</div>
                     <div class="separador-titulos"></div>
-                    <div *ngIf="AUDGENEJECUCIONPROCESO[0]?.ETAPA_INICIAL_ESTADO_FINAL === 'EXITOSO'   ">Completado</div>
+                    <div *ngIf="AUDGENEJECUCIONPROCESO?.ETAPA_INICIAL_ESTADO_FINAL === 'EXITOSO'   ">Completado</div>
                     <div
-                        *ngIf="AUDGENEJECUCIONPROCESO[0]?.ETAPA_INICIAL_ESTADO_INICIAL &&  AUDGENEJECUCIONPROCESO[0]?.ETAPA_INICIAL_ESTADO_INICIAL === 'INICIADO'  && !AUDGENEJECUCIONPROCESO[0]?.ETAPA_INICIAL_ESTADO_FINAL">
+                        *ngIf="AUDGENEJECUCIONPROCESO?.ETAPA_INICIAL_ESTADO_INICIAL &&  AUDGENEJECUCIONPROCESO?.ETAPA_INICIAL_ESTADO_INICIAL === 'INICIADO'  && !AUDGENEJECUCIONPROCESO?.ETAPA_INICIAL_ESTADO_FINAL">
                         En Proceso</div>
                     <div
-                        *ngIf="(AUDGENEJECUCIONPROCESO[0]?.ETAPA_INICIAL_ESTADO_FINAL === 'FALLIDO') ">
+                        *ngIf="(AUDGENEJECUCIONPROCESO?.ETAPA_INICIAL_ESTADO_FINAL === 'FALLIDO') ">
                         Error</div>
                 </span>
             </div>
-            <div [ngClass]="{'step-proceso-disabled': AUDGENEJECUCIONPROCESO[0]?.ETAPA_INICIAL_ESTADO_FINAL != 'EXITOSO',
-                            'step-proceso-enabled': AUDGENEJECUCIONPROCESO[0]?.ETAPA_INICIAL_ESTADO_FINAL == 'EXITOSO' ,
-                            'step-completado': AUDGENEJECUCIONPROCESO[0]?.ETAPA_PROCESAMIENTO_ESTADO_FINAL == 'EXITOSO' ,
-                            'step-incompleto': AUDGENEJECUCIONPROCESO[0]?.ETAPA_PROCESAMIENTO_ESTADO_FINAL  == 'FALLIDO'
+            <div [ngClass]="{'step-proceso-disabled': AUDGENEJECUCIONPROCESO?.ETAPA_INICIAL_ESTADO_FINAL != 'EXITOSO',
+                            'step-proceso-enabled': AUDGENEJECUCIONPROCESO?.ETAPA_INICIAL_ESTADO_FINAL == 'EXITOSO' ,
+                            'step-completado': AUDGENEJECUCIONPROCESO?.ETAPA_PROCESAMIENTO_ESTADO_FINAL == 'EXITOSO' ,
+                            'step-incompleto': AUDGENEJECUCIONPROCESO?.ETAPA_PROCESAMIENTO_ESTADO_FINAL  == 'FALLIDO'
                             }" class=" step-1-proceso">
                 <span>
                     <div>PROCESAMIENTO</div>
                     <div >
                         <div class="separador-titulos"></div>
                         <div
-                            *ngIf="AUDGENEJECUCIONPROCESO[0]?.ETAPA_PROCESAMIENTO_ESTADO_FINAL === 'EXITOSO'">
+                            *ngIf="AUDGENEJECUCIONPROCESO?.ETAPA_PROCESAMIENTO_ESTADO_FINAL === 'EXITOSO'">
                             Completado</div>
                         <div
-                            *ngIf="AUDGENEJECUCIONPROCESO[0]?.ETAPA_PROCESAMIENTO_ESTADO_INICIAL === 'INICIADO' && !AUDGENEJECUCIONPROCESO[0]?.ETAPA_PROCESAMIENTO_ESTADO_FINAL ">
+                            *ngIf="AUDGENEJECUCIONPROCESO?.ETAPA_PROCESAMIENTO_ESTADO_INICIAL === 'INICIADO' && !AUDGENEJECUCIONPROCESO?.ETAPA_PROCESAMIENTO_ESTADO_FINAL ">
                             En Proceso</div>
                         <div
-                            *ngIf="(AUDGENEJECUCIONPROCESO[0]?.ETAPA_PROCESAMIENTO_ESTADO_FINAL === 'FALLIDO') ">
+                            *ngIf="(AUDGENEJECUCIONPROCESO?.ETAPA_PROCESAMIENTO_ESTADO_FINAL === 'FALLIDO') ">
                             Error</div>
                     </div>
                 </span>
             </div>
-            <div [ngClass]="{'step-proceso-disabled': AUDGENEJECUCIONPROCESO[0]?.ETAPA_PROCESAMIENTO_ESTADO_FINAL != 'EXITOSO',
-                            'step-proceso-enabled': AUDGENEJECUCIONPROCESO[0]?.ETAPA_PROCESAMIENTO_ESTADO_FINAL == 'EXITOSO',
-                            'step-completado-final': AUDGENEJECUCIONPROCESO[0]?.ETAPA_FINAL_ESTADO_FINAL == 'EXITOSO',
-                            'step-incompleto': AUDGENEJECUCIONPROCESO[0]?.ETAPA_FINAL_ESTADO_FINAL == 'FALLIDO'
+            <div [ngClass]="{'step-proceso-disabled': AUDGENEJECUCIONPROCESO?.ETAPA_PROCESAMIENTO_ESTADO_FINAL != 'EXITOSO',
+                            'step-proceso-enabled': AUDGENEJECUCIONPROCESO?.ETAPA_PROCESAMIENTO_ESTADO_FINAL == 'EXITOSO',
+                            'step-completado-final': AUDGENEJECUCIONPROCESO?.ETAPA_FINAL_ESTADO_FINAL == 'EXITOSO',
+                            'step-incompleto': AUDGENEJECUCIONPROCESO?.ETAPA_FINAL_ESTADO_FINAL == 'FALLIDO'
                             }" class="step-4-proceso">
                 <span>
                     <div>FINAL</div>
                     <div>
                         <div class="separador-titulos"></div>
                         <div
-                            *ngIf="AUDGENEJECUCIONPROCESO[0]?.ETAPA_FINAL_ESTADO_FINAL === 'EXITOSO'">
+                            *ngIf="AUDGENEJECUCIONPROCESO?.ETAPA_FINAL_ESTADO_FINAL === 'EXITOSO'">
                             Completado</div>
                         <div
-                            *ngIf="AUDGENEJECUCIONPROCESO[0]?.ETAPA_FINAL_ESTADO_INICIAL === 'INICIADO'  &&  !AUDGENEJECUCIONPROCESO[0]?.ETAPA_FINAL_ESTADO_FINAL">
+                            *ngIf="AUDGENEJECUCIONPROCESO?.ETAPA_FINAL_ESTADO_INICIAL === 'INICIADO'  &&  !AUDGENEJECUCIONPROCESO?.ETAPA_FINAL_ESTADO_FINAL">
                             En Proceso</div>
                         <div
-                            *ngIf="(AUDGENEJECUCIONPROCESO[0]?.ETAPA_FINAL_ESTADO_FINAL === 'FALLIDO') ">
+                            *ngIf="(AUDGENEJECUCIONPROCESO?.ETAPA_FINAL_ESTADO_FINAL === 'FALLIDO') ">
                             Error</div>
                     </div>
                 </span>
@@ -336,7 +337,7 @@
                             <td
                                 [ngClass]="{'error-log': AUDGENPROCESO.NIVEL === 'FALLIDO', 'info-log': AUDGENPROCESO.NIVEL === 'INFO' , 'aviso-log': AUDGENPROCESO.NIVEL === 'AVISO' }">
                                 {{AUDGENPROCESO.NIVEL}}</td>
-                            <td>{{AUDGENPROCESO.FECHA | date :'dd/MM/yyyy'}} {{AUDGENPROCESO.FECHA | date:'mediumTime':'-10:00'}}
+                            <td>{{ replazarCaracterEspecial(AUDGENPROCESO.FECHA) | date: "medium" }}
                             </td>
                             <td>{{AUDGENPROCESO.ACTIVIDAD}}</td>
                             <td colspan="9" [ngClass]="{'error-log': AUDGENPROCESO.NIVEL === 'FALLIDO'}">
@@ -360,7 +361,7 @@
                         <tr
                             *ngFor="let AUDGENPROCESO of AUDGENPROCESOS | paginate: { id: 'detalleEjecucion', itemsPerPage: 10, currentPage: paginaActualProceso} ; index as i">
                             <td>{{i + 1 }}</td>
-                            <td>{{AUDGENPROCESO.FECHA | date :'dd/MM/yyyy'}} {{AUDGENPROCESO.FECHA | date:'mediumTime':'-10:00'}}
+                            <td>{{ replazarCaracterEspecial(AUDGENPROCESO.FECHA) | date: "medium" }}
                             </td>
                             <td>{{AUDGENPROCESO.ACTIVIDAD}}</td>
                             <td colspan="9" [ngClass]="{'error-log': AUDGENPROCESO.NIVEL === 'FALLIDO'} ">

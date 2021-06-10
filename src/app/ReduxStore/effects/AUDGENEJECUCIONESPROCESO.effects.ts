@@ -16,23 +16,10 @@ export class AUDGENEJECUCIONESPROCESOEfffects {
       ofType(AUDGENEJECUCIONESPROCESO.LoadAUDGENEJECUCIONESPROCESO),
       mergeMap(({ consult }) => {
         if (consult) {
-          return fromPromise(this.api.ListSiaGenAudEstadoProcesosDevs(consult.filter, consult.limit)).pipe(
-            map(({ items }: any) =>
+          return fromPromise(this.api.GetSiaGenAudEstadoProcesosDev(consult.ID_PROCESO)).pipe(
+            map(( data : any) =>
                 AUDGENEJECUCIONESPROCESO.LoadAUDGENEJECUCIONPROCESOSuccess({
-                AUDGENEJECUCIONESPROCESO: items,
-              })
-            ),
-            catchError((error) =>
-              of(
-                AUDGENEJECUCIONESPROCESO.LoadAUDGENEJECUCIONPROCESOError({ payload: error })
-              )
-            )
-          );
-        } else {
-          return fromPromise(this.api.ListSiaGenAudEstadoProcesosDevs()).pipe(
-            map(({ items }: any) =>
-                AUDGENEJECUCIONESPROCESO.LoadAUDGENEJECUCIONPROCESOSuccess({
-                AUDGENEJECUCIONESPROCESO: items,
+                AUDGENEJECUCIONESPROCESO: data,
               })
             ),
             catchError((error) =>
