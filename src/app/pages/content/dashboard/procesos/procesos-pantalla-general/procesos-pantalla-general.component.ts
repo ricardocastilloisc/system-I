@@ -150,7 +150,8 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
     // ).subscribe(res => this.CATPERMISOS = res)
 
 
-    this.api.ListCATPERMISOS(this.negocios, this.area, this.DataUser.attributes["custom:rol"].toUpperCase()).then(res => console.log('resultado', res))
+    //this.api.ListCATPERMISOS(this.negocios, this.area, this.DataUser.attributes["custom:rol"].toUpperCase()).then(res => console.log('resultado', res))
+    
     this.store.dispatch(LoadCATPROCESOS({ consult: bodyProcesos }));
 
 
@@ -222,6 +223,10 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
 
   }
 
+  setTipo(tipo: string):void {
+    //console.log("setDiurnos", tipo);
+    localStorage.setItem("tipoProceso", tipo);
+  };
 
   botonActivado = (parametocomparar: string): boolean => {
     return this.rutaActiva.snapshot.params.tipo === parametocomparar
@@ -238,7 +243,16 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
     this.router.navigate(['/' + window.location.pathname + '/' + idProceso]);
   }
 
-  openModal(content, nombreProceso) {
+  openModal(content, nombreProceso, descripcionProceso) {
+    //console.log("nombreProceso", nombreProceso, "descripcionProceso", descripcionProceso);
+    
+    let proceso = {
+      nombre: nombreProceso,
+      descripcion: descripcionProceso,
+      tipo: "DIURNO"
+    };
+    localStorage.setItem('proceso', JSON.stringify(proceso));
+
     this.procesoEjecutar = nombreProceso;
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
   }
@@ -251,18 +265,18 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
 
   async inciarProceso(correo: string, area: string) {
 
-    console.log(this.procesoEjecutar)
+    //console.log("inciarProceso", this.procesoEjecutar)
     let CATESTADOS;
     let todayDate = new Date()
     let fechaInicio = new Date();
     fechaInicio.setHours(0,0,0,0);
 
     // console.log('FechaInicio: ', fechaInicio)
-     console.log('FechaInicioUTC: ', fechaInicio.toISOString())
+    // console.log('FechaInicioUTC: ', fechaInicio.toISOString())
     let fechaFin = new Date();
     fechaFin.setHours(23,59,59,999);
 
-    console.log(this.datePipe.transform(todayDate, "dd-MM-yyyy"))
+    //console.log(this.datePipe.transform(todayDate, "dd-MM-yyyy"))
 
     this.spinner.show();
 
@@ -278,15 +292,15 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
 
 
 
-    console.log('que hay aqui ', this.CATESTADOS)
+    //dconsole.log('que hay aqui ', this.CATESTADOS)
 
 
 
-    console.log(this.CATESTADOS.length)
+    //console.log(this.CATESTADOS.length)
     if (this.CATESTADOS[0]?.ESTADO_EJECUCION === 'TERMINADO' || this.CATESTADOS.length === 0) {
       let idEjecucion = uuidv4();
       this.authService.refreshToken();
-      console.log(this.procesoEjecutar, correo, area, idEjecucion)
+      //console.log("this.procesoEjecutar", this.procesoEjecutar, correo, area, idEjecucion)
       try {
         const response = await this.serviciosProcesos.iniciarProceso(this.procesoEjecutar, correo, area)
 
@@ -294,15 +308,19 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
         if (response.codigo == 'EXITO') {
           this.spinner.hide();
           this.modalMensaje("modalEstado", "Se inicio el proceso")
-        } else if (response.descripcion.includes('401')) {          
+          //console.log("Enviar Bitacora Exito");
+          this.serviciosProcesos.generarAuditoria("EXITOSA");
+        } else if (response.descripcion.includes('401')) {
           this.spinner.hide();
           this.modalService.dismissAll();
           this.authService.refreshToken();
         }
         else {
           this.spinner.hide();
-          console.log(response);
-          this.modalMensaje("modalEstado", "Error al ejecutar proceso: " + response.descripcion)
+          //console.log(response);          
+          this.modalMensaje("modalEstado", "Error al ejecutar proceso: " + response.descripcion);
+          //console.log("Enviar Bitacora Fallo");
+          this.serviciosProcesos.generarAuditoria("FALLIDA");
         }
       } catch (e) {
         this.modalMensaje("modalEstado", "Error al ejecutar proceso")

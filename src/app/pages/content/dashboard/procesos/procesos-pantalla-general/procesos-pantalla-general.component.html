@@ -4,11 +4,11 @@
       <div class="d-flex col-md-4 col-xs-4 col-sm-4 col-lg-4 mr-4 col-4 align-items-center selector-proceso"
         style="height: 45px">
         <button id="left-button" routerLink="/procesos/diurno" 
-          [ngClass]="botonActivado('diurno') ? 'botonActivado' : ''">
+          [ngClass]="botonActivado('diurno') ? 'botonActivado' : ''" (click)="setTipo('DIURNO')">
           Diurnos
         </button>
         <button id="right-button" routerLink="/procesos/nocturno"
-          [ngClass]="botonActivado('nocturno') ? 'botonActivado' : ''">
+          [ngClass]="botonActivado('nocturno') ? 'botonActivado' : ''" (click)="setTipo('NOCTURNO')">
           Nocturnos
         </button>
       </div>
@@ -50,7 +50,7 @@
             <tr *ngFor="let PROCESO of PROCESOS | paginate: {id: 'listadoInterfaces', itemsPerPage: 10, currentPage: actualPage} ; index as i">
               <td>{{PROCESO?.DESCRIPCION}}</td>
               <td>
-                <img *ngIf="PROCESO.INICIAR" class="play-icon" (click)="openModal(confirmacion, PROCESO.PROCESO)" >
+                <img *ngIf="PROCESO.INICIAR" class="play-icon" (click)="openModal(confirmacion, PROCESO.PROCESO, PROCESO.DESCRIPCION)" >
                 <img *ngIf="PROCESO.DETENER" class="stop-icon">
                 <img *ngIf="PROCESO.MONITOREAR"  class="detalle-icon" (click)="consultar(PROCESO.PROCESO, PROCESO.DESCRIPCION)">
               </td>
