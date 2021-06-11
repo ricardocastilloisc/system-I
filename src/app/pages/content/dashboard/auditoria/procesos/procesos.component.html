@@ -104,7 +104,7 @@
                   };
             index as i
           ">
-                    <td style="padding-left: 40px; max-width: 300px">{{itemAuditoria.PROCESOS.DESCRIPCION}}
+                    <td style="padding-left: 40px; max-width: 300px">{{itemAuditoria.PROCESOS.NOMBRE}}
                     </td>
                     <td style="padding-left: 30px; max-width: 300px">{{itemAuditoria.USUARIO.NOMBRE}}
                         {{itemAuditoria.USUARIO.APELLIDO_PATERNO}}
@@ -115,7 +115,9 @@
                     <td style="padding-left: 30px; max-width: 150px">{{itemAuditoria.PROCESOS.ACCION}}
                     </td>
                     <td style="width: 200px" class="justify-content-center">
-                        <center><img style="cursor: pointer" class="detalle-icon" (click)="openModal(itemAuditoria)" />
+                        <center>
+                            <img style="cursor: pointer" class="detalle-icon" (click)="openModal(itemAuditoria)" />
+                            <!-- <img style="cursor: pointer" class="detalle-icon" (click)="openModal(itemAuditoria)" /> -->
                         </center>
                     </td>
                 </tr>
@@ -150,40 +152,36 @@
 <section *ngIf="mostrarDetalle()">
     <div class="d-flex col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12 justify-content-center">
         <div class="card-lista-design-general" style="overflow-x: auto">
-            <div class="col-12">
-                <div class="row justify-content-center">
-                    <p class="titulo-modal">Detalle de cambios sobre {{detalleCambios.catalogo}}</p>
-                </div>
-                <div class="row justify-content-center">
-                    <p class="texto-modal"> Realizados por {{detalleCambios.usuario}} el {{detalleCambios.fecha | date
-                        :'dd/MM/yyyy'}} a las
-                        {{detalleCambios.fecha | date:'mediumTime'}} hrs.</p>
-                </div>
+            <div class="col-12 row justify-content-center">
+                <p class="titulo-modal">{{detalleCambios.proceso}}</p>
             </div>
             <table class="table listado-design-general">
                 <tr>
-                    <th style="padding-left: 40px; max-width: 300px">Campo</th>
-                    <th style="padding-left: 30px; max-width: 300px">Valor previo</th>
-                    <th style="padding-left: 30px; max-width: 150px">Valor actual</th>
+                    <th style="padding-left: 40px; max-width: 300px">Realizado por</th>
+                    <th style="padding-left: 30px; max-width: 300px">Fecha</th>
+                    <th style="padding-left: 30px; max-width: 150px">Hora</th>
                 </tr>
-                <tr *ngFor="let item of itemsTabla">
-                    <td style="padding-left: 30px; max-width: 150px; background-color:#0091DA; color: #ffffff"
-                        *ngIf="item.cambio">{{item.valor}}
-                    </td>
-                    <td style="padding-left: 30px; max-width: 150px; background-color:#0091DA; color: #ffffff"
-                        *ngIf="item.cambio">{{item.antes}}
-                    </td>
-                    <td style="padding-left: 30px; max-width: 150px; background-color:#0091DA; color: #ffffff"
-                        *ngIf="item.cambio">{{item.despues}}
-                    </td>
-                    <td style="padding-left: 30px; max-width: 150px" *ngIf="!item.cambio">{{item.valor}}
-                    </td>
-                    <td style="padding-left: 30px; max-width: 150px" *ngIf="!item.cambio">{{item.antes}}
-                    </td>
-                    <td style="padding-left: 30px; max-width: 150px" *ngIf="!item.cambio">{{item.despues}}
+                <tr>
+                    <td style="padding-left: 30px; max-width: 150px">{{detalleCambios.usuario}}</td>
+                    <td style="padding-left: 30px; max-width: 150px">{{detalleCambios.fecha | date :'dd/MM/yyyy'}}</td>
+                    <td style="padding-left: 30px; max-width: 150px">{{detalleCambios.fecha | date:'mediumTime'}} hrs
                     </td>
                 </tr>
             </table>
+
+            <table class="table listado-design-general">
+                <tr>
+                    <th style="padding-left: 40px; max-width: 300px">Acción realizada</th>
+                    <th style="padding-left: 30px; max-width: 300px">Resultado</th>
+                    <th style="padding-left: 30px; max-width: 150px">Descripción</th>
+                </tr>
+                <tr>
+                    <td style="padding-left: 30px; max-width: 150px">{{detalleCambios.accion}}</td>
+                    <td style="padding-left: 30px; max-width: 150px">{{detalleCambios.estado}}</td>
+                    <td style="padding-left: 30px; max-width: 150px">{{detalleCambios.descripcion}}</td>
+                </tr>
+            </table>
+
             <div class="col-12">
                 <div class="row justify-content-center">
                     <button class="btn bottonCerrarModal" (click)="ocultarModal()">

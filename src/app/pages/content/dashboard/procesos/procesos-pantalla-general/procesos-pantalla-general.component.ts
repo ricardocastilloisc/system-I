@@ -309,7 +309,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
           this.spinner.hide();
           this.modalMensaje("modalEstado", "Se inicio el proceso")
           //console.log("Enviar Bitacora Exito");
-          this.serviciosProcesos.generarAuditoria("EXITOSA");
+          this.serviciosProcesos.generarAuditoria("EXITO", "Se inició el proceso");
         } else if (response.descripcion.includes('401')) {
           this.spinner.hide();
           this.modalService.dismissAll();
@@ -320,14 +320,15 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
           //console.log(response);          
           this.modalMensaje("modalEstado", "Error al ejecutar proceso: " + response.descripcion);
           //console.log("Enviar Bitacora Fallo");
-          this.serviciosProcesos.generarAuditoria("FALLIDA");
+          this.serviciosProcesos.generarAuditoria("FALLO", response.descripcion);
         }
       } catch (e) {
         this.modalMensaje("modalEstado", "Error al ejecutar proceso")
         console.log(e.message)
       }
     } else if (this.CATESTADOS[0]?.ESTADO_EJECUCION === 'INICIADO') {
-      this.modalMensaje("modalEstado", "El proceso se encuentra en ejecución")
+      this.modalMensaje("modalEstado", "El proceso se encuentra en ejecución");
+      this.serviciosProcesos.generarAuditoria("EXITO", "El proceso se encontraba en ejecución");
     } else (
       this.modalMensaje("modalEstado", "Error al ejecutar proceso")
     )

@@ -59,7 +59,7 @@ export class ProcesosService {
     ;
   }
 
-  generarAuditoria(estado: string): void {
+  generarAuditoria(estado: string, resultado: string): void {
     const proceso = JSON.parse(localStorage.getItem('proceso'));
     const today = new Date().toISOString();
     let tipo = localStorage.getItem('tipoProceso');
@@ -100,8 +100,8 @@ export class ProcesosService {
         nombre: nombre,
       },
       procesos: {
-        nombre: proceso.nombre,
-        descripcion: proceso.descripcion,
+        nombre: proceso.descripcion,
+        descripcion: resultado,
         accion: "INICIAR",
         estado: estado,
         tipo: proceso.tipo
