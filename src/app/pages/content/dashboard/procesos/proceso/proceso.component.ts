@@ -239,21 +239,22 @@ export class ProcesoComponent implements OnInit, OnDestroy {
         NotificacionSelect.ID_PROCESO,
         NotificacionSelect.FECHA_CREADO
       );
-
-      localStorage.removeItem('NotificacionSelect');
+      localStorage.removeItem('NotificacionSelect')
     }
 
     this.rutaActiva.params.subscribe(() => {
-      let NotificacionSelect = JSON.parse(
-        localStorage.getItem('NotificacionSelect')
-      );
-      if (NotificacionSelect) {
-        this.consultarDetalle(
-          NotificacionSelect.ID_PROCESO,
-          NotificacionSelect.FECHA_CREADO
+      setTimeout(() => {
+        let NotificacionSelect = JSON.parse(
+          localStorage.getItem('NotificacionSelect')
         );
-        localStorage.removeItem('NotificacionSelect');
-      }
+        if (NotificacionSelect) {
+          this.consultarDetalle(
+            NotificacionSelect.ID_PROCESO,
+            NotificacionSelect.FECHA_CREADO
+          );
+          localStorage.removeItem('NotificacionSelect')
+        }
+      }, 300);
     });
   }
 

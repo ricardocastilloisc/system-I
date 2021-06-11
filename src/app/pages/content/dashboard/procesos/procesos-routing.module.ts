@@ -18,6 +18,9 @@ const routes: Routes = [
       {
         path: ':id',component:   ProcesoComponent
       },
+      {
+        path: ':id/:proceso',component:   ProcesoComponent
+      },
     ],
   },
 
