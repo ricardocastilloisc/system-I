@@ -1,4 +1,5 @@
-<section id="optionshome" *ngIf="enProgreso()">
+<!--
+<section *ngIf="enProceso()">
     <div class="container-fluid">
         <div class="row justify-content-center" style="height: 60vh; width: 100%">
             <div class=" align-self-center">
@@ -16,8 +17,14 @@
         </div>
     </div>
 </section>
+-->
 
-<section id="optionshome" *ngIf="verAuditoria()">
+
+
+<section *ngIf="!mostrarDetalle()">
+    <ngx-spinner bdColor="rgba(0,0,0,0.5)" size="default" color="#fff" type="ball-scale-ripple" [fullScreen]="true">
+        <p style="color: white"> Cargando... </p>
+    </ngx-spinner>
     <div class="card-busqueda">
         <div class="mt-4">Buscar por</div>
         <div style="
@@ -27,48 +34,207 @@
         direction: rtl;
       ">
             <div style="margin-right: 10%">
-                <a class="limpiarFiltro">Eliminar Filtro
+                <a (click)="limpirarFiltro()" class="limpiarFiltro">Eliminar Filtro
                     <img src="assets/icons/Eliminar.svg" class="tamanioFiltroIcono" /></a>
             </div>
         </div>
-
-        <div>
+        <div name="filtros" [formGroup]="filtroAuditoriaCatalogosForm">
             <section class="mt-3">
-                <div class="col2-row2"><select>Opcion</select>
-                </div>
-
                 <div class="col2-row2">
-                    <button style="cursor: pointer">Buscar</button>
+                    <ng-multiselect-dropdown style="width: 80%; padding-left: 10px" [placeholder]="'Proceso'"
+                        id="filtroCatalogo" [settings]="SettingsFiltroDeCatalogo" [data]="dropdownListFiltroCatalogo"
+                        [(ngModel)]="selectedItemsFiltroCatalogo" [ngModelOptions]="{standalone: true}"
+                        (onSelect)="cambiarEtiquetaSeleccionadaGeneral('filtroCatalogo')">
+                    </ng-multiselect-dropdown>
+                </div>
+                <div class="col2-row2">
+                    <ng-multiselect-dropdown style="width: 80%;" [placeholder]="'Acción'" id="filtroAccion"
+                        [settings]="SettingsFiltroDeAccion" [data]="dropdownListFiltroAccion"
+                        [(ngModel)]="selectedItemsFiltroAccion" [ngModelOptions]="{standalone: true}"
+                        (onSelect)="cambiarEtiquetaSeleccionadaGeneral('filtroAccion')">
+                    </ng-multiselect-dropdown>
+                </div>
+                <div class="col2-row2">
+                    <ng-multiselect-dropdown style="width: 80%; padding-left: 10px" [placeholder]="'Correo electrónico'"
+                        id="filtroCorreo" [settings]="SettingsFiltroDeCorreo" [data]="dropdownListFiltroCorreo"
+                        [(ngModel)]="selectedItemsFiltroCorreo" [ngModelOptions]="{standalone: true}"
+                        (onSelect)="cambiarEtiquetaSeleccionadaGeneral('filtroCorreo')">
+                    </ng-multiselect-dropdown>
+                </div>
+                <div class="col2-row2">
+                    <input style="width: 80%; padding-left: 10px" type="date" placeholder="dd-MM-yyyy"
+                        onfocus="(this.type='date')" id="filtroFecha" formControlName="filtroFecha" name="filtroFecha"
+                        [value]="maxDate" max="{{ maxDate| date:'yyyy-MM-dd'}}" />
+                </div>
+                <div class="col2-row2">
+                    <button style="cursor: pointer" (click)="filtrar()">Buscar</button>
                 </div>
             </section>
+
         </div>
     </div>
-    <div class="row justify-content-center">
-        <div class="d-flex col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12 justify-content-center">
-            <div class="card-lista-design-general" style="overflow-x: auto">
-                <table class="table listado-design-general">
-                    <tr>
-                        <th style="padding-left: 40px; max-width: 300px">Proceso</th>
-                        <th style="padding-left: 40px; max-width: 300px">Usuario</th>
-                        <th style="padding-left: 40px; max-width: 150px">Fecha</th>
-                        <th style="padding-left: 40px; max-width: 150px">Acción</th>
-                        <th style="padding-left: 40px; max-width: 150px"> </th>
-                    </tr>
-                    <tr>
-                        <td style="padding-left: 40px; max-width: 300px">1
-                        </td>
-                        <td style="padding-left: 40px; max-width: 300px">2
-                        </td>
-                        <td style="padding-left: 40px; max-width: 150px">3
-                        </td>
-                        <td style="padding-left: 40px; max-width: 150px">4
-                        </td>
-                        <td style="width: 200px">
-                            <img style="cursor: pointer" class="detalle-icon" />
-                        </td>
-                    </tr>
-                </table>
+    <div class="d-flex col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12 justify-content-center"
+        *ngIf="ListadoPantalla as ListadoPantalla">
+        <div class="row justify-content-center" *ngIf=" ListadoPantalla.length === 0">
+            <div class=" align-self-center">
+                <div class="d-flex flex-column" style="width: 504px;">
+                    <div class="descripcionNoAuditoria" style="margin-top:34px">
+                        <div class="row">
+                            <div class="col-12">
+                                <p> No existen registros para esta búsqueda.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-lista-design-general" style="overflow-x: auto" *ngIf=" ListadoPantalla.length !== 0">
+            <table class="table listado-design-general">
+                <tr>
+                    <th style="padding-left: 40px; max-width: 300px">Proceso</th>
+                    <th style="padding-left: 30px; max-width: 300px">Usuario</th>
+                    <th style="padding-left: 30px; max-width: 150px">Fecha</th>
+                    <th style="padding-left: 30px; max-width: 150px">Acción</th>
+                    <th style="padding-left: 30px; max-width: 150px">Detalle</th>
+                </tr>
+                <tr *ngFor="let itemAuditoria of ListadoPantalla | paginate : {
+                    id: 'auditoria',
+                    itemsPerPage: 10,
+                    currentPage: paginaActual
+                  };
+            index as i
+          ">
+                    <td style="padding-left: 40px; max-width: 300px">{{itemAuditoria.PROCESOS.DESCRIPCION}}
+                    </td>
+                    <td style="padding-left: 30px; max-width: 300px">{{itemAuditoria.USUARIO.NOMBRE}}
+                        {{itemAuditoria.USUARIO.APELLIDO_PATERNO}}
+                    </td>
+                    <td style="padding-left: 30px; max-width: 150px">{{itemAuditoria.FECHA | date :'dd/MM/yyyy'}}
+                        {{itemAuditoria.FECHA | date:'mediumTime'}}
+                    </td>
+                    <td style="padding-left: 30px; max-width: 150px">{{itemAuditoria.PROCESOS.ACCION}}
+                    </td>
+                    <td style="width: 200px" class="justify-content-center">
+                        <center><img style="cursor: pointer" class="detalle-icon" (click)="openModal(itemAuditoria)" />
+                        </center>
+                    </td>
+                </tr>
+            </table>
+            <div class="paginator align-items-left "></div>
+            <pagination-template id="auditoria" #p="paginationApi" (pageChange)="paginaActual = $event"
+                class="ngx-pagination">
+                <div class="custom-pagination">
+                    <div class="pagination-previous" [class.disabled]="p.isFirstPage()">
+                        <span *ngIf="!p.isFirstPage()" (click)="p.previous()">
+                            << </span>
+                    </div>
+                    <div class="page-number" *ngFor="let page of p.pages"
+                        [class.current]="p.getCurrent() === page.value">
+                        <span (click)="p.setCurrent(page.value)" *ngIf="p.getCurrent() !== page.value">{{ page.label
+                            }}</span>
+                        <div *ngIf="p.getCurrent() === page.value">
+                            <span>{{ page.label }}</span>
+                        </div>
+                    </div>
+                    <div class="pagination-next" [class.disabled]="p.isLastPage()">
+                        <span *ngIf="!p.isLastPage()" (click)="p.next()"> >> </span>
+                    </div>
+                </div>
+            </pagination-template>
+        </div>
+    </div>
+</section>
+
+
+
+<section *ngIf="mostrarDetalle()">
+    <div class="d-flex col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12 justify-content-center">
+        <div class="card-lista-design-general" style="overflow-x: auto">
+            <div class="col-12">
+                <div class="row justify-content-center">
+                    <p class="titulo-modal">Detalle de cambios sobre {{detalleCambios.catalogo}}</p>
+                </div>
+                <div class="row justify-content-center">
+                    <p class="texto-modal"> Realizados por {{detalleCambios.usuario}} el {{detalleCambios.fecha | date
+                        :'dd/MM/yyyy'}} a las
+                        {{detalleCambios.fecha | date:'mediumTime'}} hrs.</p>
+                </div>
+            </div>
+            <table class="table listado-design-general">
+                <tr>
+                    <th style="padding-left: 40px; max-width: 300px">Campo</th>
+                    <th style="padding-left: 30px; max-width: 300px">Valor previo</th>
+                    <th style="padding-left: 30px; max-width: 150px">Valor actual</th>
+                </tr>
+                <tr *ngFor="let item of itemsTabla">
+                    <td style="padding-left: 30px; max-width: 150px; background-color:#0091DA; color: #ffffff"
+                        *ngIf="item.cambio">{{item.valor}}
+                    </td>
+                    <td style="padding-left: 30px; max-width: 150px; background-color:#0091DA; color: #ffffff"
+                        *ngIf="item.cambio">{{item.antes}}
+                    </td>
+                    <td style="padding-left: 30px; max-width: 150px; background-color:#0091DA; color: #ffffff"
+                        *ngIf="item.cambio">{{item.despues}}
+                    </td>
+                    <td style="padding-left: 30px; max-width: 150px" *ngIf="!item.cambio">{{item.valor}}
+                    </td>
+                    <td style="padding-left: 30px; max-width: 150px" *ngIf="!item.cambio">{{item.antes}}
+                    </td>
+                    <td style="padding-left: 30px; max-width: 150px" *ngIf="!item.cambio">{{item.despues}}
+                    </td>
+                </tr>
+            </table>
+            <div class="col-12">
+                <div class="row justify-content-center">
+                    <button class="btn bottonCerrarModal" (click)="ocultarModal()">
+                        Cerrar
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 </section>
+
+
+
+<!--
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">
+            <div>Detalle de los cambios</div>
+        </h4>
+        <button type="button" aria-label="Close" (click)="modal.dismiss()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm">
+                    <p class="titulo">Campo</p>
+                    <div *ngFor="let item of itemsValor">
+                        {{item}}
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <p class="titulo">Antes</p>
+                    <div *ngFor="let item of itemsAntes">
+                        {{item}}
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <p class="titulo">Después</p>
+                    <div *ngFor="let item of itemsDespues">
+                        {{item}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn bottonCerrarModal" data-dismiss="modal" (click)="modal.close()">
+            Cerrar
+        </button>
+    </div>
+</ng-template>
+-->

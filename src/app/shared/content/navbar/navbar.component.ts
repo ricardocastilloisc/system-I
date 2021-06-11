@@ -384,7 +384,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   irAlProceso = (data: NOTIFICACION_INTERFACE) => {
-    const url = 'procesos/diurno/'+data.INTERFAZ
+    const url = 'procesos/diurno/'+data.INTERFAZ+'/'+data.ID_PROCESO
 
     localStorage.setItem(
       'NotificacionSelect',
