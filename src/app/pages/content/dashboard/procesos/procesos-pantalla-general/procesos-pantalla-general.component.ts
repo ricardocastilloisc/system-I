@@ -328,7 +328,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
       }
     } else if (this.CATESTADOS[0]?.ESTADO_EJECUCION === 'INICIADO') {
       this.modalMensaje("modalEstado", "El proceso se encuentra en ejecución");
-      this.serviciosProcesos.generarAuditoria("EXITO", "El proceso se encontraba en ejecución");
+      this.serviciosProcesos.generarAuditoria("FALLO", "El proceso se encontraba en ejecución");
     } else (
       this.modalMensaje("modalEstado", "Error al ejecutar proceso")
     )
