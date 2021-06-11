@@ -2,7 +2,7 @@
     <div class="flex-row-reverse justify-content-center" style="height: 50vh; width: 100%"
         *ngIf="AUDGENESTADOPROCESOS$ | async as AUDGENESTADOPROCESOS">
         <div class="row justify-content-center">
-            <div class="titulo-proceso">{{titulo}} {{maxDate | date: "medium"}}</div>
+            <div class="titulo-proceso">{{titulo}}</div>
         </div>
 
         <div class="row justify-content-center" *ngIf="!ocultarbusqueda">
@@ -183,7 +183,7 @@
                 <table class="listado-log listado-ejecuciones">
                     <thead>
                         <tr>
-                            <th>ID Ejecucion</th>
+                            <th>ID Ejecución</th>
                             <th>Hora</th>
                             <th colspan="12">Resultado ejecución</th>
                         </tr>

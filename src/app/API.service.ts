@@ -2147,10 +2147,11 @@ export class APIService {
   async ListSiaGenAudEstadoProcesosDevs(
     INTERFAZ?: string,
     FECHA_INICIO?: string,
-    FECHA_FIN?: string
+    FECHA_FIN?: string,
+    ID_PROCESO?: string
   ): Promise<ListSiaGenAudEstadoProcesosDevsQuery> {
-    const statement = `query ListSiaGenAudEstadoProcesosDevs($INTERFAZ: String, $FECHA_INICIO: String, $FECHA_FIN: String) {
-        listSiaGenAudEstadoProcesosDevs(INTERFAZ: $INTERFAZ, FECHA_INICIO: $FECHA_INICIO, FECHA_FIN: $FECHA_FIN) {
+    const statement = `query ListSiaGenAudEstadoProcesosDevs($INTERFAZ: String, $FECHA_INICIO: String, $FECHA_FIN: String, $ID_PROCESO: String) {
+        listSiaGenAudEstadoProcesosDevs(INTERFAZ: $INTERFAZ, FECHA_INICIO: $FECHA_INICIO, FECHA_FIN: $FECHA_FIN, ID_PROCESO: $ID_PROCESO) {
           __typename
           items {
             __typename
@@ -2187,6 +2188,9 @@ export class APIService {
     }
     if (FECHA_FIN) {
       gqlAPIServiceArguments.FECHA_FIN = FECHA_FIN;
+    }
+    if (ID_PROCESO) {
+      gqlAPIServiceArguments.ID_PROCESO = ID_PROCESO;
     }
     const response = (await API.graphql(
       graphqlOperation(statement, gqlAPIServiceArguments)

@@ -277,11 +277,13 @@ query ListSiaGenAudEstadoProcesosDevs(
   $INTERFAZ: String
   $FECHA_INICIO: String
   $FECHA_FIN: String
+  $ID_PROCESO: String
 ) {
   listSiaGenAudEstadoProcesosDevs(
     INTERFAZ: $INTERFAZ
     FECHA_INICIO: $FECHA_INICIO
     FECHA_FIN: $FECHA_FIN
+    ID_PROCESO: $ID_PROCESO
   ) {
     items {
       ESTADO_EJECUCION

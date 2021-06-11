@@ -30,6 +30,7 @@ import { UsuariosService } from '../../../../../services/usuarios.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-proceso',
@@ -50,13 +51,15 @@ export class ProcesoComponent implements OnInit, OnDestroy {
     EArea.Soporte,
   ];
 
+  Loading$: Subscription;
+
   DataUser$: Observable<Usuario>;
   last;
   PROCESOS = new Array();
   ocultarbusqueda = false;
   titulo$: Observable<object>;
 
-  Loading$: Subscription;
+  
   titulo: string;
   area: string;
   listaProcesos: any;
@@ -71,6 +74,8 @@ export class ProcesoComponent implements OnInit, OnDestroy {
   DataUser: any;
   ejemplo;
   fechaBusqueda: Date;
+  fechaInicio: Date;
+  fechaFin: Date;
 
   constructor(
     private store: Store<AppState>,
@@ -80,14 +85,16 @@ export class ProcesoComponent implements OnInit, OnDestroy {
     private usuario: UsuariosService,
     private fb: FormBuilder,
     private modalService: NgbModal,
-    private datepipe: DatePipe
+    private datepipe: DatePipe,
+    private spinner: NgxSpinnerService,
   ) {
     this.Loading$ = this.store
       .select(({ AUDGENESTADOPROCESOS }) => AUDGENESTADOPROCESOS.error)
       .subscribe((res) => {
+        this.spinner.show();
         if (res) {
-          //this.authService.signOut()
         } else {
+          this.spinner.hide();
         }
       });
   }
@@ -103,9 +110,6 @@ export class ProcesoComponent implements OnInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    // this.rutaActiva.queryParams
-    //   .subscribe(res =>{ console.log(res); this.titulo = res['titulo'] || 0 })
-    //   console.log('titulo', this.titulo)
   }
 
   replazarCaracterEspecial = (value) => {
@@ -113,13 +117,13 @@ export class ProcesoComponent implements OnInit, OnDestroy {
   };
 
   ngOnInit(): void {
+
+    
+
     this.authService.refreshToken();
 
     this.titulo = JSON.parse(localStorage.getItem('Titulo'));
 
-    // this.rutaActiva.queryParams
-    //   .subscribe(res =>{ console.log(res); this.titulo = res['titulo'] || 0 })
-    //   console.log('titulo', this.titulo)
 
     this.ocultarbusqueda = false;
     this.paginaActualProceso = 1;
@@ -129,35 +133,17 @@ export class ProcesoComponent implements OnInit, OnDestroy {
       idProceso: [],
     });
 
-    // this.api.OnUpdateAUDGENESTADOPROCESOListener().subscribe(res =>
-    //   console.log(res)
-    //   )
 
     this.maxDate = new Date();
 
-    let fechaInicio = new Date();
-    fechaInicio.setHours(0, 0, 0, 0);
+    this.fechaInicio = new Date();
+    this.fechaInicio.setHours(0, 0, 0, 0);
 
-    // console.log('FechaInicio: ', fechaInicio)
-    console.log('FechaInicioUTC: ', fechaInicio.toISOString());
-    let fechaFin = new Date();
-    fechaFin.setHours(23, 59, 59, 999);
 
-    // console.log('FechaFin: ', fechaFin)
-    console.log('FechaFinUTC: ', fechaFin.toISOString().replace('Z', ''));
+    this.fechaFin = new Date();
+    this.fechaFin.setHours(23, 59, 59, 999);
 
-    let fecha = this.replazarCaracterEspecial(this.maxDate);
 
-    //console.log('Fecha que es: ', fecha)
-
-    //this.today = this.maxDate.toISOString()
-    //console.log(this.today)
-
-    var dd = String(this.maxDate.getDate()).padStart(2, '0');
-    var mm = String(this.maxDate.getMonth() + 1).padStart(2, '0');
-    var yyyy = this.maxDate.getFullYear();
-    this.today = yyyy + '-' + mm + '-' + dd;
-    //console.log('Fecha: ',today)
     this.DataUser$ = this.store.select(({ usuario }) => usuario.user);
 
     this.DataUser$.subscribe((res) => (this.DataUser = res)).unsubscribe();
@@ -192,11 +178,11 @@ export class ProcesoComponent implements OnInit, OnDestroy {
         })
       );
 
-    this.store
-      .select(
-        ({ AUDGENESTADOPROCESOS }) => AUDGENESTADOPROCESOS.AUDGENESTADOPROCESO
-      )
-      .subscribe((res) => console.log('que hay', res));
+    // this.store
+    //   .select(
+    //     ({ AUDGENESTADOPROCESOS }) => AUDGENESTADOPROCESOS.AUDGENESTADOPROCESO
+    //   )
+    //   .subscribe((res) => console.log('que hay', res));
 
     this.store.select(({ AUDGENPROCESOS }) => AUDGENPROCESOS.AUDGENPROCESOS);
 
@@ -206,8 +192,8 @@ export class ProcesoComponent implements OnInit, OnDestroy {
 
     let body = {
       INTERFAZ: this.rutaActiva.snapshot.params.id,
-      FECHA_INICIO: fechaInicio.toISOString().replace('0Z', ''),
-      FECHA_FIN: fechaFin.toISOString().replace('9Z', ''),
+      FECHA_INICIO: this.fechaInicio.toISOString().replace('0Z', ''),
+      FECHA_FIN: this.fechaFin.toISOString().replace('9Z', ''),
     };
 
     this.store.dispatch(LoadAUDGENESTADOPROCESOS({ consult: body }));
@@ -221,15 +207,15 @@ export class ProcesoComponent implements OnInit, OnDestroy {
       } else this.cerrarModales();
     });
 
-    this.api
-      .ListSiaGenAudEstadoProcesosDevs(
-        this.rutaActiva.snapshot.params.id,
-        fechaInicio.toISOString().replace('0Z', ''),
-        fechaFin.toISOString().replace('9Z', '')
-      )
-      .then((res) => {
-        console.log('Respuesta api: ', res);
-      });
+    // this.api
+    //   .ListSiaGenAudEstadoProcesosDevs(
+    //     this.rutaActiva.snapshot.params.id,
+    //     this.fechaInicio.toISOString().replace('0Z', ''),
+    //     this.fechaFin.toISOString().replace('9Z', '')
+    //   )
+    //   .then((res) => {
+    //     console.log('Respuesta api: ', res);
+    //   });
 
     let NotificacionSelect = JSON.parse(
       localStorage.getItem('NotificacionSelect')
@@ -314,13 +300,12 @@ export class ProcesoComponent implements OnInit, OnDestroy {
         })
       );
 
-    let body = {
-      filter: {
-        INTERFAZ: { eq: this.rutaActiva.snapshot.params.id },
-        FECHA_ACTUALIZACION: { contains: this.today },
-      },
-      limit: 999999999,
-    };
+      let body = {
+        INTERFAZ: this.rutaActiva.snapshot.params.id,
+        FECHA_INICIO: this.fechaInicio.toISOString().replace('0Z', ''),
+        FECHA_FIN: this.fechaFin.toISOString().replace('9Z', ''),
+      };
+  
 
     this.store.dispatch(LoadAUDGENESTADOPROCESOS({ consult: body }));
 
@@ -340,9 +325,9 @@ export class ProcesoComponent implements OnInit, OnDestroy {
     console.log(format);
     this.paginaActualProceso = 1;
 
-    this.api
-      .ListAUDGENPROCESOS(idProceso, format)
-      .then((res) => console.log('Resultado', res));
+    // this.api
+    //   .ListAUDGENPROCESOS(idProceso, format)
+    //   .then((res) => console.log('Resultado', res));
 
     this.AUDGENEJECUCIONPROCESO$ = this.store.select(
       ({ AUDGENEJECUCIONESPROCESO }) =>
@@ -460,14 +445,17 @@ export class ProcesoComponent implements OnInit, OnDestroy {
       fechaInicialFiltro = new Date(fechaInicialParseada)
       fechaInicialFiltro.setMinutes(fechaInicialFiltro.getMinutes() + fechaInicialFiltro.getTimezoneOffset() );
     
-      console.log('FEcha filtrar: ', fechaInicialFiltro.toISOString())
+      
 
 
-      fechaFinalFiltro = fechaInicialFiltro;
+      fechaFinalFiltro = new Date(fechaInicialParseada)
+      fechaFinalFiltro.setMinutes(fechaFinalFiltro.getMinutes() + fechaFinalFiltro.getTimezoneOffset() );
 
       fechaFinalFiltro.setHours(23,59,59,999)
 
-      console.log('FEcha filtrar final: ', fechaFinalFiltro.toISOString())
+      // console.log('FEcha filtrar: ', fechaInicialFiltro.toISOString())
+
+      // console.log('FEcha filtrar final: ', fechaFinalFiltro.toISOString())
 
       }
       
@@ -476,7 +464,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
 
 
       let idProceso = this.filtroEjecucionesForm.get('idProceso').value;
-      console.log(this.filtroEjecucionesForm.get('idProceso').value)
+      // console.log(this.filtroEjecucionesForm.get('idProceso').value)
 
       this.AUDGENESTADOPROCESOS$ = this.store.select(
         ({ AUDGENESTADOPROCESOS }) => AUDGENESTADOPROCESOS.AUDGENESTADOPROCESO
@@ -490,9 +478,9 @@ export class ProcesoComponent implements OnInit, OnDestroy {
         // })
       }
       ))
-      this.store.select(
-        ({ AUDGENEJECUCIONESPROCESO }) => AUDGENEJECUCIONESPROCESO.AUDGENEJECUCIONESPROCESO
-      ).subscribe(res => console.log(res))
+      // this.store.select(
+      //   ({ AUDGENEJECUCIONESPROCESO }) => AUDGENEJECUCIONESPROCESO.AUDGENEJECUCIONESPROCESO
+      // ).subscribe(res => console.log(res))
 
       if(fechaInicialFiltro === null && idProceso === null){
 
@@ -501,11 +489,13 @@ export class ProcesoComponent implements OnInit, OnDestroy {
       }else if( fechaInicialFiltro === null && idProceso !== null){
 
         let body = {
-          filter: { ID_PROCESO: { eq: idProceso } },
-          limit: 999999999,
+          ID_PROCESO:idProceso
         };
         this.store.dispatch(LoadAUDGENESTADOPROCESOS({ consult: body }));
       }else if( fechaInicialFiltro !== null && idProceso === null){
+
+        console.log(fechaInicialFiltro.toISOString().replace('0Z', ''))
+        console.log(fechaFinalFiltro.toISOString().replace('0Z', ''))
         let body = {
           INTERFAZ: this.rutaActiva.snapshot.params.id, FECHA_INICIO: fechaInicialFiltro.toISOString().replace('0Z', ''), FECHA_FIN: fechaFinalFiltro.toISOString().replace('9Z', '')  ,
           
@@ -514,10 +504,11 @@ export class ProcesoComponent implements OnInit, OnDestroy {
       } else {
         console.log('else');
         console.log(idProceso);
+        console.log(fechaInicialFiltro.toISOString().replace('0Z', ''))
+        console.log(fechaFinalFiltro.toISOString().replace('0Z', ''))
         let body = {
-          filter: { FECHA_ACTUALIZACION: { contains: fechaInicialFiltro }, ID_PROCESO: { eq:  idProceso } },
-          limit: 999999999
-        }
+          FECHA_INICIO: fechaInicialFiltro.toISOString().replace('0Z', ''), FECHA_FIN: fechaFinalFiltro.toISOString().replace('9Z', ''), ID_PROCESO:  idProceso,
+      }
         this.store.dispatch(LoadAUDGENESTADOPROCESOS({ consult: body }));
       }
     }
