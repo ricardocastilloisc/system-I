@@ -1,144 +1,177 @@
 .center {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-  }
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
 
-  .wrapper {
-    display: flex;
-    flex-wrap: wrap;
-  }
-  
-  .content {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
-  }
-  
-  div.card-busqueda {
-    width: 90%;
-    background: #ffffff 0% 0% no-repeat padding-box;
-    border-radius: 30px;
-    opacity: 1;
-    display: flex;
-    margin: 25px 0;
-    margin-right: 5%;
-    margin-left: 5%;
-    flex-direction: column;
-    align-items: center;
-    border-radius: 25px;
-    border-left: 10px solid #035FA4;
-    box-shadow: 4px 4px 10px #00000033;
-  }
-  
-  .card-busqueda div {
-    color: #035FA4;
-    border: black;
-    height: auto;
-    width: auto;
-    flex-grow: 1;
-    display: flex;
-    align-items: center;
-    font: bold 20px FS Elliot Pro;
-  }
-  
-  .card-busqueda div > button {
-    background-color: #0091DA;
-    color: white;
-    width: 296px;
-    height: 50px;
-    border-radius: 25px;
-    font: bold 20px FS Elliot Pro;
-    border: none;
-  }
-  
-  div.card-lista-design-general {
-    width: auto;
-    min-width: 477px;
-    flex: auto;
-    display: flex;
-    flex-wrap: wrap;
-    vertical-align: middle;
-  }
-  
-  table.listado-design-general th {
-    background-color: #035FA4;
-    font: bold 18px FS Elliot Pro;
-    height: 40px;
-    height: 40px;
-    font: bold 18px FS Elliot Pro;
-  }
-  
-  section {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-  }
-  
-  .col2-row2 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-grow: 0;
-    flex-shrink: 0;
-    flex-basis: 50%;
-    margin-bottom: 1.5%;
-  }
-  
-  .selectList {
-    text-align: left;
-    font: normal normal normal 18px/45px FS Elliot Pro;
-    letter-spacing: 0px;
-    color: #707070;
-    width: 296px;
-    height: 35px;
-    font: bold 18px FS Elliot Pro;
-    background: #ffffff 0% 0% no-repeat padding-box;
-    border: 1px solid #d6d6d6;
-    border-radius: 9px;
-    opacity: 1;
-  }
-  
-  #correo {
-    width: 100%;
-  }
-  
-  #correo .selected-item {
-    width: 200px !important;
-  }
-  
-  .limpiarFiltro {
-    text-align: right;
-    text-decoration: underline;
-    font: normal normal normal 14px/22px FS Elliot Pro;
-    letter-spacing: 0px;
-    text-decoration: underline #0091DA !important;
-    color: #0091DA !important;
-  }
-  .limpiarFiltro:hover{
-    cursor: pointer;
-  }
-  
-  .tamanioFiltroIcono{
-    width:12px;
-    height:12px;
-    margin-top: -4px;
-  }
-  
-  .modal-content{
-    background-color: red !important;
-  }
-  
+.wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
 
-  .detalle-icon {
-    background: transparent url("../../../../../../assets/icons/icono-detalle.svg") 0% 0% no-repeat
-      padding-box;
-    width: 30px;
-    height: 30px;
-    opacity: 1;
-    margin: 0 15px;
-    padding: 15px;
-  }
-  
-  
+.content {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+
+div.card-busqueda {
+  width: 90%;
+  background: #ffffff 0% 0% no-repeat padding-box;
+  border-radius: 30px;
+  opacity: 1;
+  display: flex;
+  margin: 25px 0;
+  margin-right: 5%;
+  margin-left: 5%;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 25px;
+  border-left: 10px solid #035fa4;
+  box-shadow: 4px 4px 10px #00000033;
+}
+
+.card-busqueda div {
+  color: #035fa4;
+  border: black;
+  height: auto;
+  width: auto;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  font: bold 20px FS Elliot Pro;
+}
+
+.card-busqueda div > button {
+  background-color: #0091da;
+  color: white;
+  width: 296px;
+  height: 50px;
+  border-radius: 25px;
+  font: bold 20px FS Elliot Pro;
+  border: none;
+}
+
+div.card-lista-design-general {
+  width: auto;
+  min-width: 477px;
+  flex: auto;
+  display: flex;
+  flex-wrap: wrap;
+  vertical-align: middle;
+}
+
+table.listado-design-general th {
+  background-color: #035fa4;
+  font: bold 18px FS Elliot Pro;
+  height: 40px;
+  height: 40px;
+  font: bold 18px FS Elliot Pro;
+}
+
+section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.col2-row2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: 50%;
+  margin-bottom: 1.5%;
+}
+
+.selectList {
+  text-align: left;
+  font: normal normal normal 18px/45px FS Elliot Pro;
+  letter-spacing: 0px;
+  color: #707070;
+  width: 296px;
+  height: 35px;
+  font: bold 18px FS Elliot Pro;
+  background: #ffffff 0% 0% no-repeat padding-box;
+  border: 1px solid #d6d6d6;
+  border-radius: 9px;
+  opacity: 1;
+}
+
+#correo {
+  width: 100%;
+}
+
+#correo .selected-item {
+  width: 200px !important;
+}
+
+.limpiarFiltro {
+  text-align: right;
+  text-decoration: underline;
+  font: normal normal normal 14px/22px FS Elliot Pro;
+  letter-spacing: 0px;
+  text-decoration: underline #0091da !important;
+  color: #0091da !important;
+}
+
+.limpiarFiltro:hover {
+  cursor: pointer;
+}
+
+.tamanioFiltroIcono {
+  width: 12px;
+  height: 12px;
+  margin-top: -4px;
+}
+
+.modal-content {
+  background-color: red !important;
+}
+
+.detalle-icon {
+  background: transparent url("/../../../../assets/icons/icono-detalle.svg") 0%
+    0% no-repeat padding-box;
+  width: 30px;
+  height: 30px;
+  opacity: 1;
+  margin: 0 15px;
+  padding: 15px;
+}
+
+.bottonCerrarModal {
+  border: 2px solid #0091da;
+  border-radius: 30px;
+  opacity: 1;
+  width: 184px;
+  text-decoration: none;
+  height: 48px;
+  color: #0091da;
+  margin-right: 22px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  font: normal normal bold 20px/25px FS Elliot Pro;
+}
+
+.titulo {
+  font: bold 18px FS Elliot Pro;
+  color: #035fa4;
+}
+
+.titulo-modal {
+  font: bold 24px FS Elliot Pro;
+  color: #035fa4;
+}
+
+.texto-modal {
+  font: 18px FS Elliot Pro;
+  color: #035fa4;
+}
+
+.paginator {
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 5%;
+}
