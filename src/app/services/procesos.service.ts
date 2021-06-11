@@ -4,7 +4,9 @@ import { AuthService } from './auth.service';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+import { Store } from '@ngrx/store';
+import { AppState } from '../ReduxStore/app.reducers';
+import { AuditoriaService } from './auditoria.service';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +15,7 @@ import { Observable } from 'rxjs';
 export class ProcesosService {
 
   constructor(
-    private authService: AuthService,
+    private store: Store<AppState>, private authService: AuthService, private auditoria: AuditoriaService,
     private http: HttpClient
   ) { }
 
@@ -42,7 +44,7 @@ export class ProcesosService {
     }
 
     return this.http.post(endpoint, config.data, { headers }).toPromise().then(function (response) {
-      console.log("Respuesta llamado proceso",response)
+      //console.log("Respuesta llamado proceso",response)
       return response = {
         codigo: 'EXITO',
         descripcion: 'La solicitud fue exitosa.'
@@ -55,5 +57,65 @@ export class ProcesosService {
         };
       });
     ;
+  }
+
+  generarAuditoria(estado: string): void {
+    const proceso = JSON.parse(localStorage.getItem('proceso'));
+    const today = new Date().toISOString();
+    let tipo = localStorage.getItem('tipoProceso');
+
+    let area: String = '';
+    let rol = '';
+    let correo = '';
+    let apellidoPaterno = '';
+    let nombre = '';
+
+    if (tipo === null) {
+      tipo = 'DIURNO';
+    }
+
+    this.store
+      .select(({ usuario }) => usuario.user)
+      .subscribe((res) => {
+        rol = res.attributes['custom:rol'];
+        correo = res.email;
+        nombre = res.attributes.given_name;
+        apellidoPaterno = res.attributes.family_name;
+      });
+    this.store
+      .select(({ usuario }) => usuario.area)
+      .subscribe((res) => {
+        //console.log(res)
+        area = res;
+      });
+
+    let payload = {
+      areaNegocio: area,
+      rol: rol,
+      correo: correo,
+      fecha: today,
+      modulo: 'PROCESOS',
+      usuario: {
+        apellidoPaterno: apellidoPaterno,
+        nombre: nombre,
+      },
+      procesos: {
+        nombre: proceso.nombre,
+        descripcion: proceso.descripcion,
+        accion: "INICIAR",
+        estado: estado,
+        tipo: proceso.tipo
+      },
+    };
+
+    //console.log("payload", payload);
+
+    const payloadString = JSON.stringify(payload);
+
+    this.auditoria.enviarBitacoraUsuarios(payloadString);
+
+    localStorage.removeItem('proceso');
+    localStorage.removeItem('tipoProceso');
+
   }
 }
