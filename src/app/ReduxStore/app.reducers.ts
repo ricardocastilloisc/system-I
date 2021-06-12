@@ -13,7 +13,8 @@ export interface AppState {
   notificaciones: reducers.NotificacionesState,
   catalogos: reducers.CatalogosState,
   DetailCatalogos: reducers.DetailCatalogosState,
-  AUDGENUSUARIOS: reducers.AUDGENUSUARIOState
+  AUDGENUSUARIOS: reducers.AUDGENUSUARIOState,
+  notificacionSelect: reducers.notificacionSelectState
 }
 
 export const appReducers:ActionReducerMap<AppState> = {
@@ -28,5 +29,6 @@ export const appReducers:ActionReducerMap<AppState> = {
   notificaciones: reducers.NotificacionesReducer,
   catalogos: reducers.catalogosReducer,
   DetailCatalogos: reducers.DetailCatologosReducer,
-  AUDGENUSUARIOS: reducers.AUDGENUSUARIOReducer
+  AUDGENUSUARIOS: reducers.AUDGENUSUARIOReducer,
+  notificacionSelect: reducers.notificacionSelectReducer
 }

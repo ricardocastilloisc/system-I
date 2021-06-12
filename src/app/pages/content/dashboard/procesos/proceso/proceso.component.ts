@@ -24,6 +24,7 @@ import {
   UnsetAUDGENESTADOPROCESO,
   LoadAUDGENEJECUCIONESPROCESO,
   UnsetAUDGENEJECUCIONPROCESO,
+  notificacionSelect,
 } from 'src/app/ReduxStore/actions';
 import { APIService } from '../../../../../API.service';
 import { UsuariosService } from '../../../../../services/usuarios.service';
@@ -59,7 +60,6 @@ export class ProcesoComponent implements OnInit, OnDestroy {
   ocultarbusqueda = false;
   titulo$: Observable<object>;
 
-  
   titulo: string;
   area: string;
   listaProcesos: any;
@@ -86,7 +86,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private modalService: NgbModal,
     private datepipe: DatePipe,
-    private spinner: NgxSpinnerService,
+    private spinner: NgxSpinnerService
   ) {
     this.Loading$ = this.store
       .select(({ AUDGENESTADOPROCESOS }) => AUDGENESTADOPROCESOS.error)
@@ -109,21 +109,16 @@ export class ProcesoComponent implements OnInit, OnDestroy {
     this.store.dispatch(UnsetAUDGENEJECUCIONPROCESO());
   }
 
-  ngAfterViewInit() {
-  }
+  ngAfterViewInit() {}
 
   replazarCaracterEspecial = (value) => {
     return new Date(value + 'Z').toString();
   };
 
   ngOnInit(): void {
-
-    
-
     this.authService.refreshToken();
 
     this.titulo = JSON.parse(localStorage.getItem('Titulo'));
-
 
     this.ocultarbusqueda = false;
     this.paginaActualProceso = 1;
@@ -133,16 +128,13 @@ export class ProcesoComponent implements OnInit, OnDestroy {
       idProceso: [],
     });
 
-
     this.maxDate = new Date();
 
     this.fechaInicio = new Date();
     this.fechaInicio.setHours(0, 0, 0, 0);
 
-
     this.fechaFin = new Date();
     this.fechaFin.setHours(23, 59, 59, 999);
-
 
     this.DataUser$ = this.store.select(({ usuario }) => usuario.user);
 
@@ -217,31 +209,29 @@ export class ProcesoComponent implements OnInit, OnDestroy {
     //     console.log('Respuesta api: ', res);
     //   });
 
-    let NotificacionSelect = JSON.parse(
-      localStorage.getItem('NotificacionSelect')
-    );
-    if (NotificacionSelect) {
-      this.consultarDetalle(
-        NotificacionSelect.ID_PROCESO,
-        NotificacionSelect.FECHA_CREADO
-      );
-      localStorage.removeItem('NotificacionSelect')
-    }
+    this.store
+      .select(({ notificacionSelect }) => notificacionSelect.notificacionSelect)
+      .subscribe((res) => {
+        setTimeout(() => {
+          if (res) {
+            let array = window.location.pathname.split('/');
 
-    this.rutaActiva.params.subscribe(() => {
-      setTimeout(() => {
-        let NotificacionSelect = JSON.parse(
-          localStorage.getItem('NotificacionSelect')
-        );
-        if (NotificacionSelect) {
-          this.consultarDetalle(
-            NotificacionSelect.ID_PROCESO,
-            NotificacionSelect.FECHA_CREADO
-          );
-          localStorage.removeItem('NotificacionSelect')
-        }
-      }, 300);
-    });
+            let bodyProcesos = {
+              filter: { TIPO: { eq: array[2].toUpperCase() } },
+              limit: 1000,
+            };
+            this.api
+              .ListCATPROCESOS(bodyProcesos.filter, bodyProcesos.limit)
+              .then(({ items }) => {
+                this.titulo = items.filter(
+                  (item) => item.PROCESO === res.INTERFAZ
+                )[0].DESCRIPCION;
+
+                this.consultarDetalle(res.ID_PROCESO, res.FECHA_CREADO);
+              });
+          }
+        }, 300);
+      });
   }
 
   openModal() {
@@ -300,12 +290,11 @@ export class ProcesoComponent implements OnInit, OnDestroy {
         })
       );
 
-      let body = {
-        INTERFAZ: this.rutaActiva.snapshot.params.id,
-        FECHA_INICIO: this.fechaInicio.toISOString().replace('0Z', ''),
-        FECHA_FIN: this.fechaFin.toISOString().replace('9Z', ''),
-      };
-  
+    let body = {
+      INTERFAZ: this.rutaActiva.snapshot.params.id,
+      FECHA_INICIO: this.fechaInicio.toISOString().replace('0Z', ''),
+      FECHA_FIN: this.fechaFin.toISOString().replace('9Z', ''),
+    };
 
     this.store.dispatch(LoadAUDGENESTADOPROCESOS({ consult: body }));
 
@@ -430,89 +419,98 @@ export class ProcesoComponent implements OnInit, OnDestroy {
 
   busquedaFiltros() {
     this.paginaActualEjecucionesProceso = 1;
-    if (this.filtroEjecucionesForm.valid ) {
-
-
-      let fechaInicialFiltro = this.filtroEjecucionesForm.get('fechaFiltrar').value;
+    if (this.filtroEjecucionesForm.valid) {
+      let fechaInicialFiltro =
+        this.filtroEjecucionesForm.get('fechaFiltrar').value;
       let fechaFinalFiltro = fechaInicialFiltro;
 
-      if(  this.filtroEjecucionesForm.get('fechaFiltrar').value != null ){
+      if (this.filtroEjecucionesForm.get('fechaFiltrar').value != null) {
+        let fechaInicialParseada = Date.parse(
+          this.filtroEjecucionesForm.get('fechaFiltrar').value
+        );
 
-        let fechaInicialParseada =  Date.parse(this.filtroEjecucionesForm.get('fechaFiltrar').value);
+        fechaInicialFiltro = new Date(fechaInicialParseada);
+        fechaInicialFiltro.setMinutes(
+          fechaInicialFiltro.getMinutes() +
+            fechaInicialFiltro.getTimezoneOffset()
+        );
 
+        fechaFinalFiltro = new Date(fechaInicialParseada);
+        fechaFinalFiltro.setMinutes(
+          fechaFinalFiltro.getMinutes() + fechaFinalFiltro.getTimezoneOffset()
+        );
 
+        fechaFinalFiltro.setHours(23, 59, 59, 999);
 
-      fechaInicialFiltro = new Date(fechaInicialParseada)
-      fechaInicialFiltro.setMinutes(fechaInicialFiltro.getMinutes() + fechaInicialFiltro.getTimezoneOffset() );
-    
-      
+        // console.log('FEcha filtrar: ', fechaInicialFiltro.toISOString())
 
-
-      fechaFinalFiltro = new Date(fechaInicialParseada)
-      fechaFinalFiltro.setMinutes(fechaFinalFiltro.getMinutes() + fechaFinalFiltro.getTimezoneOffset() );
-
-      fechaFinalFiltro.setHours(23,59,59,999)
-
-      // console.log('FEcha filtrar: ', fechaInicialFiltro.toISOString())
-
-      // console.log('FEcha filtrar final: ', fechaFinalFiltro.toISOString())
-
+        // console.log('FEcha filtrar final: ', fechaFinalFiltro.toISOString())
       }
-      
-
-
-
 
       let idProceso = this.filtroEjecucionesForm.get('idProceso').value;
       // console.log(this.filtroEjecucionesForm.get('idProceso').value)
 
-      this.AUDGENESTADOPROCESOS$ = this.store.select(
-        ({ AUDGENESTADOPROCESOS }) => AUDGENESTADOPROCESOS.AUDGENESTADOPROCESO
-      ).pipe(map(res => {
-        if (res === null) return res
-        else return res.slice().sort(function (a, b) { return new Date(b.FECHA_ACTUALIZACION).getTime() - new Date(a.FECHA_ACTUALIZACION).getTime() }).filter((item, i, res) => {
-          return res.indexOf(res.find(t => t.ID_PROCESO === item.ID_PROCESO)) === i
-        })
-        // .filter(item => {
-        //   return item.ETAPA != ""
-        // })
-      }
-      ))
+      this.AUDGENESTADOPROCESOS$ = this.store
+        .select(
+          ({ AUDGENESTADOPROCESOS }) => AUDGENESTADOPROCESOS.AUDGENESTADOPROCESO
+        )
+        .pipe(
+          map((res) => {
+            if (res === null) return res;
+            else
+              return res
+                .slice()
+                .sort(function (a, b) {
+                  return (
+                    new Date(b.FECHA_ACTUALIZACION).getTime() -
+                    new Date(a.FECHA_ACTUALIZACION).getTime()
+                  );
+                })
+                .filter((item, i, res) => {
+                  return (
+                    res.indexOf(
+                      res.find((t) => t.ID_PROCESO === item.ID_PROCESO)
+                    ) === i
+                  );
+                });
+            // .filter(item => {
+            //   return item.ETAPA != ""
+            // })
+          })
+        );
       // this.store.select(
       //   ({ AUDGENEJECUCIONESPROCESO }) => AUDGENEJECUCIONESPROCESO.AUDGENEJECUCIONESPROCESO
       // ).subscribe(res => console.log(res))
 
-      if(fechaInicialFiltro === null && idProceso === null){
-
-        this.openModal()
-
-      }else if( fechaInicialFiltro === null && idProceso !== null){
-
+      if (fechaInicialFiltro === null && idProceso === null) {
+        this.openModal();
+      } else if (fechaInicialFiltro === null && idProceso !== null) {
         let body = {
-          ID_PROCESO:idProceso
+          ID_PROCESO: idProceso,
         };
         this.store.dispatch(LoadAUDGENESTADOPROCESOS({ consult: body }));
-      }else if( fechaInicialFiltro !== null && idProceso === null){
-
-        console.log(fechaInicialFiltro.toISOString().replace('0Z', ''))
-        console.log(fechaFinalFiltro.toISOString().replace('0Z', ''))
+      } else if (fechaInicialFiltro !== null && idProceso === null) {
+        console.log(fechaInicialFiltro.toISOString().replace('0Z', ''));
+        console.log(fechaFinalFiltro.toISOString().replace('0Z', ''));
         let body = {
-          INTERFAZ: this.rutaActiva.snapshot.params.id, FECHA_INICIO: fechaInicialFiltro.toISOString().replace('0Z', ''), FECHA_FIN: fechaFinalFiltro.toISOString().replace('9Z', '')  ,
-          
-        }
+          INTERFAZ: this.rutaActiva.snapshot.params.id,
+          FECHA_INICIO: fechaInicialFiltro.toISOString().replace('0Z', ''),
+          FECHA_FIN: fechaFinalFiltro.toISOString().replace('9Z', ''),
+        };
         this.store.dispatch(LoadAUDGENESTADOPROCESOS({ consult: body }));
       } else {
         console.log('else');
         console.log(idProceso);
-        console.log(fechaInicialFiltro.toISOString().replace('0Z', ''))
-        console.log(fechaFinalFiltro.toISOString().replace('0Z', ''))
+        console.log(fechaInicialFiltro.toISOString().replace('0Z', ''));
+        console.log(fechaFinalFiltro.toISOString().replace('0Z', ''));
         let body = {
-          FECHA_INICIO: fechaInicialFiltro.toISOString().replace('0Z', ''), FECHA_FIN: fechaFinalFiltro.toISOString().replace('9Z', ''), ID_PROCESO:  idProceso,
-      }
+          FECHA_INICIO: fechaInicialFiltro.toISOString().replace('0Z', ''),
+          FECHA_FIN: fechaFinalFiltro.toISOString().replace('9Z', ''),
+          ID_PROCESO: idProceso,
+        };
         this.store.dispatch(LoadAUDGENESTADOPROCESOS({ consult: body }));
       }
     }
-
   }
 
   ejecucionesInexistentesModal() {

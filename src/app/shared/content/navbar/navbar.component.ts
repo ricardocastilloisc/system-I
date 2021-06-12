@@ -21,6 +21,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import * as moment from 'moment';
 import { APIService } from '../../../API.service';
+import { notificacionSelect } from '../../../ReduxStore/actions/notificacionSelect/notificacionSelect.actions';
 
 declare var $: any;
 
@@ -279,7 +280,11 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
               this.DataUser.attributes['custom:rol'].toUpperCase()
             )
             .then(({ items }: any) => {
+
               this.ValidadoresDeInterfaces = items;
+
+
+
 
               this.NotificacionesSubActivo$ =
                 this.api.OnUpdateSiaGenAudEstadoProcesosDevListener.subscribe(
@@ -384,13 +389,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   irAlProceso = (data: NOTIFICACION_INTERFACE) => {
-    const url = 'procesos/diurno/'+data.INTERFAZ+'/'+data.ID_PROCESO
-
-    localStorage.setItem(
-      'NotificacionSelect',
-      JSON.stringify(data)
-    );
-
+    const url = 'procesos/diurno/'+data.INTERFAZ
+    this.store.dispatch(notificacionSelect({notificacionSelect:data}))
     this.router.navigateByUrl(url).then( () => {
       this.eliminarNotificacion(data.ID_PROCESO);
     })
