@@ -212,25 +212,24 @@ export class ProcesoComponent implements OnInit, OnDestroy {
     this.store
       .select(({ notificacionSelect }) => notificacionSelect.notificacionSelect)
       .subscribe((res) => {
-        setTimeout(() => {
-          if (res) {
-            let array = window.location.pathname.split('/');
+        if (res) {
+          this.spinner.show();
+          let array = window.location.pathname.split('/');
+          let bodyProcesos = {
+            filter: { TIPO: { eq: array[2].toUpperCase() } },
+            limit: 1000,
+          };
+          this.api
+            .ListCATPROCESOS(bodyProcesos.filter, bodyProcesos.limit)
+            .then(({ items }) => {
+              this.titulo = items.filter(
+                (item) => item.PROCESO === res.INTERFAZ
+              )[0].DESCRIPCION;
 
-            let bodyProcesos = {
-              filter: { TIPO: { eq: array[2].toUpperCase() } },
-              limit: 1000,
-            };
-            this.api
-              .ListCATPROCESOS(bodyProcesos.filter, bodyProcesos.limit)
-              .then(({ items }) => {
-                this.titulo = items.filter(
-                  (item) => item.PROCESO === res.INTERFAZ
-                )[0].DESCRIPCION;
-
-                this.consultarDetalle(res.ID_PROCESO, res.FECHA_CREADO);
-              });
-          }
-        }, 300);
+              this.consultarDetalle(res.ID_PROCESO, res.FECHA_CREADO);
+              this.spinner.hide();
+            });
+        }
       });
   }
 
