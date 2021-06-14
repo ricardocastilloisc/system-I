@@ -498,6 +498,28 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     return area;
   }
 
+  estadoActualizar = (data: NOTIFICACION_INTERFACE) => {
+    if (data.ETAPA_FINAL_ESTADO_FINAL) {
+      if (data.ETAPA_FINAL_ESTADO_FINAL === 'EXITOSO' || data.ETAPA_FINAL_ESTADO_FINAL === 'FALLIDO') {
+        return data.ETAPA_FINAL_ESTADO_FINAL;
+      }
+    }
+
+    if (data.ETAPA_PROCESAMIENTO_ESTADO_FINAL) {
+      if (data.ETAPA_PROCESAMIENTO_ESTADO_FINAL === 'FALLIDO') {
+        return data.ETAPA_PROCESAMIENTO_ESTADO_FINAL;
+      }
+    }
+
+    if (data.ETAPA_INICIAL_ESTADO_FINAL) {
+      if (data.ETAPA_INICIAL_ESTADO_FINAL === 'FALLIDO') {
+        return data.ETAPA_INICIAL_ESTADO_FINAL;
+      }
+    }
+
+    return null;
+  };
+
   validarPantallaEnProcesos(data: any): void {
     const ruta = this.arrayRuta()[0];
     let idPantalla;
@@ -514,8 +536,10 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
             //console.log('data', data);
             if (idPantalla === idNotificacion) {
               //console.log('data', this.verEstado(data));
+              let estado = this.estadoActualizar(data.onUpdateSiaGenAudEstadoProcesosDev);
+              console.log('estado', estado);
               //if (this.verEstado(data.onUpdateSiaGenAudEstadoProcesosDev) !== '') {
-                if (data.onUpdateSiaGenAudEstadoProcesosDev.ETAPA_FINAL_ESTADO_FINAL) {
+              if (estado !== null) {
                 //console.log('data', this.verEstado(data));
                 const message = {
                   idProceso: idPantalla,
