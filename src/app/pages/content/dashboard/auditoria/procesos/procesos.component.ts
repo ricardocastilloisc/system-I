@@ -259,8 +259,8 @@ export class ProcesosComponent implements OnInit, OnDestroy {
   openModal(objetoDetalle: AUDGENUSUARIO_INTERFACE): void {
     //console.log("objetoDetalle", objetoDetalle)
     this.detalleCambios = {
-      //idProceso: objetoDetalle.PROCESOS.ID_PROCESO,
-      idProceso: 'cf346e4b8fe146d5b441292388f32ca8',
+      idProceso: objetoDetalle.PROCESOS.ID_PROCESO,
+      sigla:  objetoDetalle.PROCESOS.SIGLA,
       proceso: objetoDetalle.PROCESOS.NOMBRE,
       usuario: objetoDetalle.USUARIO.NOMBRE + ' ' + objetoDetalle.USUARIO.APELLIDO_PATERNO,
       fecha: objetoDetalle.FECHA,
@@ -268,6 +268,7 @@ export class ProcesosComponent implements OnInit, OnDestroy {
       estado: objetoDetalle.PROCESOS.ESTADO,
       descripcion: objetoDetalle.PROCESOS.DESCRIPCION,
     };
+    //console.log("detalleCambios", this.detalleCambios)
     this.verModal = true;
 
   }

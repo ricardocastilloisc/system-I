@@ -318,7 +318,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
           //console.log(response);
           this.modalMensaje("modalEstado", "Error al ejecutar proceso: " + response.descripcion);
           //console.log("Enviar Bitacora Fallo");
-          this.serviciosProcesos.generarAuditoria("FALLO", response.descripcion);
+          this.serviciosProcesos.generarAuditoria("FALLO", response.descripcion, null);
         }
       } catch (e) {
         this.modalMensaje("modalEstado", "Error al ejecutar proceso")
@@ -326,7 +326,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
       }
     } else if (this.CATESTADOS[0]?.ESTADO_EJECUCION === 'INICIADO') {
       this.modalMensaje("modalEstado", "El proceso se encuentra en ejecución");
-      this.serviciosProcesos.generarAuditoria("FALLO", "El proceso se encontraba en ejecución");
+      this.serviciosProcesos.generarAuditoria("FALLO", "El proceso se encontraba en ejecución", null);
     } else (
       this.modalMensaje("modalEstado", "Error al ejecutar proceso")
     )
