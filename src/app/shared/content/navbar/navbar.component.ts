@@ -6,7 +6,7 @@ import {
   Component,
   HostListener,
   OnInit,
-  OnDestroy,
+  OnDestroy
 } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AuthService } from 'src/app/services/auth.service';
@@ -21,8 +21,8 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import * as moment from 'moment';
 import { APIService } from '../../../API.service';
+import { ProcesosService } from 'src/app/services/procesos.service';
 import { notificacionSelect } from '../../../ReduxStore/actions/notificacionSelect/notificacionSelect.actions';
-
 declare var $: any;
 
 @Component({
@@ -32,6 +32,7 @@ declare var $: any;
 })
 export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   @HostListener('window:resize', ['$event'])
+
   onResize() {
     this.resizeMenuContent();
   }
@@ -72,8 +73,10 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     private NotificacionesService: NotificacionesService,
     private router: Router,
     private toastr: ToastrService,
-    private api: APIService
+    private api: APIService,
+    private ProcesosService: ProcesosService
   ) { }
+
   ngOnDestroy(): void {
     this.NotificacionesSubActivo$.unsubscribe();
     this.store.dispatch(unSetnotificaciones());
@@ -497,8 +500,35 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   validarPantallaEnProcesos(data: any): void {
     const ruta = this.arrayRuta()[0];
+    let idPantalla;
+    let idNotificacion;
     if (ruta.includes('Procesos')) {
-      console.log('Aqui hay que validar si esta en procesos y es el mismo que esta visualizando entonces actualiza la tabla de información.')
+      this.store.select(
+        ({ AUDGENEJECUCIONESPROCESO }) => AUDGENEJECUCIONESPROCESO.AUDGENEJECUCIONESPROCESO
+      ).subscribe(res => {
+        if (res) {
+          idPantalla = res.ID_PROCESO;
+          //console.log('AUDGENEJECUCIONESPROCESO', res);
+          if (data.onUpdateSiaGenAudEstadoProcesosDev.ID_PROCESO) {
+            idNotificacion = data.onUpdateSiaGenAudEstadoProcesosDev.ID_PROCESO;
+            //console.log('data', data);
+            if (idPantalla === idNotificacion) {
+              //console.log('data', this.verEstado(data));
+              //if (this.verEstado(data.onUpdateSiaGenAudEstadoProcesosDev) !== '') {
+                if (data.onUpdateSiaGenAudEstadoProcesosDev.ETAPA_FINAL_ESTADO_FINAL) {
+                //console.log('data', this.verEstado(data));
+                const message = {
+                  idProceso: idPantalla,
+                  estado: 'CONTINUAR'
+                };
+                // send message to subscribers via observable subject
+                this.ProcesosService.sendUpdate(JSON.stringify(message));
+              }
+            }
+          }
+        }
+      });
+
     }
   }
 }

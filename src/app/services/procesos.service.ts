@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { AuthService } from './auth.service';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AppState } from '../ReduxStore/app.reducers';
 import { AuditoriaService } from './auditoria.service';
@@ -13,6 +13,16 @@ import { AuditoriaService } from './auditoria.service';
 })
 
 export class ProcesosService {
+  
+  private subjectName = new Subject<any>(); //need to create a subject
+
+  sendUpdate(message: string) { //the component that wants to update something, calls this fn
+    this.subjectName.next({ text: message }); //next() will feed the value in Subject
+  }
+
+  getUpdate(): Observable<any> { //the receiver component calls this function 
+    return this.subjectName.asObservable(); //it returns as an observable to which the receiver funtion will subscribe
+  }
 
   constructor(
     private store: Store<AppState>, private authService: AuthService, private auditoria: AuditoriaService,

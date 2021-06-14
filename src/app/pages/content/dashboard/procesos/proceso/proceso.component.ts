@@ -32,6 +32,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { ProcesosService } from 'src/app/services/procesos.service';
 
 @Component({
   selector: 'app-proceso',
@@ -77,6 +78,10 @@ export class ProcesoComponent implements OnInit, OnDestroy {
   fechaInicio: Date;
   fechaFin: Date;
 
+  estado = '';
+  messageReceived: any;
+  private subscriptionName: Subscription; //important to create a subscription
+
   constructor(
     private store: Store<AppState>,
     private rutaActiva: ActivatedRoute,
@@ -86,8 +91,22 @@ export class ProcesoComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private modalService: NgbModal,
     private datepipe: DatePipe,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private ProcesosService: ProcesosService
   ) {
+
+    this.subscriptionName = this.ProcesosService.getUpdate().subscribe
+    (message => { //message contains the data sent from service
+      this.messageReceived = JSON.parse(message.text).idProceso;
+      this.estado = JSON.parse(message.text).estado;
+      console.log('subscriptionName', this.messageReceived, this.estado);
+      if (this.estado === 'CONTINUAR'){
+        this.consultarDetalle(this.messageReceived, null);
+        this.estado = 'DETENER';
+        this.subscriptionName.unsubscribe();
+      }
+    });
+
     this.Loading$ = this.store
       .select(({ AUDGENESTADOPROCESOS }) => AUDGENESTADOPROCESOS.error)
       .subscribe((res) => {
@@ -107,9 +126,12 @@ export class ProcesoComponent implements OnInit, OnDestroy {
     this.store.dispatch(UnsetAUDGENPROCESO());
     this.store.dispatch(UnsetAUDGENESTADOPROCESO());
     this.store.dispatch(UnsetAUDGENEJECUCIONPROCESO());
+    this.subscriptionName.unsubscribe();
   }
 
-  ngAfterViewInit() { }
+  ngAfterViewInit() {
+ 
+  }
 
   replazarCaracterEspecial = (value) => {
     return new Date(value + 'Z').toString();
@@ -328,6 +350,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
   }
 
   consultarDetalle(idProceso, fecha) {
+
     this.area = this.obtenerArea();
     // console.log(this.area);
 
@@ -348,6 +371,11 @@ export class ProcesoComponent implements OnInit, OnDestroy {
       ({ AUDGENEJECUCIONESPROCESO }) =>
         AUDGENEJECUCIONESPROCESO.AUDGENEJECUCIONESPROCESO
     );
+
+
+    this.estado = 'FINAL';
+
+
     // .pipe(map(res => {
     //   if (res == null) return res
     //   else
