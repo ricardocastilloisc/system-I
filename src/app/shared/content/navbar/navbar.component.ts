@@ -73,7 +73,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     private router: Router,
     private toastr: ToastrService,
     private api: APIService
-  ) {}
+  ) { }
   ngOnDestroy(): void {
     this.NotificacionesSubActivo$.unsubscribe();
     this.store.dispatch(unSetnotificaciones());
@@ -100,7 +100,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
           ArrayRuta.push(elementoValidar.ValorEsp);
         }
       });
-
       if (!coincidencia && elementoRuta !== '') {
         let ruta = '';
         ruta = elementoRuta.split('%20').join(' ').toString();
@@ -113,6 +112,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
 
+    //console.log('ArrayRuta', ArrayRuta)
     return ArrayRuta;
   };
 
@@ -289,6 +289,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
               this.NotificacionesSubActivo$ =
                 this.api.OnUpdateSiaGenAudEstadoProcesosDevListener.subscribe(
                   ({ value }: any) => {
+
                     const { data } = value;
                     const { onUpdateSiaGenAudEstadoProcesosDev } = data;
                     let arrayValidador = this.ValidadoresDeInterfaces.filter(
@@ -296,11 +297,14 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
                         e['FLUJO'] ===
                         onUpdateSiaGenAudEstadoProcesosDev['INTERFAZ']
                     );
+                    //console.log('NotificacionesSubActivo', data)
+                    //console.log('arrayValidador', arrayValidador)
 
+                    this.validarPantallaEnProcesos(data);
                     if (arrayValidador.length > 0) {
                       if (
                         onUpdateSiaGenAudEstadoProcesosDev[
-                          'ESTADO_EJECUCION'
+                        'ESTADO_EJECUCION'
                         ] === 'TERMINADO'
                       ) {
                         let tempNoticicaciones = JSON.parse(
@@ -318,6 +322,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
                               onUpdateSiaGenAudEstadoProcesosDev
                             ) === 'EXITOSO'
                           ) {
+                            //console.log('abrirToass')
                             this.abrirToass(
                               this.verEstado(
                                 onUpdateSiaGenAudEstadoProcesosDev
@@ -389,12 +394,12 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   irAlProceso = (data: NOTIFICACION_INTERFACE) => {
-    console.log("irAlProceso", data)
-    const url = 'procesos/diurno/'+data.INTERFAZ
-    this.store.dispatch(notificacionSelect({notificacionSelect:data}))    
-    this.router.navigateByUrl(url).then( () => {
+    //console.log("irAlProceso", data)
+    const url = 'procesos/diurno/' + data.INTERFAZ
+    this.store.dispatch(notificacionSelect({ notificacionSelect: data }))
+    this.router.navigateByUrl(url).then(() => {
       this.eliminarNotificacion(data.ID_PROCESO);
-    }) 
+    })
 
   }
 
@@ -440,6 +445,9 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   };
 
   abrirToass = (estado, msn) => {
+
+    this.arrayRuta();
+
     let mensaje =
       '<div class="row justify-content-center align-items-center textoAddUpdateregistro"><div class="col-12 tamanioFont" ><img class="successRegistro"/>PROCESO ';
 
@@ -485,5 +493,12 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
         area = res;
       });
     return area;
+  }
+
+  validarPantallaEnProcesos(data: any): void {
+    const ruta = this.arrayRuta()[0];
+    if (ruta.includes('Procesos')) {
+      console.log('Aqui hay que validar si esta en procesos y es el mismo que esta visualizando entonces actualiza la tabla de información.')
+    }
   }
 }
