@@ -250,7 +250,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
         .ListCATPROCESOS(bodyProcesos.filter, bodyProcesos.limit)
         .then(({ items }) => {
           this.titulo = auditoria.proceso;
-          this.consultarDetalle(auditoria.idProceso, null);
+          this.consultarDetalle(auditoria.idProceso.toLowerCase(), null);
           this.spinner.hide();
         });
       localStorage.removeItem('audProcesos');

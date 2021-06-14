@@ -260,7 +260,7 @@ export class ProcesosComponent implements OnInit, OnDestroy {
     //console.log("objetoDetalle", objetoDetalle)
     this.detalleCambios = {
       idProceso: objetoDetalle.PROCESOS.ID_PROCESO,
-      sigla:  objetoDetalle.PROCESOS.SIGLA,
+      sigla: objetoDetalle.PROCESOS.SIGLA,
       proceso: objetoDetalle.PROCESOS.NOMBRE,
       usuario: objetoDetalle.USUARIO.NOMBRE + ' ' + objetoDetalle.USUARIO.APELLIDO_PATERNO,
       fecha: objetoDetalle.FECHA,
@@ -318,12 +318,23 @@ export class ProcesosComponent implements OnInit, OnDestroy {
   }
 
   redireccionProceso = (detalleCambios: any) => {
-    const url = 'procesos/diurno/' + detalleCambios.proceso;
+    const url = 'procesos/diurno/' + detalleCambios.sigla;
     localStorage.setItem('audProcesos', JSON.stringify(detalleCambios));
     this.router.navigateByUrl(url).then(() => {
       //console.log("navigateByUrl", detalleCambios.proceso)
     })
 
+  }
+
+  valiarIdProceso(detalleCambios: any): boolean {
+    //console.log('idProceso', detalleCambios.idProceso)
+    let flag = false;
+    if (detalleCambios.idProceso) {
+      if (detalleCambios.idProceso.length > 0) {
+        flag = true;
+      }
+    }
+    return flag;
   }
 
 }

@@ -187,7 +187,7 @@
                     <button class="btn bottonCerrarModal" (click)="ocultarModal()">
                         Cerrar
                     </button>
-                    <button class="btn bottonContinuarModal" (click)="redireccionProceso(detalleCambios)">
+                    <button class="btn bottonContinuarModal" (click)="redireccionProceso(detalleCambios)" *ngIf="valiarIdProceso(detalleCambios)">
                         Ver ejecución
                     </button>
                 </div>
