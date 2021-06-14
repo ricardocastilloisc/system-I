@@ -25,9 +25,9 @@ export type AUDGENPROCESOS = {
   MENSAJE_NEGOCIO?: string | null;
   MENSAJE_SOPORTE?: string | null;
   NEGOCIO?: string | null;
-  PROCESO?: PROCESO;
+  PROCESO?: PROCESO | null;
   SERVICIOAWS?: string | null;
-  USUARIO?: USUARIO;
+  USUARIO?: USUARIO | null;
   TIPO?: string | null;
   NIVEL?: string | null;
   STEP?: string | null;
@@ -60,7 +60,7 @@ export type CreateCATPROCESOSInput = {
 
 export type CATPROCESOS = {
   __typename: "CATPROCESOS";
-  PROCESO?: string;
+  PROCESO: string;
   ARRANQUE?: string | null;
   DESCRIPCION?: string | null;
   NEGOCIO?: string | null;
@@ -81,14 +81,14 @@ export type CreateCATPERMISOSInput = {
 
 export type CATPERMISOS = {
   __typename: "CATPERMISOS";
-  ID?: string;
+  ID: string;
   AREA?: string | null;
-  AUDITORIA?: AUDITORIA;
-  CATALOGOS?: CATALOGOS;
+  AUDITORIA?: AUDITORIA | null;
+  CATALOGOS?: CATALOGOS | null;
   FLUJO?: string | null;
-  PROCESOS?: PROCESOS;
+  PROCESOS?: PROCESOS | null;
   ROL?: string | null;
-  USUARIOS?: USUARIOS;
+  USUARIOS?: USUARIOS | null;
   NEGOCIO?: string | null;
 };
 
@@ -170,7 +170,7 @@ export type SiaGenAudEstadoProcesosDev = {
   FECHA_ACTUALIZACION?: string | null;
   FECHA_CREADO?: string | null;
   FECHA_FINALIZADO?: string | null;
-  ID_PROCESO?: string;
+  ID_PROCESO: string;
   INSUMO?: string | null;
   INTERFAZ?: string | null;
   TIPO_PROCESO?: string | null;
@@ -205,16 +205,16 @@ export type DeleteSiaGenAudEstadoProcesosDevInput = {
 
 export type AUDGENUSUARIOS = {
   __typename: "AUDGENUSUARIOS";
-  ID?: string;
+  ID: string;
   FECHA?: string | null;
   CORREO?: string | null;
   AREA_NEGOCIO?: string | null;
   MODULO?: string | null;
   ROL?: string | null;
-  USUARIO?: AUD_USER;
-  SECCION?: AUD_SECCION;
-  PROCESOS?: AUD_PROCESOS;
-  CATALOGOS?: AUD_CATALOGOS;
+  USUARIO?: AUD_USER | null;
+  SECCION?: AUD_SECCION | null;
+  PROCESOS?: AUD_PROCESOS | null;
+  CATALOGOS?: AUD_CATALOGOS | null;
   PERMISOS_USUARIOS?: Array<AUD_PERMISOS | null> | null;
 };
 
@@ -235,6 +235,8 @@ export type AUD_SECCION = {
 
 export type AUD_PROCESOS = {
   __typename: "AUD_PROCESOS";
+  ID_PROCESO?: string | null;
+  SIGLA?: string | null;
   NOMBRE?: string | null;
   ACCION?: string | null;
   DESCRIPCION?: string | null;
@@ -629,6 +631,8 @@ export type GetAUDGENUSUARIOSQuery = {
   } | null;
   PROCESOS?: {
     __typename: "AUD_PROCESOS";
+    ID_PROCESO?: string | null;
+    SIGLA?: string | null;
     NOMBRE?: string | null;
     ACCION?: string | null;
     DESCRIPCION?: string | null;
@@ -689,6 +693,8 @@ export type ListAUDGENUSUARIOSQuery = {
     } | null;
     PROCESOS?: {
       __typename: "AUD_PROCESOS";
+      ID_PROCESO?: string | null;
+      SIGLA?: string | null;
       NOMBRE?: string | null;
       ACCION?: string | null;
       DESCRIPCION?: string | null;
@@ -1745,6 +1751,8 @@ export class APIService {
           }
           PROCESOS {
             __typename
+            ID_PROCESO
+            SIGLA
             NOMBRE
             ACCION
             DESCRIPCION
@@ -1815,6 +1823,8 @@ export class APIService {
             }
             PROCESOS {
               __typename
+              ID_PROCESO
+              SIGLA
               NOMBRE
               ACCION
               DESCRIPCION
