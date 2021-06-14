@@ -19,6 +19,8 @@ query GetAUDGENUSUARIOS($ID: String!) {
       SUBSECCION
     }
     PROCESOS {
+      ID_PROCESO
+      SIGLA
       NOMBRE
       ACCION
       DESCRIPCION
@@ -71,6 +73,8 @@ query ListAUDGENUSUARIOS($MODULO: String) {
         SUBSECCION
       }
       PROCESOS {
+        ID_PROCESO
+        SIGLA
         NOMBRE
         ACCION
         DESCRIPCION
