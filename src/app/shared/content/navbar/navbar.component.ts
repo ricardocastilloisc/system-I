@@ -389,11 +389,12 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   irAlProceso = (data: NOTIFICACION_INTERFACE) => {
+    console.log("irAlProceso", data)
     const url = 'procesos/diurno/'+data.INTERFAZ
-    this.store.dispatch(notificacionSelect({notificacionSelect:data}))
+    this.store.dispatch(notificacionSelect({notificacionSelect:data}))    
     this.router.navigateByUrl(url).then( () => {
       this.eliminarNotificacion(data.ID_PROCESO);
-    })
+    }) 
 
   }
 

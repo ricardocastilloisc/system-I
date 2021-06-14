@@ -109,7 +109,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
     this.store.dispatch(UnsetAUDGENEJECUCIONPROCESO());
   }
 
-  ngAfterViewInit() {}
+  ngAfterViewInit() { }
 
   replazarCaracterEspecial = (value) => {
     return new Date(value + 'Z').toString();
@@ -140,7 +140,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
 
     this.DataUser$.subscribe((res) => (this.DataUser = res)).unsubscribe();
 
-    console.log(this.DataUser.attributes['custom:negocio']);
+    //console.log(this.DataUser.attributes['custom:negocio']);
     this.AUDGENESTADOPROCESOS$ = this.store
       .select(
         ({ AUDGENESTADOPROCESOS }) => AUDGENESTADOPROCESOS.AUDGENESTADOPROCESO
@@ -188,6 +188,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
       FECHA_FIN: this.fechaFin.toISOString().replace('9Z', ''),
     };
 
+
     this.store.dispatch(LoadAUDGENESTADOPROCESOS({ consult: body }));
 
     // this.llenarTabla(this.page);
@@ -231,6 +232,32 @@ export class ProcesoComponent implements OnInit, OnDestroy {
             });
         }
       });
+
+
+    /*************************************/
+    /********* A U D I T O R I A *********/
+    /*************** inicio **************/
+    let auditoria = JSON.parse(localStorage.getItem('audProcesos'));
+    if (auditoria) {
+      //console.log('auditoria', auditoria)
+      this.spinner.show();
+      let array = window.location.pathname.split('/');
+      let bodyProcesos = {
+        filter: { TIPO: { eq: array[2].toUpperCase() } },
+        limit: 1000,
+      };
+      this.api
+        .ListCATPROCESOS(bodyProcesos.filter, bodyProcesos.limit)
+        .then(({ items }) => {
+          this.titulo = auditoria.proceso;
+          this.consultarDetalle(auditoria.idProceso, null);
+          this.spinner.hide();
+        });
+      localStorage.removeItem('audProcesos');
+    }
+    /**************** fin ****************/
+    /********* A U D I T O R I A *********/
+    /*************************************/
   }
 
   openModal() {
@@ -302,15 +329,15 @@ export class ProcesoComponent implements OnInit, OnDestroy {
 
   consultarDetalle(idProceso, fecha) {
     this.area = this.obtenerArea();
-    console.log(this.area);
+    // console.log(this.area);
 
     this.ocultarbusqueda = true;
 
-    console.log(fecha);
+    //  console.log(fecha);
 
     let format = this.datepipe.transform(fecha, 'yyyy-MM-dd');
 
-    console.log(format);
+    //  console.log(format);
     this.paginaActualProceso = 1;
 
     // this.api
@@ -360,7 +387,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
           })
         );
     } else if (this.rolesValids(this.DataUser, [this.Administrador])) {
-      console.log('entre al admin');
+      // console.log('entre al admin');
       this.AUDGENPROCESOS$ = this.store
         .select(({ AUDGENPROCESOS }) => AUDGENPROCESOS.AUDGENPROCESOS)
         .pipe(
@@ -431,7 +458,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
         fechaInicialFiltro = new Date(fechaInicialParseada);
         fechaInicialFiltro.setMinutes(
           fechaInicialFiltro.getMinutes() +
-            fechaInicialFiltro.getTimezoneOffset()
+          fechaInicialFiltro.getTimezoneOffset()
         );
 
         fechaFinalFiltro = new Date(fechaInicialParseada);
@@ -489,8 +516,8 @@ export class ProcesoComponent implements OnInit, OnDestroy {
         };
         this.store.dispatch(LoadAUDGENESTADOPROCESOS({ consult: body }));
       } else if (fechaInicialFiltro !== null && idProceso === null) {
-        console.log(fechaInicialFiltro.toISOString().replace('0Z', ''));
-        console.log(fechaFinalFiltro.toISOString().replace('0Z', ''));
+        //console.log(fechaInicialFiltro.toISOString().replace('0Z', ''));
+        //console.log(fechaFinalFiltro.toISOString().replace('0Z', ''));
         let body = {
           INTERFAZ: this.rutaActiva.snapshot.params.id,
           FECHA_INICIO: fechaInicialFiltro.toISOString().replace('0Z', ''),
@@ -498,10 +525,10 @@ export class ProcesoComponent implements OnInit, OnDestroy {
         };
         this.store.dispatch(LoadAUDGENESTADOPROCESOS({ consult: body }));
       } else {
-        console.log('else');
-        console.log(idProceso);
-        console.log(fechaInicialFiltro.toISOString().replace('0Z', ''));
-        console.log(fechaFinalFiltro.toISOString().replace('0Z', ''));
+        //console.log('else');
+        //console.log(idProceso);
+        //console.log(fechaInicialFiltro.toISOString().replace('0Z', ''));
+        //console.log(fechaFinalFiltro.toISOString().replace('0Z', ''));
         let body = {
           FECHA_INICIO: fechaInicialFiltro.toISOString().replace('0Z', ''),
           FECHA_FIN: fechaFinalFiltro.toISOString().replace('9Z', ''),

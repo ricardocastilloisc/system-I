@@ -10,6 +10,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 declare var $: any;
 
@@ -52,6 +53,7 @@ export class ProcesosComponent implements OnInit, OnDestroy {
     private modalService: NgbModal,
     private spinner: NgxSpinnerService,
     private fb: FormBuilder,
+    private router: Router,
     private authService: AuthService
   ) { }
 
@@ -255,8 +257,10 @@ export class ProcesosComponent implements OnInit, OnDestroy {
   }
 
   openModal(objetoDetalle: AUDGENUSUARIO_INTERFACE): void {
-    console.log("objetoDetalle", objetoDetalle)
+    //console.log("objetoDetalle", objetoDetalle)
     this.detalleCambios = {
+      //idProceso: objetoDetalle.PROCESOS.ID_PROCESO,
+      idProceso: 'cf346e4b8fe146d5b441292388f32ca8',
       proceso: objetoDetalle.PROCESOS.NOMBRE,
       usuario: objetoDetalle.USUARIO.NOMBRE + ' ' + objetoDetalle.USUARIO.APELLIDO_PATERNO,
       fecha: objetoDetalle.FECHA,
@@ -310,6 +314,15 @@ export class ProcesosComponent implements OnInit, OnDestroy {
     }
 
     return response;
+  }
+
+  redireccionProceso = (detalleCambios: any) => {
+    const url = 'procesos/diurno/' + detalleCambios.proceso;
+    localStorage.setItem('audProcesos', JSON.stringify(detalleCambios));
+    this.router.navigateByUrl(url).then(() => {
+      //console.log("navigateByUrl", detalleCambios.proceso)
+    })
+
   }
 
 }

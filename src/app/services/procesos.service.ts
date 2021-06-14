@@ -47,7 +47,8 @@ export class ProcesosService {
       //console.log("Respuesta llamado proceso",response)
       return response = {
         codigo: 'EXITO',
-        descripcion: 'La solicitud fue exitosa.'
+        descripcion: 'La solicitud fue exitosa.',
+        idProceso: JSON.parse(data).uuid
       };
     })
       .catch(function (error) {
@@ -59,21 +60,20 @@ export class ProcesosService {
     ;
   }
 
-  generarAuditoria(estado: string, resultado: string): void {
+  generarAuditoria(estado: string, resultado: string, idProceso?): void {
     const proceso = JSON.parse(localStorage.getItem('proceso'));
     const today = new Date().toISOString();
-    let tipo = localStorage.getItem('tipoProceso');
-
+    let tipo = '';
     let area: String = '';
     let rol = '';
     let correo = '';
     let apellidoPaterno = '';
     let nombre = '';
-
-    if (tipo === null) {
+    if (localStorage.getItem('tipoProceso')) {
+      tipo = localStorage.getItem('tipoProceso');
+    } else {
       tipo = 'DIURNO';
     }
-
     this.store
       .select(({ usuario }) => usuario.user)
       .subscribe((res) => {
@@ -85,10 +85,8 @@ export class ProcesosService {
     this.store
       .select(({ usuario }) => usuario.area)
       .subscribe((res) => {
-        //console.log(res)
         area = res;
       });
-
     let payload = {
       areaNegocio: area,
       rol: rol,
@@ -100,20 +98,19 @@ export class ProcesosService {
         nombre: nombre,
       },
       procesos: {
-        nombre: proceso.descripcion,
+        idProceso: idProceso,
+        sigla: proceso.sigla,
+        nombre: proceso.nombre,
         descripcion: resultado,
         accion: "INICIAR",
         estado: estado,
-        tipo: proceso.tipo
+        tipo: tipo
       },
     };
-
     //console.log("payload", payload);
-
     const payloadString = JSON.stringify(payload);
-
+    //console.log("payloadString", payloadString);
     this.auditoria.enviarBitacoraUsuarios(payloadString);
-
     localStorage.removeItem('proceso');
     localStorage.removeItem('tipoProceso');
 

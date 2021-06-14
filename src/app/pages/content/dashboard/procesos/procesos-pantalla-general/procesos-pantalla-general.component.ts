@@ -87,15 +87,15 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
     private datePipe: DatePipe
   ) {
 
-    this.Loading$ =  this.store.select(
+    this.Loading$ = this.store.select(
       ({ CATPERMISOS }) => CATPERMISOS.error
-    ).subscribe( (res => {
+    ).subscribe((res => {
 
-      if(res){
+      if (res) {
 
         //this.authService.signOut()
- 
-      }else{
+
+      } else {
 
       }
     }))
@@ -151,7 +151,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
 
 
     //this.api.ListCATPERMISOS(this.negocios, this.area, this.DataUser.attributes["custom:rol"].toUpperCase()).then(res => console.log('resultado', res))
-    
+
     this.store.dispatch(LoadCATPROCESOS({ consult: bodyProcesos }));
 
 
@@ -223,7 +223,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
 
   }
 
-  setTipo(tipo: string):void {
+  setTipo(tipo: string): void {
     //console.log("setDiurnos", tipo);
     localStorage.setItem("tipoProceso", tipo);
   };
@@ -245,11 +245,10 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
 
   openModal(content, nombreProceso, descripcionProceso) {
     //console.log("nombreProceso", nombreProceso, "descripcionProceso", descripcionProceso);
-    
+
     let proceso = {
-      nombre: nombreProceso,
-      descripcion: descripcionProceso,
-      tipo: "DIURNO"
+      sigla: nombreProceso,
+      nombre: descripcionProceso
     };
     localStorage.setItem('proceso', JSON.stringify(proceso));
 
@@ -269,22 +268,22 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
     let CATESTADOS;
     let todayDate = new Date()
     let fechaInicio = new Date();
-    fechaInicio.setHours(0,0,0,0);
+    fechaInicio.setHours(0, 0, 0, 0);
 
     // console.log('FechaInicio: ', fechaInicio)
     // console.log('FechaInicioUTC: ', fechaInicio.toISOString())
     let fechaFin = new Date();
-    fechaFin.setHours(23,59,59,999);
+    fechaFin.setHours(23, 59, 59, 999);
 
     //console.log(this.datePipe.transform(todayDate, "dd-MM-yyyy"))
 
     this.spinner.show();
 
     let body = {
-      INTERFAZ: this.procesoEjecutar ,
+      INTERFAZ: this.procesoEjecutar,
     }
 
-    await this.api.ListSiaGenAudEstadoProcesosDevs(body.INTERFAZ, fechaInicio.toISOString().replace('0Z', ''),fechaFin.toISOString().replace('9Z', '')).then(res => {
+    await this.api.ListSiaGenAudEstadoProcesosDevs(body.INTERFAZ, fechaInicio.toISOString().replace('0Z', ''), fechaFin.toISOString().replace('9Z', '')).then(res => {
 
       this.CATESTADOS = res.items.slice().sort(function (a, b) { return new Date(b.FECHA_ACTUALIZACION).getTime() - new Date(a.FECHA_ACTUALIZACION).getTime() })
 
@@ -303,13 +302,12 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
       //console.log("this.procesoEjecutar", this.procesoEjecutar, correo, area, idEjecucion)
       try {
         const response = await this.serviciosProcesos.iniciarProceso(this.procesoEjecutar, correo, area)
-
-        
+        //console.log('response', response);
         if (response.codigo == 'EXITO') {
           this.spinner.hide();
           this.modalMensaje("modalEstado", "Se inicio el proceso")
           //console.log("Enviar Bitacora Exito");
-          this.serviciosProcesos.generarAuditoria("EXITO", "Se inició el proceso");
+          this.serviciosProcesos.generarAuditoria("EXITO", "Se inició el proceso", response.idProceso);
         } else if (response.descripcion.includes('401')) {
           this.spinner.hide();
           this.modalService.dismissAll();
@@ -317,7 +315,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
         }
         else {
           this.spinner.hide();
-          //console.log(response);          
+          //console.log(response);
           this.modalMensaje("modalEstado", "Error al ejecutar proceso: " + response.descripcion);
           //console.log("Enviar Bitacora Fallo");
           this.serviciosProcesos.generarAuditoria("FALLO", response.descripcion);
