@@ -95,7 +95,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
     private ProcesosService: ProcesosService
   ) {
 
-    
+
 
     this.Loading$ = this.store
       .select(({ AUDGENESTADOPROCESOS }) => AUDGENESTADOPROCESOS.error)
@@ -120,7 +120,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
   }
 
   ngAfterViewInit() {
- 
+
   }
 
   replazarCaracterEspecial = (value) => {
@@ -130,18 +130,18 @@ export class ProcesoComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
 
     this.subscriptionName = this.ProcesosService.getUpdate().subscribe
-    (message => { //message contains the data sent from service
-      this.messageReceived = JSON.parse(message.text).idProceso;
-      this.estado = JSON.parse(message.text).estado;
-      //console.log('subscriptionName', this.messageReceived, this.estado);
-      if (this.estado === 'CONTINUAR'){
-        this.consultarDetalle(this.messageReceived, null);
-        this.estado = 'DETENER';
-        this.subscriptionName.unsubscribe();
-      }
-    });
+      (message => { //message contains the data sent from service
+        this.messageReceived = JSON.parse(message.text).idProceso;
+        this.estado = JSON.parse(message.text).estado;
+        //console.log('subscriptionName', this.messageReceived, this.estado);
+        if (this.estado === 'CONTINUAR') {
+          this.consultarDetalle(this.messageReceived, null);
+          this.estado = 'DETENER';
+          this.subscriptionName.unsubscribe();
+        }
+      });
     this.authService.refreshToken();
-    
+
     this.titulo = JSON.parse(localStorage.getItem('Titulo'));
 
     this.ocultarbusqueda = false;
