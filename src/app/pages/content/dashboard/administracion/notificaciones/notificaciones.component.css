@@ -8,14 +8,14 @@
     display: flex;
     flex-wrap: wrap;
   }
-  
+
   .content {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
   }
-  
+
   div.card-busqueda {
     width: 90%;
     background: #ffffff 0% 0% no-repeat padding-box;
@@ -31,7 +31,7 @@
     border-left: 10px solid #035FA4;
     box-shadow: 4px 4px 10px #00000033;
   }
-  
+
   .card-busqueda div {
     color: #035FA4;
     border: black;
@@ -42,7 +42,7 @@
     align-items: center;
     font: bold 20px FS Elliot Pro;
   }
-  
+
   .card-busqueda div > button {
     background-color: #0091DA;
     color: white;
@@ -52,7 +52,7 @@
     font: bold 20px FS Elliot Pro;
     border: none;
   }
-  
+
   div.card-lista-design-general {
     width: auto;
     min-width: 477px;
@@ -61,7 +61,7 @@
     flex-wrap: wrap;
     vertical-align: middle;
   }
-  
+
   table.listado-design-general th {
     background-color: #035FA4;
     font: bold 18px FS Elliot Pro;
@@ -69,13 +69,13 @@
     height: 40px;
     font: bold 18px FS Elliot Pro;
   }
-  
+
   section {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
   }
-  
+
   .col2-row2 {
     display: flex;
     justify-content: center;
@@ -85,7 +85,7 @@
     flex-basis: 50%;
     margin-bottom: 1.5%;
   }
-  
+
   .selectList {
     text-align: left;
     font: normal normal normal 18px/45px FS Elliot Pro;
@@ -99,15 +99,15 @@
     border-radius: 9px;
     opacity: 1;
   }
-  
+
   #correo {
     width: 100%;
   }
-  
+
   #correo .selected-item {
     width: 200px !important;
   }
-  
+
   .limpiarFiltro {
     text-align: right;
     text-decoration: underline;
@@ -119,17 +119,17 @@
   .limpiarFiltro:hover{
     cursor: pointer;
   }
-  
+
   .tamanioFiltroIcono{
     width:12px;
     height:12px;
     margin-top: -4px;
   }
-  
+
   .modal-content{
     background-color: red !important;
   }
-  
+
 
   .detalle-icon {
     background: transparent url("../../../../../../assets/icons/icono-detalle.svg") 0% 0% no-repeat
@@ -140,5 +140,22 @@
     margin: 0 15px;
     padding: 15px;
   }
-  
-  
+
+
+
+
+.show-ejecuciones{
+  visibility: visible;
+  max-height: 30px;
+  opacity: 1;
+  transition: visibility 0.3s, opacity 0.3s, max-height 0.5s linear;
+}
+
+
+.hide-ejecuciones{
+  visibility: hidden;
+  max-height: 0px;
+  opacity: 0;
+  transition: visibility 0.3s, opacity 0.3s, max-height 0.3s linear;
+
+}

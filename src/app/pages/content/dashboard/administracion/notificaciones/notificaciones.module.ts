@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { NotificacionesRoutingModule} from './notificaciones-routing.module'
 import { NotificacionesComponent } from './notificaciones.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -11,7 +13,10 @@ import { NotificacionesComponent } from './notificaciones.component';
   ],
   imports: [
     CommonModule,
-    NotificacionesRoutingModule
+    NotificacionesRoutingModule,
+    ReactiveFormsModule,
+    FormsModule,
+    NgbModule,
   ]
 })
 export class NotificacionesModule { }
