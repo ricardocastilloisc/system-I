@@ -21,6 +21,8 @@ export interface AUDGENUSUARIO_INTERFACE {
       };
     PROCESOS?: {
         __typename: "AUD_PROCESOS";
+        ID_PROCESO?: string | null;
+        SIGLA?: string | null;
         NOMBRE?: string | null;
         ACCION?: string | null;
         DESCRIPCION?: string | null;
