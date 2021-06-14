@@ -624,6 +624,28 @@
         "name" : "AUD_PROCESOS",
         "description" : null,
         "fields" : [ {
+          "name" : "ID_PROCESO",
+          "description" : null,
+          "args" : [ ],
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "isDeprecated" : false,
+          "deprecationReason" : null
+        }, {
+          "name" : "SIGLA",
+          "description" : null,
+          "args" : [ ],
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "String",
+            "ofType" : null
+          },
+          "isDeprecated" : false,
+          "deprecationReason" : null
+        }, {
           "name" : "NOMBRE",
           "description" : null,
           "args" : [ ],
