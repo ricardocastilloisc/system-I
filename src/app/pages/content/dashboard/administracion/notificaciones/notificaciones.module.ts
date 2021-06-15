@@ -5,6 +5,7 @@ import { NotificacionesRoutingModule} from './notificaciones-routing.module'
 import { NotificacionesComponent } from './notificaciones.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 
 @NgModule({
@@ -17,6 +18,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     ReactiveFormsModule,
     FormsModule,
     NgbModule,
+    NgxSpinnerModule 
   ]
 })
 export class NotificacionesModule { }
