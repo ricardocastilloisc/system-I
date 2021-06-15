@@ -10,8 +10,8 @@ import { AppState } from '../ReduxStore/app.reducers';
 import * as authActions from '../ReduxStore/actions/usuario.actions';
 import { User } from '../model/user';
 import { Usuario } from '../model/usuario.model';
-import { Router  } from '@angular/router';
-import { EArea } from '../validators/roles';
+import { Router } from '@angular/router';
+import { EArea, ERole } from '../validators/roles';
 import { setUserArea } from '../ReduxStore/actions/usuario.actions';
 
 
@@ -27,7 +27,7 @@ try {
 export class AuthService {
 
   codeChallenge: string;
-  constructor(private store: Store<AppState>, private router: Router) {}
+  constructor(private store: Store<AppState>, private router: Router) { }
 
   initAuthData = () => {
     Auth.currentAuthenticatedUser()
@@ -36,13 +36,15 @@ export class AuthService {
         //console.log('Usser result: ',JSON.stringify(result));
         if (result.getSignInUserSession().isValid()) {
           const user = Usuario.fromAmplify(new User(result));
-            localStorage.setItem(
-              'access',
-              (await Auth.currentSession())
-                .getAccessToken()
-                .getJwtToken()
-                .toString()
-            );
+
+
+          localStorage.setItem(
+            'access',
+            (await Auth.currentSession())
+              .getAccessToken()
+              .getJwtToken()
+              .toString()
+          );
 
           const areas = [
             EArea.Tesoreria,
@@ -59,14 +61,20 @@ export class AuthService {
             }
           });
 
+          //console.log("user", user);
+          if (areasStore.includes(EArea.Soporte)) {
+            user.attributes['custom:rol'] = ERole.Administrador;
+          }
+
+          if (!user.attributes.given_name) {
+            user.attributes.given_name = user.name + ' - Guest';
+          }
+
           localStorage.setItem(
             'area',
             areasStore.toString()
           );
-          localStorage.setItem(
-            'negocio',
-            user.attributes['custom:negocio']
-          );
+
 
           this.store.dispatch(authActions.setUser({ user }));
           let area = this.obtenerArea();
@@ -84,14 +92,11 @@ export class AuthService {
   };
 
   signIn = () => {
-
     window.location.assign(environment.urlExternalLogin);
-
   };
 
 
-  userHeaders()
-  {
+  userHeaders() {
     return new HttpHeaders({
       'authorization': 'Bearer ' + this.getToken(),
       'content-type': 'application/json'
@@ -100,7 +105,7 @@ export class AuthService {
 
 
 
-  refreshToken = async () =>{
+  refreshToken = async () => {
 
 
     this.initAuthData()
