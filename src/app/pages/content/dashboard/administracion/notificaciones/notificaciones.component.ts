@@ -20,6 +20,12 @@ export class NotificacionesComponent implements OnInit {
 
   NotificacionesSettings: AUDGENUSUARIO_INTERFACE[] = [];
 
+  NotificacionesSettingTemp: AUDGENUSUARIO_INTERFACE;
+
+  validateSeconds = false;
+
+  enableArray = [{ value: true }, { value: false }];
+
   /*
 
   PanelNotificacionesService
@@ -33,47 +39,93 @@ export class NotificacionesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.initValuesPanel();
+  }
+
+  abrirToass = () => {
+    let mensaje =
+      '<div class="row justify-content-center align-items-center textoAddUpdateregistro"><img class="successRegistro"/>';
+
+    //mensaje = mensaje + 'Registro' 'exitoso';
+    mensaje = mensaje + 'Registro';
+
+    mensaje = mensaje + ' actualizado ';
+
+    mensaje = mensaje + '</div>';
+
+    this.toastr.show(mensaje, null, {
+      timeOut: 1500,
+      toastClass:
+        'etiquetaAddRegistro etiquetaAddRegistro row justify-content-center',
+      positionClass: 'toast-top-right',
+      enableHtml: true,
+      progressBar: true,
+      progressAnimation: 'increasing',
+    });
+  };
+
+  initValuesPanel = (edit = false) => {
     this.spinner.show();
-
+    this.validateSeconds = false;
     this.PanelNotificacionesService.getListadoNotificacionesSettings()
-      .then((res: any) => {
-        this.NotificacionesSettings = res;
+      .then(
+        (res: any) => {
+          this.NotificacionesSettings = res;
+          this.spinner.hide();
 
-        console.log(this.NotificacionesSettings);
-        this.spinner.hide();
-      }, ()=>{
-
-        this.spinner.hide();
-      })
+          if (edit) {
+            this.abrirToass();
+          }
+        },
+        () => {
+          this.spinner.hide();
+        }
+      )
       .catch(() => {
         this.spinner.hide();
       });
 
     this.Forms = new FormGroup({
       schedule: new FormControl('', [Validators.required]),
-      seconds: new FormControl('', [Validators.required]),
       enabled: new FormControl('', [Validators.required]),
       name: new FormControl('', [Validators.required]),
     });
-  }
+  };
 
-  mostrarCardEditarResgistro = (NotificacionesSetting) => {
+  updateRegister = () => {
+    this.PanelNotificacionesService.updateNotificacionSettings(
+      this.NotificacionesSettingTemp.id,
+      this.Forms.value
+    ).then(() => {
+      this.mostrarEjecucionesProcesos = true;
+      this.initValuesPanel(true);
+    });
+  };
+
+  mostrarCardEditarResgistro = (
+    NotificacionesSetting: AUDGENUSUARIO_INTERFACE
+  ) => {
+    this.NotificacionesSettingTemp = NotificacionesSetting;
     this.mostrarEjecucionesProcesos = false;
+    this.validateSeconds = false;
     this.Forms = null;
     this.Forms = new FormGroup({
       schedule: new FormControl(NotificacionesSetting.schedule, [
         Validators.required,
       ]),
-      seconds: new FormControl(NotificacionesSetting.seconds, [
-        Validators.required,
-      ]),
       enabled: new FormControl(NotificacionesSetting.enabled, [
         Validators.required,
       ]),
-      name: new FormControl(NotificacionesSetting.name, [
-        Validators.required,
-      ]),
+      name: new FormControl(NotificacionesSetting.name, [Validators.required]),
     });
+
+    if (NotificacionesSetting?.seconds) {
+      this.Forms.addControl(
+        'seconds',
+        new FormControl(NotificacionesSetting.seconds, [Validators.required])
+      );
+      this.validateSeconds = true;
+    }
   };
 
   ocultarCardAgregarResgistro = () => {

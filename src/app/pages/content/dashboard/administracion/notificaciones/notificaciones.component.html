@@ -82,14 +82,14 @@
                 [id]="schedule"
               />
             </div>
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-6" *ngIf="validateSeconds">
               <label class="labelFormAgregarRegistro" for="seconds">
                 seconds
               </label>
 
               <input
                 formControlName="seconds"
-                type="text"
+                type="number"
                 class="form-control"
                 [id]="seconds"
               />
@@ -112,12 +112,14 @@
                 >Enabled
               </label>
 
-              <input
+              <select
                 formControlName="enabled"
-                type="text"
                 class="form-control"
                 [id]="enabled"
-              />
+              >
+              <option *ngFor="let itemEnabled of enableArray" [value]="itemEnabled.value">{{itemEnabled.value}}</option>
+
+              </select>
             </div>
 
           </div>
@@ -141,7 +143,10 @@
 
         <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
           <div class="row justify-content-center">
-            <button [disabled]="Forms.invalid" class="btn btnAgregarRegistro">
+            <button
+            (click)="updateRegister()"
+            [disabled]="Forms.invalid"
+            class="btn btnAgregarRegistro">
               Actualizar
             </button>
           </div>

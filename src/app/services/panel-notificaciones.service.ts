@@ -28,12 +28,16 @@ export class PanelNotificacionesService {
         array.toString().toLowerCase()
       );
     }
-
-
-
     return this.http
       .get(this.url + 'cloudwatchrules', {
         params: QueryParams,
+        headers: this.AuthService.userHeaders(),
+      })
+      .toPromise();
+  };
+  updateNotificacionSettings = (ID, DataValues) => {
+    return this.http
+      .post(this.url + 'cloudwatchrules/' + ID, DataValues, {
         headers: this.AuthService.userHeaders(),
       })
       .toPromise();
