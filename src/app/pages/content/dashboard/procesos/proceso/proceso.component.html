@@ -245,7 +245,7 @@
                 </div>
             </div>
         </div>
-        <div *ngIf="AUDGENESTADOPROCESOS.length !== 0">
+        
             <div [ngClass]="{'show-ejecuciones': mostrarEjecucionesProcesos == false, 'hide-ejecuciones': mostrarEjecucionesProcesos == true}"
                 class="row justify-content-center hide-div ">
                 <div
@@ -399,7 +399,7 @@
                     </pagination-template>
                 </div>
             </div>
-        </div>
+        
     </div>
     <ng-template #modalEstado let-modal id="modalFiltro">
         <div class="modal-body">

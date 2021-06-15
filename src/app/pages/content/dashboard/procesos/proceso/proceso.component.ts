@@ -237,7 +237,10 @@ export class ProcesoComponent implements OnInit, OnDestroy {
     this.store
       .select(({ notificacionSelect }) => notificacionSelect.notificacionSelect)
       .subscribe((res) => {
-        if (res) {
+        let notificaciones = JSON.parse(localStorage.getItem('notProcesos'));
+        console.log('notificaciones', notificaciones)
+        if (res && notificaciones !== null) {
+          console.log('notificacionSelect', res)
           this.spinner.show();
           let array = window.location.pathname.split('/');
           let bodyProcesos = {
@@ -253,6 +256,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
 
               this.consultarDetalle(res.ID_PROCESO, res.FECHA_CREADO);
               this.spinner.hide();
+              localStorage.removeItem('notProcesos');
             });
         }
       });
@@ -263,7 +267,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
     /*************** inicio **************/
     let auditoria = JSON.parse(localStorage.getItem('audProcesos'));
     if (auditoria) {
-      //console.log('auditoria', auditoria)
+      console.log('auditoria', auditoria)
       this.spinner.show();
       let array = window.location.pathname.split('/');
       let bodyProcesos = {
