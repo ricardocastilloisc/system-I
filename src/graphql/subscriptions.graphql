@@ -219,6 +219,8 @@ subscription OnCreateSiaGenAudEstadoProcesosDev {
     INSUMO
     INTERFAZ
     TIPO_PROCESO
+    RESPONSABLE_ERROR
+    ORIGEN_ERROR
   }
 }
 subscription OnUpdateSiaGenAudEstadoProcesosDev {
@@ -243,6 +245,8 @@ subscription OnUpdateSiaGenAudEstadoProcesosDev {
     INSUMO
     INTERFAZ
     TIPO_PROCESO
+    RESPONSABLE_ERROR
+    ORIGEN_ERROR
   }
 }
 subscription OnDeleteSiaGenAudEstadoProcesosDev {
@@ -267,5 +271,7 @@ subscription OnDeleteSiaGenAudEstadoProcesosDev {
     INSUMO
     INTERFAZ
     TIPO_PROCESO
+    RESPONSABLE_ERROR
+    ORIGEN_ERROR
   }
 }

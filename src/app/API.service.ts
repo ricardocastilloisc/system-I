@@ -25,9 +25,9 @@ export type AUDGENPROCESOS = {
   MENSAJE_NEGOCIO?: string | null;
   MENSAJE_SOPORTE?: string | null;
   NEGOCIO?: string | null;
-  PROCESO?: PROCESO | null;
+  PROCESO?: PROCESO;
   SERVICIOAWS?: string | null;
-  USUARIO?: USUARIO | null;
+  USUARIO?: USUARIO;
   TIPO?: string | null;
   NIVEL?: string | null;
   STEP?: string | null;
@@ -60,7 +60,7 @@ export type CreateCATPROCESOSInput = {
 
 export type CATPROCESOS = {
   __typename: "CATPROCESOS";
-  PROCESO: string;
+  PROCESO?: string;
   ARRANQUE?: string | null;
   DESCRIPCION?: string | null;
   NEGOCIO?: string | null;
@@ -81,14 +81,14 @@ export type CreateCATPERMISOSInput = {
 
 export type CATPERMISOS = {
   __typename: "CATPERMISOS";
-  ID: string;
+  ID?: string;
   AREA?: string | null;
-  AUDITORIA?: AUDITORIA | null;
-  CATALOGOS?: CATALOGOS | null;
+  AUDITORIA?: AUDITORIA;
+  CATALOGOS?: CATALOGOS;
   FLUJO?: string | null;
-  PROCESOS?: PROCESOS | null;
+  PROCESOS?: PROCESOS;
   ROL?: string | null;
-  USUARIOS?: USUARIOS | null;
+  USUARIOS?: USUARIOS;
   NEGOCIO?: string | null;
 };
 
@@ -170,10 +170,12 @@ export type SiaGenAudEstadoProcesosDev = {
   FECHA_ACTUALIZACION?: string | null;
   FECHA_CREADO?: string | null;
   FECHA_FINALIZADO?: string | null;
-  ID_PROCESO: string;
+  ID_PROCESO?: string;
   INSUMO?: string | null;
   INTERFAZ?: string | null;
   TIPO_PROCESO?: string | null;
+  RESPONSABLE_ERROR?: string | null;
+  ORIGEN_ERROR?: string | null;
 };
 
 export type UpdateSiaGenAudEstadoProcesosDevInput = {
@@ -197,6 +199,8 @@ export type UpdateSiaGenAudEstadoProcesosDevInput = {
   INSUMO?: string | null;
   INTERFAZ?: string | null;
   TIPO_PROCESO?: string | null;
+  RESPONSABLE_ERROR?: string | null;
+  ORIGEN_ERROR?: string | null;
 };
 
 export type DeleteSiaGenAudEstadoProcesosDevInput = {
@@ -205,16 +209,16 @@ export type DeleteSiaGenAudEstadoProcesosDevInput = {
 
 export type AUDGENUSUARIOS = {
   __typename: "AUDGENUSUARIOS";
-  ID: string;
+  ID?: string;
   FECHA?: string | null;
   CORREO?: string | null;
   AREA_NEGOCIO?: string | null;
   MODULO?: string | null;
   ROL?: string | null;
-  USUARIO?: AUD_USER | null;
-  SECCION?: AUD_SECCION | null;
-  PROCESOS?: AUD_PROCESOS | null;
-  CATALOGOS?: AUD_CATALOGOS | null;
+  USUARIO?: AUD_USER;
+  SECCION?: AUD_SECCION;
+  PROCESOS?: AUD_PROCESOS;
+  CATALOGOS?: AUD_CATALOGOS;
   PERMISOS_USUARIOS?: Array<AUD_PERMISOS | null> | null;
 };
 
@@ -558,6 +562,8 @@ export type CreateSiaGenAudEstadoProcesosDevMutation = {
   INSUMO?: string | null;
   INTERFAZ?: string | null;
   TIPO_PROCESO?: string | null;
+  RESPONSABLE_ERROR?: string | null;
+  ORIGEN_ERROR?: string | null;
 };
 
 export type UpdateSiaGenAudEstadoProcesosDevMutation = {
@@ -582,6 +588,8 @@ export type UpdateSiaGenAudEstadoProcesosDevMutation = {
   INSUMO?: string | null;
   INTERFAZ?: string | null;
   TIPO_PROCESO?: string | null;
+  RESPONSABLE_ERROR?: string | null;
+  ORIGEN_ERROR?: string | null;
 };
 
 export type DeleteSiaGenAudEstadoProcesosDevMutation = {
@@ -606,6 +614,8 @@ export type DeleteSiaGenAudEstadoProcesosDevMutation = {
   INSUMO?: string | null;
   INTERFAZ?: string | null;
   TIPO_PROCESO?: string | null;
+  RESPONSABLE_ERROR?: string | null;
+  ORIGEN_ERROR?: string | null;
 };
 
 export type GetAUDGENUSUARIOSQuery = {
@@ -910,6 +920,8 @@ export type GetSiaGenAudEstadoProcesosDevQuery = {
   INSUMO?: string | null;
   INTERFAZ?: string | null;
   TIPO_PROCESO?: string | null;
+  RESPONSABLE_ERROR?: string | null;
+  ORIGEN_ERROR?: string | null;
 };
 
 export type ListSiaGenAudEstadoProcesosDevsQuery = {
@@ -936,6 +948,8 @@ export type ListSiaGenAudEstadoProcesosDevsQuery = {
     INSUMO?: string | null;
     INTERFAZ?: string | null;
     TIPO_PROCESO?: string | null;
+    RESPONSABLE_ERROR?: string | null;
+    ORIGEN_ERROR?: string | null;
   } | null> | null;
   nextToken?: string | null;
 };
@@ -964,6 +978,8 @@ export type QuerySiaGenAudEstadoProcesosDevsByINTERFAZIndexQuery = {
     INSUMO?: string | null;
     INTERFAZ?: string | null;
     TIPO_PROCESO?: string | null;
+    RESPONSABLE_ERROR?: string | null;
+    ORIGEN_ERROR?: string | null;
   } | null> | null;
   nextToken?: string | null;
 };
@@ -992,6 +1008,8 @@ export type ListSiaGenAudEstadoProcesosDevsPorFechaQuery = {
     INSUMO?: string | null;
     INTERFAZ?: string | null;
     TIPO_PROCESO?: string | null;
+    RESPONSABLE_ERROR?: string | null;
+    ORIGEN_ERROR?: string | null;
   } | null> | null;
   nextToken?: string | null;
 };
@@ -1234,6 +1252,8 @@ export type OnCreateSiaGenAudEstadoProcesosDevSubscription = {
   INSUMO?: string | null;
   INTERFAZ?: string | null;
   TIPO_PROCESO?: string | null;
+  RESPONSABLE_ERROR?: string | null;
+  ORIGEN_ERROR?: string | null;
 };
 
 export type OnUpdateSiaGenAudEstadoProcesosDevSubscription = {
@@ -1258,6 +1278,8 @@ export type OnUpdateSiaGenAudEstadoProcesosDevSubscription = {
   INSUMO?: string | null;
   INTERFAZ?: string | null;
   TIPO_PROCESO?: string | null;
+  RESPONSABLE_ERROR?: string | null;
+  ORIGEN_ERROR?: string | null;
 };
 
 export type OnDeleteSiaGenAudEstadoProcesosDevSubscription = {
@@ -1282,6 +1304,8 @@ export type OnDeleteSiaGenAudEstadoProcesosDevSubscription = {
   INSUMO?: string | null;
   INTERFAZ?: string | null;
   TIPO_PROCESO?: string | null;
+  RESPONSABLE_ERROR?: string | null;
+  ORIGEN_ERROR?: string | null;
 };
 
 @Injectable({
@@ -1638,6 +1662,8 @@ export class APIService {
           INSUMO
           INTERFAZ
           TIPO_PROCESO
+          RESPONSABLE_ERROR
+          ORIGEN_ERROR
         }
       }`;
     const gqlAPIServiceArguments: any = {
@@ -1676,6 +1702,8 @@ export class APIService {
           INSUMO
           INTERFAZ
           TIPO_PROCESO
+          RESPONSABLE_ERROR
+          ORIGEN_ERROR
         }
       }`;
     const gqlAPIServiceArguments: any = {
@@ -1714,6 +1742,8 @@ export class APIService {
           INSUMO
           INTERFAZ
           TIPO_PROCESO
+          RESPONSABLE_ERROR
+          ORIGEN_ERROR
         }
       }`;
     const gqlAPIServiceArguments: any = {
@@ -2142,6 +2172,8 @@ export class APIService {
           INSUMO
           INTERFAZ
           TIPO_PROCESO
+          RESPONSABLE_ERROR
+          ORIGEN_ERROR
         }
       }`;
     const gqlAPIServiceArguments: any = {
@@ -2185,6 +2217,8 @@ export class APIService {
             INSUMO
             INTERFAZ
             TIPO_PROCESO
+            RESPONSABLE_ERROR
+            ORIGEN_ERROR
           }
           nextToken
         }
@@ -2239,6 +2273,8 @@ export class APIService {
             INSUMO
             INTERFAZ
             TIPO_PROCESO
+            RESPONSABLE_ERROR
+            ORIGEN_ERROR
           }
           nextToken
         }
@@ -2287,6 +2323,8 @@ export class APIService {
             INSUMO
             INTERFAZ
             TIPO_PROCESO
+            RESPONSABLE_ERROR
+            ORIGEN_ERROR
           }
           nextToken
         }
@@ -2662,6 +2700,8 @@ export class APIService {
           INSUMO
           INTERFAZ
           TIPO_PROCESO
+          RESPONSABLE_ERROR
+          ORIGEN_ERROR
         }
       }`
     )
@@ -2696,6 +2736,8 @@ export class APIService {
           INSUMO
           INTERFAZ
           TIPO_PROCESO
+          RESPONSABLE_ERROR
+          ORIGEN_ERROR
         }
       }`
     )
@@ -2730,6 +2772,8 @@ export class APIService {
           INSUMO
           INTERFAZ
           TIPO_PROCESO
+          RESPONSABLE_ERROR
+          ORIGEN_ERROR
         }
       }`
     )

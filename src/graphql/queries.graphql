@@ -275,6 +275,8 @@ query GetSiaGenAudEstadoProcesosDev($ID_PROCESO: String!) {
     INSUMO
     INTERFAZ
     TIPO_PROCESO
+    RESPONSABLE_ERROR
+    ORIGEN_ERROR
   }
 }
 query ListSiaGenAudEstadoProcesosDevs(
@@ -310,6 +312,8 @@ query ListSiaGenAudEstadoProcesosDevs(
       INSUMO
       INTERFAZ
       TIPO_PROCESO
+      RESPONSABLE_ERROR
+      ORIGEN_ERROR
     }
     nextToken
   }
@@ -345,6 +349,8 @@ query QuerySiaGenAudEstadoProcesosDevsByINTERFAZIndex(
       INSUMO
       INTERFAZ
       TIPO_PROCESO
+      RESPONSABLE_ERROR
+      ORIGEN_ERROR
     }
     nextToken
   }
@@ -372,6 +378,8 @@ query ListSiaGenAudEstadoProcesosDevsPorFecha($FECHA: String) {
       INSUMO
       INTERFAZ
       TIPO_PROCESO
+      RESPONSABLE_ERROR
+      ORIGEN_ERROR
     }
     nextToken
   }

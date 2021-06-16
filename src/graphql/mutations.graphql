@@ -221,6 +221,8 @@ mutation CreateSiaGenAudEstadoProcesosDev(
     INSUMO
     INTERFAZ
     TIPO_PROCESO
+    RESPONSABLE_ERROR
+    ORIGEN_ERROR
   }
 }
 mutation UpdateSiaGenAudEstadoProcesosDev(
@@ -247,6 +249,8 @@ mutation UpdateSiaGenAudEstadoProcesosDev(
     INSUMO
     INTERFAZ
     TIPO_PROCESO
+    RESPONSABLE_ERROR
+    ORIGEN_ERROR
   }
 }
 mutation DeleteSiaGenAudEstadoProcesosDev(
@@ -273,5 +277,7 @@ mutation DeleteSiaGenAudEstadoProcesosDev(
     INSUMO
     INTERFAZ
     TIPO_PROCESO
+    RESPONSABLE_ERROR
+    ORIGEN_ERROR
   }
 }
