@@ -4,12 +4,12 @@ import { ChartOptions, ChartDataSets } from 'chart.js';
 import { Label, Color } from 'ng2-charts';
 
 @Component({
-  selector: 'app-interfaces',
-  templateUrl: './interfaces.component.html',
-  styleUrls: ['./interfaces.component.css']
+  selector: 'app-interfases',
+  templateUrl: './interfases.component.html',
+  styleUrls: ['./interfases.component.css']
 })
 
-export class InterfacesComponent implements OnInit {
+export class InterfasesComponent implements OnInit {
 
 
   // LINE
@@ -35,9 +35,6 @@ export class InterfacesComponent implements OnInit {
 
   constructor() {
   }
-
-  
-  
 
   ngOnInit(): void {
 

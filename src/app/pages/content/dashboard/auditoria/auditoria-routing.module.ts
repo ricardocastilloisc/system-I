@@ -15,9 +15,9 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'interfaces',
+        path: 'interfases',
         loadChildren: () =>
-          import('./interfaces/interfaces.module').then((m) => m.InterfacesModule),
+          import('./interfases/interfases.module').then((m) => m.InterfasesModule),
       },
       {
         path: 'catalogos',

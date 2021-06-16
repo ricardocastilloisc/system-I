@@ -387,6 +387,13 @@ img.alineadoTextoImagenCentro {
   margin-right: 10px;
 }
 
+img.alineadoTextoImagenCentroMin {
+  vertical-align: middle;
+  float: left;
+  width: 12%;
+  margin-right: 10px;
+}
+
 .alineadoTextoDerecha {
   text-align: right;
   margin-top: 15px;

@@ -2,18 +2,18 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChartsModule } from 'ng2-charts';
 
-import { InterfacesRoutingModule } from './interfaces-routing.module';
-import { InterfacesComponent } from './interfaces.component';
+import { InterfasesRoutingModule } from './interfases-routing.module';
+import { InterfasesComponent } from './interfases.component';
 
 
 @NgModule({
   declarations: [
-    InterfacesComponent
+    InterfasesComponent
   ],
   imports: [
     CommonModule,
-    InterfacesRoutingModule,
+    InterfasesRoutingModule,
     ChartsModule
   ]
 })
-export class InterfacesModule { }
+export class InterfasesModule { }
