@@ -5,12 +5,17 @@ import { ToastrService } from 'ngx-toastr';
 import { PanelNotificacionesService } from '../../../../../services/panel-notificaciones.service';
 import { AUDGENUSUARIO_INTERFACE } from '../../../../../model/panelNotificaciones/panelnotificaciones.model';
 import { NgxSpinnerService } from 'ngx-spinner';
+const cronstrue = require('cronstrue/i18n');
+const cronAWS = require('aws-cron-parser');
 
 @Component({
   selector: 'app-notificaciones',
   templateUrl: './notificaciones.component.html',
   styleUrls: ['./notificaciones.component.css'],
 })
+
+
+
 export class NotificacionesComponent implements OnInit {
   mostrarEjecucionesProcesos = true;
 
@@ -36,9 +41,28 @@ export class NotificacionesComponent implements OnInit {
     private modalService: NgbModal,
     private spinner: NgxSpinnerService,
     private PanelNotificacionesService: PanelNotificacionesService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
+
+    let cron;
+    let cronFlag;
+    let occurrence;
+    const cronExpression = '59 4 ? * TUE-SAT *';
+    const cronString = cronstrue.toString(cronExpression, { verbose: true, locale: 'es' });
+    if (cronAWS.parse(cronExpression)) {
+      try {
+        cron = cronAWS.parse(cronExpression);
+        occurrence = cronAWS.next(cron, new Date());
+        cronFlag = 'valido';
+      } catch (e) {
+        cronFlag = 'invalido';
+      }
+    } else {
+      cronFlag = 'invalido';
+    }
+    console.log(cronString, ' es ', cronFlag, '. La siguiente ejecucion es ', occurrence);
+
     this.initValuesPanel();
   }
 
