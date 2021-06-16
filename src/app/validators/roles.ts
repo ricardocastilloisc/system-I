@@ -7,8 +7,7 @@ export enum ERole {
 // callbackAwsDetalle --> var negocio = data['UserAttributes'].find((el) => el.Name == 'custom:negocio')['Value'];
 export enum ENegocio {
   Afore = 'Afore',
-  Fondos = 'Fondos',
-  Seguros = 'Seguros'
+  Fondos = 'Fondos'
 }
 // DataUser --> user.usuario.groups
 export enum EArea {

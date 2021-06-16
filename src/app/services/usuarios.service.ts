@@ -36,7 +36,6 @@ export class UsuariosService {
   Negocios = [
     ENegocio.Afore,
     ENegocio.Fondos,
-    ENegocio.Seguros,
   ];
 
   params = {

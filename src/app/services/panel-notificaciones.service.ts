@@ -15,7 +15,7 @@ export class PanelNotificacionesService {
 
     let QueryParams = new HttpParams();
 
-    let array = [ENegocio.Afore, ENegocio.Fondos, ENegocio.Seguros];
+    let array = [ENegocio.Afore, ENegocio.Fondos];
 
     if(localStorage.getItem('negocio')){
       QueryParams = QueryParams.append(

@@ -45,7 +45,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
 
   Permisos = [ERole.Administrador, ERole.Monitor];
 
-  Negocios = [ENegocio.Afore, ENegocio.Fondos, ENegocio.Seguros];
+  Negocios = [ENegocio.Afore, ENegocio.Fondos];
 
   ObjectUsuarioCambiar: UsuarioListado;
 
@@ -187,10 +187,6 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     this.dropdownListCambioDeNegocio = [
       { item_id: ENegocio.Afore, item_text: ENegocio.Afore },
       { item_id: ENegocio.Fondos, item_text: ENegocio.Fondos },
-      {
-        item_id: ENegocio.Seguros,
-        item_text: ENegocio.Seguros,
-      },
     ];
     this.dropdownListFiltroPermisos = [
       { item_id: ERole.Administrador, item_text: ERole.Administrador },
