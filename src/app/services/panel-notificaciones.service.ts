@@ -8,7 +8,7 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class PanelNotificacionesService {
-  url = environment.ENPOINT_RES.catalogos;
+  url = environment.API.endpoints.find((el) => el.name === 'catalogos')['endpoint']
 
   constructor(private http: HttpClient, private AuthService: AuthService) {}
   getListadoNotificacionesSettings = () => {

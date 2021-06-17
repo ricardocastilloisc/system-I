@@ -25,7 +25,7 @@ export const environment = {
       oauth: {
         domain: "sia-app-up.auth.us-east-1.amazoncognito.com",
         scope: ["phone", "email", "openid", "profile"],
-/*
+        /*
         redirectSignIn: "https://dev.d23mbxjbgl0msz.amplifyapp.com/",
         redirectSignOut: "https://dev.d23mbxjbgl0msz.amplifyapp.com/",
         */
@@ -36,14 +36,19 @@ export const environment = {
       },
     }
   },
-  ENPOINT_RES: {
-    catalogos: "https://ixsp0lvu2h.execute-api.us-east-1.amazonaws.com/dev/sia/utileria/"
-  },
   API: {
     endpoints: [
       {
         name: 'sqs-auditoria',
         endpoint: 'https://sqs.us-east-1.amazonaws.com/335672086802/sia-utileria-encolamiento-mensajes-monitoreo-dev.fifo'
+      },
+      {
+        name: 'catalogos',
+        endpoint: 'https://ixsp0lvu2h.execute-api.us-east-1.amazonaws.com/dev/sia/utileria/'
+      },
+      {
+        name: 'auditoria',
+        endpoint: 'https://private-675fde-auditoriainterfases.apiary-mock.com/auditoria'
       },
       {
         name: 'AIMS Y EXCEDENTES',

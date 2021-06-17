@@ -12,7 +12,7 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class CatalogosService {
-  UrlCatalogos = environment.ENPOINT_RES.catalogos;
+  UrlCatalogos = environment.API.endpoints.find((el) => el.name === 'catalogos')['endpoint']
 
   constructor(
     private httpClient: HttpClient,
