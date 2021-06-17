@@ -114,6 +114,7 @@
               <select
                 formControlName="arrayHoras1"
                 class="form-control"
+                (change)="changeEvent($event)"
                 id="arrayHoras1"
               >
                 <option *ngFor="let Horas1 of arrayHoras1" [value]="Horas1">

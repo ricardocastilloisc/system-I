@@ -62,13 +62,14 @@ export class NotificacionesComponent implements OnInit {
     .toString()
     .split(',');
 
-  arrayHoras2 = (
-    'No aplica,' + Array.from({ length: 23 }, (v, k) => k).toString()
-  ).split(',');
+  arrayHoras2 = []
 
-  arrayHoras1 = Array.from({ length: 23 }, (v, k) => k)
-    .toString()
-    .split(',');
+  arrayHoras1 = []
+
+
+    arrayHorasOriginal = (
+      'No aplica,' + Array.from({ length: 23 }, (v, k) => k).toString()
+    ).split(',');
 
   elementoEliminar;
 
@@ -161,6 +162,9 @@ export class NotificacionesComponent implements OnInit {
           (e) => e.value !== this.Forms.get('arrayDias1').value
         );
         break;
+      case 'arrayHoras1':
+        this.arrayHoras2 = this.arrayHorasOriginal.filter(e => e !== this.Forms.get('arrayHoras1').value)
+        break;
     }
   };
 
@@ -235,12 +239,18 @@ export class NotificacionesComponent implements OnInit {
     this.arrayDias1 = this.arrayDiasOrginal.filter((e) => e.value !== 'NA');
     this.arrayDias2 = this.arrayDiasOrginal.filter((e) => e.value !== 'MON');
 
+
+    this.arrayHoras2 = this.arrayHorasOriginal.filter(e => e !== '0')
+    this.arrayHoras1 = this.arrayHorasOriginal.filter(e => e !== 'No aplica')
+
+
+
     this.Forms = new FormGroup({
       schedule: new FormControl('', [Validators.required]),
       minutos: new FormControl('No aplica', [Validators.required]),
       minutos2: new FormControl(0, [Validators.required]),
       arrayHoras2: new FormControl('No aplica', [Validators.required]),
-      arrayHoras1: new FormControl(0, [Validators.required]),
+      arrayHoras1: new FormControl('0', [Validators.required]),
       arrayDias1: new FormControl('MON', [Validators.required]),
       arrayDias2: new FormControl('NA', [Validators.required]),
       enabled: new FormControl('', [Validators.required]),
