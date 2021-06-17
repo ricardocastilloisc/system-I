@@ -41,25 +41,25 @@ export class UsuariosService {
   params = {
     GroupName:
       'Tesoreria' /* es un dato de entrada de la pantalla (grupo al que se agrega o remueve el usuario) */,
-    UserPoolId: environment.UserPoolId,
+    UserPoolId: environment.amplifyConfig.Auth.userPoolId,
     Username:
       'azure_rwayeowx9nsigogmrb6adqmpgrl2hohoivn5bgsobja' /* identificador del usuario en al user pool */,
   };
 
   paramsUser = {
-    UserPoolId: environment.UserPoolId,
+    UserPoolId: environment.amplifyConfig.Auth.userPoolId,
     Username:
       'azure_rwayeowx9nsigogmrb6adqmpgrl2hohoivn5bgsobja' /* identificador del usuario en al user pool */,
   };
 
   paramsGroups = {
-    UserPoolId: environment.UserPoolId,
+    UserPoolId: environment.amplifyConfig.Auth.userPoolId,
   };
 
   paramsUserGroups = {
     GroupName: 'Tesoreria' /* es un dato de entrada de la pantalla */,
-    Limit: environment.Limit,
-    UserPoolId: environment.UserPoolId,
+    Limit: environment.amplifyConfig.Auth.limit,
+    UserPoolId: environment.amplifyConfig.Auth.userPoolId,
   };
 
   paramsAtributos = {
@@ -75,19 +75,19 @@ export class UsuariosService {
     ],
     Username:
       'azure_rwayeowx9nsigogmrb6adqmpgrl2hohoivn5bgsobja' /* identificador del usuario en el user pool */,
-    UserPoolId: environment.UserPoolId,
+    UserPoolId: environment.amplifyConfig.Auth.userPoolId,
   };
 
   paramsGrupoUsuario = {
     Username:
       'azure_rwayeowx9nsigogmrb6adqmpgrl2hohoivn5bgsobja' /* identificador del usuario en el user pool */,
-    UserPoolId: environment.UserPoolId,
+    UserPoolId: environment.amplifyConfig.Auth.userPoolId,
   };
 
   paramsDeleteUser = {
     Username:
       'azure_hgjelpfjjwxffms6_5oti6ydqcjh7jhjdxn9706cxf0' /* identificador del usuario en el user pool */,
-    UserPoolId: environment.UserPoolId,
+    UserPoolId: environment.amplifyConfig.Auth.userPoolId,
   };
   numeroDeProcesos = 0;
 
@@ -95,7 +95,7 @@ export class UsuariosService {
 
   paramSignOut = {
     Username: this.authService.getToken() as string,
-    UserPoolId: environment.UserPoolId,
+    UserPoolId: environment.amplifyConfig.Auth.userPoolId,
   };
 
   logout(): void {
@@ -111,7 +111,7 @@ export class UsuariosService {
     // metodo para eliminar un usuario del user pool
     const paramsDeleteUser = {
       Username: Username,
-      UserPoolId: environment.UserPoolId,
+      UserPoolId: environment.amplifyConfig.Auth.userPoolId,
     };
     return cognitoidentityserviceprovider.adminDeleteUser(paramsDeleteUser).promise();
   }
@@ -128,8 +128,8 @@ export class UsuariosService {
     // método para consultar todos los usuarios que existen en un grupo del user pool
     const params = {
       GroupName: grupo,
-      Limit: environment.Limit,
-      UserPoolId: environment.UserPoolId,
+      Limit: environment.amplifyConfig.Auth.limit,
+      UserPoolId: environment.amplifyConfig.Auth.userPoolId,
     };
     return cognitoidentityserviceprovider.listUsersInGroup(params);
   };
@@ -222,7 +222,7 @@ export class UsuariosService {
   agregarUsuarioGrupo(grupo, usuario) {
     const params = {
       GroupName: grupo,
-      UserPoolId: environment.UserPoolId,
+      UserPoolId: environment.amplifyConfig.Auth.userPoolId,
       Username: usuario,
     };
     // metodo para agregar a un usuario habilitado en el user pool a un grupo en especifico
@@ -232,7 +232,7 @@ export class UsuariosService {
   eliminarUsuarioGrupo(grupo, usuario) {
     const params = {
       GroupName: grupo,
-      UserPoolId: environment.UserPoolId,
+      UserPoolId: environment.amplifyConfig.Auth.userPoolId,
       Username: usuario,
     };
 
@@ -269,7 +269,7 @@ export class UsuariosService {
 
     const params = {
       GroupName: GrupoOriginal,
-      UserPoolId: environment.UserPoolId,
+      UserPoolId: environment.amplifyConfig.Auth.userPoolId,
       Username: Username,
     };
 
@@ -305,7 +305,7 @@ export class UsuariosService {
   agregarUsuarioGrupoCallback(grupo, usuario) {
     const params = {
       GroupName: grupo,
-      UserPoolId: environment.UserPoolId,
+      UserPoolId: environment.amplifyConfig.Auth.userPoolId,
       Username: usuario,
     };
 
@@ -334,7 +334,7 @@ export class UsuariosService {
     const paramsAtributos = {
       UserAttributes: UserAttributes,
       Username: Username /* identificador del usuario en el user pool */,
-      UserPoolId: environment.UserPoolId,
+      UserPoolId: environment.amplifyConfig.Auth.userPoolId,
     };
     let terminado = null;
     cognitoidentityserviceprovider.adminUpdateUserAttributes(
@@ -467,7 +467,7 @@ export class UsuariosService {
     const paramsAtributos = {
       UserAttributes: UserAttributes,
       Username: Username /* identificador del usuario en el user pool */,
-      UserPoolId: environment.UserPoolId,
+      UserPoolId: environment.amplifyConfig.Auth.userPoolId,
     };
     return cognitoidentityserviceprovider
       .adminUpdateUserAttributes(paramsAtributos)
@@ -477,7 +477,7 @@ export class UsuariosService {
   obtenerGrupoUsuarioPromise = (usuario) => {
     let params = {
       Username: usuario /* identificador del usuario en el user pool */,
-      UserPoolId: environment.UserPoolId,
+      UserPoolId: environment.amplifyConfig.Auth.userPoolId,
     };
     return cognitoidentityserviceprovider
       .adminListGroupsForUser(params)
