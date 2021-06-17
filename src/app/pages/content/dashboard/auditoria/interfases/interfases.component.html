@@ -1,41 +1,79 @@
-<section>
-    <div class="col-12 row justify-content-center">
-        <p class="titulo">Ejecuciones de las interfases durante 2021</p>
-    </div>
+<ngx-spinner bdColor="rgba(0,0,0,0.5)" size="default" color="#fff" type="ball-scale-ripple" [fullScreen]="true">
+    <p style="color: white"> Cargando... </p>
+</ngx-spinner>
+
+<div class="container-fluid d-flex col-8 align-items-center selector-reporte" style="height: 40px">
+    <button id="left-button" [ngClass]="botonActivado('INTERFASES') ? 'botonActivadoInterfases' : ''"
+        (click)="setPantalla('INTERFASES')">
+        Interfases
+    </button>
+    <button id="right-button" [ngClass]="botonActivado('PROBLEMAS') ? 'botonActivadoInterfases' : ''"
+        (click)="setPantalla('PROBLEMAS')">
+        Problemas Identificados
+    </button>
+</div>
+<div class="card-busqueda">
     <div class="container">
-        <div class="row">
-            <div class="col-4"><p class="text-center">Opciones de filtrado. <span class="badge badge-secondary">TBD</span></p></div>
-            <div class="col-8"><div class="input-group">
-                <input type="text" class="form-control" aria-label="Text input with segmented dropdown button">
-                <div class="input-group-append">
-                    <button type="button" class="btn btn-outline-secondary">Filtrar</button>
-                    <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="sr-only">Toggle Dropdown</span>
-                    </button>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item">Item 1</a>
-                        <a class="dropdown-item">Item 2</a>
-                        <a class="dropdown-item">Item 3</a>
-                        <div role="separator" class="dropdown-divider"></div>
-                        <a class="dropdown-item">Default</a>
-                    </div>
-                </div>
-            </div></div>
-          </div>
-    </div>
-    <div class="card-busqueda">
-        <div class="row justify-content-center">
-            <div class="col-12 col-sm-6 col-md-8">
-                <canvas baseChart width="300" height="300" [datasets]="lineChartData" [labels]="lineChartLabels"
-                    [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend"
-                    [chartType]="lineChartType" [plugins]="lineChartPlugins">
-                </canvas>
+        <div class="row">            
+            <div class="col-4 titulo-filtro"></div>
+            <div class="col-4 justify-content-center titulo-filtro">
+                Filtrar por
             </div>
-            <div class="col-6 col-md-4">
-                <canvas width="400" height="400" id="pieChart">
-                </canvas>
+            <div class="col-4 justify-content-center">
+                <a class="limpiarFiltro">
+                    <img src="assets/icons/icono-eliminar.svg" class="tamanioFiltroIcono"/>Eliminar Filtro
+                </a>
             </div>
         </div>
     </div>
-</section>
+    <div class="container">
+        <div class="row">
+            <div class="col-4 justify-content-center">
+                TIPO
+            </div>
+            <div class="col-4 justify-content-center">
+                NEGOCIO
+            </div>
+            <div class="col-4 justify-content-center">
+                PROCESO
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-4 justify-content-center">
+                <input style="width: 90%; padding-left: 10px" type="date" placeholder="dd-MM-yyyy"
+                    onfocus="(this.type='date')" id="filtroFecha" formControlName="filtroFecha" name="filtroFecha"
+                    [value]="maxDate" max="{{ maxDate| date:'yyyy-MM-dd'}}" />
+            </div>
+            <div class="col-4 justify-content-center">
+                <input style="width: 90%; padding-left: 10px" type="date" placeholder="dd-MM-yyyy"
+                    onfocus="(this.type='date')" id="filtroFecha" formControlName="filtroFecha" name="filtroFecha"
+                    [value]="maxDate" max="{{ maxDate| date:'yyyy-MM-dd'}}" />
+            </div>
+            <div class="col-4 justify-content-center">
+                <button style="cursor: pointer">Filtrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row card-base-grafico">
+    <div class="col-sm-5 col-md-6">
+        <div class="card-grafico">
+            <div class="archivosTitulo d-flex flex-column justify-content-center">
+                Visual #1
+            </div>
+            <canvas baseChart width="300" height="300" [datasets]="lineChartData" [labels]="lineChartLabels"
+                [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend"
+                [chartType]="lineChartType" [plugins]="lineChartPlugins"></canvas>
+        </div>
+    </div>
+    <div class="col-sm-5 offset-sm-2 col-md-6 offset-md-0">
+        <div class="card-grafico">
+            <div class="archivosTitulo d-flex flex-column justify-content-center">
+                Visual #2
+            </div>
+            <canvas id="pieChart"></canvas>
+        </div>
+    </div>
+</div>

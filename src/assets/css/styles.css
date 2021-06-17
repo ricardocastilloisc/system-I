@@ -512,6 +512,11 @@ img.itemsTextoImagenCentro {
   color: white !important;
 }
 
+.botonActivadoInterfases {
+  background-color: #035fa4 !important;
+  color: white !important;
+}
+
 table.listado-design-general {
   color: white;
   width: 100%;
@@ -916,23 +921,19 @@ table.listado-design-general td {
   height: 300px;
   width: 420px;
   background: #125fa4;
+  margin-bottom: 30px;
 }
 
 .tituloPrincipalCatalogos {
   text-align: left;
   font: normal normal bold 18px/45px FS Elliot Pro;
   letter-spacing: 0px;
-
   line-height: 25px;
-
   margin-bottom: 6px;
-
   list-style-type: circle;
-
   content: "\00B0";
   color: #0a8299;
-  /*
-  */
+
 }
 
 .spanColorCatalogosListaTituloPricipal {
