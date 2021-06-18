@@ -1,8 +1,57 @@
 import { Component, OnInit } from '@angular/core';
-import * as Chart from 'chart.js';
-import { ChartOptions, ChartDataSets } from 'chart.js';
-import { Label, Color } from 'ng2-charts';
 import { NgxSpinnerService } from 'ngx-spinner';
+import {
+  Chart,
+  ArcElement,
+  LineElement,
+  BarElement,
+  PointElement,
+  BarController,
+  BubbleController,
+  DoughnutController,
+  LineController,
+  PieController,
+  PolarAreaController,
+  RadarController,
+  ScatterController,
+  CategoryScale,
+  LinearScale,
+  LogarithmicScale,
+  RadialLinearScale,
+  TimeScale,
+  TimeSeriesScale,
+  Decimation,
+  Filler,
+  Legend,
+  Title,
+  Tooltip
+} from 'chart.js';
+
+Chart.register(
+  ArcElement,
+  LineElement,
+  BarElement,
+  PointElement,
+  BarController,
+  BubbleController,
+  DoughnutController,
+  LineController,
+  PieController,
+  PolarAreaController,
+  RadarController,
+  ScatterController,
+  CategoryScale,
+  LinearScale,
+  LogarithmicScale,
+  RadialLinearScale,
+  TimeScale,
+  TimeSeriesScale,
+  Decimation,
+  Filler,
+  Legend,
+  Title,
+  Tooltip
+);
 
 @Component({
   selector: 'app-interfases',
@@ -12,31 +61,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 
 export class InterfasesComponent implements OnInit {
 
-  maxDate: Date;
-
-  public lineChartData: ChartDataSets[] = [
-    { data: [70, 59, 85, 95, 150, 120, 90], label: 'Ejecuciones exitosas' },
-    { data: [0, 5, 2, 10, 15, 7, 1], label: 'Ejecuciones fallidas' },
-  ];
-
-  public lineChartLabels: Label[] = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-
-  public lineChartOptions: (ChartOptions) = {
-    responsive: true,
-  };
-
-  public lineChartColors: Color[] = [
-    {
-      borderColor: 'rgba(75, 192, 192, 1)',
-    },
-    {
-      borderColor: 'rgba(255, 99, 132, 1)',
-    },
-  ];
-
-  public lineChartLegend = true;
-  public lineChartType = 'line';
-  public lineChartPlugins = [];
+  maxDate: Date = new Date();
 
   constructor(private spinner: NgxSpinnerService) {
   }
@@ -54,8 +79,7 @@ export class InterfasesComponent implements OnInit {
   ngOnInit(): void {
     this.spinner.show();
     localStorage.setItem('tipoPantalla', 'INTERFASES');
-    this.maxDate = new Date();
-    let PieChart = new Chart('pieChart', {
+    const visualUno = new Chart('visualUno', {
       type: 'pie',
       data: {
         labels: ['Arranque Automático', 'Arranque Manual'],
@@ -70,11 +94,122 @@ export class InterfasesComponent implements OnInit {
             'rgba(255, 206, 86, 1)',
             'rgba(153, 102, 255, 1)'
           ],
-          borderWidth: .8
+          borderWidth: 2
+        }]
+      }
+    });
+    const visualDos = new Chart('visualDos', {
+      type: 'pie',
+      data: {
+        labels: ['Red Days Todos', 'Green Days Todos'],
+        datasets: [{
+          data: [4, 18],
+          backgroundColor: [
+            '#ffd6d6',
+            '#d7ffd6'
+          ],
+          borderColor: [
+            '#ff7a7a',
+            '#55bd4a'
+          ],
+          borderWidth: 2
         }]
       }
     });
     this.spinner.hide();
+
+    const data = [{ x: 'Enero', net: 100, cogs: 50, gm: 50 }, { x: 'Febrero', net: 100, cogs: 55, gm: 75 }];
+    const myChart = new Chart('ctx', {
+      type: 'bar',
+      data: {
+        labels: ['Enero', 'Febrero'],
+        datasets: [{
+          label: 'Todos',
+          data: data,
+          parsing: {
+            yAxisKey: 'net'
+          }
+        }, {
+          label: 'TI',
+          data: data,
+          parsing: {
+            yAxisKey: 'cogs'
+          },
+          backgroundColor: [
+            'rgba(0, 99, 132, 0.2)'],
+          borderColor: [
+            'rgb(0, 99, 132)']
+        }, {
+          label: 'Proveedores',
+          data: data,
+          parsing: {
+            yAxisKey: 'gm'
+          },
+          backgroundColor: [
+            'rgba(255, 0, 132, 0.2)'],
+          borderColor: [
+            'rgb(255, 0, 132)']
+        },
+        ],
+      },
+      options: {
+        animation: false,
+        normalized: true,
+        responsive: true,
+        skipNull: true,
+        events: ['mousemove', 'mouseout', 'click', 'touchstart', 'touchmove'],
+        interaction: {
+          mode: 'index',
+          axis: 'y'
+        },
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+
+
+    const myChartRadar = new Chart('radar', {
+      type: 'radar',
+      data: {
+        labels: [
+          'MO',
+          'MD',
+          'AIMS Y EXCEDENTES',
+          'CAJA AFORE',
+          'INT CASH'
+        ],
+        datasets: [{
+          label: 'Red Days TI',
+          data: [4, 6, 8, 5, 3],
+          backgroundColor: 'rgba(255, 99, 132, 0.2)',
+          borderColor: 'rgb(255, 99, 132)',
+          pointBackgroundColor: 'rgb(255, 99, 132)',
+          pointBorderColor: '#fff',
+          pointHoverBackgroundColor: '#fff',
+          pointHoverBorderColor: 'rgb(255, 99, 132)'
+        }, {
+          label: 'Green Days TI',
+          data: [14, 13, 20, 17, 14],
+          backgroundColor: '#d7ffd6',
+          borderColor: '#55bd4a',
+          pointBackgroundColor: '#55bd4a',
+          pointBorderColor: '#fff',
+          pointHoverBackgroundColor: '#fff',
+          pointHoverBorderColor: '#55bd4a'
+        }]
+      },
+      options: {
+        elements: {
+          line: {
+            borderWidth: 3
+          }
+        }
+      },
+    });
   }
+
 
 }

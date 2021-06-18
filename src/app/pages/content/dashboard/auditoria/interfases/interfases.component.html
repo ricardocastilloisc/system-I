@@ -14,14 +14,14 @@
 </div>
 <div class="card-busqueda">
     <div class="container">
-        <div class="row">            
+        <div class="row">
             <div class="col-4 titulo-filtro"></div>
             <div class="col-4 justify-content-center titulo-filtro">
                 Filtrar por
             </div>
             <div class="col-4 justify-content-center">
                 <a class="limpiarFiltro">
-                    <img src="assets/icons/icono-eliminar.svg" class="tamanioFiltroIcono"/>Eliminar Filtro
+                    <img src="assets/icons/icono-eliminar.svg" class="tamanioFiltroIcono" />Eliminar Filtro
                 </a>
             </div>
         </div>
@@ -63,9 +63,7 @@
             <div class="archivosTitulo d-flex flex-column justify-content-center">
                 Visual #1
             </div>
-            <canvas baseChart width="300" height="300" [datasets]="lineChartData" [labels]="lineChartLabels"
-                [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend"
-                [chartType]="lineChartType" [plugins]="lineChartPlugins"></canvas>
+            <canvas id="visualUno"></canvas>
         </div>
     </div>
     <div class="col-sm-5 offset-sm-2 col-md-6 offset-md-0">
@@ -73,7 +71,23 @@
             <div class="archivosTitulo d-flex flex-column justify-content-center">
                 Visual #2
             </div>
-            <canvas id="pieChart"></canvas>
+            <canvas id="visualDos"></canvas>
+        </div>
+    </div>
+    <div class="col-sm-5 offset-sm-2 col-md-6 offset-md-0">
+        <div class="card-grafico">
+            <div class="archivosTitulo d-flex flex-column justify-content-center">
+                Visual #3
+            </div>
+            <canvas id="ctx" width="400" height="400">our browser does not support the canvas element.</canvas>
+        </div>
+    </div>
+    <div class="col-sm-5 offset-sm-2 col-md-6 offset-md-0">
+        <div class="card-grafico">
+            <div class="archivosTitulo d-flex flex-column justify-content-center">
+                Visual #4
+            </div>
+            <canvas id="radar" width="400" height="400">our browser does not support the canvas element.</canvas>
         </div>
     </div>
 </div>
