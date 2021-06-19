@@ -31,6 +31,8 @@ export class InterfasesComponent implements OnInit {
 
   detalleExito = false;
   detalleFallo = false;
+  flagMinimizarDiurno = true;
+  flagMinimizarNocturno = false;
 
   single: any[];
   datosDiurnoAfore: any[];
@@ -54,6 +56,7 @@ export class InterfasesComponent implements OnInit {
   isDoughnut = false;
   gradientBar = true;
   gradientPie = true;
+  showDataLabel = true;
   showXAxis = true;
   showYAxis = true;
   showXAxisLabel = true;
@@ -173,6 +176,26 @@ export class InterfasesComponent implements OnInit {
     return this.detalleFallo === true
       ? true
       : false;
+  }
+
+  minimizarDiurno() {
+    return this.flagMinimizarDiurno === true
+      ? true
+      : false;
+  }
+
+  accionMinimizarDiurno() {
+    this.flagMinimizarDiurno = !this.flagMinimizarDiurno;
+  }
+
+  minimizarNocturno() {
+    return this.flagMinimizarNocturno === true
+      ? true
+      : false;
+  }
+
+  accionMinimizarNocturno() {
+    this.flagMinimizarNocturno = !this.flagMinimizarNocturno;
   }
 
   ngOnInit(): void {

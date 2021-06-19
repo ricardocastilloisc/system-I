@@ -11,6 +11,11 @@
         Problemas Identificados
     </button>
 </div>
+<!-- ************************************** -->
+<!-- ************************************** -->
+<!-- **********  F I L T R O S ************ -->
+<!-- ************************************** -->
+<!-- ************************************** -->
 <div class="card-busqueda" [formGroup]="filtroForm">
     <div class="container">
         <div class="row">
@@ -74,22 +79,36 @@
 </div>
 
 <section name="interfases" *ngIf="botonActivado('INTERFASES')">
+<!-- ************************************** -->
+<!-- ************************************** -->
+<!-- **********  D I U R N O S ************ -->
+<!-- ************************************** -->
+<!-- ************************************** -->
 <div class="card-busqueda">
     <div class="row col-12 alert alert-primary justify-content-center">
-        DIURNOS
+        <div class="row">
+            <div class="col-4 titulo-filtro"></div>
+            <div class="col-4 titulo-filtro">DIURNOS</div>
+            <div class="col-4 titulo-filtro justify-content-end">
+                <a (click)="accionMinimizarDiurno()"> 
+                    <img src="assets/icons/arrows-angle-contract.svg" class="tamanioIcono" *ngIf="flagMinimizarDiurno == true"/>
+                    <img src="assets/icons/arrows-angle-expand.svg" class="tamanioIcono" *ngIf="flagMinimizarDiurno == false"/>
+                </a>
+            </div>
+        </div>
     </div>
-    <div class="row col-12">
+    <div class="row col-12" *ngIf="minimizarDiurno()">
         <div class="mh-25 d-inline-block col-sm-6 col-md-5 col-lg-6 justify-content-center">
             <ngx-charts-bar-horizontal scheme="cool" [results]="datosAforeFondos" [xAxis]="showXAxis"
                 [yAxis]="showYAxis" [legend]="showLegend" [legendTitle]="legendTitle" [legendPosition]="legendPosition"
-                [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel"
+                [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [showDataLabel]="showDataLabel"
                 [gradient]="gradientBar" [yAxisLabel]="yAxisLabelNegocio">
             </ngx-charts-bar-horizontal>
         </div>
         <div class="mh-25 d-inline-block col-sm-6 col-md-5 offset-md-2 col-lg-6 offset-lg-0 justify-content-center">
             <ngx-charts-bar-horizontal scheme="nightLights" [results]="datosLanzamiento" [xAxis]="showXAxis"
                 [yAxis]="showYAxis" [legend]="showLegend" [legendTitle]="legendTitle" [legendPosition]="legendPosition"
-                [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel"
+                [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [showDataLabel]="showDataLabel"
                 [gradient]="gradientBar" [yAxisLabel]="yAxisLabel">
             </ngx-charts-bar-horizontal>
         </div>
@@ -123,21 +142,37 @@
         </div>
     </div>
 </div>
+
+<!-- ************************************** -->
+<!-- ************************************** -->
+<!-- ********* N O C T U R N O S ********** -->
+<!-- ************************************** -->
+<!-- ************************************** --> 
 <div class="card-busqueda">
-    <div class="row col-12 alert alert-primary justify-content-center">NOCTURNOS
+    <div class="row col-12 alert alert-primary justify-content-center">        
+        <div class="row">
+            <div class="col-4 titulo-filtro"></div>
+            <div class="col-4 titulo-filtro">NOCTURNOS</div>
+            <div class="col-4 titulo-filtro justify-content-end">
+                <a class="limpiarFiltro" (click)="accionMinimizarNocturno()"> 
+                    <img src="assets/icons/arrows-angle-contract.svg" class="tamanioIcono" *ngIf="flagMinimizarNocturno == true"/>
+                    <img src="assets/icons/arrows-angle-expand.svg" class="tamanioIcono" *ngIf="flagMinimizarNocturno == false"/>
+                </a>
+            </div>
+        </div> 
     </div>
-    <div class="row col-12">
+    <div class="row col-12" *ngIf="minimizarNocturno()">
         <div class="mh-25 d-inline-block col-sm-6 col-md-5 col-lg-6 justify-content-center">
             <ngx-charts-bar-horizontal scheme="cool" [results]="datosAforeFondos" [xAxis]="showXAxis"
                 [yAxis]="showYAxis" [legend]="showLegend" [legendTitle]="legendTitle" [legendPosition]="legendPosition"
-                [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel"
+                [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [showDataLabel]="showDataLabel"
                 [gradient]="gradientBar" [yAxisLabel]="yAxisLabelNegocio">
             </ngx-charts-bar-horizontal>
         </div>
         <div class="mh-25 d-inline-block col-sm-6 col-md-5 offset-md-2 col-lg-6 offset-lg-0 justify-content-center">
             <ngx-charts-bar-horizontal scheme="nightLights" [results]="datosLanzamiento" [xAxis]="showXAxis"
                 [yAxis]="showYAxis" [legend]="showLegend" [legendTitle]="legendTitle" [legendPosition]="legendPosition"
-                [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel"
+                [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [showDataLabel]="showDataLabel"
                 [gradient]="gradientBar" [yAxisLabel]="yAxisLabel">
             </ngx-charts-bar-horizontal>
         </div>
@@ -171,6 +206,12 @@
         </div>
     </div>
 </div>
+
+<!-- ************************************** -->
+<!-- ************************************** -->
+<!-- ***** D E T A L L E  E X I T O S ***** -->
+<!-- ************************************** -->
+<!-- ************************************** --> 
 <div class="card-busqueda" *ngIf="mostrarDetalleExito()">
     <div class="justify-content-center titulo-filtro">
         {{ tituloGraficoExito }}
@@ -178,6 +219,12 @@
     <ngx-charts-advanced-pie-chart scheme="forest" [results]="single" [gradient]="gradient" (select)="onSelect($event)">
     </ngx-charts-advanced-pie-chart>
 </div>
+
+<!-- ************************************** -->
+<!-- ************************************** -->
+<!-- ***** D E T A L L E  F A L L O S ***** -->
+<!-- ************************************** -->
+<!-- ************************************** --> 
 <div class="card-busqueda" *ngIf="mostrarDetalleFallos()">
     <div class="justify-content-center titulo-filtro">
         {{ tituloGraficoFallo }}
@@ -186,6 +233,7 @@
     </ngx-charts-advanced-pie-chart>
 </div>
 </section>
+
 <!--
 <div class="row card-base-grafico">
     <div class="col-sm-6 col-md-5 col-lg-6">

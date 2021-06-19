@@ -209,6 +209,12 @@ section {
   margin-top: -4px;
 }
 
+.tamanioIcono {
+  width: 15px;
+  height: 15px;
+  margin-top: -4px;
+}
+
 .modal-content {
   background-color: red !important;
 }
