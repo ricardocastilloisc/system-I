@@ -1,7 +1,6 @@
 <ngx-spinner bdColor="rgba(0,0,0,0.5)" size="default" color="#fff" type="ball-scale-ripple" [fullScreen]="true">
     <p style="color: white"> Cargando... </p>
 </ngx-spinner>
-
 <div class="container-fluid d-flex col-8 align-items-center selector-reporte" style="height: 40px">
     <button id="left-button" [ngClass]="botonActivado('INTERFASES') ? 'botonActivadoInterfases' : ''"
         (click)="setPantalla('INTERFASES')">
@@ -12,7 +11,7 @@
         Problemas Identificados
     </button>
 </div>
-<div class="card-busqueda">
+<div class="card-busqueda" [formGroup]="filtroForm">
     <div class="container">
         <div class="row">
             <div class="col-4 titulo-filtro"></div>
@@ -20,33 +19,49 @@
                 Filtrar por
             </div>
             <div class="col-4 justify-content-center">
-                <a class="limpiarFiltro">
+                <a class="limpiarFiltro" (click)="limpirarFiltro()">
                     <img src="assets/icons/icono-eliminar.svg" class="tamanioFiltroIcono" />Eliminar Filtro
                 </a>
             </div>
         </div>
     </div>
-    <div class="container">
-        <div class="row">
+    <!-- <div class="container">
+        
+            <div class="row">
             <div class="col-4 justify-content-center">
-                TIPO
+                <ng-multiselect-dropdown style="width: 100%; padding-left: 10px" [placeholder]="'Tipo'" id="filtroTipo"
+                    [settings]="SettingsFiltroDeTipo" [data]="dropdownListFiltroTipo"
+                    [(ngModel)]="selectedItemsFiltroTipo" [ngModelOptions]="{standalone: true}"
+                    (onSelect)="cambiarEtiquetaSeleccionadaGeneral('filtroTipo')">
+                </ng-multiselect-dropdown>
             </div>
             <div class="col-4 justify-content-center">
-                NEGOCIO
+                <ng-multiselect-dropdown style="width: 100%; padding-left: 10px" [placeholder]="'Negocio'"
+                    id="filtroNegocio" [settings]="SettingsFiltroDeNegocio" [data]="dropdownListFiltroNegocio"
+                    [(ngModel)]="selectedItemsFiltroNegocio" [ngModelOptions]="{standalone: true}"
+                    (onSelect)="cambiarEtiquetaSeleccionadaGeneral('filtroNegocio')">
+                </ng-multiselect-dropdown>
             </div>
             <div class="col-4 justify-content-center">
-                PROCESO
+                <ng-multiselect-dropdown style="width: 100%; padding-left: 10px" [placeholder]="'Proceso'"
+                    id="filtroProceso" [settings]="SettingsFiltroDeProceso" [data]="dropdownListFiltroProceso"
+                    [(ngModel)]="selectedItemsFiltroProceso" [ngModelOptions]="{standalone: true}"
+                    (onSelect)="cambiarEtiquetaSeleccionadaGeneral('filtroProceso')">
+                </ng-multiselect-dropdown>
             </div>
-        </div>
+        </div>    
     </div>
+-->
     <div class="container">
         <div class="row">
             <div class="col-4 justify-content-center">
+                <div class="input-group-text">Del:</div>
                 <input style="width: 90%; padding-left: 10px" type="date" placeholder="dd-MM-yyyy"
                     onfocus="(this.type='date')" id="filtroFecha" formControlName="filtroFecha" name="filtroFecha"
                     [value]="maxDate" max="{{ maxDate| date:'yyyy-MM-dd'}}" />
             </div>
             <div class="col-4 justify-content-center">
+                <div class="input-group-text">Al:</div>
                 <input style="width: 90%; padding-left: 10px" type="date" placeholder="dd-MM-yyyy"
                     onfocus="(this.type='date')" id="filtroFecha" formControlName="filtroFecha" name="filtroFecha"
                     [value]="maxDate" max="{{ maxDate| date:'yyyy-MM-dd'}}" />
@@ -57,37 +72,131 @@
         </div>
     </div>
 </div>
-<div class="row card-base-grafico">
-    <div class="col-sm-5 col-md-6">
-        <div class="card-grafico">
-            <div class="archivosTitulo d-flex flex-column justify-content-center">
-                Visual #1
-            </div>
-            <canvas id="visualUno"></canvas>
-        </div>
+
+<section name="interfases" *ngIf="botonActivado('INTERFASES')">
+<div class="card-busqueda">
+    <div class="row col-12 alert alert-primary justify-content-center">
+        DIURNOS
     </div>
-    <div class="col-sm-5 offset-sm-2 col-md-6 offset-md-0">
-        <div class="card-grafico">
-            <div class="archivosTitulo d-flex flex-column justify-content-center">
-                Visual #2
-            </div>
-            <canvas id="visualDos"></canvas>
+    <div class="row col-12">
+        <div class="mh-25 d-inline-block col-sm-6 col-md-5 col-lg-6 justify-content-center">
+            <ngx-charts-bar-horizontal scheme="cool" [results]="datosAforeFondos" [xAxis]="showXAxis"
+                [yAxis]="showYAxis" [legend]="showLegend" [legendTitle]="legendTitle" [legendPosition]="legendPosition"
+                [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel"
+                [gradient]="gradientBar" [yAxisLabel]="yAxisLabelNegocio">
+            </ngx-charts-bar-horizontal>
         </div>
-    </div>
-    <div class="col-sm-5 offset-sm-2 col-md-6 offset-md-0">
-        <div class="card-grafico">
-            <div class="archivosTitulo d-flex flex-column justify-content-center">
-                Visual #3
-            </div>
-            <canvas id="ctx" width="400" height="400">our browser does not support the canvas element.</canvas>
+        <div class="mh-25 d-inline-block col-sm-6 col-md-5 offset-md-2 col-lg-6 offset-lg-0 justify-content-center">
+            <ngx-charts-bar-horizontal scheme="nightLights" [results]="datosLanzamiento" [xAxis]="showXAxis"
+                [yAxis]="showYAxis" [legend]="showLegend" [legendTitle]="legendTitle" [legendPosition]="legendPosition"
+                [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel"
+                [gradient]="gradientBar" [yAxisLabel]="yAxisLabel">
+            </ngx-charts-bar-horizontal>
         </div>
-    </div>
-    <div class="col-sm-5 offset-sm-2 col-md-6 offset-md-0">
-        <div class="card-grafico">
-            <div class="archivosTitulo d-flex flex-column justify-content-center">
-                Visual #4
-            </div>
-            <canvas id="radar" width="400" height="400">our browser does not support the canvas element.</canvas>
+        <div class="w-100"></div>
+        <div class="col-sm-6 col-md-5 col-lg-6 justify-content-center">
+            <h4>
+                <span class="badge badge-pill badge-primary">AFORE</span>
+            </h4>
+        </div>
+        <div class="col-sm-6 col-md-5 offset-md-2 col-lg-6 offset-lg-0 justify-content-center">
+            <h4>
+                <span class="badge badge-pill badge-primary">FONDOS</span>
+            </h4>
+        </div>
+        <div class="w-100"></div>
+        <div class="col-sm-6 col-md-5 col-lg-6 justify-content-center">
+            <ngx-charts-pie-chart [tooltipDisabled]="tooltipDisabled" [explodeSlices]="explodeSlices"
+                [tooltipText]="pieTooltipText" [scheme]="colorScheme" [results]="datosDiurnoAfore"
+                [labels]="showLabelsPie" [labelFormatting]="setLabelFormatting" [legend]="showLegend"
+                [legendPosition]="legendPosition" [doughnut]="isDoughnut" [legendTitle]="legendTitle"
+                [gradient]="gradientPie" (select)="mostrarDetalleDiurnoAfore($event)">
+            </ngx-charts-pie-chart>
+        </div>
+        <div class="col-sm-6 col-md-5 offset-md-2 col-lg-6 offset-lg-0 justify-content-center">
+            <ngx-charts-pie-chart [tooltipDisabled]="tooltipDisabled" [explodeSlices]="explodeSlices"
+                [tooltipText]="pieTooltipText" [scheme]="colorScheme" [results]="datosDiurnoFondos"
+                [labels]="showLabelsPie" [labelFormatting]="setLabelFormatting" [legend]="showLegend"
+                [legendPosition]="legendPosition" [doughnut]="isDoughnut" [legendTitle]="legendTitle"
+                [gradient]="gradientPie" (select)="mostrarDetalleDiurnoFondos($event)">
+            </ngx-charts-pie-chart>
         </div>
     </div>
 </div>
+<div class="card-busqueda">
+    <div class="row col-12 alert alert-primary justify-content-center">NOCTURNOS
+    </div>
+    <div class="row col-12">
+        <div class="mh-25 d-inline-block col-sm-6 col-md-5 col-lg-6 justify-content-center">
+            <ngx-charts-bar-horizontal scheme="cool" [results]="datosAforeFondos" [xAxis]="showXAxis"
+                [yAxis]="showYAxis" [legend]="showLegend" [legendTitle]="legendTitle" [legendPosition]="legendPosition"
+                [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel"
+                [gradient]="gradientBar" [yAxisLabel]="yAxisLabelNegocio">
+            </ngx-charts-bar-horizontal>
+        </div>
+        <div class="mh-25 d-inline-block col-sm-6 col-md-5 offset-md-2 col-lg-6 offset-lg-0 justify-content-center">
+            <ngx-charts-bar-horizontal scheme="nightLights" [results]="datosLanzamiento" [xAxis]="showXAxis"
+                [yAxis]="showYAxis" [legend]="showLegend" [legendTitle]="legendTitle" [legendPosition]="legendPosition"
+                [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel"
+                [gradient]="gradientBar" [yAxisLabel]="yAxisLabel">
+            </ngx-charts-bar-horizontal>
+        </div>
+        <div class="w-100"></div>
+        <div class="col-sm-6 col-md-5 col-lg-6 justify-content-center">
+            <h4>
+                <span class="badge badge-pill badge-primary">AFORE</span>
+            </h4>
+        </div>
+        <div class="col-sm-6 col-md-5 offset-md-2 col-lg-6 offset-lg-0 justify-content-center">
+            <h4>
+                <span class="badge badge-pill badge-primary">FONDOS</span>
+            </h4>
+        </div>
+        <div class="w-100"></div>
+        <div class="col-sm-6 col-md-5 col-lg-6 justify-content-center">
+            <ngx-charts-pie-chart [tooltipDisabled]="tooltipDisabled" [explodeSlices]="explodeSlices"
+                [tooltipText]="pieTooltipText" [scheme]="colorScheme" [results]="datosNocturnoAfore"
+                [labels]="showLabelsPie" [labelFormatting]="setLabelFormatting" [legend]="showLegend"
+                [legendPosition]="legendPosition" [doughnut]="isDoughnut" [legendTitle]="legendTitle"
+                [gradient]="gradientPie" (select)="mostrarDetalleNocturnoAfore($event)">
+            </ngx-charts-pie-chart>
+        </div>
+        <div class="col-sm-6 col-md-5 offset-md-2 col-lg-6 offset-lg-0 justify-content-center">
+            <ngx-charts-pie-chart [tooltipDisabled]="tooltipDisabled" [explodeSlices]="explodeSlices"
+                [tooltipText]="pieTooltipText" [scheme]="colorScheme" [results]="datosNocturnoFondos"
+                [labels]="showLabelsPie" [labelFormatting]="setLabelFormatting" [legend]="showLegend"
+                [legendPosition]="legendPosition" [doughnut]="isDoughnut" [legendTitle]="legendTitle"
+                [gradient]="gradientPie" (select)="mostrarDetalleNocturnoFondos($event)">
+            </ngx-charts-pie-chart>
+        </div>
+    </div>
+</div>
+<div class="card-busqueda" *ngIf="mostrarDetalleExito()">
+    <div class="justify-content-center titulo-filtro">
+        {{ tituloGraficoExito }}
+    </div>
+    <ngx-charts-advanced-pie-chart scheme="forest" [results]="single" [gradient]="gradient" (select)="onSelect($event)">
+    </ngx-charts-advanced-pie-chart>
+</div>
+<div class="card-busqueda" *ngIf="mostrarDetalleFallos()">
+    <div class="justify-content-center titulo-filtro">
+        {{ tituloGraficoFallo }}
+    </div>
+    <ngx-charts-advanced-pie-chart scheme="fire" [results]="single" [gradient]="gradient" (select)="onSelect($event)">
+    </ngx-charts-advanced-pie-chart>
+</div>
+</section>
+<!--
+<div class="row card-base-grafico">
+    <div class="col-sm-6 col-md-5 col-lg-6">
+        <div class="card-grafico">
+            Resumen de interfases
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-5 offset-md-2 col-lg-6 offset-lg-0">
+        <div class="card-grafico">
+            Resumen de lanzamientos
+        </div>
+    </div>
+</div>
+-->

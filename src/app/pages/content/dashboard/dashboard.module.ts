@@ -19,7 +19,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     DashboardRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    NgxSpinnerModule,
+    NgxSpinnerModule
   ]
 })
 export class DashboardModule { }

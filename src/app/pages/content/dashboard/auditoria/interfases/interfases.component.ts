@@ -1,57 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
-import {
-  Chart,
-  ArcElement,
-  LineElement,
-  BarElement,
-  PointElement,
-  BarController,
-  BubbleController,
-  DoughnutController,
-  LineController,
-  PieController,
-  PolarAreaController,
-  RadarController,
-  ScatterController,
-  CategoryScale,
-  LinearScale,
-  LogarithmicScale,
-  RadialLinearScale,
-  TimeScale,
-  TimeSeriesScale,
-  Decimation,
-  Filler,
-  Legend,
-  Title,
-  Tooltip
-} from 'chart.js';
-
-Chart.register(
-  ArcElement,
-  LineElement,
-  BarElement,
-  PointElement,
-  BarController,
-  BubbleController,
-  DoughnutController,
-  LineController,
-  PieController,
-  PolarAreaController,
-  RadarController,
-  ScatterController,
-  CategoryScale,
-  LinearScale,
-  LogarithmicScale,
-  RadialLinearScale,
-  TimeScale,
-  TimeSeriesScale,
-  Decimation,
-  Filler,
-  Legend,
-  Title,
-  Tooltip
-);
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { InterfasesService } from 'src/app/services/interfases.service';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-interfases',
@@ -63,7 +15,142 @@ export class InterfasesComponent implements OnInit {
 
   maxDate: Date = new Date();
 
-  constructor(private spinner: NgxSpinnerService) {
+  filtroForm: FormGroup;
+
+  dropdownListFiltroTipo = [];
+  SettingsFiltroDeTipo: IDropdownSettings = {};
+  selectedItemsFiltroTipo = [];
+
+  dropdownListFiltroNegocio = [];
+  SettingsFiltroDeNegocio: IDropdownSettings = {};
+  selectedItemsFiltroNegocio = [];
+
+  dropdownListFiltroProceso = [];
+  SettingsFiltroDeProceso: IDropdownSettings = {};
+  selectedItemsFiltroProceso = [];
+
+  detalleExito = false;
+  detalleFallo = false;
+
+  single: any[];
+  datosDiurnoAfore: any[];
+  datosDiurnoFondos: any[];
+  datosNocturnoAfore: any[];
+  datosNocturnoFondos: any[];
+  datosDetalleExito: any[];
+  datosDetalleFallo: any[];
+  datosAforeFondos: any[];
+  datosLanzamiento: any[];
+  tituloGraficoExito = '';
+  tituloGraficoFallo = '';
+
+  // options
+  tooltipDisabled = false;
+  explodeSlices = false;
+  gradient = true;
+  showLegend = true;
+  showLabels = true;
+  showLabelsPie = true;
+  isDoughnut = false;
+  gradientBar = true;
+  gradientPie = true;
+  showXAxis = true;
+  showYAxis = true;
+  showXAxisLabel = true;
+  showYAxisLabel = true;
+  legendPosition = 'below';
+  legendTitle = 'Datos';
+  yAxisLabel = 'Tipo';
+  yAxisLabelNegocio = 'Negocio';
+  xAxisLabel = 'Número de ejecuciones';
+  colorScheme = {
+    domain: ['#5AA454', '#A10A28']
+  };
+  view = [400, 150];
+  pieTooltipText({ data }) {
+    const label = data.name;
+    const val = data.value;
+    const extra = data.extra.code;
+    return `
+      <span class="tooltip-label">${label}</span>
+      <span class="tooltip-val">${val} - ${extra}</span>
+    `;
+  }
+  setLabelFormatting(name: any): string {
+    let self: any = this;
+    let data = self.series.filter(x => x.name == name);
+    if (data.length > 0) {
+      return `${data[0].value}`;
+    } else {
+      return name;
+    }
+  }
+
+  constructor(
+    private spinner: NgxSpinnerService,
+    private ngxCharts: NgxChartsModule,
+    private interfasesService: InterfasesService,
+    private fb: FormBuilder) {
+  }
+
+  initSelects = () => {
+
+    this.dropdownListFiltroTipo = [
+      { item_id: 'DIURNO', item_text: 'DIURNO' },
+      { item_id: 'NOCTURNO', item_text: 'NOCTURNO' },
+    ];
+
+    this.dropdownListFiltroNegocio = [
+      { item_id: 'AFORE', item_text: 'AFORE' },
+      { item_id: 'FONDOS', item_text: 'FONDOS' },
+    ];
+
+    this.dropdownListFiltroProceso = [
+      { item_id: 'AFORE', item_text: 'MD' },
+      { item_id: 'FONDOS', item_text: 'MO' },
+    ];
+
+    this.SettingsFiltroDeNegocio = {
+      singleSelection: false,
+      idField: 'item_id',
+      textField: 'item_text',
+      allowSearchFilter: false,
+      clearSearchFilter: false,
+      enableCheckAll: false,
+      maxHeight: 200,
+      itemsShowLimit: 3,
+    };
+
+    this.SettingsFiltroDeTipo = {
+      singleSelection: false,
+      idField: 'item_id',
+      textField: 'item_text',
+      allowSearchFilter: false,
+      clearSearchFilter: false,
+      enableCheckAll: false,
+      maxHeight: 200,
+      itemsShowLimit: 3,
+    };
+
+    this.SettingsFiltroDeProceso = {
+      singleSelection: false,
+      idField: 'item_id',
+      textField: 'item_text',
+      allowSearchFilter: false,
+      clearSearchFilter: false,
+      enableCheckAll: false,
+      maxHeight: 200,
+      itemsShowLimit: 3,
+    };
+
+    this.filtroForm = this.fb.group({
+      filtroFecha: []
+    })
+  }
+
+  limpirarFiltro(): void {
+    this.selectedItemsFiltroTipo = [];
+    this.selectedItemsFiltroNegocio = [];
   }
 
   setPantalla(tipo: string): void {
@@ -76,140 +163,98 @@ export class InterfasesComponent implements OnInit {
       : false;
   }
 
+  mostrarDetalleExito() {
+    return this.detalleExito === true
+      ? true
+      : false;
+  }
+
+  mostrarDetalleFallos() {
+    return this.detalleFallo === true
+      ? true
+      : false;
+  }
+
   ngOnInit(): void {
     this.spinner.show();
     localStorage.setItem('tipoPantalla', 'INTERFASES');
-    const visualUno = new Chart('visualUno', {
-      type: 'pie',
-      data: {
-        labels: ['Arranque Automático', 'Arranque Manual'],
-        datasets: [{
-          label: 'Inicio',
-          data: [647, 162],
-          backgroundColor: [
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(153, 102, 255, 0.2)'
-          ],
-          borderColor: [
-            'rgba(255, 206, 86, 1)',
-            'rgba(153, 102, 255, 1)'
-          ],
-          borderWidth: 2
-        }]
-      }
-    });
-    const visualDos = new Chart('visualDos', {
-      type: 'pie',
-      data: {
-        labels: ['Red Days Todos', 'Green Days Todos'],
-        datasets: [{
-          data: [4, 18],
-          backgroundColor: [
-            '#ffd6d6',
-            '#d7ffd6'
-          ],
-          borderColor: [
-            '#ff7a7a',
-            '#55bd4a'
-          ],
-          borderWidth: 2
-        }]
-      }
-    });
+    this.initSelects();
+    this.single = this.interfasesService.single;
+    this.datosAforeFondos = this.interfasesService.tree;
+    this.datosLanzamiento = this.interfasesService.four;
+    this.datosDiurnoAfore = this.interfasesService.two;
+    this.datosDiurnoFondos = this.interfasesService.two;
+    this.datosNocturnoAfore = this.interfasesService.two;
+    this.datosNocturnoFondos = this.interfasesService.two;
     this.spinner.hide();
-
-    const data = [{ x: 'Enero', net: 100, cogs: 50, gm: 50 }, { x: 'Febrero', net: 100, cogs: 55, gm: 75 }];
-    const myChart = new Chart('ctx', {
-      type: 'bar',
-      data: {
-        labels: ['Enero', 'Febrero'],
-        datasets: [{
-          label: 'Todos',
-          data: data,
-          parsing: {
-            yAxisKey: 'net'
-          }
-        }, {
-          label: 'TI',
-          data: data,
-          parsing: {
-            yAxisKey: 'cogs'
-          },
-          backgroundColor: [
-            'rgba(0, 99, 132, 0.2)'],
-          borderColor: [
-            'rgb(0, 99, 132)']
-        }, {
-          label: 'Proveedores',
-          data: data,
-          parsing: {
-            yAxisKey: 'gm'
-          },
-          backgroundColor: [
-            'rgba(255, 0, 132, 0.2)'],
-          borderColor: [
-            'rgb(255, 0, 132)']
-        },
-        ],
-      },
-      options: {
-        animation: false,
-        normalized: true,
-        responsive: true,
-        skipNull: true,
-        events: ['mousemove', 'mouseout', 'click', 'touchstart', 'touchmove'],
-        interaction: {
-          mode: 'index',
-          axis: 'y'
-        },
-        scales: {
-          y: {
-            beginAtZero: true
-          }
-        }
-      }
-    });
-
-
-    const myChartRadar = new Chart('radar', {
-      type: 'radar',
-      data: {
-        labels: [
-          'MO',
-          'MD',
-          'AIMS Y EXCEDENTES',
-          'CAJA AFORE',
-          'INT CASH'
-        ],
-        datasets: [{
-          label: 'Red Days TI',
-          data: [4, 6, 8, 5, 3],
-          backgroundColor: 'rgba(255, 99, 132, 0.2)',
-          borderColor: 'rgb(255, 99, 132)',
-          pointBackgroundColor: 'rgb(255, 99, 132)',
-          pointBorderColor: '#fff',
-          pointHoverBackgroundColor: '#fff',
-          pointHoverBorderColor: 'rgb(255, 99, 132)'
-        }, {
-          label: 'Green Days TI',
-          data: [14, 13, 20, 17, 14],
-          backgroundColor: '#d7ffd6',
-          borderColor: '#55bd4a',
-          pointBackgroundColor: '#55bd4a',
-          pointBorderColor: '#fff',
-          pointHoverBackgroundColor: '#fff',
-          pointHoverBorderColor: '#55bd4a'
-        }]
-      },
-      options: {
-        elements: {
-          line: {
-            borderWidth: 3
-          }
-        }
-      },
-    });
   }
 
+  onSelect(data: any): void {
+    console.log('Item clicked', JSON.parse(JSON.stringify(data)));
+  }
+
+  onActivate(data: any): void {
+    console.log('Activate', JSON.parse(JSON.stringify(data)));
+  }
+
+  onDeactivate(data: any): void {
+    console.log('Deactivate', JSON.parse(JSON.stringify(data)));
+  }
+
+  cambiarEtiquetaSeleccionadaGeneral(paramTipo: string): void {
+
+  }
+
+  mostrarDetalleDiurnoAfore(data: any): void {
+    console.log('mostrarDetalleDiurnoAfore', JSON.parse(JSON.stringify(data)));
+    if (!data.extra.fail) {
+      this.detalleExito = true;
+      this.detalleFallo = false;
+      this.tituloGraficoExito = 'Detalle ejecuciones exitosas de Diurno Afore';
+    } else {
+      this.detalleExito = false;
+      this.detalleFallo = true;
+      this.tituloGraficoFallo = 'Detalle ejecuciones fallidas de Diurno Afore';
+    }
+  }
+
+  mostrarDetalleDiurnoFondos(data: any): void {
+    console.log('mostrarDetalleDiurnoFondos', JSON.parse(JSON.stringify(data)));
+    if (!data.extra.fail) {
+      this.detalleExito = true;
+      this.detalleFallo = false;
+      this.tituloGraficoExito = 'Detalle ejecuciones exitosas de Diurno Fondos';
+    } else {
+      this.detalleExito = false;
+      this.detalleFallo = true;
+      this.tituloGraficoFallo = 'Detalle ejecuciones fallidas de Diurno Fondos';
+    }
+  }
+
+  mostrarDetalleNocturnoAfore(data: any): void {
+    console.log('mostrarDetalleNocturnoAfore', JSON.parse(JSON.stringify(data)));
+    if (!data.extra.fail) {
+      this.detalleExito = true;
+      this.detalleFallo = false;
+      this.tituloGraficoExito = 'Detalle ejecuciones exitosas de Nocturno Afore';
+    } else {
+      this.detalleExito = false;
+      this.detalleFallo = true;
+      this.tituloGraficoFallo = 'Detalle ejecuciones fallidas de Nocturno Afore';
+    }
+  }
+
+  mostrarDetalleNocturnoFondos(data: any): void {
+    console.log('mostrarDetalleNocturnoFondos', JSON.parse(JSON.stringify(data)));
+    if (!data.extra.fail) {
+      this.detalleExito = true;
+      this.detalleFallo = false;
+      this.tituloGraficoExito = 'Detalle ejecuciones exitosas de Nocturno Fondos';
+    } else {
+      this.detalleExito = false;
+      this.detalleFallo = true;
+      this.tituloGraficoFallo = 'Detalle ejecuciones fallidas de Nocturno Fondos';
+    }
+  }
 
 }

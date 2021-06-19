@@ -68,6 +68,21 @@ div.card-busqueda {
   box-shadow: 4px 4px 10px #00000033;
 }
 
+div.card-busqueda-horizontal {
+  width: 90%;
+  background: #ffffff 0% 0% no-repeat padding-box;
+  border-radius: 30px;
+  opacity: 1;
+  display: flex;
+  margin: 25px 0;
+  margin-right: 5%;
+  margin-left: 5%;
+  align-items: center;
+  border-radius: 25px;
+  border-left: 10px solid #035fa4;
+  box-shadow: 4px 4px 10px #00000033;
+}
+
 div.card-base-grafico {
   width: 90%;
   opacity: 1;
@@ -85,12 +100,15 @@ div.card-grafico {
   margin: 25px 0;
   margin-right: 5%;
   margin-left: 5%;
-  padding-bottom: 15px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   flex-direction: column;
   align-items: center;
   border-radius: 25px;
   border-left: 10px solid #035fa4;
   box-shadow: 4px 4px 10px #00000033;
+  color: #035fa4;
+  font: bold 20px FS Elliot Pro;
 }
 
 .titulo-filtro {
