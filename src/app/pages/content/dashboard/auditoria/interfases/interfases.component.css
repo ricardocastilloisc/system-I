@@ -52,6 +52,18 @@
   border-bottom-left-radius: 25px 25px;
 }
 
+.maxLeng {
+  max-height: 300px;
+}
+
+.texto{
+  color: #707070 !important;
+}
+.texto-help{
+  color: #707070 !important;  
+  font: 12px FS Elliot Pro !important;
+}
+
 div.card-busqueda {
   width: 90%;
   background: #ffffff 0% 0% no-repeat padding-box;

@@ -60,13 +60,21 @@
     <div class="container">
         <div class="row">
             <div class="col-4 justify-content-center">
-                <div class="input-group-text">Del:</div>
+                <div class="input-group-text texto">
+                    <i class="far fa-question-circle" (mouseenter)="helperQuestions('DEL')"
+                        triggers="mouseenter:mouseleave" [ngbPopover]="popContent"></i>
+                    &nbsp; Del: &nbsp;
+                </div>
                 <input style="width: 90%; padding-left: 10px" type="date" placeholder="dd-MM-yyyy"
                     onfocus="(this.type='date')" id="filtroFecha" formControlName="filtroFecha" name="filtroFecha"
                     [value]="maxDate" max="{{ maxDate| date:'yyyy-MM-dd'}}" />
             </div>
             <div class="col-4 justify-content-center">
-                <div class="input-group-text">Al:</div>
+                <div class="input-group-text texto">
+                    <i class="far fa-question-circle" (mouseenter)="helperQuestions('AL')"
+                        triggers="mouseenter:mouseleave" [ngbPopover]="popContent"></i>
+                    &nbsp; Al: &nbsp;
+                </div>
                 <input style="width: 90%; padding-left: 10px" type="date" placeholder="dd-MM-yyyy"
                     onfocus="(this.type='date')" id="filtroFecha" formControlName="filtroFecha" name="filtroFecha"
                     [value]="maxDate" max="{{ maxDate| date:'yyyy-MM-dd'}}" />
@@ -79,159 +87,241 @@
 </div>
 
 <section name="interfases" *ngIf="botonActivado('INTERFASES')">
-<!-- ************************************** -->
-<!-- ************************************** -->
-<!-- **********  D I U R N O S ************ -->
-<!-- ************************************** -->
-<!-- ************************************** -->
-<div class="card-busqueda">
-    <div class="row col-12 alert alert-primary justify-content-center">
-        <div class="row">
-            <div class="col-4 titulo-filtro"></div>
-            <div class="col-4 titulo-filtro">DIURNOS</div>
-            <div class="col-4 titulo-filtro justify-content-end">
-                <a (click)="accionMinimizarDiurno()"> 
-                    <img src="assets/icons/arrows-angle-contract.svg" class="tamanioIcono" *ngIf="flagMinimizarDiurno == true"/>
-                    <img src="assets/icons/arrows-angle-expand.svg" class="tamanioIcono" *ngIf="flagMinimizarDiurno == false"/>
-                </a>
+
+    <!-- ************************************** -->
+    <!-- ************************************** -->
+    <!-- **********  R E S U M E N ************ -->
+    <!-- ************************************** -->
+    <!-- ************************************** -->
+    <div class="card-busqueda">
+        <div class="row col-12 alert alert-primary justify-content-center">
+            Resumen
+        </div>
+        <div class="row col-12 justify-content-center">
+            <ng-container *ngFor="let item of treemapPath; let last = last;">
+                <a style="cursor: pointer" [class.active]="last" [disabled]="last" (click)="treemapSelect(item)">
+                    {{item.name}} ({{item.value}}) </a>
+                <span *ngIf="!last"> &nbsp;/&nbsp; </span>
+            </ng-container>
+            <div class="maxLeng">
+                <ngx-charts-tree-map [results]="treemap" [animations]="animations" scheme="cool" [gradient]="false"
+                    (select)="treemapSelect($event)">
+                    <ng-template #tooltipTemplate let-model="model">
+                        <h4>{{model.name}}: {{model.value}}</h4>
+                    </ng-template>
+                </ngx-charts-tree-map>
             </div>
         </div>
     </div>
-    <div class="row col-12" *ngIf="minimizarDiurno()">
-        <div class="mh-25 d-inline-block col-sm-6 col-md-5 col-lg-6 justify-content-center">
-            <ngx-charts-bar-horizontal scheme="cool" [results]="datosAforeFondos" [xAxis]="showXAxis"
-                [yAxis]="showYAxis" [legend]="showLegend" [legendTitle]="legendTitle" [legendPosition]="legendPosition"
-                [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [showDataLabel]="showDataLabel"
-                [gradient]="gradientBar" [yAxisLabel]="yAxisLabelNegocio">
-            </ngx-charts-bar-horizontal>
-        </div>
-        <div class="mh-25 d-inline-block col-sm-6 col-md-5 offset-md-2 col-lg-6 offset-lg-0 justify-content-center">
-            <ngx-charts-bar-horizontal scheme="nightLights" [results]="datosLanzamiento" [xAxis]="showXAxis"
-                [yAxis]="showYAxis" [legend]="showLegend" [legendTitle]="legendTitle" [legendPosition]="legendPosition"
-                [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [showDataLabel]="showDataLabel"
-                [gradient]="gradientBar" [yAxisLabel]="yAxisLabel">
-            </ngx-charts-bar-horizontal>
-        </div>
-        <div class="w-100"></div>
-        <div class="col-sm-6 col-md-5 col-lg-6 justify-content-center">
-            <h4>
-                <span class="badge badge-pill badge-primary">AFORE</span>
-            </h4>
-        </div>
-        <div class="col-sm-6 col-md-5 offset-md-2 col-lg-6 offset-lg-0 justify-content-center">
-            <h4>
-                <span class="badge badge-pill badge-primary">FONDOS</span>
-            </h4>
-        </div>
-        <div class="w-100"></div>
-        <div class="col-sm-6 col-md-5 col-lg-6 justify-content-center">
-            <ngx-charts-pie-chart [tooltipDisabled]="tooltipDisabled" [explodeSlices]="explodeSlices"
-                [tooltipText]="pieTooltipText" [scheme]="colorScheme" [results]="datosDiurnoAfore"
-                [labels]="showLabelsPie" [labelFormatting]="setLabelFormatting" [legend]="showLegend"
-                [legendPosition]="legendPosition" [doughnut]="isDoughnut" [legendTitle]="legendTitle"
-                [gradient]="gradientPie" (select)="mostrarDetalleDiurnoAfore($event)">
-            </ngx-charts-pie-chart>
-        </div>
-        <div class="col-sm-6 col-md-5 offset-md-2 col-lg-6 offset-lg-0 justify-content-center">
-            <ngx-charts-pie-chart [tooltipDisabled]="tooltipDisabled" [explodeSlices]="explodeSlices"
-                [tooltipText]="pieTooltipText" [scheme]="colorScheme" [results]="datosDiurnoFondos"
-                [labels]="showLabelsPie" [labelFormatting]="setLabelFormatting" [legend]="showLegend"
-                [legendPosition]="legendPosition" [doughnut]="isDoughnut" [legendTitle]="legendTitle"
-                [gradient]="gradientPie" (select)="mostrarDetalleDiurnoFondos($event)">
-            </ngx-charts-pie-chart>
-        </div>
-    </div>
-</div>
 
-<!-- ************************************** -->
-<!-- ************************************** -->
-<!-- ********* N O C T U R N O S ********** -->
-<!-- ************************************** -->
-<!-- ************************************** --> 
-<div class="card-busqueda">
-    <div class="row col-12 alert alert-primary justify-content-center">        
-        <div class="row">
-            <div class="col-4 titulo-filtro"></div>
-            <div class="col-4 titulo-filtro">NOCTURNOS</div>
-            <div class="col-4 titulo-filtro justify-content-end">
-                <a class="limpiarFiltro" (click)="accionMinimizarNocturno()"> 
-                    <img src="assets/icons/arrows-angle-contract.svg" class="tamanioIcono" *ngIf="flagMinimizarNocturno == true"/>
-                    <img src="assets/icons/arrows-angle-expand.svg" class="tamanioIcono" *ngIf="flagMinimizarNocturno == false"/>
-                </a>
+    <!-- ************************************** -->
+    <!-- ************************************** -->
+    <!-- **********  D I U R N O S ************ -->
+    <!-- ************************************** -->
+    <!-- ************************************** -->
+    <div class="card-busqueda">
+        <div class="row col-12 alert alert-primary justify-content-center">
+            <div class="row">
+                <div class="col-4 titulo-filtro"></div>
+                <div class="col-4 titulo-filtro justify-content-center">DIURNOS</div>
+                <div class="col-4 titulo-filtro justify-content-end">
+                    <a (click)="accionMinimizarDiurno()">
+                        <img src="assets/icons/arrows-angle-contract.svg" class="tamanioIcono"
+                            *ngIf="flagMinimizarDiurno == true" />
+                        <img src="assets/icons/arrows-angle-expand.svg" class="tamanioIcono"
+                            *ngIf="flagMinimizarDiurno == false" />
+                    </a>
+                </div>
             </div>
-        </div> 
+        </div>
+        <div class="row col-12" *ngIf="minimizarDiurno()">
+            <div class="row col-12">
+                <div class="mh-25 d-inline-block col-sm-6 col-md-5 col-lg-6 justify-content-center">
+                    <ngx-charts-bar-horizontal scheme="cool" [results]="datosAforeFondos" [xAxis]="showXAxis"
+                        [yAxis]="showYAxis" [legend]="showLegend" [legendTitle]="legendTitle"
+                        [legendPosition]="legendPosition" [showXAxisLabel]="showXAxisLabel"
+                        [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [showDataLabel]="showDataLabel"
+                        [gradient]="gradientBar" [yAxisLabel]="yAxisLabelNegocio">
+                    </ngx-charts-bar-horizontal>
+                </div>
+                <div
+                    class="mh-25 d-inline-block col-sm-6 col-md-5 offset-md-2 col-lg-6 offset-lg-0 justify-content-center">
+                    <ngx-charts-bar-horizontal scheme="nightLights" [results]="datosLanzamiento" [xAxis]="showXAxis"
+                        [yAxis]="showYAxis" [legend]="showLegend" [legendTitle]="legendTitle"
+                        [legendPosition]="legendPosition" [showXAxisLabel]="showXAxisLabel"
+                        [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [showDataLabel]="showDataLabel"
+                        [gradient]="gradientBar" [yAxisLabel]="yAxisLabel">
+                    </ngx-charts-bar-horizontal>
+                </div>
+                <div class="w-100"></div>
+                <div class="col-sm-6 col-md-5 col-lg-6 justify-content-center">
+                    <h4>
+                        <span class="badge badge-pill badge-primary">AFORE</span>
+                    </h4>
+                </div>
+                <div class="col-sm-6 col-md-5 offset-md-2 col-lg-6 offset-lg-0 justify-content-center">
+                    <h4>
+                        <span class="badge badge-pill badge-primary">FONDOS</span>
+                    </h4>
+                </div>
+                <div class="w-100"></div>
+                <div class="col-sm-6 col-md-5 col-lg-6 justify-content-center">
+                    <ngx-charts-pie-chart [tooltipDisabled]="tooltipDisabled" [explodeSlices]="explodeSlices"
+                        [tooltipText]="pieTooltipText" [scheme]="colorScheme" [results]="datosDiurnoAfore"
+                        [labels]="showLabelsPie" [labelFormatting]="setLabelFormatting" [legend]="showLegend"
+                        [legendPosition]="legendPosition" [doughnut]="isDoughnut" [legendTitle]="legendTitle"
+                        [gradient]="gradientPie" (select)="mostrarDetalleDiurnoAfore($event)">
+                    </ngx-charts-pie-chart>
+                </div>
+                <div class="col-sm-6 col-md-5 offset-md-2 col-lg-6 offset-lg-0 justify-content-center">
+                    <ngx-charts-pie-chart [tooltipDisabled]="tooltipDisabled" [explodeSlices]="explodeSlices"
+                        [tooltipText]="pieTooltipText" [scheme]="colorScheme" [results]="datosDiurnoFondos"
+                        [labels]="showLabelsPie" [labelFormatting]="setLabelFormatting" [legend]="showLegend"
+                        [legendPosition]="legendPosition" [doughnut]="isDoughnut" [legendTitle]="legendTitle"
+                        [gradient]="gradientPie" (select)="mostrarDetalleDiurnoFondos($event)">
+                    </ngx-charts-pie-chart>
+                </div>
+            </div>
+            <div class="row col-12" *ngIf="mostrarDetalleExito()">
+                <div class="justify-content-center titulo-filtro">
+                    {{ tituloGraficoExito }}
+                </div>
+                <ngx-charts-bar-vertical scheme="forest" [results]="single" [gradient]="gradient" [xAxis]="showXAxis"
+                    [legendTitle]="legendTitle" [yAxis]="showYAxis" [legend]="showLegend"
+                    [showXAxisLabel]="showXAxisLabel" [showDataLabel]="showDataLabel" [showYAxisLabel]="showYAxisLabel"
+                    [xAxisLabel]="showAxisLabelProceso" [yAxisLabel]="xAxisLabel" (select)="onSelect($event)">
+                </ngx-charts-bar-vertical>
+            </div>
+            <div class="row col-12" *ngIf="mostrarDetalleFallos()">
+                <div class="justify-content-center titulo-filtro">
+                    {{ tituloGraficoFallo }}
+                </div>
+                <ngx-charts-bar-vertical scheme="flame" [results]="single" [gradient]="gradient" [xAxis]="showXAxis"
+                    [legendTitle]="legendTitle" [yAxis]="showYAxis" [legend]="showLegend"
+                    [showXAxisLabel]="showXAxisLabel" [showDataLabel]="showDataLabel" [showYAxisLabel]="showYAxisLabel"
+                    [xAxisLabel]="showAxisLabelProceso" [yAxisLabel]="xAxisLabel" (select)="onSelect($event)">
+                </ngx-charts-bar-vertical>
+            </div>
+        </div>
     </div>
-    <div class="row col-12" *ngIf="minimizarNocturno()">
-        <div class="mh-25 d-inline-block col-sm-6 col-md-5 col-lg-6 justify-content-center">
-            <ngx-charts-bar-horizontal scheme="cool" [results]="datosAforeFondos" [xAxis]="showXAxis"
-                [yAxis]="showYAxis" [legend]="showLegend" [legendTitle]="legendTitle" [legendPosition]="legendPosition"
-                [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [showDataLabel]="showDataLabel"
-                [gradient]="gradientBar" [yAxisLabel]="yAxisLabelNegocio">
-            </ngx-charts-bar-horizontal>
-        </div>
-        <div class="mh-25 d-inline-block col-sm-6 col-md-5 offset-md-2 col-lg-6 offset-lg-0 justify-content-center">
-            <ngx-charts-bar-horizontal scheme="nightLights" [results]="datosLanzamiento" [xAxis]="showXAxis"
-                [yAxis]="showYAxis" [legend]="showLegend" [legendTitle]="legendTitle" [legendPosition]="legendPosition"
-                [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [showDataLabel]="showDataLabel"
-                [gradient]="gradientBar" [yAxisLabel]="yAxisLabel">
-            </ngx-charts-bar-horizontal>
-        </div>
-        <div class="w-100"></div>
-        <div class="col-sm-6 col-md-5 col-lg-6 justify-content-center">
-            <h4>
-                <span class="badge badge-pill badge-primary">AFORE</span>
-            </h4>
-        </div>
-        <div class="col-sm-6 col-md-5 offset-md-2 col-lg-6 offset-lg-0 justify-content-center">
-            <h4>
-                <span class="badge badge-pill badge-primary">FONDOS</span>
-            </h4>
-        </div>
-        <div class="w-100"></div>
-        <div class="col-sm-6 col-md-5 col-lg-6 justify-content-center">
-            <ngx-charts-pie-chart [tooltipDisabled]="tooltipDisabled" [explodeSlices]="explodeSlices"
-                [tooltipText]="pieTooltipText" [scheme]="colorScheme" [results]="datosNocturnoAfore"
-                [labels]="showLabelsPie" [labelFormatting]="setLabelFormatting" [legend]="showLegend"
-                [legendPosition]="legendPosition" [doughnut]="isDoughnut" [legendTitle]="legendTitle"
-                [gradient]="gradientPie" (select)="mostrarDetalleNocturnoAfore($event)">
-            </ngx-charts-pie-chart>
-        </div>
-        <div class="col-sm-6 col-md-5 offset-md-2 col-lg-6 offset-lg-0 justify-content-center">
-            <ngx-charts-pie-chart [tooltipDisabled]="tooltipDisabled" [explodeSlices]="explodeSlices"
-                [tooltipText]="pieTooltipText" [scheme]="colorScheme" [results]="datosNocturnoFondos"
-                [labels]="showLabelsPie" [labelFormatting]="setLabelFormatting" [legend]="showLegend"
-                [legendPosition]="legendPosition" [doughnut]="isDoughnut" [legendTitle]="legendTitle"
-                [gradient]="gradientPie" (select)="mostrarDetalleNocturnoFondos($event)">
-            </ngx-charts-pie-chart>
-        </div>
-    </div>
-</div>
 
-<!-- ************************************** -->
-<!-- ************************************** -->
-<!-- ***** D E T A L L E  E X I T O S ***** -->
-<!-- ************************************** -->
-<!-- ************************************** --> 
-<div class="card-busqueda" *ngIf="mostrarDetalleExito()">
-    <div class="justify-content-center titulo-filtro">
-        {{ tituloGraficoExito }}
+    <!-- ************************************** -->
+    <!-- ************************************** -->
+    <!-- ********* N O C T U R N O S ********** -->
+    <!-- ************************************** -->
+    <!-- ************************************** -->
+    <div class="card-busqueda">
+        <div class="row col-12 alert alert-primary justify-content-center">
+            <div class="row">
+                <div class="col-4 titulo-filtro"></div>
+                <div class="col-4 titulo-filtro justify-content-center">NOCTURNOS</div>
+                <div class="col-4 titulo-filtro justify-content-end">
+                    <a class="limpiarFiltro" (click)="accionMinimizarNocturno()">
+                        <img src="assets/icons/arrows-angle-contract.svg" class="tamanioIcono"
+                            *ngIf="flagMinimizarNocturno == true" />
+                        <img src="assets/icons/arrows-angle-expand.svg" class="tamanioIcono"
+                            *ngIf="flagMinimizarNocturno == false" />
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="row col-12" *ngIf="minimizarNocturno()">
+            <div class="row col-12">
+                <div class="mh-25 d-inline-block col-sm-6 col-md-5 col-lg-6 justify-content-center">
+                    <ngx-charts-bar-horizontal scheme="cool" [results]="datosAforeFondos" [xAxis]="showXAxis"
+                        [yAxis]="showYAxis" [legend]="showLegend" [legendTitle]="legendTitle"
+                        [legendPosition]="legendPosition" [showXAxisLabel]="showXAxisLabel"
+                        [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [showDataLabel]="showDataLabel"
+                        [gradient]="gradientBar" [yAxisLabel]="yAxisLabelNegocio">
+                    </ngx-charts-bar-horizontal>
+                </div>
+                <div
+                    class="mh-25 d-inline-block col-sm-6 col-md-5 offset-md-2 col-lg-6 offset-lg-0 justify-content-center">
+                    <ngx-charts-bar-horizontal scheme="nightLights" [results]="datosLanzamiento" [xAxis]="showXAxis"
+                        [yAxis]="showYAxis" [legend]="showLegend" [legendTitle]="legendTitle"
+                        [legendPosition]="legendPosition" [showXAxisLabel]="showXAxisLabel"
+                        [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [showDataLabel]="showDataLabel"
+                        [gradient]="gradientBar" [yAxisLabel]="yAxisLabel">
+                    </ngx-charts-bar-horizontal>
+                </div>
+                <div class="w-100"></div>
+                <div class="col-sm-6 col-md-5 col-lg-6 justify-content-center">
+                    <h4>
+                        <span class="badge badge-pill badge-primary">AFORE</span>
+                    </h4>
+                </div>
+                <div class="col-sm-6 col-md-5 offset-md-2 col-lg-6 offset-lg-0 justify-content-center">
+                    <h4>
+                        <span class="badge badge-pill badge-primary">FONDOS</span>
+                    </h4>
+                </div>
+                <div class="w-100"></div>
+                <div class="col-sm-6 col-md-5 col-lg-6 justify-content-center">
+                    <ngx-charts-pie-chart [tooltipDisabled]="tooltipDisabled" [explodeSlices]="explodeSlices"
+                        [tooltipText]="pieTooltipText" [scheme]="colorScheme" [results]="datosNocturnoAfore"
+                        [labels]="showLabelsPie" [labelFormatting]="setLabelFormatting" [legend]="showLegend"
+                        [legendPosition]="legendPosition" [doughnut]="isDoughnut" [legendTitle]="legendTitle"
+                        [gradient]="gradientPie" (select)="mostrarDetalleNocturnoAfore($event)">
+                    </ngx-charts-pie-chart>
+                </div>
+                <div class="col-sm-6 col-md-5 offset-md-2 col-lg-6 offset-lg-0 justify-content-center">
+                    <ngx-charts-pie-chart [tooltipDisabled]="tooltipDisabled" [explodeSlices]="explodeSlices"
+                        [tooltipText]="pieTooltipText" [scheme]="colorScheme" [results]="datosNocturnoFondos"
+                        [labels]="showLabelsPie" [labelFormatting]="setLabelFormatting" [legend]="showLegend"
+                        [legendPosition]="legendPosition" [doughnut]="isDoughnut" [legendTitle]="legendTitle"
+                        [gradient]="gradientPie" (select)="mostrarDetalleNocturnoFondos($event)">
+                    </ngx-charts-pie-chart>
+                </div>
+            </div>
+            <div class="row col-12" *ngIf="mostrarDetalleExito()">
+                <div class="justify-content-center titulo-filtro">
+                    {{ tituloGraficoExito }}
+                </div>
+                <ngx-charts-bar-vertical scheme="forest" [results]="single" [gradient]="gradient" [xAxis]="showXAxis"
+                    [legendTitle]="legendTitle" [yAxis]="showYAxis" [legend]="showLegend"
+                    [showXAxisLabel]="showXAxisLabel" [showDataLabel]="showDataLabel" [showYAxisLabel]="showYAxisLabel"
+                    [xAxisLabel]="showAxisLabelProceso" [yAxisLabel]="xAxisLabel" (select)="onSelect($event)">
+                </ngx-charts-bar-vertical>
+            </div>
+            <div class="row col-12" *ngIf="mostrarDetalleFallos()">
+                <div class="justify-content-center titulo-filtro">
+                    {{ tituloGraficoFallo }}
+                </div>
+                <ngx-charts-bar-vertical scheme="flame" [results]="single" [gradient]="gradient" [xAxis]="showXAxis"
+                    [legendTitle]="legendTitle" [yAxis]="showYAxis" [legend]="showLegend"
+                    [showXAxisLabel]="showXAxisLabel" [showDataLabel]="showDataLabel" [showYAxisLabel]="showYAxisLabel"
+                    [xAxisLabel]="showAxisLabelProceso" [yAxisLabel]="xAxisLabel" (select)="onSelect($event)">
+                </ngx-charts-bar-vertical>
+            </div>
+        </div>
     </div>
-    <ngx-charts-advanced-pie-chart scheme="forest" [results]="single" [gradient]="gradient" (select)="onSelect($event)">
-    </ngx-charts-advanced-pie-chart>
-</div>
+</section>
 
-<!-- ************************************** -->
-<!-- ************************************** -->
-<!-- ***** D E T A L L E  F A L L O S ***** -->
-<!-- ************************************** -->
-<!-- ************************************** --> 
-<div class="card-busqueda" *ngIf="mostrarDetalleFallos()">
-    <div class="justify-content-center titulo-filtro">
-        {{ tituloGraficoFallo }}
+
+<section name="interfases" *ngIf="botonActivado('PROBLEMAS')">
+    <div class="d-flex col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12 justify-content-center">
+        <div class="card-lista-design-general" style="overflow-x: auto">
+            <table class="table listado-design-general">
+                <tr>
+                    <th style="padding-left: 40px; max-width: 300px">Fecha</th>
+                    <th style="padding-left: 30px; max-width: 300px">Proceso</th>
+                    <th style="padding-left: 30px; max-width: 150px">Responsable</th>
+                    <th style="padding-left: 30px; max-width: 150px">Problema</th>
+                </tr>
+                <tr *ngFor="let itemAuditoria of ListadoPantalla">
+                    <td style="padding-left: 40px; max-width: 300px">{{itemAuditoria.FECHA | date :'dd/MM/yyyy'}}
+                        {{itemAuditoria.FECHA | date:'mediumTime'}}
+                    </td>
+                    <td style="padding-left: 30px; max-width: 300px">{{itemAuditoria.PROCESO}}
+                    </td>
+                    <td style="padding-left: 30px; max-width: 150px">{{itemAuditoria.RESPONSABLE}}
+                    </td>
+                    <td style="padding-left: 30px; max-width: 150px">{{itemAuditoria.PROBLEMA}}
+                    </td>
+                </tr>
+            </table>            
+        </div>
     </div>
-    <ngx-charts-advanced-pie-chart scheme="fire" [results]="single" [gradient]="gradient" (select)="onSelect($event)">
-    </ngx-charts-advanced-pie-chart>
-</div>
 </section>
 
 <!--
@@ -248,3 +338,8 @@
     </div>
 </div>
 -->
+
+<ng-template #popContent>
+    <div class="texto-help" style="width: 100%"> {{ helpBody }}</div>
+</ng-template>
+<ng-template #popTitle> {{ helpTitulo }} </ng-template>

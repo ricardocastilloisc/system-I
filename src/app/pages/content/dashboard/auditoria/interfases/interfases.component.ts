@@ -4,6 +4,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { InterfasesService } from 'src/app/services/interfases.service';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import * as d3 from 'd3';
 
 @Component({
   selector: 'app-interfases',
@@ -31,7 +32,7 @@ export class InterfasesComponent implements OnInit {
 
   detalleExito = false;
   detalleFallo = false;
-  flagMinimizarDiurno = true;
+  flagMinimizarDiurno = false;
   flagMinimizarNocturno = false;
 
   single: any[];
@@ -45,17 +46,19 @@ export class InterfasesComponent implements OnInit {
   datosLanzamiento: any[];
   tituloGraficoExito = '';
   tituloGraficoFallo = '';
+  helpTitulo = '';
+  helpBody = '';
 
   // options
   tooltipDisabled = false;
   explodeSlices = false;
-  gradient = true;
+  gradient = false;
   showLegend = true;
   showLabels = true;
   showLabelsPie = true;
   isDoughnut = false;
-  gradientBar = true;
-  gradientPie = true;
+  gradientBar = false;
+  gradientPie = false;
   showDataLabel = true;
   showXAxis = true;
   showYAxis = true;
@@ -64,12 +67,18 @@ export class InterfasesComponent implements OnInit {
   legendPosition = 'below';
   legendTitle = 'Datos';
   yAxisLabel = 'Tipo';
+  showAxisLabelProceso = 'Procesos';
   yAxisLabelNegocio = 'Negocio';
   xAxisLabel = 'Número de ejecuciones';
   colorScheme = {
     domain: ['#5AA454', '#A10A28']
   };
   view = [400, 150];
+  animations = true;
+  treemap = this.interfasesService.treemap;
+  treemapPath: any[] = [];
+  sumBy = 'Size';
+  drilldownAddress = null;
   pieTooltipText({ data }) {
     const label = data.name;
     const val = data.value;
@@ -80,8 +89,8 @@ export class InterfasesComponent implements OnInit {
     `;
   }
   setLabelFormatting(name: any): string {
-    let self: any = this;
-    let data = self.series.filter(x => x.name == name);
+    const self: any = this;
+    const data = self.series.filter(x => x.name == name);
     if (data.length > 0) {
       return `${data[0].value}`;
     } else {
@@ -94,6 +103,7 @@ export class InterfasesComponent implements OnInit {
     private ngxCharts: NgxChartsModule,
     private interfasesService: InterfasesService,
     private fb: FormBuilder) {
+    this.treemapProcess(this.treemap);
   }
 
   initSelects = () => {
@@ -148,7 +158,7 @@ export class InterfasesComponent implements OnInit {
 
     this.filtroForm = this.fb.group({
       filtroFecha: []
-    })
+    });
   }
 
   limpirarFiltro(): void {
@@ -166,35 +176,35 @@ export class InterfasesComponent implements OnInit {
       : false;
   }
 
-  mostrarDetalleExito() {
+  mostrarDetalleExito(): boolean {
     return this.detalleExito === true
       ? true
       : false;
   }
 
-  mostrarDetalleFallos() {
+  mostrarDetalleFallos(): boolean {
     return this.detalleFallo === true
       ? true
       : false;
   }
 
-  minimizarDiurno() {
+  minimizarDiurno(): boolean {
     return this.flagMinimizarDiurno === true
       ? true
       : false;
   }
 
-  accionMinimizarDiurno() {
+  accionMinimizarDiurno(): void {
     this.flagMinimizarDiurno = !this.flagMinimizarDiurno;
   }
 
-  minimizarNocturno() {
+  minimizarNocturno(): boolean {
     return this.flagMinimizarNocturno === true
       ? true
       : false;
   }
 
-  accionMinimizarNocturno() {
+  accionMinimizarNocturno(): void {
     this.flagMinimizarNocturno = !this.flagMinimizarNocturno;
   }
 
@@ -202,6 +212,10 @@ export class InterfasesComponent implements OnInit {
     this.spinner.show();
     localStorage.setItem('tipoPantalla', 'INTERFASES');
     this.initSelects();
+    const item = {
+      name: 'Ejecuciones'
+    };
+    this.treemapSelect(item);
     this.single = this.interfasesService.single;
     this.datosAforeFondos = this.interfasesService.tree;
     this.datosLanzamiento = this.interfasesService.four;
@@ -210,6 +224,16 @@ export class InterfasesComponent implements OnInit {
     this.datosNocturnoAfore = this.interfasesService.two;
     this.datosNocturnoFondos = this.interfasesService.two;
     this.spinner.hide();
+  }
+
+  helperQuestions = (origen: any) => {
+    if (origen === 'DEL') {
+      this.helpTitulo = 'Fecha desde';
+      this.helpBody = 'Fecha desde la cual se filtrará la información.';
+    } else {
+      this.helpTitulo = 'Fecha hasta';
+      this.helpBody = `Fecha hasta la cual se filtrará la información.`;
+    }
   }
 
   onSelect(data: any): void {
@@ -280,4 +304,39 @@ export class InterfasesComponent implements OnInit {
     }
   }
 
+  treemapProcess(treemap: any, sumBy = this.sumBy): void {
+    console.log('updating');
+    this.sumBy = sumBy;
+    const children = treemap[0];
+    const value =
+      sumBy === 'Size' ? sumChildren(children) : countChildren(children);
+    this.treemap = [children];
+    // this.treemapPath = [{ name: 'Top', children: [children], value }];
+    this.treemapPath = [];
+    function sumChildren(node) {
+      return (node.value = node.size || d3.sum(node.children, sumChildren));
+    }
+
+    function countChildren(node) {
+      return (node.value = node.children
+        ? d3.sum(node.children, countChildren)
+        : 1);
+    }
+  }
+
+  treemapSelect(item: any): void {
+    console.log(item);
+    let node;
+    if (item.children) {
+      const idx = this.treemapPath.indexOf(item);
+      this.treemapPath.splice(idx + 1);
+      this.treemap = this.treemapPath[idx].children;
+      return;
+    }
+    node = this.treemap.find(d => d.name === item.name);
+    if (node.children) {
+      this.treemapPath.push(node);
+      this.treemap = node.children;
+    }
+  }
 }

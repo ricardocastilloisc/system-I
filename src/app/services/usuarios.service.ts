@@ -342,8 +342,10 @@ export class UsuariosService {
       (err, data) => {
         if (err) {
           terminado = 1;
+          // console.log('err', err, 'data', data);
         } else {
           terminado = 1;
+          // console.log('err', err, 'data', data);
         }
       }
     );
