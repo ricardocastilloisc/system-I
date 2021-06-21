@@ -6,6 +6,7 @@ import { PanelNotificacionesService } from '../../../../../services/panel-notifi
 import { AUDGENUSUARIO_INTERFACE } from '../../../../../model/panelNotificaciones/panelnotificaciones.model';
 import { NgxSpinnerService } from 'ngx-spinner';
 import * as moment from 'moment';
+import { filter } from 'rxjs/operators';
 
 const cronstrue = require('cronstrue/i18n');
 const cronAWS = require('aws-cron-parser');
@@ -18,18 +19,14 @@ const cronAWS = require('aws-cron-parser');
 export class NotificacionesComponent implements OnInit {
   mostrarEjecucionesProcesos = true;
 
-  arrayMinutos = (
-    'No aplica,' + Array.from({ length: 61 }, (v, k) => k).toString()
-  ).split(',');
+  arrayMinutos = Array.from({ length: 61 }, (v, k) => k)
+    .toString()
+    .split(',');
 
   arrayDias1 = [];
   arrayDias2 = [];
 
   arrayDiasOrginal = [
-    {
-      label: 'No aplica',
-      value: 'NA',
-    },
     {
       label: 'Lunes',
       value: 'MON',
@@ -68,9 +65,9 @@ export class NotificacionesComponent implements OnInit {
 
   arrayHoras1 = [];
 
-  arrayHorasOriginal = (
-    'No aplica,' + Array.from({ length: 24 }, (v, k) => k).toString()
-  ).split(',');
+  arrayHorasOriginal = Array.from({ length: 24 }, (v, k) => k)
+    .toString()
+    .split(',');
 
   elementoEliminar;
 
@@ -83,6 +80,37 @@ export class NotificacionesComponent implements OnInit {
   enableArray = [{ value: true }, { value: false }];
 
   activarMinutos = true;
+  activarHorafin = false;
+  activarDiafin = false;
+  initValuesPanelShow: boolean;
+
+  ayudaArray = [
+    {
+      title: 'Hora inicio y hora fin',
+      input: 'ayudaHora',
+      description:
+        'Determina el intervalo de horas en las que estará activo el alertamiento. Se configura una hora o puede definirse un rango seleccionando el checkbox para determinar la hora final.',
+    },
+    {
+      title: 'Minutos',
+      input: 'ayudaMinutos',
+      description:
+        'Determina el intervalo de minutos en los que estará activo el alertamiento. Se configura un minuto o puede definirse un rango seleccionando el checkbox para determinar el minuto final.',
+    },
+    {
+      title: 'Dia inicio y dia fin',
+      input: 'ayudaDia',
+      description:
+        'Determina el intervalo de días en las que estará activo el alertamiento. Se configura un día o puede definirse un rango seleccionando el checkbox para determinar el día final.',
+    },
+  ];
+  ayudaSelect = {
+    title: '',
+    input: '',
+    description: '',
+  };
+
+  //ayudaHora
 
   constructor(
     private toastr: ToastrService,
@@ -146,7 +174,7 @@ export class NotificacionesComponent implements OnInit {
 
   changeEvent = ({ target }) => {
     switch (target.id) {
-      case 'minutos':
+      case 'minutosCheck':
         this.eliminarMinutos2();
         break;
       case 'arrayDias1':
@@ -159,6 +187,12 @@ export class NotificacionesComponent implements OnInit {
           (e) => e !== this.Forms.get('arrayHoras1').value
         );
         break;
+      case 'horafinCheck':
+        this.crearHoraFin();
+        break;
+      case 'diafinCheck':
+        this.crearDiaFin();
+        break;
     }
   };
 
@@ -169,13 +203,13 @@ export class NotificacionesComponent implements OnInit {
   costruirCron = () => {
     let contruido = '';
 
-    if (this.Forms.get('minutos').value === 'No aplica') {
+    if (!this.activarMinutos) {
       contruido = contruido + this.Forms.get('minutos2').value + ' ';
     } else {
       contruido = contruido + '0/' + this.Forms.get('minutos').value + ' ';
     }
 
-    if (this.Forms.get('arrayHoras2').value === 'No aplica') {
+    if (!this.activarHorafin) {
       contruido =
         contruido +
         this.tranformsHourUtc(this.Forms.get('arrayHoras1').value) +
@@ -189,7 +223,7 @@ export class NotificacionesComponent implements OnInit {
         ' ? * ';
     }
 
-    if (this.Forms.get('arrayDias2').value === 'NA') {
+    if (!this.activarDiafin) {
       contruido = contruido + this.Forms.get('arrayDias1').value + ' *';
     } else {
       contruido =
@@ -204,15 +238,50 @@ export class NotificacionesComponent implements OnInit {
   };
 
   eliminarMinutos2 = () => {
-    if (this.Forms.get('minutos').value === 'No aplica') {
+    //minutos: new FormControl('No aplica', [Validators.required]),
+
+    if (this.Forms.get('minutosCheck').value === true) {
       this.activarMinutos = true;
+
+      this.Forms.addControl(
+        'minutos',
+        new FormControl(0, [Validators.required])
+      );
+      this.Forms.removeControl('minutos2');
+    } else {
       this.Forms.addControl(
         'minutos2',
         new FormControl(0, [Validators.required])
       );
-    } else {
-      this.Forms.removeControl('minutos2');
+      this.Forms.removeControl('minutos');
+
       this.activarMinutos = false;
+    }
+  };
+
+  crearHoraFin = () => {
+    if (this.Forms.get('horafinCheck').value === true) {
+      this.activarHorafin = true;
+      this.Forms.addControl(
+        'arrayHoras2',
+        new FormControl(0, [Validators.required])
+      );
+    } else {
+      this.Forms.removeControl('arrayHoras2');
+      this.activarHorafin = false;
+    }
+  };
+
+  crearDiaFin = () => {
+    if (this.Forms.get('diafinCheck').value === true) {
+      this.activarDiafin = true;
+      this.Forms.addControl(
+        'arrayDias2',
+        new FormControl(null, [Validators.required])
+      );
+    } else {
+      this.Forms.removeControl('arrayDias2');
+      this.activarDiafin = false;
     }
   };
 
@@ -273,7 +342,6 @@ export class NotificacionesComponent implements OnInit {
       arrayDias1: new FormControl('MON', [Validators.required]),
       arrayDias2: new FormControl('NA', [Validators.required]),
       enabled: new FormControl(false, [Validators.required]),
-      description: new FormControl('', [Validators.required]),
     });
   };
 
@@ -299,12 +367,13 @@ export class NotificacionesComponent implements OnInit {
       this.mostrarEjecucionesProcesos = true;
       this.initValuesPanel(true);
     });
-
   };
 
   mostrarCardEditarResgistro = (
     NotificacionesSetting: AUDGENUSUARIO_INTERFACE
   ) => {
+    this.initValuesPanelShow = true;
+
     this.NotificacionesSettingTemp = NotificacionesSetting;
     this.mostrarEjecucionesProcesos = false;
 
@@ -316,14 +385,12 @@ export class NotificacionesComponent implements OnInit {
       enabled: new FormControl(NotificacionesSetting.enabled, [
         Validators.required,
       ]),
-      description: new FormControl(NotificacionesSetting.description, [
-        Validators.required,
-      ]),
-      minutos: new FormControl('No aplica', [Validators.required]),
-      arrayHoras2: new FormControl('No aplica', [Validators.required]),
+
       arrayHoras1: new FormControl(0, [Validators.required]),
+      horafinCheck: new FormControl(false, []),
       arrayDias1: new FormControl('MON', [Validators.required]),
-      arrayDias2: new FormControl('NA', [Validators.required]),
+      diafinCheck: new FormControl(false, []),
+      minutosCheck: new FormControl(false, []),
     });
 
     let arraySchedule = NotificacionesSetting.schedule.split(' ');
@@ -331,14 +398,13 @@ export class NotificacionesComponent implements OnInit {
     let arrayMinuto = arraySchedule[0].split('/');
 
     if (arrayMinuto.length > 1) {
-      this.activarMinutos = false;
+      this.Forms.get('minutosCheck').setValue(true);
+      this.changeEvent({ target: { id: 'minutosCheck' } });
       this.Forms.get('minutos').setValue(arrayMinuto[1]);
     } else {
-      this.activarMinutos = true;
-      this.Forms.addControl(
-        'minutos2',
-        new FormControl(arrayMinuto[0], [Validators.required])
-      );
+      this.Forms.get('minutosCheck').setValue(false);
+      this.changeEvent({ target: { id: 'minutosCheck' } });
+      this.Forms.get('minutos2').setValue(arrayMinuto[0]);
     }
 
     let arrayHorasSchedule = arraySchedule[1].split('-');
@@ -356,7 +422,6 @@ export class NotificacionesComponent implements OnInit {
     this.changeEvent({ target: { id: 'arrayHoras1' } });
 
     if (arrayHorasSchedule.length > 1) {
-      
       let dateS = moment().utc().toISOString().split('T')[0];
 
       if (arrayHorasSchedule[1].length > 1) {
@@ -365,7 +430,15 @@ export class NotificacionesComponent implements OnInit {
         dateS = dateS + 'T0' + arrayHorasSchedule[1] + ':00:00.000Z';
       }
 
+      this.Forms.get('horafinCheck').setValue(true);
+
+      this.changeEvent({ target: { id: 'horafinCheck' } });
+
       this.Forms.get('arrayHoras2').setValue(new Date(dateS).getHours());
+    } else {
+      this.Forms.get('horafinCheck').setValue(false);
+
+      this.changeEvent({ target: { id: 'horafinCheck' } });
     }
 
     let arrayDiasSchedule = [];
@@ -381,7 +454,12 @@ export class NotificacionesComponent implements OnInit {
     this.changeEvent({ target: { id: 'arrayDias1' } });
 
     if (arrayDiasSchedule.length > 1) {
+      this.Forms.get('diafinCheck').setValue(true);
+      this.changeEvent({ target: { id: 'diafinCheck' } });
       this.Forms.get('arrayDias2').setValue(arrayDiasSchedule[1]);
+    } else {
+      this.Forms.get('diafinCheck').setValue(false);
+      this.changeEvent({ target: { id: 'diafinCheck' } });
     }
 
     if (NotificacionesSetting?.seconds) {
@@ -394,7 +472,12 @@ export class NotificacionesComponent implements OnInit {
 
   ocultarCardAgregarResgistro = () => {
     this.mostrarEjecucionesProcesos = true;
+    this.initValuesPanelShow = false;
     this.Forms.reset();
+  };
+
+  helperInputs = (input) => {
+    this.ayudaSelect = this.ayudaArray.filter((e) => e.input === input)[0];
   };
 
   openModalConfirmacionEliminar(content, object) {

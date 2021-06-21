@@ -15,13 +15,13 @@
     <div class="card-lista-design-general" style="overflow-x: auto">
       <table class="table listado-design-general">
         <tr>
-          <th scope="col">Name</th>
+           <!--  <th scope="col">Name</th>-->
           <th scope="col">Descripción</th>
           <th scope="col">Activo</th>
           <th scope="col">Acciones</th>
         </tr>
         <tr *ngFor="let NotificacionesSetting of NotificacionesSettings">
-          <td>{{ NotificacionesSetting.name }}</td>
+        <!-- <td>{{ NotificacionesSetting.name }}</td> -->
           <td>{{ NotificacionesSetting.description }}</td>
           <td>{{ siONo(NotificacionesSetting.enabled) }}</td>
           <td>
@@ -48,7 +48,7 @@
     <div class="card agregarRegistroCard">
       <div
         class="aling-items-center text-center"
-        style="margin-top: 20px; margin-bottom: 30px"
+        style="margin-top: 20px; margin-bottom: 5px"
       >
         <div
           class="
@@ -59,48 +59,20 @@
             texto-agregarRegistroCardTitle
           "
         >
-          Actualizar Registro
+          Actualizar {{NotificacionesSettingTemp?.description}} <!--Registro-->
         </div>
       </div>
 
-      <div class="card-body" style="padding-left: 127px; padding-right: 127px">
+      <div
+        class="card-body"
+        style="padding-left: 127px; padding-right: 127px"
+        *ngIf="initValuesPanelShow"
+      >
         <form [formGroup]="Forms">
           <div class="form-row">
-            <div class="form-group col-md-4">
-              <label class="labelFormAgregarRegistro" for="minutos"
-                >Intervalo en minutos
-              </label>
-
-              <select
-                formControlName="minutos"
-                class="form-control"
-                id="minutos"
-                (change)="changeEvent($event)"
-              >
-                <option *ngFor="let minuto of arrayMinutos" [value]="minuto">
-                  {{ minuto }}
-                </option>
-              </select>
-            </div>
-            <div class="form-group col-md-4" *ngIf="activarMinutos">
-              <label class="labelFormAgregarRegistro" for="minutos"
-                >Empieza en el minuto
-              </label>
-
-              <select
-                formControlName="minutos2"
-                class="form-control"
-                id="minutos"
-              >
-                <option *ngFor="let minuto2 of arrayMinutos2" [value]="minuto2">
-                  {{ minuto2 }}
-                </option>
-              </select>
-            </div>
-
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-6">
               <label class="labelFormAgregarRegistro" for="arrayHoras1"
-                >Empieza en la hora
+                >Hora incio
               </label>
 
               <select
@@ -115,12 +87,30 @@
               </select>
             </div>
 
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-6">
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  (change)="changeEvent($event)"
+                  id="horafinCheck"
+                  formControlName="horafinCheck"
+                />
+              </div>
+
               <label class="labelFormAgregarRegistro" for="arrayHoras2"
-                >Termina en la hora
+                >Hora fin
+                <i
+                  class="far fa-question-circle"
+                  (mouseenter)="helperInputs('ayudaHora')"
+                  triggers="mouseenter:mouseleave"
+                  [ngbPopover]="popContent"
+                  [popoverTitle]="popTitle"
+                ></i>
               </label>
 
               <select
+                *ngIf="activarHorafin"
                 formControlName="arrayHoras2"
                 class="form-control"
                 id="arrayHoras2"
@@ -131,9 +121,76 @@
               </select>
             </div>
 
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-6" *ngIf="activarMinutos">
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  (change)="changeEvent($event)"
+                  id="minutosCheck"
+                  formControlName="minutosCheck"
+                />
+              </div>
+
+              <label class="labelFormAgregarRegistro" for="minutos"
+                >Intervalo de tiempo en minuto
+                <i
+                  class="far fa-question-circle"
+                  (mouseenter)="helperInputs('ayudaMinutos')"
+                  triggers="mouseenter:mouseleave"
+                  [ngbPopover]="popContent"
+                  [popoverTitle]="popTitle"
+                ></i>
+              </label>
+
+              <select
+                formControlName="minutos"
+                class="form-control"
+                id="minutos"
+              >
+                <option *ngFor="let minuto of arrayMinutos" [value]="minuto">
+                  {{ minuto }}
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group col-md-6" *ngIf="!activarMinutos">
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  (change)="changeEvent($event)"
+                  id="minutosCheck"
+                  formControlName="minutosCheck"
+                />
+              </div>
+              <label class="labelFormAgregarRegistro" for="minutos"
+                >Intervalo de tiempo en minuto
+                <i
+                  class="far fa-question-circle"
+                  (mouseenter)="helperInputs('ayudaMinutos')"
+                  triggers="mouseenter:mouseleave"
+                  [ngbPopover]="popContent"
+                  [popoverTitle]="popTitle"
+                ></i>
+              </label>
+
+              <select
+                formControlName="minutos2"
+                class="form-control"
+                id="minutos2"
+              >
+                <option *ngFor="let minuto2 of arrayMinutos2" [value]="minuto2">
+                  {{ minuto2 }}
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group col-md-6"></div>
+
+            <div class="form-group col-md-6">
               <label class="labelFormAgregarRegistro" for="arrayDias1"
-                >Empieza el dia de la semana
+                >Dia inicio
               </label>
 
               <select
@@ -148,33 +205,38 @@
               </select>
             </div>
 
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-6">
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  (change)="changeEvent($event)"
+                  id="diafinCheck"
+                  formControlName="diafinCheck"
+                />
+              </div>
               <label class="labelFormAgregarRegistro" for="arrayDias1"
-                >Termina el dia de la semana
+                >Dia fin
+
+                <i
+                  class="far fa-question-circle"
+                  (mouseenter)="helperInputs('ayudaDia')"
+                  triggers="mouseenter:mouseleave"
+                  [ngbPopover]="popContent"
+                  [popoverTitle]="popTitle"
+                ></i>
               </label>
 
               <select
                 formControlName="arrayDias2"
                 class="form-control"
                 id="arrayDias2"
+                *ngIf="activarDiafin"
               >
                 <option *ngFor="let dia2 of arrayDias2" [value]="dia2.value">
                   {{ dia2.label }}
                 </option>
               </select>
-            </div>
-
-            <div class="form-group col-md-4">
-              <label class="labelFormAgregarRegistro" for="description"
-                >Descripción</label
-              >
-
-              <input
-                formControlName="description"
-                type="text"
-                class="form-control"
-                id="description"
-              />
             </div>
 
             <div class="form-group col-md-4">
@@ -239,3 +301,12 @@
 >
   <p style="color: white">Cargando...</p>
 </ngx-spinner>
+
+<ng-template #popContent>
+  <div style="width: 100%">
+    <p>
+      {{ ayudaSelect.description }}
+    </p>
+  </div>
+</ng-template>
+<ng-template #popTitle>{{ ayudaSelect.title }}</ng-template>
