@@ -18,7 +18,7 @@ export const rutasConNombres =
   },
   {
     rutaAngular: 'interfases',
-    ValorEsp: 'Interfases',
+    ValorEsp: 'Interfaces',
   },
   {
     rutaAngular: 'catalogos',

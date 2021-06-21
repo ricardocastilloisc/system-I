@@ -230,9 +230,12 @@ export class InterfasesComponent implements OnInit {
     if (origen === 'DEL') {
       this.helpTitulo = 'Fecha desde';
       this.helpBody = 'Fecha desde la cual se filtrará la información.';
-    } else {
+    } else if (origen === 'AL') {
       this.helpTitulo = 'Fecha hasta';
-      this.helpBody = `Fecha hasta la cual se filtrará la información.`;
+      this.helpBody = 'Fecha hasta la cual se filtrará la información.';
+    } else if (origen === 'RESUMEN') {
+      this.helpTitulo = 'Resumen';
+      this.helpBody = 'En esta sección encontraras el número de ejecuciones de los procesos por negocio, proceso, tipo de lanzamiento y estado de la ejecución.';
     }
   }
 

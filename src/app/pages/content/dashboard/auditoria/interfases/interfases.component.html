@@ -4,7 +4,7 @@
 <div class="container-fluid d-flex col-8 align-items-center selector-reporte" style="height: 40px">
     <button id="left-button" [ngClass]="botonActivado('INTERFASES') ? 'botonActivadoInterfases' : ''"
         (click)="setPantalla('INTERFASES')">
-        Interfases
+        Interfaces
     </button>
     <button id="right-button" [ngClass]="botonActivado('PROBLEMAS') ? 'botonActivadoInterfases' : ''"
         (click)="setPantalla('PROBLEMAS')">
@@ -95,7 +95,9 @@
     <!-- ************************************** -->
     <div class="card-busqueda">
         <div class="row col-12 alert alert-primary justify-content-center">
-            Resumen
+            Resumen de las ejecuciones &nbsp;
+            <i class="far fa-question-circle" (mouseenter)="helperQuestions('RESUMEN')" triggers="mouseenter:mouseleave"
+                [ngbPopover]="popContent"></i>
         </div>
         <div class="row col-12 justify-content-center">
             <ng-container *ngFor="let item of treemapPath; let last = last;">
@@ -104,7 +106,7 @@
                 <span *ngIf="!last"> &nbsp;/&nbsp; </span>
             </ng-container>
             <div class="maxLeng">
-                <ngx-charts-tree-map [results]="treemap" [animations]="animations" scheme="cool" [gradient]="false"
+                <ngx-charts-tree-map [results]="treemap" [animations]="animations" scheme="air" [gradient]="false"
                     (select)="treemapSelect($event)">
                     <ng-template #tooltipTemplate let-model="model">
                         <h4>{{model.name}}: {{model.value}}</h4>
@@ -123,7 +125,10 @@
         <div class="row col-12 alert alert-primary justify-content-center">
             <div class="row">
                 <div class="col-4 titulo-filtro"></div>
-                <div class="col-4 titulo-filtro justify-content-center">DIURNOS</div>
+                <div class="col-4 titulo-filtro justify-content-center">Diurnos &nbsp;
+                    <i class="far fa-question-circle" (mouseenter)="helperQuestions('DIURNOS')"
+                        triggers="mouseenter:mouseleave" [ngbPopover]="popContent"></i>
+                </div>
                 <div class="col-4 titulo-filtro justify-content-end">
                     <a (click)="accionMinimizarDiurno()">
                         <img src="assets/icons/arrows-angle-contract.svg" class="tamanioIcono"
@@ -137,7 +142,7 @@
         <div class="row col-12" *ngIf="minimizarDiurno()">
             <div class="row col-12">
                 <div class="mh-25 d-inline-block col-sm-6 col-md-5 col-lg-6 justify-content-center">
-                    <ngx-charts-bar-horizontal scheme="cool" [results]="datosAforeFondos" [xAxis]="showXAxis"
+                    <ngx-charts-bar-horizontal scheme="air" [results]="datosAforeFondos" [xAxis]="showXAxis"
                         [yAxis]="showYAxis" [legend]="showLegend" [legendTitle]="legendTitle"
                         [legendPosition]="legendPosition" [showXAxisLabel]="showXAxisLabel"
                         [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [showDataLabel]="showDataLabel"
@@ -146,7 +151,7 @@
                 </div>
                 <div
                     class="mh-25 d-inline-block col-sm-6 col-md-5 offset-md-2 col-lg-6 offset-lg-0 justify-content-center">
-                    <ngx-charts-bar-horizontal scheme="nightLights" [results]="datosLanzamiento" [xAxis]="showXAxis"
+                    <ngx-charts-bar-horizontal scheme="air" [results]="datosLanzamiento" [xAxis]="showXAxis"
                         [yAxis]="showYAxis" [legend]="showLegend" [legendTitle]="legendTitle"
                         [legendPosition]="legendPosition" [showXAxisLabel]="showXAxisLabel"
                         [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [showDataLabel]="showDataLabel"
@@ -186,7 +191,7 @@
                 <div class="justify-content-center titulo-filtro">
                     {{ tituloGraficoExito }}
                 </div>
-                <ngx-charts-bar-vertical scheme="forest" [results]="single" [gradient]="gradient" [xAxis]="showXAxis"
+                <ngx-charts-bar-vertical scheme="air" [results]="single" [gradient]="gradient" [xAxis]="showXAxis"
                     [legendTitle]="legendTitle" [yAxis]="showYAxis" [legend]="showLegend"
                     [showXAxisLabel]="showXAxisLabel" [showDataLabel]="showDataLabel" [showYAxisLabel]="showYAxisLabel"
                     [xAxisLabel]="showAxisLabelProceso" [yAxisLabel]="xAxisLabel" (select)="onSelect($event)">
@@ -196,7 +201,7 @@
                 <div class="justify-content-center titulo-filtro">
                     {{ tituloGraficoFallo }}
                 </div>
-                <ngx-charts-bar-vertical scheme="flame" [results]="single" [gradient]="gradient" [xAxis]="showXAxis"
+                <ngx-charts-bar-vertical scheme="air" [results]="single" [gradient]="gradient" [xAxis]="showXAxis"
                     [legendTitle]="legendTitle" [yAxis]="showYAxis" [legend]="showLegend"
                     [showXAxisLabel]="showXAxisLabel" [showDataLabel]="showDataLabel" [showYAxisLabel]="showYAxisLabel"
                     [xAxisLabel]="showAxisLabelProceso" [yAxisLabel]="xAxisLabel" (select)="onSelect($event)">
@@ -214,7 +219,10 @@
         <div class="row col-12 alert alert-primary justify-content-center">
             <div class="row">
                 <div class="col-4 titulo-filtro"></div>
-                <div class="col-4 titulo-filtro justify-content-center">NOCTURNOS</div>
+                <div class="col-4 titulo-filtro justify-content-center">Nocturnos &nbsp;
+                    <i class="far fa-question-circle" (mouseenter)="helperQuestions('NOCTURNOS')"
+                        triggers="mouseenter:mouseleave" [ngbPopover]="popContent"></i>
+                </div>
                 <div class="col-4 titulo-filtro justify-content-end">
                     <a class="limpiarFiltro" (click)="accionMinimizarNocturno()">
                         <img src="assets/icons/arrows-angle-contract.svg" class="tamanioIcono"
@@ -228,7 +236,7 @@
         <div class="row col-12" *ngIf="minimizarNocturno()">
             <div class="row col-12">
                 <div class="mh-25 d-inline-block col-sm-6 col-md-5 col-lg-6 justify-content-center">
-                    <ngx-charts-bar-horizontal scheme="cool" [results]="datosAforeFondos" [xAxis]="showXAxis"
+                    <ngx-charts-bar-horizontal scheme="air" [results]="datosAforeFondos" [xAxis]="showXAxis"
                         [yAxis]="showYAxis" [legend]="showLegend" [legendTitle]="legendTitle"
                         [legendPosition]="legendPosition" [showXAxisLabel]="showXAxisLabel"
                         [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [showDataLabel]="showDataLabel"
@@ -237,7 +245,7 @@
                 </div>
                 <div
                     class="mh-25 d-inline-block col-sm-6 col-md-5 offset-md-2 col-lg-6 offset-lg-0 justify-content-center">
-                    <ngx-charts-bar-horizontal scheme="nightLights" [results]="datosLanzamiento" [xAxis]="showXAxis"
+                    <ngx-charts-bar-horizontal scheme="air" [results]="datosLanzamiento" [xAxis]="showXAxis"
                         [yAxis]="showYAxis" [legend]="showLegend" [legendTitle]="legendTitle"
                         [legendPosition]="legendPosition" [showXAxisLabel]="showXAxisLabel"
                         [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [showDataLabel]="showDataLabel"
@@ -277,7 +285,7 @@
                 <div class="justify-content-center titulo-filtro">
                     {{ tituloGraficoExito }}
                 </div>
-                <ngx-charts-bar-vertical scheme="forest" [results]="single" [gradient]="gradient" [xAxis]="showXAxis"
+                <ngx-charts-bar-vertical scheme="air" [results]="single" [gradient]="gradient" [xAxis]="showXAxis"
                     [legendTitle]="legendTitle" [yAxis]="showYAxis" [legend]="showLegend"
                     [showXAxisLabel]="showXAxisLabel" [showDataLabel]="showDataLabel" [showYAxisLabel]="showYAxisLabel"
                     [xAxisLabel]="showAxisLabelProceso" [yAxisLabel]="xAxisLabel" (select)="onSelect($event)">
@@ -287,7 +295,7 @@
                 <div class="justify-content-center titulo-filtro">
                     {{ tituloGraficoFallo }}
                 </div>
-                <ngx-charts-bar-vertical scheme="flame" [results]="single" [gradient]="gradient" [xAxis]="showXAxis"
+                <ngx-charts-bar-vertical scheme="air" [results]="single" [gradient]="gradient" [xAxis]="showXAxis"
                     [legendTitle]="legendTitle" [yAxis]="showYAxis" [legend]="showLegend"
                     [showXAxisLabel]="showXAxisLabel" [showDataLabel]="showDataLabel" [showYAxisLabel]="showYAxisLabel"
                     [xAxisLabel]="showAxisLabelProceso" [yAxisLabel]="xAxisLabel" (select)="onSelect($event)">
@@ -319,7 +327,7 @@
                     <td style="padding-left: 30px; max-width: 150px">{{itemAuditoria.PROBLEMA}}
                     </td>
                 </tr>
-            </table>            
+            </table>
         </div>
     </div>
 </section>
