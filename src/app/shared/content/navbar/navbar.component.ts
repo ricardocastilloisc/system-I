@@ -285,10 +285,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
             .then(({ items }: any) => {
 
               this.ValidadoresDeInterfaces = items;
-
-
-
-
               this.NotificacionesSubActivo$ =
                 this.api.OnUpdateSiaGenAudEstadoProcesosDevListener.subscribe(
                   ({ value }: any) => {
