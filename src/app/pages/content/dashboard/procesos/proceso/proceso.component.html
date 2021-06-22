@@ -324,7 +324,7 @@
                     <table class="listado-log">
                         <thead>
                             <tr>
-                                <th>#</th>
+                                <!-- <th>#</th> -->
                                 <th>Tipo</th>
                                 <th>Hora</th>
                                 <th>Actividad</th>
@@ -334,7 +334,7 @@
                         <tbody>
                             <tr
                                 *ngFor="let AUDGENPROCESO of AUDGENPROCESOS | paginate: { id: 'detalleEjecucion', itemsPerPage: 10, currentPage: paginaActualProceso} ; index as i ">
-                                <td>{{i + 1}}</td>
+                                <!-- <td>{{i + 1}}</td> -->
                                 <td
                                     [ngClass]="{'error-log': AUDGENPROCESO.NIVEL === 'FALLIDO', 'info-log': AUDGENPROCESO.NIVEL === 'INFO' , 'aviso-log': AUDGENPROCESO.NIVEL === 'AVISO' }">
                                     {{AUDGENPROCESO.NIVEL}}</td>
@@ -352,7 +352,7 @@
                     <table class="listado-log">
                         <thead>
                             <tr>
-                                <th>#</th>
+                                <!-- <th>#</th> -->
                                 <th>Hora</th>
                                 <th>Actividad</th>
                                 <th colspan="9">Mensaje</th>
@@ -361,7 +361,7 @@
                         <tbody>
                             <tr
                                 *ngFor="let AUDGENPROCESO of AUDGENPROCESOS | paginate: { id: 'detalleEjecucion', itemsPerPage: 10, currentPage: paginaActualProceso} ; index as i">
-                                <td>{{i + 1 }}</td>
+                                <!-- <td>{{i + 1 }}</td>-->
                                 <td>{{ replazarCaracterEspecial(AUDGENPROCESO.FECHA) | date: "medium" }}
                                 </td>
                                 <td>{{AUDGENPROCESO.ACTIVIDAD}}</td>
