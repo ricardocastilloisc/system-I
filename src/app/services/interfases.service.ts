@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { AuthService } from '../services/auth.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -125,7 +127,7 @@ export class InterfasesService {
           black: 'true'
         }
       }
-    },{
+    }, {
       name: 'MO3',
       value: 12,
       extra: {
@@ -164,7 +166,7 @@ export class InterfasesService {
           black: 'true'
         }
       }
-    },{
+    }, {
       name: 'MO4',
       value: 12,
       extra: {
@@ -226,168 +228,427 @@ export class InterfasesService {
     }
   ];
 
-  tree = [
-    {
-      name: 'Afore',
-      value: 12,
-      extra: {
-        code: 'tst',
-        fail: {
-          black: 'true'
-        }
-      }
-    },
-    {
-      name: 'Fondos',
-      value: 4,
-      extra: {
-        code: 'tst',
-        fail: {
-          black: 'true'
-        }
-      }
-    }
-  ];
+  capitalize (word: any): any {
+    return word[0].toUpperCase() + word.slice(1).toLowerCase();
+  }
 
-  four = [
-    {
-      name: 'Manual',
-      value: 8,
-      extra: {
-        code: 'tst',
-        fail: {
-          black: 'true'
-        }
-      }
-    },
-    {
-      name: 'Automático',
-      value: 4,
-      extra: {
-        code: 'tst',
-        fail: {
-          black: 'true'
-        }
-      }
-    }
-  ];
+  constructor(private authService: AuthService) { }
 
-  treemap = [
-    {
-      name: 'Ejecuciones',
-      children: [
+  getDatos = async (filtros: any) => {
+    // console.log('getDatos', filtros);
+    try {
+      const url = environment.API.endpoints.find((el) => el.name === 'auditoria').endpoint + filtros;
+      const myHeaders = new Headers();
+      myHeaders.append('Authorization', 'Bearer ' + this.authService.getToken());
+      const requestOptions = {
+        method: 'GET',
+        headers: myHeaders
+      };
+      const res = await fetch(url, requestOptions);
+      // console.log(res.ok);
+      const data = await res.json();
+      // console.log(data);
+      return data;
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  formatoResumen = (data: any): any => {
+    if (data) {
+      let objDiurnos: any;
+      let objNocturnos: any;
+      const objLimpioDiurnoExitos: any = [];
+      const objLimpioDiurnoFallos: any = [];
+      const objLimpioDiurnoExitosFondos: any = [];
+      const objLimpioDiurnoFallosFondos: any = [];
+      const objLimpioNocturnoExitos: any = [];
+      const objLimpioNocturnoFallos: any = [];
+      const objLimpioNocturnoExitosFondos: any = [];
+      const objLimpioNocturnoFallosFondos: any = [];
+      if (data.diurnos) {
+        objDiurnos = data.diurnos;
+        if (objDiurnos.afore) {
+          const objAfore = objDiurnos.afore;
+          let objProceso: string;
+          let objDetalle: {};
+          let objLanzamiento: string[];
+          let objDetalleInicio: any;
+          let sample: any;
+          let summed = 0;
+          let setName: string;
+          // tslint:disable-next-line: forin
+          for (const i in objAfore) {
+            objProceso = Object.keys(objAfore[i])[0];
+            objDetalle = objAfore[i]['' + objProceso + ''];
+            objLanzamiento = Object.keys(objDetalle);
+            // tslint:disable-next-line: forin
+            for (const j in objLanzamiento) {
+              objDetalleInicio = objDetalle['' + objLanzamiento[j] + ''];
+              if (objDetalleInicio.exitosos) {
+                if (objLanzamiento[j] === 'manual') {
+                  setName = 'Manuales';
+                } else {
+                  setName = 'Automáticos';
+                }
+                const item = {
+                  name: objProceso,
+                  children: [
+                    { name: setName, size: objDetalleInicio.exitosos }
+                  ]
+                };
+                objLimpioDiurnoExitos.push(item);
+              }
+              if (objDetalleInicio.fallidos) {
+                sample = objDetalleInicio.fallidos;
+                summed = 0;
+                // tslint:disable-next-line: forin
+                for (const key in sample) {
+                  summed += sample[key];
+                }
+                if (objLanzamiento[j] === 'manual') {
+                  setName = 'Manuales';
+                } else {
+                  setName = 'Automáticos';
+                }
+                const item = {
+                  name: objProceso,
+                  children: [
+                    { name: setName, size: summed }
+                  ]
+                };
+                objLimpioDiurnoFallos.push(item);
+              }
+            }
+          }
+        }
+        if (objDiurnos.fondos) {
+          const objFondos = objDiurnos.fondos;
+          let objProceso: string;
+          let objDetalle: {};
+          let objLanzamiento: string[];
+          let objDetalleInicio: any;
+          let sample: any;
+          let summed = 0;
+          let setName: string;
+          // tslint:disable-next-line: forin
+          for (const i in objFondos) {
+            objProceso = Object.keys(objFondos[i])[0];
+            objDetalle = objFondos[i]['' + objProceso + ''];
+            objLanzamiento = Object.keys(objDetalle);
+            // tslint:disable-next-line: forin
+            for (const j in objLanzamiento) {
+              objDetalleInicio = objDetalle['' + objLanzamiento[j] + ''];
+              if (objDetalleInicio.exitosos) {
+                if (objLanzamiento[j] === 'manual') {
+                  setName = 'Manuales';
+                } else {
+                  setName = 'Automáticos';
+                }
+                const item = {
+                  name: objProceso,
+                  children: [
+                    { name: setName, size: objDetalleInicio.exitosos }
+                  ]
+                };
+                objLimpioDiurnoExitosFondos.push(item);
+              }
+              if (objDetalleInicio.fallidos) {
+                sample = objDetalleInicio.fallidos;
+                summed = 0;
+                // tslint:disable-next-line: forin
+                for (const key in sample) {
+                  summed += sample[key];
+                }
+                if (objLanzamiento[j] === 'manual') {
+                  setName = 'Manuales';
+                } else {
+                  setName = 'Automáticos';
+                }
+                const item = {
+                  name: objProceso,
+                  children: [
+                    { name: setName, size: summed }
+                  ]
+                };
+                objLimpioDiurnoFallosFondos.push(item);
+              }
+            }
+          }
+        }
+      }
+      if (data.nocturnos) {
+        objNocturnos = data.nocturnos;
+        if (objNocturnos.afore) {
+          const objAfore = objNocturnos.afore;
+          let objProceso: string;
+          let objDetalle: {};
+          let objLanzamiento: string[];
+          let objDetalleInicio: any;
+          let sample: any;
+          let summed = 0;
+          let setName: string;
+          // tslint:disable-next-line: forin
+          for (const i in objAfore) {
+            objProceso = Object.keys(objAfore[i])[0];
+            objDetalle = objAfore[i]['' + objProceso + ''];
+            objLanzamiento = Object.keys(objDetalle);
+            // tslint:disable-next-line: forin
+            for (const j in objLanzamiento) {
+              objDetalleInicio = objDetalle['' + objLanzamiento[j] + ''];
+              if (objDetalleInicio.exitosos) {
+                if (objLanzamiento[j] === 'manual') {
+                  setName = 'Manuales';
+                } else {
+                  setName = 'Automáticos';
+                }
+                const item = {
+                  name: objProceso,
+                  children: [
+                    { name: setName, size: objDetalleInicio.exitosos }
+                  ]
+                };
+                objLimpioNocturnoExitos.push(item);
+              }
+              if (objDetalleInicio.fallidos) {
+                sample = objDetalleInicio.fallidos;
+                summed = 0;
+                // tslint:disable-next-line: forin
+                for (const key in sample) {
+                  summed += sample[key];
+                }
+                if (objLanzamiento[j] === 'manual') {
+                  setName = 'Manuales';
+                } else {
+                  setName = 'Automáticos';
+                }
+                const item = {
+                  name: objProceso,
+                  children: [
+                    { name: setName, size: summed }
+                  ]
+                };
+                objLimpioNocturnoFallos.push(item);
+              }
+            }
+          }
+        }
+        if (objNocturnos.fondos) {
+          const objFondos = objNocturnos.fondos;
+          let objProceso: string;
+          let objDetalle: {};
+          let objLanzamiento: string[];
+          let objDetalleInicio: any;
+          let sample: any;
+          let summed = 0;
+          let setName: string;
+          // tslint:disable-next-line: forin
+          for (const i in objFondos) {
+            objProceso = Object.keys(objFondos[i])[0];
+            objDetalle = objFondos[i]['' + objProceso + ''];
+            objLanzamiento = Object.keys(objDetalle);
+            // tslint:disable-next-line: forin
+            for (const j in objLanzamiento) {
+              objDetalleInicio = objDetalle['' + objLanzamiento[j] + ''];
+              if (objDetalleInicio.exitosos) {
+                if (objLanzamiento[j] === 'manual') {
+                  setName = 'Manuales';
+                } else {
+                  setName = 'Automáticos';
+                }
+                const item = {
+                  name: objProceso,
+                  children: [
+                    { name: setName, size: objDetalleInicio.exitosos }
+                  ]
+                };
+                objLimpioNocturnoExitosFondos.push(item);
+              }
+              if (objDetalleInicio.fallidos) {
+                sample = objDetalleInicio.fallidos;
+                summed = 0;
+                // tslint:disable-next-line: forin
+                for (const key in sample) {
+                  summed += sample[key];
+                }
+                if (objLanzamiento[j] === 'manual') {
+                  setName = 'Manuales';
+                } else {
+                  setName = 'Automáticos';
+                }
+                const item = {
+                  name: objProceso,
+                  children: [
+                    { name: setName, size: summed }
+                  ]
+                };
+                objLimpioNocturnoFallosFondos.push(item);
+              }
+            }
+          }
+        }
+      }
+      const response = [
         {
-          name: 'Afore',
+          name: 'Ejecuciones',
           children: [
             {
-              name: 'Exitosos',
+              name: 'Diurnos',
               children: [
                 {
-                  name: 'INT CASH',
+                  name: 'Afore',
                   children: [
-                    { name: 'Manuales', size: 1212 },
-                    { name: 'Automáticos', size: 3612 }
-                  ]
+                    {
+                      name: 'Exitosos',
+                      children: objLimpioDiurnoExitos
+                    },
+                    {
+                      name: 'Fallidos',
+                      children: objLimpioDiurnoFallos
+                    }]
                 },
                 {
-                  name: 'MO',
+                  name: 'Fondos',
                   children: [
-                    { name: 'Automáticos', size: 2541 }
-                  ]
-                },
-                {
-                  name: 'MD',
-                  children: [
-                    { name: 'Automáticos', size: 2812 }
-                  ]
-                },
-                {
-                  name: 'AIMS Y EXCEDENTES',
-                  children: [
-                    { name: 'Manuales', size: 2812 },
-                    { name: 'Automáticos', size: 512 }
-                  ]
-                }
-              ],
+                    {
+                      name: 'Exitosos',
+                      children: objLimpioDiurnoExitosFondos
+                    },
+                    {
+                      name: 'Fallidos',
+                      children: objLimpioDiurnoFallosFondos
+                    }]
+                }]
             },
             {
-              name: 'Fallidos',
+              name: 'Nocturnos',
               children: [
                 {
-                  name: 'INT CASH',
+                  name: 'Afore',
                   children: [
-                    { name: 'Manuales', size: 212 },
-                    { name: 'Automáticos', size: 612 }
-                  ]
+                    {
+                      name: 'Exitosos',
+                      children: objLimpioNocturnoExitos
+                    },
+                    {
+                      name: 'Fallidos',
+                      children: objLimpioNocturnoFallos
+                    }]
                 },
                 {
-                  name: 'MO',
+                  name: 'Fondos',
                   children: [
-                    { name: 'Automáticos', size: 541 }
-                  ]
-                },
-                {
-                  name: 'MD',
-                  children: [
-                    { name: 'Automáticos', size: 812 }
-                  ]
-                },
-                {
-                  name: 'AIMS Y EXCEDENTES',
-                  children: [
-                    { name: 'Manuales', size: 812 },
-                    { name: 'Automáticos', size: 112 }
-                  ]
-                }
-              ],
-            }
-          ]
-        },
-        {
-          name: 'Fondos',
-          children: [
-            {
-              name: 'Exitosos',
-              children: [
-                {
-                  name: 'CRD',
-                  children: [
-                    { name: 'Manuales', size: 2812 },
-                    { name: 'Automáticos', size: 812 }
-                  ]
-                },
-                {
-                  name: 'Mandatos',
-                  children: [
-                    { name: 'Manuales', size: 1612 },
-                    { name: 'Automáticos', size: 312 }
-                  ]
-                }
-              ],
-            },
-            {
-              name: 'Fallidos',
-              children: [
-                {
-                  name: 'CRD',
-                  children: [
-                    { name: 'Manuales', size: 612 },
-                    { name: 'Automáticos', size: 92 }
-                  ]
-                },
-                {
-                  name: 'Mandatos',
-                  children: [
-                    { name: 'Manuales', size: 512 },
-                    { name: 'Automáticos', size: 104 }
-                  ]
-                }
-              ],
-            }
-          ]
-        }
-      ]
-    }];
+                    {
+                      name: 'Exitosos',
+                      children: objLimpioNocturnoExitosFondos
+                    },
+                    {
+                      name: 'Fallidos',
+                      children: objLimpioNocturnoFallosFondos
+                    }]
+                }]
+            }]
+        }];
+      return response;
+    }
+  }
 
-  constructor() { }
+  formatoDatosBarHorNegocio = (data: any): any => {
+    const dataFormat = [
+      {
+        name: 'Afore',
+        value: 12,
+        extra: {
+          code: 'tst',
+          fail: {
+            black: 'true'
+          }
+        }
+      },
+      {
+        name: 'Fondos',
+        value: 4,
+        extra: {
+          code: 'tst',
+          fail: {
+            black: 'true'
+          }
+        }
+      }
+    ];
+    return dataFormat;
+  }
+
+  formatoDatosBarHorLanzamiento = (data: any): any => {
+    const dataFormat = [
+      {
+        name: 'Afore',
+        value: 12,
+        extra: {
+          code: 'tst',
+          fail: {
+            black: 'true'
+          }
+        }
+      },
+      {
+        name: 'Fondos',
+        value: 4,
+        extra: {
+          code: 'tst',
+          fail: {
+            black: 'true'
+          }
+        }
+      }
+    ];
+    return dataFormat;
+  }
+
+  formatoDatosPieDiurnoAfore = (data: any): any => {
+    const dataFormat = [
+      {
+        name: 'Exitosos',
+        value: 12,
+        extra: {
+          code: 'tst'
+        }
+      },
+      {
+        name: 'Fallidos',
+        value: 4,
+        extra: {
+          code: 'tst',
+          fail: {
+            black: 'true'
+          },
+        }
+      }
+    ];
+    return dataFormat;
+  }
+
+  formatoDatosPieDiurnoFondos = (data: any): any => {
+    const dataFormat = [
+      {
+        name: 'Exitosos',
+        value: 12,
+        extra: {
+          code: 'tst'
+        }
+      },
+      {
+        name: 'Fallidos',
+        value: 4,
+        extra: {
+          code: 'tst',
+          fail: {
+            black: 'true'
+          }
+        }
+      }
+    ];
+    return dataFormat;
+  }
+
 }

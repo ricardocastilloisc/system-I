@@ -75,6 +75,13 @@ export class AuthService {
             areasStore.toString()
           );
 
+          // console.log('negocio', user.attributes['custom:negocio']);
+
+          localStorage.setItem(
+            'negocio',
+            user.attributes['custom:negocio']
+          );
+
 
           this.store.dispatch(authActions.setUser({ user }));
           let area = this.obtenerArea();
