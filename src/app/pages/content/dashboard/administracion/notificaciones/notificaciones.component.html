@@ -178,7 +178,7 @@
 
                   <h5 class="card-title" style="text-align: center;">
                     Día
-                    <i class="far fa-question-circle" (mouseenter)="helperInputs('ayudaMinutos')"
+                    <i class="far fa-question-circle" (mouseenter)="helperInputs('ayudaDia')"
                       triggers="mouseenter:mouseleave" [ngbPopover]="popContent" [popoverTitle]="popTitle"></i>
                   </h5>
 
@@ -203,8 +203,6 @@
                     </div>
                     <label class="labelFormAgregarRegistro" for="arrayDias1">Día fin
 
-                      <i class="far fa-question-circle" (mouseenter)="helperInputs('ayudaDia')"
-                        triggers="mouseenter:mouseleave" [ngbPopover]="popContent" [popoverTitle]="popTitle"></i>
                     </label>
 
                     <select formControlName="arrayDias2" class="form-control" id="arrayDias2" *ngIf="activarDiafin">
