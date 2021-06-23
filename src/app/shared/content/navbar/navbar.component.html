@@ -15,6 +15,8 @@
       </li>
       <li class="active">
         <a
+          (click)="clickNav($event)"
+          id="navAdministracion"
           href="#administracion"
           class="dropdown-toggle"
           data-toggle="collapse"
@@ -48,7 +50,10 @@
             >
           </li>
           <li *ngIf="perfilValido(DataUser, [Administrador, Soporte])">
-            <a routerLinkActive="active" routerLink="/administracion/notificaciones">
+            <a
+              routerLinkActive="active"
+              routerLink="/administracion/notificaciones"
+            >
               <img
                 src="../assets/icons/icono-notificaciones.svg"
                 class="alineadoTextoImagenCentro"
@@ -63,6 +68,8 @@
         *ngIf="perfilValido(DataUser, [Administrador, Soporte])"
       >
         <a
+          (click)="clickNav($event)"
+          id="navAudiroria"
           href="#auditoria"
           class="dropdown-toggle"
           data-toggle="collapse"
@@ -116,6 +123,8 @@
       </li>
       <li class="active" *ngIf="usuario.validarRolUsuario()">
         <a
+          (click)="clickNav($event)"
+          id="navProceso"
           href="#procesos"
           class="dropdown-toggle"
           data-toggle="collapse"
@@ -259,13 +268,15 @@
                       | ordenarNotificacionesFecha
                   "
                 >
-                  <div class="notification-item" (click)="irAlProceso(Notificacion)">
+                  <div
+                    class="notification-item"
+                    (click)="irAlProceso(Notificacion)"
+                  >
                     <div class="item-title">
                       <div>{{ verEstado(Notificacion) }}</div>
-
                     </div>
 
-                    <div class="item-info" >
+                    <div class="item-info">
                       {{ Notificacion.INTERFAZ }}
                     </div>
                     <div class="item-info">
@@ -276,7 +287,7 @@
                     </div>
                   </div>
                   <button
-                  style="margin-top: -55px; margin-right: 20px;"
+                    style="margin-top: -55px; margin-right: 20px"
                     type="button"
                     class="close"
                     (click)="eliminarNotificacion(Notificacion.ID_PROCESO)"
