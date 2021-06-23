@@ -103,6 +103,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
       this.NotificacionesSub$.unsubscribe();
     }
     this.DataUserValidartor.unsubscribe();
+    this.subscription.unsubscribe();
   }
 
   ngAfterViewInit(): void {
