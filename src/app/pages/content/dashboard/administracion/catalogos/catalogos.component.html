@@ -2,7 +2,10 @@
   <div class="container-fluid">
     <div class="d-flex" style="height: 75vh; width: 100%">
       <div class="row" style="width: 100%">
-        <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12"  *ngIf="AforesSubs.length > 0">
+        <div
+          class="col-lg-4 col-md-12 col-sm-12 col-xs-12"
+          *ngIf="AforesSubs.length > 0"
+        >
           <div class="card cardAzul" style="padding-left: 10px">
             <div class="card-body cardCatalogos">
               <div class="d-flex flex-column">
@@ -19,10 +22,23 @@
                           <li
                             class="subtitulosCatalogos"
                             *ngFor="let AforesGen of AforesGens"
-                            (click)="goDetailCat(AforesGen.NOMBRE_NEGOCIO, AforesGen.NOMBRE)"
+                            (click)="
+                              goDetailCat(
+                                AforesGen.NOMBRE_NEGOCIO,
+                                AforesGen.NOMBRE
+                              )
+                            "
                           >
-
-                          <span (click)="goDetailCat(AforesGen.NOMBRE_NEGOCIO, AforesGen.NOMBRE)"> {{ AforesGen.NOMBRE_NEGOCIO }}</span>
+                            <span
+                              (click)="
+                                goDetailCat(
+                                  AforesGen.NOMBRE_NEGOCIO,
+                                  AforesGen.NOMBRE
+                                )
+                              "
+                            >
+                              {{ AforesGen.NOMBRE_NEGOCIO }}</span
+                            >
                           </li>
                           <ul
                             class="acomodardorDeLista"
@@ -38,9 +54,23 @@
                               <li
                                 class="subtitulosCatalogos"
                                 *ngFor="let SUBMENU of AforesSub.SUBMENUS"
-                                (click)="goDetailCat(SUBMENU.NOMBRE_NEGOCIO, SUBMENU.NOMBRE)"
-                              > <span (click)="goDetailCat(SUBMENU.NOMBRE_NEGOCIO, SUBMENU.NOMBRE)"> {{ SUBMENU.NOMBRE_NEGOCIO }}</span>
-
+                                (click)="
+                                  goDetailCat(
+                                    SUBMENU.NOMBRE_NEGOCIO,
+                                    SUBMENU.NOMBRE
+                                  )
+                                "
+                              >
+                                <span
+                                  (click)="
+                                    goDetailCat(
+                                      SUBMENU.NOMBRE_NEGOCIO,
+                                      SUBMENU.NOMBRE
+                                    )
+                                  "
+                                >
+                                  {{ SUBMENU.NOMBRE_NEGOCIO }}</span
+                                >
                               </li>
                             </ul>
                           </ul>
@@ -53,7 +83,10 @@
             </div>
           </div>
         </div>
-        <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12"  *ngIf="FondosSubs.length > 0">
+        <div
+          class="col-lg-4 col-md-12 col-sm-12 col-xs-12"
+          *ngIf="FondosSubs.length > 0"
+        >
           <div class="card cardAzul" style="padding-left: 10px">
             <div class="card-body cardCatalogos">
               <div class="d-flex flex-column">
@@ -70,10 +103,23 @@
                           <li
                             class="subtitulosCatalogos"
                             *ngFor="let FondosGen of FondosGens"
-                            (click)="goDetailCat(FondosGen.NOMBRE_NEGOCIO, FondosGen.NOMBRE)"
+                            (click)="
+                              goDetailCat(
+                                FondosGen.NOMBRE_NEGOCIO,
+                                FondosGen.NOMBRE
+                              )
+                            "
                           >
-
-                          <span (click)="goDetailCat(FondosGen.NOMBRE_NEGOCIO, FondosGen.NOMBRE)"> {{ FondosGen.NOMBRE_NEGOCIO }}</span>
+                            <span
+                              (click)="
+                                goDetailCat(
+                                  FondosGen.NOMBRE_NEGOCIO,
+                                  FondosGen.NOMBRE
+                                )
+                              "
+                            >
+                              {{ FondosGen.NOMBRE_NEGOCIO }}</span
+                            >
                           </li>
                           <ul
                             class="acomodardorDeLista"
@@ -89,9 +135,23 @@
                               <li
                                 class="subtitulosCatalogos"
                                 *ngFor="let SUBMENU of FondosSub.SUBMENUS"
-                                (click)="goDetailCat(SUBMENU.NOMBRE_NEGOCIO, SUBMENU.NOMBRE)"
-                              > <span (click)="goDetailCat(SUBMENU.NOMBRE_NEGOCIO, SUBMENU.NOMBRE)"> {{ SUBMENU.NOMBRE_NEGOCIO }}</span>
-
+                                (click)="
+                                  goDetailCat(
+                                    SUBMENU.NOMBRE_NEGOCIO,
+                                    SUBMENU.NOMBRE
+                                  )
+                                "
+                              >
+                                <span
+                                  (click)="
+                                    goDetailCat(
+                                      SUBMENU.NOMBRE_NEGOCIO,
+                                      SUBMENU.NOMBRE
+                                    )
+                                  "
+                                >
+                                  {{ SUBMENU.NOMBRE_NEGOCIO }}</span
+                                >
                               </li>
                             </ul>
                           </ul>
@@ -104,7 +164,10 @@
             </div>
           </div>
         </div>
-        <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12" *ngIf="GenericosGens.length > 0">
+        <div
+          class="col-lg-4 col-md-12 col-sm-12 col-xs-12"
+          *ngIf="GenericosGens.length > 0"
+        >
           <div class="card cardAzul" style="padding-left: 10px">
             <div class="card-body cardCatalogos">
               <div class="d-flex flex-column">
@@ -112,16 +175,33 @@
                   <div class="elementsMenus d-flex flex-column">
                     <div>
                       <ul class="acomodardorDeLista">
+                        <li class="tituloPrincipalCatalogos">
+                          <span class="spanColorCatalogosListaTituloPricipal"
+                            >Generales</span
+                          >
+                        </li>
                         <ul class="acomodardorDeLista">
                           <li
                             class="subtitulosCatalogos"
                             *ngFor="let GenericosGen of GenericosGens"
-                            (click)="goDetailCat(GenericosGen.NOMBRE_NEGOCIO, GenericosGen.NOMBRE)"
+                            (click)="
+                              goDetailCat(
+                                GenericosGen.NOMBRE_NEGOCIO,
+                                GenericosGen.NOMBRE
+                              )
+                            "
                           >
-
-                          <span (click)="goDetailCat(GenericosGen.NOMBRE_NEGOCIO, GenericosGen.NOMBRE)"> {{ GenericosGen.NOMBRE_NEGOCIO }}</span>
+                            <span
+                              (click)="
+                                goDetailCat(
+                                  GenericosGen.NOMBRE_NEGOCIO,
+                                  GenericosGen.NOMBRE
+                                )
+                              "
+                            >
+                              {{ GenericosGen.NOMBRE_NEGOCIO }}</span
+                            >
                           </li>
-
                         </ul>
                       </ul>
                     </div>
