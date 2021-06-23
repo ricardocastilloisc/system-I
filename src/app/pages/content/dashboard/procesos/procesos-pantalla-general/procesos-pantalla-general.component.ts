@@ -114,6 +114,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
+    this.authService.refreshToken();
 
     this.actualPage = 1;
     this.DataUser$ = this.store.select(({ usuario }) => usuario.user);
@@ -269,6 +270,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
     let todayDate = new Date()
     let fechaInicio = new Date();
     fechaInicio.setHours(0, 0, 0, 0);
+    this.authService.refreshToken();
 
     // console.log('FechaInicio: ', fechaInicio)
     // console.log('FechaInicioUTC: ', fechaInicio.toISOString())

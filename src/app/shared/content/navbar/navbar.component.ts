@@ -12,7 +12,7 @@ import { Store } from '@ngrx/store';
 import { AuthService } from 'src/app/services/auth.service';
 import { AppState } from '../../../ReduxStore/app.reducers';
 import { Usuario } from '../../../model/usuario.model';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, interval } from 'rxjs';
 import { EArea, ERole } from '../../../validators/roles';
 import { NotificacionesService } from '../../../services/notificaciones.service';
 import { map } from 'rxjs/operators';
@@ -39,6 +39,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   DataUser$: Observable<Usuario>;
 
+  subscription: Subscription;
+  
   Administrador = ERole.Administrador;
   Monitor = ERole.Monitor;
   Soporte = ERole.Soporte;
@@ -228,6 +230,10 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   };
 
   ngOnInit(): void {
+
+    const source = interval(1800000);
+    this.subscription = source.subscribe(val => this.authService.refreshToken());
+    
     this.DataUser$ = this.store.select(({ usuario }) => usuario.user);
     this.NotificacionesSub$ = this.store
       .select(({ notificaciones }) => notificaciones.notificaciones)
