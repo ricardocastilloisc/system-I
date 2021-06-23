@@ -105,6 +105,7 @@
                     {{item.name}} ({{item.value}}) </a>
                 <span *ngIf="!last"> &nbsp;/&nbsp; </span>
             </ng-container>
+            <div class="w-100"></div>
             <div class="maxLeng">
                 <ngx-charts-tree-map *ngIf="treeMapNotEmpty" [results]="treemap" [animations]="animations" scheme="air"
                     (select)="treemapSelect($event)">
@@ -177,18 +178,16 @@
                 </div>
                 <div class="w-100"></div>
                 <div class="col-sm-6 col-md-5 col-lg-6 justify-content-center">
-                    <ngx-charts-pie-chart [explodeSlices]="explodeSlices"
-                        [scheme]="colorScheme" [results]="datosDiurnoAfore"
-                        [labels]="showLabels" [labelFormatting]="setLabelFormatting" [legend]="showLegend"
-                        [legendPosition]="legendPosition" [legendTitle]="legendTitle"
+                    <ngx-charts-pie-chart [explodeSlices]="explodeSlices" [scheme]="colorScheme"
+                        [results]="datosDiurnoAfore" [labels]="showLabels" [labelFormatting]="setLabelFormatting"
+                        [legend]="showLegend" [legendPosition]="legendPosition" [legendTitle]="legendTitle"
                         (select)="mostrarDetalleDiurnoAfore($event)">
                     </ngx-charts-pie-chart>
                 </div>
                 <div class="col-sm-6 col-md-5 offset-md-2 col-lg-6 offset-lg-0 justify-content-center">
-                    <ngx-charts-pie-chart [explodeSlices]="explodeSlices"
-                        [scheme]="colorScheme" [results]="datosDiurnoFondos"
-                        [labels]="showLabels" [labelFormatting]="setLabelFormatting" [legend]="showLegend"
-                        [legendPosition]="legendPosition" [legendTitle]="legendTitle"
+                    <ngx-charts-pie-chart [explodeSlices]="explodeSlices" [scheme]="colorScheme"
+                        [results]="datosDiurnoFondos" [labels]="showLabels" [labelFormatting]="setLabelFormatting"
+                        [legend]="showLegend" [legendPosition]="legendPosition" [legendTitle]="legendTitle"
                         (select)="mostrarDetalleDiurnoFondos($event)">
                     </ngx-charts-pie-chart>
                 </div>
@@ -197,20 +196,20 @@
                 <div class="justify-content-center titulo-filtro">
                     {{ tituloGrafico }}
                 </div>
-                <ngx-charts-bar-vertical scheme="air" [results]="single" [xAxis]="showXAxis"
-                    [legendTitle]="legendTitle" [yAxis]="showYAxis" [legend]="showLegend"
-                    [showXAxisLabel]="showXAxisLabel" [showDataLabel]="showDataLabel" [showYAxisLabel]="showYAxisLabel"
-                    [xAxisLabel]="xAxisLabelProcesos" [yAxisLabel]="xAxisLabel">
+                <ngx-charts-bar-vertical scheme="air" [results]="single" [xAxis]="showXAxis" [legendTitle]="legendTitle"
+                    [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel"
+                    [showDataLabel]="showDataLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabelProcesos"
+                    [yAxisLabel]="xAxisLabel">
                 </ngx-charts-bar-vertical>
             </div>
             <div class="row col-12" *ngIf="mostrarDetalleFallos()">
                 <div class="justify-content-center titulo-filtro">
                     {{ tituloGrafico }}
                 </div>
-                <ngx-charts-bar-vertical scheme="air" [results]="single" [xAxis]="showXAxis"
-                    [legendTitle]="legendTitle" [yAxis]="showYAxis" [legend]="showLegend"
-                    [showXAxisLabel]="showXAxisLabel" [showDataLabel]="showDataLabel" [showYAxisLabel]="showYAxisLabel"
-                    [xAxisLabel]="xAxisLabelProcesos" [yAxisLabel]="xAxisLabel">
+                <ngx-charts-bar-vertical scheme="air" [results]="single" [xAxis]="showXAxis" [legendTitle]="legendTitle"
+                    [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel"
+                    [showDataLabel]="showDataLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabelProcesos"
+                    [yAxisLabel]="xAxisLabel">
                 </ngx-charts-bar-vertical>
             </div>
         </div>
@@ -277,18 +276,16 @@
                 </div>
                 <div class="w-100"></div>
                 <div class="col-sm-6 col-md-5 col-lg-6 justify-content-center">
-                    <ngx-charts-pie-chart [explodeSlices]="explodeSlices"
-                        [scheme]="colorScheme" [results]="datosNocturnoAfore"
-                        [labels]="showLabels" [labelFormatting]="setLabelFormatting" [legend]="showLegend"
-                        [legendPosition]="legendPosition" [legendTitle]="legendTitle"
+                    <ngx-charts-pie-chart [explodeSlices]="explodeSlices" [scheme]="colorScheme"
+                        [results]="datosNocturnoAfore" [labels]="showLabels" [labelFormatting]="setLabelFormatting"
+                        [legend]="showLegend" [legendPosition]="legendPosition" [legendTitle]="legendTitle"
                         (select)="mostrarDetalleNocturnoAfore($event)">
                     </ngx-charts-pie-chart>
                 </div>
                 <div class="col-sm-6 col-md-5 offset-md-2 col-lg-6 offset-lg-0 justify-content-center">
-                    <ngx-charts-pie-chart [explodeSlices]="explodeSlices"
-                        [scheme]="colorScheme" [results]="datosNocturnoFondos"
-                        [labels]="showLabels" [labelFormatting]="setLabelFormatting" [legend]="showLegend"
-                        [legendPosition]="legendPosition" [legendTitle]="legendTitle"
+                    <ngx-charts-pie-chart [explodeSlices]="explodeSlices" [scheme]="colorScheme"
+                        [results]="datosNocturnoFondos" [labels]="showLabels" [labelFormatting]="setLabelFormatting"
+                        [legend]="showLegend" [legendPosition]="legendPosition" [legendTitle]="legendTitle"
                         (select)="mostrarDetalleNocturnoFondos($event)">
                     </ngx-charts-pie-chart>
                 </div>
@@ -297,20 +294,20 @@
                 <div class="justify-content-center titulo-filtro">
                     {{ tituloGraficoNocturno }}
                 </div>
-                <ngx-charts-bar-vertical scheme="air" [results]="single" [xAxis]="showXAxis"
-                    [legendTitle]="legendTitle" [yAxis]="showYAxis" [legend]="showLegend"
-                    [showXAxisLabel]="showXAxisLabel" [showDataLabel]="showDataLabel" [showYAxisLabel]="showYAxisLabel"
-                    [xAxisLabel]="xAxisLabelProcesos" [yAxisLabel]="xAxisLabel">
+                <ngx-charts-bar-vertical scheme="air" [results]="single" [xAxis]="showXAxis" [legendTitle]="legendTitle"
+                    [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel"
+                    [showDataLabel]="showDataLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabelProcesos"
+                    [yAxisLabel]="xAxisLabel">
                 </ngx-charts-bar-vertical>
             </div>
             <div class="row col-12" *ngIf="detalleFalloNocturno">
                 <div class="justify-content-center titulo-filtro">
                     {{ tituloGraficoNocturno }}
                 </div>
-                <ngx-charts-bar-vertical scheme="air" [results]="single"[xAxis]="showXAxis"
-                    [legendTitle]="legendTitle" [yAxis]="showYAxis" [legend]="showLegend"
-                    [showXAxisLabel]="showXAxisLabel" [showDataLabel]="showDataLabel" [showYAxisLabel]="showYAxisLabel"
-                    [xAxisLabel]="xAxisLabelProcesos" [yAxisLabel]="xAxisLabel">
+                <ngx-charts-bar-vertical scheme="air" [results]="single" [xAxis]="showXAxis" [legendTitle]="legendTitle"
+                    [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel"
+                    [showDataLabel]="showDataLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabelProcesos"
+                    [yAxisLabel]="xAxisLabel">
                 </ngx-charts-bar-vertical>
             </div>
         </div>

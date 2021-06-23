@@ -33,37 +33,6 @@ export class InterfasesComponent implements OnInit {
 
   /*-- ************************************** -->
   <!-- ************************************** -->
-  <!-- ********* G R A F I C O S************* -->
-  <!-- ************************************** -->
-  <!-- ************************************** -*/
-  explodeSlices = false;
-  gradient = false;
-  showLegend = true;
-  showLabels = true;
-  showDataLabel = true;
-  showXAxis = true;
-  showYAxis = true;
-  showXAxisLabel = true;
-  showYAxisLabel = true;
-  legendPosition = 'below';
-  legendTitle = 'Datos';
-  xAxisLabel = 'Número de ejecuciones';
-  xAxisLabelProcesos = 'Procesos';
-  yAxisLabel = 'Tipo';
-  yAxisLabelNegocio = 'Negocio';
-  animations = true;
-  treemap: any;
-  treemapPath: any[] = [];
-  sumBy = 'Size';
-  drilldownAddress = null;
-  tituloGrafico = '';
-  tituloGraficoNocturno = '';
-  colorScheme = {
-    domain: ['#5AA454', '#A10A28']
-  };
-
-  /*-- ************************************** -->
-  <!-- ************************************** -->
   <!-- ********* D A T O S ****************** -->
   <!-- ************************************** -->
   <!-- ************************************** -*/
@@ -96,6 +65,48 @@ export class InterfasesComponent implements OnInit {
   flagMinimizarNocturno = false;
   helpTitulo = '';
   helpBody = '';
+
+  /*-- ************************************** -->
+  <!-- ************************************** -->
+  <!-- ********* G R A F I C O S************* -->
+  <!-- ************************************** -->
+  <!-- ************************************** -*/
+  explodeSlices = false;
+  gradient = false;
+  showLegend = true;
+  showLabels = true;
+  showDataLabel = true;
+  showXAxis = true;
+  showYAxis = true;
+  showXAxisLabel = true;
+  showYAxisLabel = true;
+  legendPosition = 'below';
+  legendTitle = 'Datos';
+  xAxisLabel = 'Número de ejecuciones';
+  xAxisLabelProcesos = 'Procesos';
+  yAxisLabel = 'Tipo';
+  yAxisLabelNegocio = 'Negocio';
+  animations = true;
+  treemap: any;
+  treemapPath: any[] = [];
+  sumBy = 'Size';
+  drilldownAddress = null;
+  tituloGrafico = '';
+  tituloGraficoNocturno = '';
+  colorScheme = {
+    domain: ['#5AA454', '#A10A28']
+  };
+  setLabelFormatting(name: any): string {
+    const self: any = this;
+    const data = self.series.filter(x => x.name === name);
+    if (data.length > 0) {
+      return `${data[0].value}`;
+    } else {
+      return name;
+    }
+  }
+
+
 
   constructor(
     private spinner: NgxSpinnerService,
@@ -264,10 +275,10 @@ export class InterfasesComponent implements OnInit {
   accionMinimizarDiurno(): void {
     // console.log("accion", this.flagMinimizarDiurno)
     if (this.flagMinimizarDiurno === false) {
-      this.datosAforeFondos = this.interfasesService.formatoDatosBarHorNegocio(this.dataOriginal);
-      this.datosLanzamiento = this.interfasesService.formatoDatosBarHorLanzamiento(this.dataOriginal);
-      this.datosDiurnoAfore = this.interfasesService.formatoDatosPieDiurnoAfore(this.dataOriginal);
-      this.datosDiurnoFondos = this.interfasesService.formatoDatosPieDiurnoFondos(this.dataOriginal);
+      this.datosAforeFondos = this.interfasesService.formatoDatosBarHorNegocio(this.dataOriginal, 'diurnos');
+      this.datosLanzamiento = this.interfasesService.formatoDatosBarHorLanzamiento(this.dataOriginal, 'diurnos');
+      this.datosDiurnoAfore = this.interfasesService.formatoDatosPie(this.dataOriginal, 'diurnos', 'afore');
+      this.datosDiurnoFondos = this.interfasesService.formatoDatosPie(this.dataOriginal, 'diurnos', 'fondos');
     }
     this.flagMinimizarDiurno = !this.flagMinimizarDiurno;
   }

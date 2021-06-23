@@ -228,7 +228,7 @@ export class InterfasesService {
     }
   ];
 
-  capitalize (word: any): any {
+  capitalize(word: any): any {
     return word[0].toUpperCase() + word.slice(1).toLowerCase();
   }
 
@@ -553,102 +553,248 @@ export class InterfasesService {
     }
   }
 
-  formatoDatosBarHorNegocio = (data: any): any => {
-    const dataFormat = [
-      {
-        name: 'Afore',
-        value: 12,
-        extra: {
-          code: 'tst',
-          fail: {
-            black: 'true'
+  formatoDatosBarHorNegocio = (data: any, tipo: string): any => {
+    if (data) {
+      let response: any;
+      let objAfore: any;
+      let objFondos: any;
+      const obj = data['' + tipo + ''];
+      if (obj) {
+        if (obj.afore) {
+          objAfore = obj.afore;
+          let sumAfore = 0;
+          for (const i in objAfore) {
+            const objProceso = Object.keys(objAfore[i])[0];
+            const objDetalle = objAfore[i]['' + objProceso + ''];
+            const objLanzamiento = Object.keys(objDetalle);
+            // tslint:disable-next-line: forin
+            for (const j in objLanzamiento) {
+              const objDetalleInicio = objDetalle['' + objLanzamiento[j] + ''];
+              if (objDetalleInicio.exitosos) {
+                sumAfore += objDetalleInicio.exitosos;
+              }
+              if (objDetalleInicio.fallidos) {
+                // tslint:disable-next-line: forin
+                for (const key in objDetalleInicio.fallidos) {
+                  sumAfore += objDetalleInicio.fallidos[key];
+                }
+              }
+            }
+          }
+          objAfore = {
+            name: 'Afore',
+            value: sumAfore
+          };
+        }
+        if (obj.fondos) {
+          objFondos = obj.fondos;
+          let sumFondos = 0;
+          for (const i in objFondos) {
+            const objProceso = Object.keys(objFondos[i])[0];
+            const objDetalle = objFondos[i]['' + objProceso + ''];
+            const objLanzamiento = Object.keys(objDetalle);
+            // tslint:disable-next-line: forin
+            for (const j in objLanzamiento) {
+              const objDetalleInicio = objDetalle['' + objLanzamiento[j] + ''];
+              if (objDetalleInicio.exitosos) {
+                sumFondos += objDetalleInicio.exitosos;
+              }
+              if (objDetalleInicio.fallidos) {
+                // tslint:disable-next-line: forin
+                for (const key in objDetalleInicio.fallidos) {
+                  sumFondos += objDetalleInicio.fallidos[key];
+                }
+              }
+            }
+          }
+          objFondos = {
+            name: 'Fondos',
+            value: sumFondos
+          };
+        }
+        response = [
+          objAfore,
+          objFondos
+        ];
+        return response;
+      }
+    }
+  }
+
+  formatoDatosBarHorLanzamiento = (data: any, tipo: string): any => {
+    if (data) {
+      let response: any;
+      let objManual: any;
+      let objAuto: any;
+      let summedMan = 0;
+      let summedAuto = 0;
+      const obj = data['' + tipo + ''];
+      if (obj) {
+        if (obj.afore) {
+          const objAfore = obj.afore;
+          let objProceso: string;
+          let objDetalle: {};
+          let objLanzamiento: string[];
+          let objDetalleInicio: any;
+          let sample: any;
+          // tslint:disable-next-line: forin
+          for (const i in objAfore) {
+            objProceso = Object.keys(objAfore[i])[0];
+            objDetalle = objAfore[i]['' + objProceso + ''];
+            objLanzamiento = Object.keys(objDetalle);
+            // tslint:disable-next-line: forin
+            for (const j in objLanzamiento) {
+              objDetalleInicio = objDetalle['' + objLanzamiento[j] + ''];
+              if (objLanzamiento[j] === 'manual') {
+                if (objDetalleInicio.exitosos) {
+                  summedMan += objDetalleInicio.exitosos;
+                }
+                if (objDetalleInicio.fallidos) {
+                  sample = objDetalleInicio.fallidos;
+                  // tslint:disable-next-line: forin
+                  for (const key in sample) {
+                    summedMan += sample[key];
+                  }
+                }
+              } else {
+                if (objDetalleInicio.exitosos) {
+                  summedAuto += objDetalleInicio.exitosos;
+                }
+                if (objDetalleInicio.fallidos) {
+                  sample = objDetalleInicio.fallidos;
+                  // tslint:disable-next-line: forin
+                  for (const key in sample) {
+                    summedAuto += sample[key];
+                  }
+                }
+              }
+            }
           }
         }
-      },
-      {
-        name: 'Fondos',
-        value: 4,
-        extra: {
-          code: 'tst',
-          fail: {
-            black: 'true'
+        if (obj.fondos) {
+          const objFondos = obj.fondos;
+          let objProceso: string;
+          let objDetalle: {};
+          let objLanzamiento: string[];
+          let objDetalleInicio: any;
+          let sample: any;
+          // tslint:disable-next-line: forin
+          for (const i in objFondos) {
+            objProceso = Object.keys(objFondos[i])[0];
+            objDetalle = objFondos[i]['' + objProceso + ''];
+            objLanzamiento = Object.keys(objDetalle);
+            // tslint:disable-next-line: forin
+            for (const j in objLanzamiento) {
+              objDetalleInicio = objDetalle['' + objLanzamiento[j] + ''];
+              if (objLanzamiento[j] === 'manual') {
+                if (objDetalleInicio.exitosos) {
+                  summedMan += objDetalleInicio.exitosos;
+                }
+                if (objDetalleInicio.fallidos) {
+                  sample = objDetalleInicio.fallidos;
+                  // tslint:disable-next-line: forin
+                  for (const key in sample) {
+                    summedMan += sample[key];
+                  }
+                }
+              } else {
+                if (objDetalleInicio.exitosos) {
+                  summedAuto += objDetalleInicio.exitosos;
+                }
+                if (objDetalleInicio.fallidos) {
+                  sample = objDetalleInicio.fallidos;
+                  // tslint:disable-next-line: forin
+                  for (const key in sample) {
+                    summedAuto += sample[key];
+                  }
+                }
+              }
+            }
           }
         }
       }
-    ];
-    return dataFormat;
+      objManual = {
+        name: 'Manual',
+        value: summedMan
+      };
+      objAuto = {
+        name: 'Automático',
+        value: summedAuto
+      };
+      response = [
+        objManual,
+        objAuto
+      ];
+      return response;
+    }
   }
 
-  formatoDatosBarHorLanzamiento = (data: any): any => {
-    const dataFormat = [
-      {
-        name: 'Afore',
-        value: 12,
-        extra: {
-          code: 'tst',
-          fail: {
-            black: 'true'
-          }
-        }
-      },
-      {
-        name: 'Fondos',
-        value: 4,
-        extra: {
-          code: 'tst',
-          fail: {
-            black: 'true'
+  formatoDatosPie = (data: any, tipo: string, negocio: string): any => {
+    if (data) {
+      let response: any;
+      let objManual: any;
+      let objAuto: any;
+      let summedMan = 0;
+      let summedAuto = 0;
+      const obj = data['' + tipo + ''];
+      if (obj) {
+        if (obj.afore) {
+          const objAfore = obj.afore;
+          let objProceso: string;
+          let objDetalle: {};
+          let objLanzamiento: string[];
+          let objDetalleInicio: any;
+          let sample: any;
+          // tslint:disable-next-line: forin
+          for (const i in objAfore) {
+            objProceso = Object.keys(objAfore[i])[0];
+            objDetalle = objAfore[i]['' + objProceso + ''];
+            objLanzamiento = Object.keys(objDetalle);
+            // tslint:disable-next-line: forin
+            for (const j in objLanzamiento) {
+              objDetalleInicio = objDetalle['' + objLanzamiento[j] + ''];
+              if (objLanzamiento[j] === 'manual') {
+                if (objDetalleInicio.exitosos) {
+                  summedMan += objDetalleInicio.exitosos;
+                }
+                if (objDetalleInicio.fallidos) {
+                  sample = objDetalleInicio.fallidos;
+                  // tslint:disable-next-line: forin
+                  for (const key in sample) {
+                    summedMan += sample[key];
+                  }
+                }
+              } else {
+                if (objDetalleInicio.exitosos) {
+                  summedAuto += objDetalleInicio.exitosos;
+                }
+                if (objDetalleInicio.fallidos) {
+                  sample = objDetalleInicio.fallidos;
+                  // tslint:disable-next-line: forin
+                  for (const key in sample) {
+                    summedAuto += sample[key];
+                  }
+                }
+              }
+            }
           }
         }
       }
-    ];
-    return dataFormat;
-  }
-
-  formatoDatosPieDiurnoAfore = (data: any): any => {
-    const dataFormat = [
-      {
-        name: 'Exitosos',
-        value: 12,
-        extra: {
-          code: 'tst'
-        }
-      },
-      {
+      objManual = {
+        name: 'Exitoso',
+        value: summedMan
+      };
+      objAuto = {
         name: 'Fallidos',
-        value: 4,
-        extra: {
-          code: 'tst',
-          fail: {
-            black: 'true'
-          },
-        }
-      }
-    ];
-    return dataFormat;
+        value: summedAuto
+      };
+      response = [
+        objManual,
+        objAuto]
+        ;
+      return response;
+    }
   }
-
-  formatoDatosPieDiurnoFondos = (data: any): any => {
-    const dataFormat = [
-      {
-        name: 'Exitosos',
-        value: 12,
-        extra: {
-          code: 'tst'
-        }
-      },
-      {
-        name: 'Fallidos',
-        value: 4,
-        extra: {
-          code: 'tst',
-          fail: {
-            black: 'true'
-          }
-        }
-      }
-    ];
-    return dataFormat;
-  }
-
 }
+
+

@@ -4,6 +4,7 @@ import { AuthService } from '../../services/auth.service';
 import { setUserRol } from '../../ReduxStore/actions/usuario.actions';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../ReduxStore/app.reducers';
+import { UsuariosService } from '../../services/usuarios.service';
 
 @Component({
   selector: 'app-login',
@@ -12,9 +13,25 @@ import { AppState } from '../../ReduxStore/app.reducers';
 })
 
 export class LoginComponent implements OnInit {
-  constructor(private auth: AuthService, private store: Store<AppState>) { }
+  constructor(
+    private usuario: UsuariosService, private auth: AuthService, private store: Store<AppState>) { }
 
   ngOnInit(): void {
+    /*
+    const UserAttributes = [
+      {
+        Name: 'custom:negocio',
+        Value: 'Afore',
+      },
+      {
+        Name: 'custom:rol',
+        Value: 'Administrador',
+      },
+    ];
+    const Username = 'azure_jyjzfei0rp_hdfd7jh_j8halgegmlsfiudwyrgnw2ya';
+    this.usuario.actualizarAtributosUsuarioCallback(UserAttributes, Username);
+    */
+
     if (localStorage.getItem("SIA")) {
       let start, end;
       start = localStorage.getItem("SIA");
