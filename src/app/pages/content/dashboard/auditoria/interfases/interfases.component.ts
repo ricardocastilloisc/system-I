@@ -18,7 +18,7 @@ export class InterfasesComponent implements OnInit {
   <!-- ********* F I L T R O S ************** -->
   <!-- ************************************** -->
   <!-- ************************************** -*/
-  filtro = '?fecha_inicio=2021-05-22&fecha_fin=2021-06-22';
+  filtro = '?fecha_inicio=2021-05-22&fecha_fin=2021-06-24';
   maxDate: Date = new Date();
   filtroForm: FormGroup;
   dropdownListFiltroTipo = [];
@@ -37,16 +37,16 @@ export class InterfasesComponent implements OnInit {
   <!-- ************************************** -->
   <!-- ************************************** -*/
   dataOriginal: any;
+  datosDiurno: false;
+  datosNocturno: false;
   treeMapNotEmpty = false;
   single: any[];
   datosDiurnoAfore: any[];
   datosDiurnoFondos: any[];
   datosNocturnoAfore: any[];
   datosNocturnoFondos: any[];
-  datosDetalleExito: any[];
-  datosDetalleFallo: any[];
-  datosDetalleExitoNocturno: any[];
-  datosDetalleFalloNocturno: any[];
+  datosDetalleDiurno: any[];
+  datosDetalleNocturno: any[];
   datosAforeFondos: any[];
   datosLanzamiento: any[];
   datosAforeFondosNocturno: any[];
@@ -57,10 +57,8 @@ export class InterfasesComponent implements OnInit {
   <!-- ********* B A N D E R A S ************ -->
   <!-- ************************************** -->
   <!-- ************************************** -*/
-  detalleExito = false;
-  detalleFallo = false;
-  detalleExitoNocturno = false;
-  detalleFalloNocturno = false;
+  detalleDiurno = false;
+  detalleNocturno = false;
   flagMinimizarDiurno = false;
   flagMinimizarNocturno = false;
   helpTitulo = '';
@@ -206,35 +204,6 @@ export class InterfasesComponent implements OnInit {
 
   /*-- ************************************** -->
   <!-- ************************************** -->
-  <!-- ****** M A N E J O _ F L A G S ******* -->
-  <!-- ************************************** -->
-  <!-- ************************************** -*/
-  mostrarDetalleExito(): boolean {
-    return this.detalleExito === true
-      ? true
-      : false;
-  }
-
-  mostrarDetalleFallos(): boolean {
-    return this.detalleFallo === true
-      ? true
-      : false;
-  }
-
-  mostrarDetalleExitoNocturno(): boolean {
-    return this.detalleExitoNocturno === true
-      ? true
-      : false;
-  }
-
-  mostrarDetalleFallosNocturno(): boolean {
-    return this.detalleFalloNocturno === true
-      ? true
-      : false;
-  }
-
-  /*-- ************************************** -->
-  <!-- ************************************** -->
   <!-- ******** O N I N I T ***************** -->
   <!-- ************************************** -->
   <!-- ************************************** -*/
@@ -248,16 +217,14 @@ export class InterfasesComponent implements OnInit {
     try {
       this.interfasesService.getDatos(this.filtro).then(data => {
         this.dataOriginal = data;
+        this.datosDiurno = data.hasOwnProperty('diurnos');
+        this.datosNocturno = data.hasOwnProperty('nocturnos');
         this.treemap = this.interfasesService.formatoResumen(data);
         if (this.treemap.length > 0) {
           this.treeMapNotEmpty = true;
           this.treemapProcess(this.treemap);
           this.treemapSelect(item);
         }
-        // las siguientes asignaciones van a cambiar, se dejan para vista
-        this.single = this.interfasesService.single;
-        this.datosNocturnoAfore = this.interfasesService.two;
-        this.datosNocturnoFondos = this.interfasesService.two;
         this.spinner.hide();
       });
     }
@@ -275,6 +242,8 @@ export class InterfasesComponent implements OnInit {
   accionMinimizarDiurno(): void {
     // console.log("accion", this.flagMinimizarDiurno)
     if (this.flagMinimizarDiurno === false) {
+      this.datosAforeFondos = [];
+      this.datosLanzamiento = [];
       this.datosAforeFondos = this.interfasesService.formatoDatosBarHorNegocio(this.dataOriginal, 'diurnos');
       this.datosLanzamiento = this.interfasesService.formatoDatosBarHorLanzamiento(this.dataOriginal, 'diurnos');
       this.datosDiurnoAfore = this.interfasesService.formatoDatosPie(this.dataOriginal, 'diurnos', 'afore');
@@ -286,79 +255,38 @@ export class InterfasesComponent implements OnInit {
   accionMinimizarNocturno(): void {
     // console.log("accion", this.flagMinimizarNocturno)
     if (this.flagMinimizarNocturno === false) {
-      this.datosAforeFondosNocturno = [];
-      this.datosLanzamientoNocturno = [];
-      this.datosNocturnoAfore = [];
-      this.datosNocturnoFondos = [];
+      this.datosAforeFondos = [];
+      this.datosLanzamiento = [];
+      this.datosAforeFondos = this.interfasesService.formatoDatosBarHorNegocio(this.dataOriginal, 'nocturnos');
+      this.datosLanzamiento = this.interfasesService.formatoDatosBarHorLanzamiento(this.dataOriginal, 'nocturnos');
+      this.datosNocturnoAfore = this.interfasesService.formatoDatosPie(this.dataOriginal, 'nocturnos', 'afore');
+      this.datosNocturnoFondos = this.interfasesService.formatoDatosPie(this.dataOriginal, 'nocturnos', 'fondos');
+      console.log('datosLanzamiento', this.datosLanzamiento);
+      console.log('datosAforeFondos', this.datosAforeFondos);
+      console.log('datosNocturnoAfore', this.datosNocturnoAfore);
+      console.log('datosNocturnoFondos', this.datosNocturnoFondos);
     }
     this.flagMinimizarNocturno = !this.flagMinimizarNocturno;
   }
 
-  mostrarDetalleDiurnoAfore(data: any): void {
-    // console.log('mostrarDetalleDiurnoAfore', JSON.parse(JSON.stringify(data)));
-    if (!data.extra.fail) {
-      this.detalleExito = true;
-      this.detalleFallo = false;
-      this.detalleExitoNocturno = false;
-      this.detalleFalloNocturno = false;
-      this.tituloGrafico = 'Detalle ejecuciones exitosas de Diurno Afore';
+  mostrarDetalleEjecuciones(data: any, tipo: string, negocio: string): void {
+    tipo = this.interfasesService.capitalize(tipo);
+    negocio = this.interfasesService.capitalize(negocio);
+    const estado = this.interfasesService.capitalize(data.name);
+    // console.log('mostrarDetalleEjecuciones', data, tipo, negocio, estado);
+    if (data.name.includes('Exito')) {
+      this.tituloGrafico = 'Detalle ejecuciones exitosas de ' + tipo + ' ' + negocio;
     } else {
-      this.detalleExito = false;
-      this.detalleFallo = true;
-      this.detalleExitoNocturno = false;
-      this.detalleFalloNocturno = false;
-      this.tituloGrafico = 'Detalle ejecuciones fallidas de Diurno Afore';
+      this.tituloGrafico = 'Detalle ejecuciones fallidas de ' + tipo + ' ' + negocio;
     }
-  }
-
-  mostrarDetalleDiurnoFondos(data: any): void {
-    // console.log('mostrarDetalleDiurnoFondos', JSON.parse(JSON.stringify(data)));
-    if (!data.extra.fail) {
-      this.detalleExito = true;
-      this.detalleFallo = false;
-      this.detalleExitoNocturno = false;
-      this.detalleFalloNocturno = false;
-      this.tituloGrafico = 'Detalle ejecuciones exitosas de Diurno Fondos';
+    if (tipo.includes('Diurno')) {
+      this.detalleDiurno = true;
+      this.detalleNocturno = false;
+      this.datosDetalleDiurno = this.interfasesService.formatoDatosBarDetalle(this.dataOriginal, tipo, negocio, estado);
     } else {
-      this.detalleExito = false;
-      this.detalleFallo = true;
-      this.detalleExitoNocturno = false;
-      this.detalleFalloNocturno = false;
-      this.tituloGrafico = 'Detalle ejecuciones fallidas de Diurno Fondos';
-    }
-  }
-
-  mostrarDetalleNocturnoAfore(data: any): void {
-    // console.log('mostrarDetalleNocturnoAfore', JSON.parse(JSON.stringify(data)));
-    if (!data.extra.fail) {
-      this.detalleExito = false;
-      this.detalleFallo = false;
-      this.detalleExitoNocturno = true;
-      this.detalleFalloNocturno = false;
-      this.tituloGraficoNocturno = 'Detalle ejecuciones exitosas de Nocturno Afore';
-    } else {
-      this.detalleExito = false;
-      this.detalleFallo = false;
-      this.detalleExitoNocturno = false;
-      this.detalleFalloNocturno = true;
-      this.tituloGraficoNocturno = 'Detalle ejecuciones fallidas de Nocturno Afore';
-    }
-  }
-
-  mostrarDetalleNocturnoFondos(data: any): void {
-    // console.log('mostrarDetalleNocturnoFondos', JSON.parse(JSON.stringify(data)));
-    if (!data.extra.fail) {
-      this.detalleExito = true;
-      this.detalleFallo = false;
-      this.detalleExitoNocturno = true;
-      this.detalleFalloNocturno = false;
-      this.tituloGraficoNocturno = 'Detalle ejecuciones exitosas de Nocturno Fondos';
-    } else {
-      this.detalleExito = false;
-      this.detalleFallo = true;
-      this.detalleExitoNocturno = false;
-      this.detalleFalloNocturno = true;
-      this.tituloGraficoNocturno = 'Detalle ejecuciones fallidas de Nocturno Fondos';
+      this.detalleDiurno = false;
+      this.detalleNocturno = true;
+      this.datosDetalleNocturno = this.interfasesService.formatoDatosBarDetalle(this.dataOriginal, tipo, negocio, estado);
     }
   }
 
