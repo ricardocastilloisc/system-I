@@ -6,7 +6,7 @@ import {
   Component,
   HostListener,
   OnInit,
-  OnDestroy
+  OnDestroy,
 } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AuthService } from 'src/app/services/auth.service';
@@ -32,7 +32,6 @@ declare var $: any;
 })
 export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   @HostListener('window:resize', ['$event'])
-
   onResize() {
     this.resizeMenuContent();
   }
@@ -65,6 +64,11 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     EArea.Tesoreria,
     EArea.Soporte,
   ];
+  navClick = {
+    navAdministracion: false,
+    navProceso: false,
+    navAudiroria: false,
+  };
 
   constructor(
     private authService: AuthService,
@@ -75,7 +79,19 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     private toastr: ToastrService,
     private api: APIService,
     private ProcesosService: ProcesosService
-  ) { }
+  ) {}
+
+  clickNav = ({ target }) => {
+    this.navClick[target.id] = !this.navClick[target.id];
+    Object.keys(this.navClick).forEach((elemtnoNav) => {
+      if (elemtnoNav !== target.id) {
+        if (this.navClick[elemtnoNav]) {
+          this.navClick[elemtnoNav] = !this.navClick[elemtnoNav];
+          $('#' + elemtnoNav).click();
+        }
+      }
+    });
+  };
 
   ngOnDestroy(): void {
     this.NotificacionesSubActivo$.unsubscribe();
@@ -283,12 +299,10 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
               this.DataUser.attributes['custom:rol'].toUpperCase()
             )
             .then(({ items }: any) => {
-
               this.ValidadoresDeInterfaces = items;
               this.NotificacionesSubActivo$ =
                 this.api.OnUpdateSiaGenAudEstadoProcesosDevListener.subscribe(
                   ({ value }: any) => {
-
                     const { data } = value;
                     const { onUpdateSiaGenAudEstadoProcesosDev } = data;
                     let arrayValidador = this.ValidadoresDeInterfaces.filter(
@@ -303,7 +317,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
                     if (arrayValidador.length > 0) {
                       if (
                         onUpdateSiaGenAudEstadoProcesosDev[
-                        'ESTADO_EJECUCION'
+                          'ESTADO_EJECUCION'
                         ] === 'TERMINADO'
                       ) {
                         let tempNoticicaciones = JSON.parse(
@@ -391,17 +405,15 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   };
 
-
   irAlProceso = (data: NOTIFICACION_INTERFACE) => {
     //console.log("irAlProceso", data)
-    const url = 'procesos/diurno/' + data.INTERFAZ
+    const url = 'procesos/diurno/' + data.INTERFAZ;
     localStorage.setItem('notProcesos', 'true');
-    this.store.dispatch(notificacionSelect({ notificacionSelect: data }))
+    this.store.dispatch(notificacionSelect({ notificacionSelect: data }));
     this.router.navigateByUrl(url).then(() => {
       this.eliminarNotificacion(data.ID_PROCESO);
-    })
-
-  }
+    });
+  };
 
   //procesos/diurno  this.router.navigate(['/' + window.location.pathname + '/' + idProceso]); this.router.navigateByUrl(url);
 
@@ -445,7 +457,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   };
 
   abrirToass = (estado, msn) => {
-
     this.arrayRuta();
 
     let mensaje =
@@ -497,7 +508,10 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   estadoActualizar = (data: NOTIFICACION_INTERFACE) => {
     if (data.ETAPA_FINAL_ESTADO_FINAL) {
-      if (data.ETAPA_FINAL_ESTADO_FINAL === 'EXITOSO' || data.ETAPA_FINAL_ESTADO_FINAL === 'FALLIDO') {
+      if (
+        data.ETAPA_FINAL_ESTADO_FINAL === 'EXITOSO' ||
+        data.ETAPA_FINAL_ESTADO_FINAL === 'FALLIDO'
+      ) {
         return data.ETAPA_FINAL_ESTADO_FINAL;
       }
     }
@@ -522,34 +536,39 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     let idPantalla;
     let idNotificacion;
     if (ruta.includes('Procesos')) {
-      this.store.select(
-        ({ AUDGENEJECUCIONESPROCESO }) => AUDGENEJECUCIONESPROCESO.AUDGENEJECUCIONESPROCESO
-      ).subscribe(res => {
-        if (res) {
-          idPantalla = res.ID_PROCESO;
-          //console.log('AUDGENEJECUCIONESPROCESO', res);
-          if (data.onUpdateSiaGenAudEstadoProcesosDev.ID_PROCESO) {
-            idNotificacion = data.onUpdateSiaGenAudEstadoProcesosDev.ID_PROCESO;
-            //console.log('data', data);
-            if (idPantalla === idNotificacion) {
-              //console.log('data', this.verEstado(data));
-              let estado = this.estadoActualizar(data.onUpdateSiaGenAudEstadoProcesosDev);
-              console.log('estado', estado);
-              //if (this.verEstado(data.onUpdateSiaGenAudEstadoProcesosDev) !== '') {
-              if (estado !== null) {
+      this.store
+        .select(
+          ({ AUDGENEJECUCIONESPROCESO }) =>
+            AUDGENEJECUCIONESPROCESO.AUDGENEJECUCIONESPROCESO
+        )
+        .subscribe((res) => {
+          if (res) {
+            idPantalla = res.ID_PROCESO;
+            //console.log('AUDGENEJECUCIONESPROCESO', res);
+            if (data.onUpdateSiaGenAudEstadoProcesosDev.ID_PROCESO) {
+              idNotificacion =
+                data.onUpdateSiaGenAudEstadoProcesosDev.ID_PROCESO;
+              //console.log('data', data);
+              if (idPantalla === idNotificacion) {
                 //console.log('data', this.verEstado(data));
-                const message = {
-                  idProceso: idPantalla,
-                  estado: 'CONTINUAR'
-                };
-                // send message to subscribers via observable subject
-                this.ProcesosService.sendUpdate(JSON.stringify(message));
+                let estado = this.estadoActualizar(
+                  data.onUpdateSiaGenAudEstadoProcesosDev
+                );
+                console.log('estado', estado);
+                //if (this.verEstado(data.onUpdateSiaGenAudEstadoProcesosDev) !== '') {
+                if (estado !== null) {
+                  //console.log('data', this.verEstado(data));
+                  const message = {
+                    idProceso: idPantalla,
+                    estado: 'CONTINUAR',
+                  };
+                  // send message to subscribers via observable subject
+                  this.ProcesosService.sendUpdate(JSON.stringify(message));
+                }
               }
             }
           }
-        }
-      });
-
+        });
     }
   }
 }
