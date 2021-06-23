@@ -8,226 +8,6 @@ import { environment } from '../../environments/environment';
 
 export class InterfasesService {
 
-  single = [
-    {
-      name: 'MO',
-      value: 12,
-      extra: {
-        code: 'tst',
-        fail: {
-          black: 'true'
-        }
-      }
-    },
-    {
-      name: 'MD',
-      value: 8,
-      extra: {
-        code: 'tst',
-        fail: {
-          black: 'true'
-        }
-      }
-    },
-    {
-      name: 'INT CASH',
-      value: 4,
-      extra: {
-        code: 'tst',
-        fail: {
-          black: 'true'
-        }
-      }
-    },
-    {
-      name: 'AIMS Y EXCEDENTES',
-      value: 14,
-      extra: {
-        code: 'tst',
-        fail: {
-          black: 'true'
-        }
-      }
-    },
-    {
-      name: 'MO1',
-      value: 12,
-      extra: {
-        code: 'tst',
-        fail: {
-          black: 'true'
-        }
-      }
-    },
-    {
-      name: 'MD1',
-      value: 8,
-      extra: {
-        code: 'tst',
-        fail: {
-          black: 'true'
-        }
-      }
-    },
-    {
-      name: 'INT CASH1',
-      value: 4,
-      extra: {
-        code: 'tst',
-        fail: {
-          black: 'true'
-        }
-      }
-    },
-    {
-      name: 'AIMS Y EXCEDENTES1',
-      value: 14,
-      extra: {
-        code: 'tst',
-        fail: {
-          black: 'true'
-        }
-      }
-    }, {
-      name: 'MO2',
-      value: 12,
-      extra: {
-        code: 'tst',
-        fail: {
-          black: 'true'
-        }
-      }
-    },
-    {
-      name: 'MD2',
-      value: 8,
-      extra: {
-        code: 'tst',
-        fail: {
-          black: 'true'
-        }
-      }
-    },
-    {
-      name: 'INT CASH2',
-      value: 4,
-      extra: {
-        code: 'tst',
-        fail: {
-          black: 'true'
-        }
-      }
-    },
-    {
-      name: 'AIMS Y EXCEDENTES2',
-      value: 14,
-      extra: {
-        code: 'tst',
-        fail: {
-          black: 'true'
-        }
-      }
-    }, {
-      name: 'MO3',
-      value: 12,
-      extra: {
-        code: 'tst',
-        fail: {
-          black: 'true'
-        }
-      }
-    },
-    {
-      name: 'MD3',
-      value: 8,
-      extra: {
-        code: 'tst',
-        fail: {
-          black: 'true'
-        }
-      }
-    },
-    {
-      name: 'INT CASH3',
-      value: 4,
-      extra: {
-        code: 'tst',
-        fail: {
-          black: 'true'
-        }
-      }
-    },
-    {
-      name: 'AIMS Y EXCEDENTES3',
-      value: 14,
-      extra: {
-        code: 'tst',
-        fail: {
-          black: 'true'
-        }
-      }
-    }, {
-      name: 'MO4',
-      value: 12,
-      extra: {
-        code: 'tst',
-        fail: {
-          black: 'true'
-        }
-      }
-    },
-    {
-      name: 'MD4',
-      value: 8,
-      extra: {
-        code: 'tst',
-        fail: {
-          black: 'true'
-        }
-      }
-    },
-    {
-      name: 'INT CASH4',
-      value: 4,
-      extra: {
-        code: 'tst',
-        fail: {
-          black: 'true'
-        }
-      }
-    },
-    {
-      name: 'AIMS Y EXCEDENTES4',
-      value: 14,
-      extra: {
-        code: 'tst',
-        fail: {
-          black: 'true'
-        }
-      }
-    }
-  ];
-
-  two = [
-    {
-      name: 'Exitosos',
-      value: 12,
-      extra: {
-        code: 'tst'
-      }
-    },
-    {
-      name: 'Fallidos',
-      value: 8,
-      extra: {
-        code: 'tst',
-        fail: {
-          black: 'true'
-        }
-      }
-    }
-  ];
-
   capitalize(word: any): any {
     return word[0].toUpperCase() + word.slice(1).toLowerCase();
   }
@@ -732,14 +512,15 @@ export class InterfasesService {
   formatoDatosPie = (data: any, tipo: string, negocio: string): any => {
     if (data) {
       let response: any;
-      let objManual: any;
-      let objAuto: any;
-      let summedMan = 0;
-      let summedAuto = 0;
+      let objExito: any;
+      let objFallo: any;
+      let summedExito = 0;
+      let summedFallo = 0;
       const obj = data['' + tipo + ''];
       if (obj) {
-        if (obj.afore) {
-          const objAfore = obj.afore;
+        const objNegocio = obj['' + negocio + ''];
+        if (objNegocio) {
+          const objAfore = objNegocio;
           let objProceso: string;
           let objDetalle: {};
           let objLanzamiento: string[];
@@ -753,48 +534,83 @@ export class InterfasesService {
             // tslint:disable-next-line: forin
             for (const j in objLanzamiento) {
               objDetalleInicio = objDetalle['' + objLanzamiento[j] + ''];
-              if (objLanzamiento[j] === 'manual') {
-                if (objDetalleInicio.exitosos) {
-                  summedMan += objDetalleInicio.exitosos;
-                }
-                if (objDetalleInicio.fallidos) {
-                  sample = objDetalleInicio.fallidos;
-                  // tslint:disable-next-line: forin
-                  for (const key in sample) {
-                    summedMan += sample[key];
-                  }
-                }
-              } else {
-                if (objDetalleInicio.exitosos) {
-                  summedAuto += objDetalleInicio.exitosos;
-                }
-                if (objDetalleInicio.fallidos) {
-                  sample = objDetalleInicio.fallidos;
-                  // tslint:disable-next-line: forin
-                  for (const key in sample) {
-                    summedAuto += sample[key];
-                  }
+              if (objDetalleInicio.exitosos) {
+                summedExito += objDetalleInicio.exitosos;
+              }
+              if (objDetalleInicio.fallidos) {
+                sample = objDetalleInicio.fallidos;
+                // tslint:disable-next-line: forin
+                for (const key in sample) {
+                  summedFallo += sample[key];
                 }
               }
             }
           }
         }
       }
-      objManual = {
+      objExito = {
         name: 'Exitoso',
-        value: summedMan
+        value: summedExito
       };
-      objAuto = {
+      objFallo = {
         name: 'Fallidos',
-        value: summedAuto
+        value: summedFallo
       };
       response = [
-        objManual,
-        objAuto]
+        objExito,
+        objFallo]
         ;
       return response;
     }
   }
+
+  formatoDatosBarDetalle = (data: any, tipo: string, negocio: string, estado: string): any => {
+    tipo = tipo.toLowerCase();
+    negocio = negocio.toLowerCase();
+    estado = estado.toLowerCase();
+    if (data) {
+      const response: any = [];
+      const obj = data['' + tipo + ''];
+      if (obj) {
+        const objNegocio = obj['' + negocio + ''];
+        if (objNegocio) {
+          let objProceso: string;
+          let objDetalle: {};
+          let objLanzamiento: string[];
+          let objDetalleInicio: any;
+          // tslint:disable-next-line: forin
+          for (const i in objNegocio) {
+            objProceso = Object.keys(objNegocio[i])[0];
+            objDetalle = objNegocio[i]['' + objProceso + ''];
+            objLanzamiento = Object.keys(objDetalle);
+            // tslint:disable-next-line: forin
+            for (const j in objLanzamiento) {
+              objDetalleInicio = objDetalle['' + objLanzamiento[j] + ''];
+              if (objDetalleInicio.exitosos && estado.includes('exito')) {
+                const item = {
+                  name: objProceso,
+                  value: objDetalleInicio.exitosos
+                };
+                response.push(item);
+              }
+              if (objDetalleInicio.fallidos && !estado.includes('exito')) {
+                const sample = objDetalleInicio.fallidos;
+                let summed = 0;
+                // tslint:disable-next-line: forin
+                for (const key in sample) {
+                  summed += sample[key];
+                }
+                const item = {
+                  name: objProceso,
+                  value: summed
+                };
+                response.push(item);
+              }
+            }
+          }
+        }
+      }
+      return response;
+    }
+  }
 }
-
-
