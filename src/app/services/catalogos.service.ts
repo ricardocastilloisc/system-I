@@ -33,12 +33,11 @@ export class CatalogosService {
   ) { }
   getCatalogos = () => {
     let area = localStorage.getItem('area');
-
-    if (area.split(',').includes(EArea.Soporte)) {
-      return this.httpClient.get(this.UrlCatalogos + 'catalogos', {
-        headers: this.AuthService.userHeaders(),
-      });
-    }
+    /*if (area.split(',').includes(EArea.Soporte)) {
+          return this.httpClient.get(this.UrlCatalogos + 'catalogos', {
+            headers: this.AuthService.userHeaders(),
+          });
+        }*/
     let QueryParams = new HttpParams();
     QueryParams = QueryParams.append(
       'negocio',
