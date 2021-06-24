@@ -17,7 +17,7 @@ export const rutasConNombres =
     ValorEsp: 'Procesos',
   },
   {
-    rutaAngular: 'interfases',
+    rutaAngular: 'interfaces',
     ValorEsp: 'Interfaces',
   },
   {
