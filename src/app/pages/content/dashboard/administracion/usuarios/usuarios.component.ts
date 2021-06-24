@@ -165,7 +165,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
 
         this.ListadoUsuariosPantalla = ListadoDeUsuarios;
 
-        if (this.filtroActivo) {
+        if (this.filtroActivo && this.ListadoUsuariosPantalla.length > 0) {
           this.filtrar();
         }
       });
@@ -407,7 +407,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       UserAttributes: UserAttributes,
       Username: this.ObjectUsuarioCambiar.Username,
     };
-    
+
     //console.log('AREA CHANGE', this.SelectCamabiarArea);
     const Grupo = {
       Grupo: this.SelectCamabiarArea,
