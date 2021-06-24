@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, TemplateRef } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { InterfasesService } from 'src/app/services/interfases.service';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import * as d3 from 'd3';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-interfases',
@@ -11,14 +12,14 @@ import * as d3 from 'd3';
   styleUrls: ['./interfases.component.css']
 })
 
-export class InterfasesComponent implements OnInit {
+export class InterfasesComponent implements OnInit, OnDestroy {
+  @ViewChild('modalEstado') templateRef: TemplateRef<any>;
 
   /*-- ************************************** -->
   <!-- ************************************** -->
   <!-- ********* F I L T R O S ************** -->
   <!-- ************************************** -->
   <!-- ************************************** -*/
-  filtro = '?fecha_inicio=2021-05-22&fecha_fin=2021-06-24';
   maxDate: Date = new Date();
   filtroForm: FormGroup;
   dropdownListFiltroTipo = [];
@@ -63,7 +64,9 @@ export class InterfasesComponent implements OnInit {
   flagMinimizarNocturno = false;
   helpTitulo = '';
   helpBody = '';
-
+  item = {
+    name: 'Ejecuciones'
+  };
   /*-- ************************************** -->
   <!-- ************************************** -->
   <!-- ********* G R A F I C O S************* -->
@@ -104,12 +107,11 @@ export class InterfasesComponent implements OnInit {
     }
   }
 
-
-
   constructor(
     private spinner: NgxSpinnerService,
     private interfasesService: InterfasesService,
-    private fb: FormBuilder) {
+    private fb: FormBuilder,
+    private modalService: NgbModal) {
   }
 
   /*-- ************************************** -->
@@ -117,6 +119,17 @@ export class InterfasesComponent implements OnInit {
   <!-- *** A C C I O N E S _ C O M U N E S ** -->
   <!-- ************************************** -->
   <!-- ************************************** -*/
+  initData = () => {
+    this.datosAforeFondos = [];
+    this.datosLanzamiento = [];
+    this.datosDiurnoAfore = [];
+    this.datosDiurnoFondos = [];
+    this.datosNocturnoAfore = [];
+    this.datosNocturnoFondos = [];
+    this.datosDetalleDiurno = [];
+    this.datosDetalleNocturno = [];
+  }
+
   initSelects = () => {
     this.dropdownListFiltroTipo = [
       { item_id: 'DIURNO', item_text: 'DIURNO' },
@@ -161,13 +174,15 @@ export class InterfasesComponent implements OnInit {
       itemsShowLimit: 3,
     };
     this.filtroForm = this.fb.group({
-      filtroFecha: []
+      filtroFechaInicio: [],
+      filtroFechaFin: []
     });
   }
 
   limpirarFiltro(): void {
     this.selectedItemsFiltroTipo = [];
     this.selectedItemsFiltroNegocio = [];
+    this.filtroForm.reset();
   }
 
   setPantalla(tipo: string): void {
@@ -202,6 +217,16 @@ export class InterfasesComponent implements OnInit {
     }
   }
 
+  openModal(): void {
+    this.modalService.open(this.templateRef, {
+      ariaLabelledBy: 'modal-basic-title',
+    });
+  }
+
+  cerrarModales = () => {
+    this.modalService.dismissAll();
+  }
+
   /*-- ************************************** -->
   <!-- ************************************** -->
   <!-- ******** O N I N I T ***************** -->
@@ -210,12 +235,18 @@ export class InterfasesComponent implements OnInit {
   ngOnInit(): void {
     this.spinner.show();
     localStorage.setItem('tipoPantalla', 'INTERFASES');
+    this.initData();
     this.initSelects();
-    const item = {
-      name: 'Ejecuciones'
-    };
     try {
-      this.interfasesService.getDatos(this.filtro).then(data => {
+      const fechaInicio = new Date();
+      const fechaFin = new Date();
+      fechaInicio.setDate(fechaFin.getDate() - 30);
+      const filtro = {
+        fecha_inicio: fechaInicio.toISOString().split('T')[0],
+        fecha_fin: fechaFin.toISOString().split('T')[0]
+      };
+      console.log('filtro', filtro);
+      this.interfasesService.getDatos(filtro).then(data => {
         this.dataOriginal = data;
         this.datosDiurno = data.hasOwnProperty('diurnos');
         this.datosNocturno = data.hasOwnProperty('nocturnos');
@@ -223,7 +254,7 @@ export class InterfasesComponent implements OnInit {
         if (this.treemap.length > 0) {
           this.treeMapNotEmpty = true;
           this.treemapProcess(this.treemap);
-          this.treemapSelect(item);
+          this.treemapSelect(this.item);
         }
         this.spinner.hide();
       });
@@ -234,6 +265,48 @@ export class InterfasesComponent implements OnInit {
     }
   }
 
+  aplicarFiltro(): void {
+    this.spinner.show();
+    this.initData();
+    const fechaInicio = this.filtroForm.get('filtroFechaInicio').value; // yyyy-mm-dd
+    const fechaFin = this.filtroForm.get('filtroFechaFin').value; // yyyy-mm-dd
+    if (fechaInicio === null || fechaFin === null) {
+      this.openModal();
+      this.spinner.hide();
+    } else if (new Date(fechaInicio) > new Date(fechaFin)) {
+      this.openModal();
+      this.spinner.hide();
+    }
+    else {
+      try {
+        const filtro = {
+          fecha_inicio: fechaInicio + 'T00:00:00',
+          fecha_fin: fechaFin + 'T24:00:00'
+        };
+        console.log('aplicarFiltro', filtro);
+        this.interfasesService.getDatos(filtro).then(data => {
+          this.dataOriginal = data;
+          this.datosDiurno = data.hasOwnProperty('diurnos');
+          this.datosNocturno = data.hasOwnProperty('nocturnos');
+          this.treemap = this.interfasesService.formatoResumen(data);
+          if (this.treemap.length > 0) {
+            this.treeMapNotEmpty = true;
+            this.treemapProcess(this.treemap);
+            this.treemapSelect(this.item);
+          }
+          this.spinner.hide();
+        });
+      }
+      catch (err) {
+        console.log(err);
+        this.spinner.hide();
+      }
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.initData();
+  }
   /*-- ************************************** -->
   <!-- ************************************** -->
   <!-- *** M O S T R A R _ G R A F I C O S ** -->

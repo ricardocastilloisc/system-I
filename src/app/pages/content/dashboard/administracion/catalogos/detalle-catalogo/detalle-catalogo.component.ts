@@ -15,24 +15,23 @@ import { ToastrService } from 'ngx-toastr';
 import { ERole } from '../../../../../../validators/roles';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { environment } from '../../../../../../../environments/environment';
+import * as AWS from 'aws-sdk';
 
+AWS.config.update({
+  accessKeyId: environment.SESConfig.accessKeyId,
+  secretAccessKey: environment.SESConfig.secretAccessKey,
+  region: environment.SESConfig.region
+});
+
+const docClient = new AWS.DynamoDB();
 @Component({
   selector: 'app-detalle-catalogo',
   templateUrl: './detalle-catalogo.component.html',
   styleUrls: ['./detalle-catalogo.component.css'],
 })
 export class DetalleCatalogoComponent implements OnInit, OnDestroy {
-  validarRoles(): boolean {
-    let flag = false;
-    this.store
-      .select(({ usuario }) => usuario.user)
-      .subscribe((res) => {
-        let rol = res['attributes']['custom:rol'];
 
-        if (rol === ERole.Administrador) flag = true;
-      });
-    return flag;
-  }
   DetailCatalogos$: Subscription;
 
   ColumDinamicData: STRUCTURE_CAT[] = [];
@@ -64,7 +63,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
   DetailCatsStatic = [];
 
   filter = false;
-
+  flagPermisos = false;
   dropdownListFiltro = [];
   SettingsFiltro: IDropdownSettings = {
     singleSelection: false,
@@ -169,7 +168,9 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     return this.ColumDinamicData.length > 1;
   };
   ngOnInit(): void {
-    this.validarRoles();
+
+    // this.validarRoles();
+    this.validarPermisos();
     this.getDataCat();
     this.DetailCatalogos$ = this.store
       .select(({ DetailCatalogos }) => DetailCatalogos.DetailCatalogos)
@@ -504,7 +505,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     mensaje = mensaje + 'Se ha producido un error';
 
     mensaje = mensaje + '</div><div class="descipcionError">';
-    mensaje = mensaje + err['error']['descripcion'];
+    mensaje = mensaje + err.error.descripcion;
     mensaje = mensaje + '</div></div>';
 
     this.toastr.show(mensaje, null, {
@@ -656,5 +657,84 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     } else {
       return false;
     }
-  };
+  }
+
+  validarRoles(): boolean {
+    let flag = false;
+    this.store
+      .select(({ usuario }) => usuario.user)
+      .subscribe((res) => {
+        const rol = res.attributes['custom:rol'];
+        if (rol === ERole.Administrador) {
+          flag = true;
+        }
+      });
+    this.flagPermisos = flag;
+    return flag;
+  }
+
+  validarPermisos(): void {
+    this.flagPermisos = false;
+    let rol: string;
+    const catalogo = localStorage.getItem('nameCat');
+    const negocio = localStorage.getItem('negocio').toUpperCase().split(',');
+    const area = localStorage.getItem('area').toUpperCase();
+    this.store
+      .select(({ usuario }) => usuario.user)
+      .subscribe((res) => {
+        rol = res.attributes['custom:rol'];
+      });
+    const params = {
+      ExpressionAttributeValues: {
+        ':a': {
+          S: catalogo
+        }
+      },
+      FilterExpression: 'NOMBRE = :a',
+      TableName: environment.diccionarioPermisos
+    };
+    docClient.scan(params, (err, data) => {
+      if (data) {
+        if (data.Count > 0) {
+          console.log('Permisos', data);
+          const permisoArea = data.Items[0].AREA.S;
+          const permisoNegocio = data.Items[0].NEGOCIO.S;
+          if (permisoArea.includes(area)) {
+            // tslint:disable-next-line: forin
+            for (let i in negocio) {
+              if (permisoNegocio.includes(negocio[i])) {
+                switch (area) {
+                  case 'CUSTODIA':
+                    if (data.Items[0].PRIV_CUSTODIA.S.includes('W')) {
+                      this.flagPermisos = true;
+                    }
+                    break;
+                  case 'CONTABILIDAD':
+                    if (data.Items[0].PRIV_CONTABILIDAD.S.includes('W')) {
+                      this.flagPermisos = true;
+                    }
+                    break;
+                  case 'RIESGOS':
+                    if (data.Items[0].PRIV_RIESGOS.S.includes('W')) {
+                      this.flagPermisos = true;
+                    }
+                    break;
+                  case 'TESORERIA':
+                    if (data.Items[0].PRIV_TESORERIA.S.includes('W')) {
+                      this.flagPermisos = true;
+                    }
+                    break;
+                  case 'SOPORTE':
+                    if (data.Items[0].PRIV_SOPORTE.S.includes('W')) {
+                      this.flagPermisos = true;
+                    }
+                    break;
+                }
+              }
+            }
+          }
+        }
+      }
+    });
+  }
 }

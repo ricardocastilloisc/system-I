@@ -5,7 +5,6 @@
     'hide-ejecuciones': mostrarEjecucionesProcesos == false
   }"
 >
-
 <div *ngIf="filter" class="
 d-flex
 col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12
@@ -32,7 +31,7 @@ justify-content-end
             {{ removeCharterSpecialSringTh(colum.campo) }}
 
           </th>
-          <th scope="col" *ngIf="validarRoles()">Acciones</th>
+          <th scope="col" *ngIf="flagPermisos">Acciones</th>
         </tr>
         <tr
           *ngFor="
@@ -54,7 +53,7 @@ justify-content-end
               )
             }}
           </td>
-          <td *ngIf="validarRoles()">
+          <td *ngIf="flagPermisos">
             <img
               *ngIf="viewUpdateIcon()"
               style="cursor: pointer"
@@ -105,7 +104,7 @@ justify-content-end
         </div>
       </pagination-template>
     </div>
-    <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12" *ngIf="validarRoles()">
+    <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12" *ngIf="flagPermisos">
       <div class="row justify-content-end">
         <button
           (click)="mostrarCardAgregarResgistro()"

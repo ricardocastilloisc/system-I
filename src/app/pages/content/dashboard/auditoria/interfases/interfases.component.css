@@ -150,6 +150,16 @@ div.card-grafico {
   border: none;
 }
 
+.button {
+  background-color: #0091da;
+  color: white;
+  width: 250px;
+  height: 40px;
+  border-radius: 25px;
+  font: bold 20px FS Elliot Pro;
+  border: none;
+}
+
 div.card-lista-design-general {
   width: auto;
   min-width: 477px;

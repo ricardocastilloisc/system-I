@@ -66,7 +66,7 @@
                     &nbsp; Del: &nbsp;
                 </div>
                 <input style="width: 90%; padding-left: 10px" type="date" placeholder="dd-MM-yyyy"
-                    onfocus="(this.type='date')" id="filtroFecha" formControlName="filtroFecha" name="filtroFecha"
+                    onfocus="(this.type='date')" id="filtroFechaInicio" formControlName="filtroFechaInicio" name="filtroFechaInicio"
                     [value]="maxDate" max="{{ maxDate| date:'yyyy-MM-dd'}}" />
             </div>
             <div class="col-4 justify-content-center">
@@ -76,11 +76,11 @@
                     &nbsp; Al: &nbsp;
                 </div>
                 <input style="width: 90%; padding-left: 10px" type="date" placeholder="dd-MM-yyyy"
-                    onfocus="(this.type='date')" id="filtroFecha" formControlName="filtroFecha" name="filtroFecha"
+                    onfocus="(this.type='date')" id="filtroFechaFin" formControlName="filtroFechaFin" name="filtroFechaFin"
                     [value]="maxDate" max="{{ maxDate| date:'yyyy-MM-dd'}}" />
             </div>
             <div class="col-4 justify-content-center">
-                <button style="cursor: pointer">Filtrar</button>
+                <button style="cursor: pointer" (click)="aplicarFiltro()">Filtrar</button>
             </div>
         </div>
     </div>
@@ -344,3 +344,28 @@
     <div class="texto-help" style="width: 100%"> {{ helpBody }}</div>
 </ng-template>
 <ng-template #popTitle> {{ helpTitulo }} </ng-template>
+
+<ng-template #modalEstado let-modal id="modalFiltro">
+    <div class="modal-body">
+        <div class="row justify-content-center">
+            <div class="col-12 row justify-content-center align-items-center" style="height:120px;">
+                <div class="textoConfirmacionModalUsuarios">Aplicar filtro</div>
+            </div>
+            <div class="col-12 row">
+                <div class="col-12 descripcionConfirmacionEjecucionProceso">
+                    Es necesario introducir ambas fechas para poder filtrar las ejecuciones.
+                </div>
+            </div>
+            <div class="col-12 row">
+                <div class="col-12 descripcionConfirmacionEjecucionProceso">
+                    El campo fecha <b>Del</b>, debe ser igual o menor a la fecha <b>Al</b>.
+                </div>
+            </div>
+            <div class="col-12 row justify-content-center align-items-center" style="height:120px;">
+                <div>
+                    <button class="button" (click)="cerrarModales()">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { environment } from '../../environments/environment';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -12,22 +13,25 @@ export class InterfasesService {
     return word[0].toUpperCase() + word.slice(1).toLowerCase();
   }
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private httpClient: HttpClient) { }
 
   getDatos = async (filtros: any) => {
     // console.log('getDatos', filtros);
     try {
-      const url = environment.API.endpoints.find((el) => el.name === 'auditoria').endpoint + filtros;
-      const myHeaders = new Headers();
-      myHeaders.append('Authorization', 'Bearer ' + this.authService.getToken());
+      // tslint:disable-next-line: one-variable-per-declaration
+      const api = environment.API.endpoints.find((el) => el.name === 'auditoria').endpoint;
+      const params = new URLSearchParams(filtros);
+      const url = api + '?' + params.toString();
+      const header = new Headers();
+      header.append('Authorization', 'Bearer ' + this.authService.getToken());
       const requestOptions = {
         method: 'GET',
-        headers: myHeaders
+        headers: header
       };
       const res = await fetch(url, requestOptions);
       // console.log(res.ok);
       const data = await res.json();
-      // console.log(data);
+      console.log('getData', data);
       return data;
     } catch (e) {
       console.error(e);

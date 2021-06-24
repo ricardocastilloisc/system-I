@@ -31,6 +31,7 @@ export const environment = {
       },
     }
   },
+  diccionarioPermisos: 'sia-gen-adm-diccionario-catalogos-dev',
   API: {
     endpoints: [
       {

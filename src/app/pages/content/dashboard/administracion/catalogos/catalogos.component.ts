@@ -3,6 +3,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../../../../ReduxStore/app.reducers';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import { CatalogosService } from '../../../../../services/catalogos.service';
 
 @Component({
   selector: 'app-catalogos',
@@ -20,7 +21,7 @@ export class CatalogosComponent implements OnInit, OnDestroy {
 
   GenericosGens = [];
 
-  constructor(private store: Store<AppState>, private router: Router) {}
+  constructor(private store: Store<AppState>, private router: Router, private catalogosSvc: CatalogosService) {}
 
   ngOnDestroy(): void {
     this.catalogos$.unsubscribe();
@@ -29,6 +30,7 @@ export class CatalogosComponent implements OnInit, OnDestroy {
   goDetailCat = (negocioCat, nameCat) => {
     localStorage.setItem('nameCat', nameCat);
     localStorage.setItem('negocioCat', negocioCat);
+    this.catalogosSvc.getPermisos(nameCat);
     this.router.navigate(['/' + window.location.pathname + '/' + negocioCat]);
   };
 
@@ -50,9 +52,9 @@ export class CatalogosComponent implements OnInit, OnDestroy {
               this.GenericosGens.push(e);
             } else {
 
-              console.log(e.NEGOCIO);
+              // console.log(e.NEGOCIO);
 
-              console.log(e.NEGOCIO.split(','))
+              // console.log(e.NEGOCIO.split(','))
               e.NEGOCIO.split(',').forEach((elementd) => {
                 if (elementd === 'AFORE') {
                   let index = this.AforesSubs.findIndex(
@@ -67,7 +69,7 @@ export class CatalogosComponent implements OnInit, OnDestroy {
                     this.AforesSubs[index].SUBMENUS.push(e);
                   }
                 } else {
-                  console.log('')
+                  // console.log('')
                   let index = this.FondosSubs.findIndex(
                     (x) => x.INTERFAZ === e.INTERFAZ
                   );

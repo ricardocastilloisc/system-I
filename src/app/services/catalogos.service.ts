@@ -7,11 +7,22 @@ import { AuditoriaService } from './auditoria.service';
 import { AppState } from '../ReduxStore/app.reducers';
 import { Store } from '@ngrx/store';
 import { AuthService } from './auth.service';
+import * as AWS from 'aws-sdk';
+
+AWS.config.update({
+  accessKeyId: environment.SESConfig.accessKeyId,
+  secretAccessKey: environment.SESConfig.secretAccessKey,
+  region: environment.SESConfig.region
+});
+
+const docClient = new AWS.DynamoDB();
 
 @Injectable({
   providedIn: 'root',
 })
 export class CatalogosService {
+
+
   UrlCatalogos = environment.API.endpoints.find((el) => el.name === 'catalogos')['endpoint']
 
   constructor(
@@ -19,7 +30,7 @@ export class CatalogosService {
     private store: Store<AppState>,
     private auditoria: AuditoriaService,
     private AuthService: AuthService
-  ) {}
+  ) { }
   getCatalogos = () => {
     let area = localStorage.getItem('area');
 
@@ -79,9 +90,9 @@ export class CatalogosService {
     this.httpClient
       .get(
         this.UrlCatalogos +
-          'catalogos/' +
-          localStorage.getItem('nameCat') +
-          '/registros',
+        'catalogos/' +
+        localStorage.getItem('nameCat') +
+        '/registros',
         {
           headers: this.AuthService.userHeaders(),
         }
@@ -105,9 +116,9 @@ export class CatalogosService {
             this.httpClient
               .get(
                 this.UrlCatalogos +
-                  'catalogos/' +
-                  localStorage.getItem('nameCat') +
-                  '/registros',
+                'catalogos/' +
+                localStorage.getItem('nameCat') +
+                '/registros',
                 {
                   params: QueryParams,
                   headers: this.AuthService.userHeaders(),
@@ -135,9 +146,9 @@ export class CatalogosService {
     return this.httpClient
       .put(
         this.UrlCatalogos +
-          'catalogos/' +
-          localStorage.getItem('nameCat') +
-          '/registros',
+        'catalogos/' +
+        localStorage.getItem('nameCat') +
+        '/registros',
         object,
         {
           headers: this.AuthService.userHeaders(),
@@ -150,9 +161,9 @@ export class CatalogosService {
     return this.httpClient
       .post(
         this.UrlCatalogos +
-          'catalogos/' +
-          localStorage.getItem('nameCat') +
-          '/registros',
+        'catalogos/' +
+        localStorage.getItem('nameCat') +
+        '/registros',
         object,
         {
           headers: this.AuthService.userHeaders(),
@@ -171,10 +182,10 @@ export class CatalogosService {
     return this.httpClient
       .delete(
         this.UrlCatalogos +
-          'catalogos/' +
-          localStorage.getItem('nameCat') +
-          '/registros/' +
-          window.btoa(unescape(encodeURIComponent(registro))),
+        'catalogos/' +
+        localStorage.getItem('nameCat') +
+        '/registros/' +
+        window.btoa(unescape(encodeURIComponent(registro))),
         {
           headers: this.AuthService.userHeaders(),
         }
@@ -246,4 +257,31 @@ export class CatalogosService {
     localStorage.removeItem('ObjectNewRegister');
     localStorage.removeItem('ObjectOldRegister');
   }
+
+  getPermisos(catalogo: string): any {
+    console.log('getPermisos', catalogo);
+    const params = {
+      ExpressionAttributeValues: {
+        ':a': {
+          S: catalogo
+        }
+      },
+      FilterExpression: 'NOMBRE = :a',
+      TableName: environment.diccionarioPermisos
+    };
+    docClient.scan(params, (err, data) => {
+      if (err) {
+        const response = {
+          Count: 0,
+        };
+        // console.log('err', err);
+        return response;
+      }
+      else {
+        // console.log('data', data);
+        return data;
+      }
+    });
+  }
+
 }
