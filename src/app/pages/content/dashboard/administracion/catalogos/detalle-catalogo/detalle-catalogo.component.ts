@@ -732,6 +732,9 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
                 }
               }
             }
+            if (rol.includes(ERole.Monitor)){
+              this.flagPermisos = false;
+            }
           }
         }
       }
