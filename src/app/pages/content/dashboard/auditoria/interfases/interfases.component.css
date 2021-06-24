@@ -16,6 +16,12 @@
   flex-direction: column;
 }
 
+.paginator {
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 5%;
+}
+
 .selector-reporte {
   width: 100%;
   height: 40px;

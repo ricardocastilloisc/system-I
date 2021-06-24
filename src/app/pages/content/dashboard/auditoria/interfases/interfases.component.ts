@@ -5,6 +5,8 @@ import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import * as d3 from 'd3';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ERole } from 'src/app/validators/roles';
+import { EArea } from './../../../../../validators/roles';
 
 @Component({
   selector: 'app-interfases',
@@ -37,7 +39,8 @@ export class InterfasesComponent implements OnInit, OnDestroy {
   <!-- ********* D A T O S ****************** -->
   <!-- ************************************** -->
   <!-- ************************************** -*/
-  dataOriginal: any;
+  dataOriginal: any = [];
+  listadoProblemas: any = [];
   datosDiurno: false;
   datosNocturno: false;
   treeMapNotEmpty = false;
@@ -60,8 +63,14 @@ export class InterfasesComponent implements OnInit, OnDestroy {
   <!-- ************************************** -*/
   detalleDiurno = false;
   detalleNocturno = false;
+  flagDatos: boolean;
   flagMinimizarDiurno = false;
   flagMinimizarNocturno = false;
+  flagSoporte = false;
+  paginaActual = 1;
+  dias = 30;
+  expresionDias = 'de los últimos 30 días';
+  expresion = '';
   helpTitulo = '';
   helpBody = '';
   item = {
@@ -128,6 +137,9 @@ export class InterfasesComponent implements OnInit, OnDestroy {
     this.datosNocturnoFondos = [];
     this.datosDetalleDiurno = [];
     this.datosDetalleNocturno = [];
+    this.dataOriginal = [];
+    this.listadoProblemas = [];
+    localStorage.setItem('tipoPantalla', 'INTERFACES');
   }
 
   initSelects = () => {
@@ -179,18 +191,27 @@ export class InterfasesComponent implements OnInit, OnDestroy {
     });
   }
 
-  limpirarFiltro(): void {
+  limpiarFiltro(pantalla: string): void {
+    if (pantalla.length < 1){
+      pantalla = localStorage.getItem('tipoPantalla');
+    }
     this.selectedItemsFiltroTipo = [];
     this.selectedItemsFiltroNegocio = [];
     this.filtroForm.reset();
+    if (pantalla.includes('INTERFACES')){
+      this.initDatosInterfaces();
+    } else if (pantalla.includes('PROBLEMAS')){
+      this.initDatosProblemas();
+    }
   }
 
-  setPantalla(tipo: string): void {
-    localStorage.setItem('tipoPantalla', tipo);
+  setPantalla(pantalla: string): void {
+    localStorage.setItem('tipoPantalla', pantalla);
+    this.limpiarFiltro(pantalla);
   }
 
-  botonActivado = (comparar: string): boolean => {
-    return localStorage.getItem('tipoPantalla') === comparar
+  botonActivado = (pantalla: string): boolean => {
+    return localStorage.getItem('tipoPantalla') === pantalla
       ? true
       : false;
   }
@@ -227,6 +248,14 @@ export class InterfasesComponent implements OnInit, OnDestroy {
     this.modalService.dismissAll();
   }
 
+  validarRolMensaje(): boolean {
+    let flag = false;
+    if (localStorage.getItem('area').includes(EArea.Soporte)) {
+      flag = true;
+    }
+    return flag;
+  }
+
   /*-- ************************************** -->
   <!-- ************************************** -->
   <!-- ******** O N I N I T ***************** -->
@@ -234,20 +263,31 @@ export class InterfasesComponent implements OnInit, OnDestroy {
   <!-- ************************************** -*/
   ngOnInit(): void {
     this.spinner.show();
-    localStorage.setItem('tipoPantalla', 'INTERFASES');
+    this.expresion = this.expresionDias;
     this.initData();
     this.initSelects();
+    this.flagSoporte = this.validarRolMensaje();
+    this.initDatosInterfaces();
+  }
+
+  ngOnDestroy(): void {
+    this.initData();
+  }
+
+  initDatosInterfaces(): void {
     try {
+      this.spinner.show();
+      this.expresion = this.expresionDias;
       const fechaInicio = new Date();
       const fechaFin = new Date();
-      fechaInicio.setDate(fechaFin.getDate() - 30);
+      fechaInicio.setDate(fechaFin.getDate() - this.dias);
       const filtro = {
         fecha_inicio: fechaInicio.toISOString().split('T')[0],
         fecha_fin: fechaFin.toISOString().split('T')[0]
       };
-      console.log('filtro', filtro);
       this.interfasesService.getDatos(filtro).then(data => {
         this.dataOriginal = data;
+        this.flagDatos = this.interfasesService.isObjEmpty(data);
         this.datosDiurno = data.hasOwnProperty('diurnos');
         this.datosNocturno = data.hasOwnProperty('nocturnos');
         this.treemap = this.interfasesService.formatoResumen(data);
@@ -265,9 +305,36 @@ export class InterfasesComponent implements OnInit, OnDestroy {
     }
   }
 
+  initDatosProblemas(): void {
+    try {
+      this.spinner.show();
+      this.expresion = this.expresionDias;
+      const fechaInicio = new Date();
+      const fechaFin = new Date();
+      fechaInicio.setDate(fechaFin.getDate() - this.dias);
+      const filtro = {
+        fecha_inicio: fechaInicio.toISOString().split('T')[0],
+        fecha_fin: fechaFin.toISOString().split('T')[0]
+      };
+      this.interfasesService.getProblemas(filtro).then(data => {
+        this.listadoProblemas = data;
+        this.spinner.hide();
+      });
+    }
+    catch (err) {
+      console.log(err);
+      this.spinner.hide();
+    }
+  }
+
+  /*-- ************************************** -->
+  <!-- ************************************** -->
+  <!-- **** A C C I O N F I L T R O S ******* -->
+  <!-- ************************************** -->
+  <!-- ************************************** -*/
   aplicarFiltro(): void {
+    const pantalla = localStorage.getItem('tipoPantalla');
     this.spinner.show();
-    this.initData();
     const fechaInicio = this.filtroForm.get('filtroFechaInicio').value; // yyyy-mm-dd
     const fechaFin = this.filtroForm.get('filtroFechaFin').value; // yyyy-mm-dd
     if (fechaInicio === null || fechaFin === null) {
@@ -278,42 +345,64 @@ export class InterfasesComponent implements OnInit, OnDestroy {
       this.spinner.hide();
     }
     else {
-      try {
-        const filtro = {
-          fecha_inicio: fechaInicio + 'T00:00:00',
-          fecha_fin: fechaFin + 'T24:00:00'
-        };
-        console.log('aplicarFiltro', filtro);
-        this.interfasesService.getDatos(filtro).then(data => {
-          this.dataOriginal = data;
-          this.datosDiurno = data.hasOwnProperty('diurnos');
-          this.datosNocturno = data.hasOwnProperty('nocturnos');
-          this.treemap = this.interfasesService.formatoResumen(data);
-          if (this.treemap.length > 0) {
-            this.treeMapNotEmpty = true;
-            this.treemapProcess(this.treemap);
-            this.treemapSelect(this.item);
-          }
-          this.spinner.hide();
-        });
+      if (fechaInicio === fechaFin) {
+        this.expresion = 'del ' + this.interfasesService.formatDate(fechaInicio);
+      } else {
+        this.expresion = 'del ' + this.interfasesService.formatDate(fechaInicio) + ' al ' + this.interfasesService.formatDate(fechaFin);
       }
-      catch (err) {
-        console.log(err);
-        this.spinner.hide();
+      const filtro = {
+        fecha_inicio: fechaInicio + 'T00:00:00',
+        fecha_fin: fechaFin + 'T24:00:00'
+      };
+      if (pantalla.includes('INTERFACES')) {
+        this.aplicarFiltroInterfaces(filtro);
+      } else if (pantalla.includes('PROBLEMAS')) {
+        this.aplicarFiltroProblemas(filtro);
       }
     }
   }
 
-  ngOnDestroy(): void {
-    this.initData();
+  aplicarFiltroInterfaces(filtro: any): void {
+    try {
+      this.interfasesService.getDatos(filtro).then(data => {
+        this.dataOriginal = data;
+        this.flagDatos = this.interfasesService.isObjEmpty(data);
+        this.datosDiurno = data.hasOwnProperty('diurnos');
+        this.datosNocturno = data.hasOwnProperty('nocturnos');
+        this.treemap = this.interfasesService.formatoResumen(data);
+        if (this.treemap.length > 0) {
+          this.treeMapNotEmpty = true;
+          this.treemapProcess(this.treemap);
+          this.treemapSelect(this.item);
+        }
+        this.spinner.hide();
+      });
+    }
+    catch (err) {
+      console.log(err);
+      this.spinner.hide();
+    }
   }
+
+  aplicarFiltroProblemas(filtro: any): void {
+    try {
+      this.interfasesService.getProblemas(filtro).then(data => {
+        this.listadoProblemas = data;
+        this.spinner.hide();
+      });
+    }
+    catch (err) {
+      console.log(err);
+      this.spinner.hide();
+    }
+  }
+
   /*-- ************************************** -->
   <!-- ************************************** -->
   <!-- *** M O S T R A R _ G R A F I C O S ** -->
   <!-- ************************************** -->
   <!-- ************************************** -*/
   accionMinimizarDiurno(): void {
-    // console.log("accion", this.flagMinimizarDiurno)
     if (this.flagMinimizarDiurno === false) {
       this.datosAforeFondos = [];
       this.datosLanzamiento = [];
@@ -326,7 +415,6 @@ export class InterfasesComponent implements OnInit, OnDestroy {
   }
 
   accionMinimizarNocturno(): void {
-    // console.log("accion", this.flagMinimizarNocturno)
     if (this.flagMinimizarNocturno === false) {
       this.datosAforeFondos = [];
       this.datosLanzamiento = [];
@@ -334,10 +422,6 @@ export class InterfasesComponent implements OnInit, OnDestroy {
       this.datosLanzamiento = this.interfasesService.formatoDatosBarHorLanzamiento(this.dataOriginal, 'nocturnos');
       this.datosNocturnoAfore = this.interfasesService.formatoDatosPie(this.dataOriginal, 'nocturnos', 'afore');
       this.datosNocturnoFondos = this.interfasesService.formatoDatosPie(this.dataOriginal, 'nocturnos', 'fondos');
-      console.log('datosLanzamiento', this.datosLanzamiento);
-      console.log('datosAforeFondos', this.datosAforeFondos);
-      console.log('datosNocturnoAfore', this.datosNocturnoAfore);
-      console.log('datosNocturnoFondos', this.datosNocturnoFondos);
     }
     this.flagMinimizarNocturno = !this.flagMinimizarNocturno;
   }
@@ -346,7 +430,6 @@ export class InterfasesComponent implements OnInit, OnDestroy {
     tipo = this.interfasesService.capitalize(tipo);
     negocio = this.interfasesService.capitalize(negocio);
     const estado = this.interfasesService.capitalize(data.name);
-    // console.log('mostrarDetalleEjecuciones', data, tipo, negocio, estado);
     if (data.name.includes('Exito')) {
       this.tituloGrafico = 'Detalle ejecuciones exitosas de ' + tipo + ' ' + negocio;
     } else {
@@ -383,7 +466,6 @@ export class InterfasesComponent implements OnInit, OnDestroy {
   }
 
   treemapSelect(item: any): void {
-    // console.log(item);
     let node;
     if (item.children) {
       const idx = this.treemapPath.indexOf(item);

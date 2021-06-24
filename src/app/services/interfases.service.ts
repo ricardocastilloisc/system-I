@@ -13,10 +13,20 @@ export class InterfasesService {
     return word[0].toUpperCase() + word.slice(1).toLowerCase();
   }
 
+  formatDate(dateString: string): string {
+    const thisDate = dateString.split('-');
+    const newDate = [thisDate[2], thisDate[1], thisDate[0]].join('/');
+    return newDate;
+  }
+
+  isObjEmpty(obj: any): boolean {
+    return Object.keys(obj).length === 0;
+  }
+
   constructor(private authService: AuthService, private httpClient: HttpClient) { }
 
   getDatos = async (filtros: any) => {
-    // console.log('getDatos', filtros);
+    console.log('getDatos filtros', filtros);
     try {
       // tslint:disable-next-line: one-variable-per-declaration
       const api = environment.API.endpoints.find((el) => el.name === 'auditoria').endpoint;
@@ -31,7 +41,30 @@ export class InterfasesService {
       const res = await fetch(url, requestOptions);
       // console.log(res.ok);
       const data = await res.json();
-      console.log('getData', data);
+      console.log('getData data', data);
+      return data;
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  getProblemas = async (filtros: any) => {
+    console.log('getProblemas filtros', filtros);
+    try {
+      // tslint:disable-next-line: one-variable-per-declaration
+      const api = environment.API.endpoints.find((el) => el.name === 'auditoria').endpoint + '/problemas';
+      const params = new URLSearchParams(filtros);
+      const url = api + '?' + params.toString();
+      const header = new Headers();
+      header.append('Authorization', 'Bearer ' + this.authService.getToken());
+      const requestOptions = {
+        method: 'GET',
+        headers: header
+      };
+      const res = await fetch(url, requestOptions);
+      // console.log(res.ok);
+      const data = await res.json();
+      console.log('getProblemas data', data);
       return data;
     } catch (e) {
       console.error(e);
