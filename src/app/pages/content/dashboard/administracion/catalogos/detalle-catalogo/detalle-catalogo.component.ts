@@ -521,7 +521,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
   agregarRegistroOActualizarRegistro = () => {
 
     let ObjectTemp = this.FormsDinamic.value;
-    localStorage.setItem('ObjectNewRegister', JSON.stringify(ObjectTemp));
+
 
     let objectFinish = {};
 
@@ -622,6 +622,10 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
         }
       );
     }
+
+    localStorage.setItem('ObjectNewRegister', JSON.stringify(objectFinish));
+
+
   };
 
   eliminarRegistro = () => {

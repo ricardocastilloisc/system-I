@@ -7,6 +7,12 @@ import * as d3 from 'd3';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ERole } from 'src/app/validators/roles';
 import { EArea } from './../../../../../validators/roles';
+import { Observable, of, Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../../../ReduxStore/app.reducers';
+import { CATPROCESOS_INTERFACE } from '../../../../../model/CATPROCESOS.model';
+import { LoadCATPROCESOS, UnsetCATPROCESO } from 'src/app/ReduxStore/actions';
+declare var $: any;
 
 @Component({
   selector: 'app-interfases',
@@ -27,7 +33,7 @@ export class InterfasesComponent implements OnInit, OnDestroy {
   dropdownListFiltroTipo = [];
   SettingsFiltroDeTipo: IDropdownSettings = {};
   selectedItemsFiltroTipo = [];
-  dropdownListFiltroNegocio = [];
+  dropdownListFiltroNegocio: any = [];
   SettingsFiltroDeNegocio: IDropdownSettings = {};
   selectedItemsFiltroNegocio = [];
   dropdownListFiltroProceso = [];
@@ -39,6 +45,8 @@ export class InterfasesComponent implements OnInit, OnDestroy {
   <!-- ********* D A T O S ****************** -->
   <!-- ************************************** -->
   <!-- ************************************** -*/
+  CATPROCESOS$: Observable<CATPROCESOS_INTERFACE[]>;
+  CATPROCESOS: CATPROCESOS_INTERFACE[];
   dataOriginal: any = [];
   listadoProblemas: any = [];
   datosDiurno: false;
@@ -71,6 +79,8 @@ export class InterfasesComponent implements OnInit, OnDestroy {
   dias = 30;
   expresionDias = 'de los últimos 30 días';
   expresion = '';
+  initTipo = 'DIURNO';
+  mensajeError: string;
   helpTitulo = '';
   helpBody = '';
   item = {
@@ -120,7 +130,8 @@ export class InterfasesComponent implements OnInit, OnDestroy {
     private spinner: NgxSpinnerService,
     private interfasesService: InterfasesService,
     private fb: FormBuilder,
-    private modalService: NgbModal) {
+    private modalService: NgbModal,
+    private store: Store<AppState>) {
   }
 
   /*-- ************************************** -->
@@ -144,19 +155,28 @@ export class InterfasesComponent implements OnInit, OnDestroy {
 
   initSelects = () => {
     this.dropdownListFiltroTipo = [
-      { item_id: 'DIURNO', item_text: 'DIURNO' },
-      { item_id: 'NOCTURNO', item_text: 'NOCTURNO' },
+      { item_id: 'DIURNO', item_text: 'DIURNOS' },
+      { item_id: 'NOCTURNO', item_text: 'NOCTURNOS' },
     ];
     this.dropdownListFiltroNegocio = [
       { item_id: 'AFORE', item_text: 'AFORE' },
       { item_id: 'FONDOS', item_text: 'FONDOS' },
     ];
-    this.dropdownListFiltroProceso = [
-      { item_id: 'AFORE', item_text: 'MD' },
-      { item_id: 'FONDOS', item_text: 'MO' },
-    ];
+    this.store.select(
+      ({ CATPROCESOS }) => CATPROCESOS.CATPROCESOS
+    ).subscribe(res => {
+      this.CATPROCESOS = res;
+      // tslint:disable-next-line: forin
+      for (let i in res) {
+        const item = {
+          item_id: res[i].PROCESO,
+          item_text: res[i].PROCESO,
+        };
+        this.dropdownListFiltroProceso.push(item);
+      }
+    });
     this.SettingsFiltroDeNegocio = {
-      singleSelection: false,
+      singleSelection: true,
       idField: 'item_id',
       textField: 'item_text',
       allowSearchFilter: false,
@@ -166,7 +186,7 @@ export class InterfasesComponent implements OnInit, OnDestroy {
       itemsShowLimit: 3,
     };
     this.SettingsFiltroDeTipo = {
-      singleSelection: false,
+      singleSelection: true,
       idField: 'item_id',
       textField: 'item_text',
       allowSearchFilter: false,
@@ -176,7 +196,7 @@ export class InterfasesComponent implements OnInit, OnDestroy {
       itemsShowLimit: 3,
     };
     this.SettingsFiltroDeProceso = {
-      singleSelection: false,
+      singleSelection: true,
       idField: 'item_id',
       textField: 'item_text',
       allowSearchFilter: false,
@@ -191,16 +211,25 @@ export class InterfasesComponent implements OnInit, OnDestroy {
     });
   }
 
+  initProcesos(tipo: string): void {
+    const bodyProcesos = {
+      filter: { TIPO: { eq: tipo.toUpperCase() } },
+      limit: 1000
+    };
+    this.store.dispatch(LoadCATPROCESOS({ consult: bodyProcesos }));
+  }
+
   limpiarFiltro(pantalla: string): void {
-    if (pantalla.length < 1){
+    if (pantalla.length < 1) {
       pantalla = localStorage.getItem('tipoPantalla');
     }
     this.selectedItemsFiltroTipo = [];
     this.selectedItemsFiltroNegocio = [];
+    this.selectedItemsFiltroProceso = [];
     this.filtroForm.reset();
-    if (pantalla.includes('INTERFACES')){
+    if (pantalla.includes('INTERFACES')) {
       this.initDatosInterfaces();
-    } else if (pantalla.includes('PROBLEMAS')){
+    } else if (pantalla.includes('PROBLEMAS')) {
       this.initDatosProblemas();
     }
   }
@@ -256,6 +285,14 @@ export class InterfasesComponent implements OnInit, OnDestroy {
     return flag;
   }
 
+  cambiarEtiquetaSeleccionadaGeneral(elemento: any): void {
+    setTimeout(() => {
+      $('#' + elemento)
+        .find('.selected-item')
+        .attr('class', 'etiquetasCatalogos');
+    }, 1);
+  }
+
   /*-- ************************************** -->
   <!-- ************************************** -->
   <!-- ******** O N I N I T ***************** -->
@@ -264,14 +301,16 @@ export class InterfasesComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.spinner.show();
     this.expresion = this.expresionDias;
-    this.initData();
-    this.initSelects();
     this.flagSoporte = this.validarRolMensaje();
+    this.initData();
     this.initDatosInterfaces();
+    this.initProcesos(this.initTipo);
+    this.initSelects();
   }
 
   ngOnDestroy(): void {
     this.initData();
+    this.store.dispatch(UnsetCATPROCESO());
   }
 
   initDatosInterfaces(): void {
@@ -288,6 +327,10 @@ export class InterfasesComponent implements OnInit, OnDestroy {
       this.interfasesService.getDatos(filtro).then(data => {
         this.dataOriginal = data;
         this.flagDatos = this.interfasesService.isObjEmpty(data);
+        if (data.hasOwnProperty('message')) {
+          this.mensajeError = 'Ocurrió un error: ' + data.message;
+          this.openModal();
+        }
         this.datosDiurno = data.hasOwnProperty('diurnos');
         this.datosNocturno = data.hasOwnProperty('nocturnos');
         this.treemap = this.interfasesService.formatoResumen(data);
@@ -300,7 +343,8 @@ export class InterfasesComponent implements OnInit, OnDestroy {
       });
     }
     catch (err) {
-      console.log(err);
+      this.mensajeError = 'Ocurrió un error: ' + err.message;
+      this.openModal();
       this.spinner.hide();
     }
   }
@@ -318,11 +362,16 @@ export class InterfasesComponent implements OnInit, OnDestroy {
       };
       this.interfasesService.getProblemas(filtro).then(data => {
         this.listadoProblemas = data;
+        if (data.hasOwnProperty('message')) {
+          this.mensajeError = 'Ocurrió un error: ' + data.message;
+          this.openModal();
+        }
         this.spinner.hide();
       });
     }
     catch (err) {
-      console.log(err);
+      this.mensajeError = 'Ocurrió un error: ' + err.message;
+      this.openModal();
       this.spinner.hide();
     }
   }
@@ -334,30 +383,54 @@ export class InterfasesComponent implements OnInit, OnDestroy {
   <!-- ************************************** -*/
   aplicarFiltro(): void {
     const pantalla = localStorage.getItem('tipoPantalla');
+    const filtro = Object.create({});
     this.spinner.show();
+    if (this.selectedItemsFiltroProceso.length > 0) {
+      filtro.proceso = this.selectedItemsFiltroProceso[0].item_id;
+    }
+    if (this.selectedItemsFiltroNegocio.length > 0) {
+      filtro.negocio = this.selectedItemsFiltroNegocio[0].item_id;
+    }
+    if (this.selectedItemsFiltroTipo.length > 0) {
+      filtro.tipo = this.selectedItemsFiltroTipo[0].item_id;
+    }
     const fechaInicio = this.filtroForm.get('filtroFechaInicio').value; // yyyy-mm-dd
     const fechaFin = this.filtroForm.get('filtroFechaFin').value; // yyyy-mm-dd
-    if (fechaInicio === null || fechaFin === null) {
+    if ((fechaInicio === null && fechaFin !== null) || (fechaInicio !== null && fechaFin === null)) {
+      this.mensajeError = 'Es necesario introducir ambas fechas para poder filtrar las ejecuciones';
       this.openModal();
       this.spinner.hide();
     } else if (new Date(fechaInicio) > new Date(fechaFin)) {
+      this.mensajeError = 'La fecha DEL (inicio de la búsqueda) debe ser menor a la fecha AL (fin de la búsqueda)';
       this.openModal();
       this.spinner.hide();
     }
     else {
-      if (fechaInicio === fechaFin) {
-        this.expresion = 'del ' + this.interfasesService.formatDate(fechaInicio);
-      } else {
-        this.expresion = 'del ' + this.interfasesService.formatDate(fechaInicio) + ' al ' + this.interfasesService.formatDate(fechaFin);
+      if (fechaInicio !== null) {
+        if ((fechaInicio === fechaFin)) {
+          this.expresion = 'del ' + this.interfasesService.formatDate(fechaInicio);
+        } else {
+          this.expresion = 'del ' + this.interfasesService.formatDate(fechaInicio) + ' al ' + this.interfasesService.formatDate(fechaFin);
+        }
+        filtro.fecha_inicio = fechaInicio + 'T00:00:00';
+        filtro.fecha_fin = fechaFin + 'T24:00:00';
       }
-      const filtro = {
-        fecha_inicio: fechaInicio + 'T00:00:00',
-        fecha_fin: fechaFin + 'T24:00:00'
-      };
       if (pantalla.includes('INTERFACES')) {
-        this.aplicarFiltroInterfaces(filtro);
+        if (fechaInicio === null) {
+          this.mensajeError = 'Debe introducir un rango de fechas para la búsqueda';
+          this.openModal();
+          this.spinner.hide();
+        } else {
+          this.aplicarFiltroInterfaces(filtro);
+        }
       } else if (pantalla.includes('PROBLEMAS')) {
-        this.aplicarFiltroProblemas(filtro);
+        if (this.interfasesService.isObjEmpty(filtro)) {
+          this.mensajeError = 'Debe introducir al menos un parámetro de la búsqueda';
+          this.openModal();
+          this.spinner.hide();
+        } else {
+          this.aplicarFiltroProblemas(filtro);
+        }
       }
     }
   }
@@ -367,6 +440,10 @@ export class InterfasesComponent implements OnInit, OnDestroy {
       this.interfasesService.getDatos(filtro).then(data => {
         this.dataOriginal = data;
         this.flagDatos = this.interfasesService.isObjEmpty(data);
+        if (data.hasOwnProperty('message')) {
+          this.mensajeError = 'Ocurrió un error: ' + data.message;
+          this.openModal();
+        }
         this.datosDiurno = data.hasOwnProperty('diurnos');
         this.datosNocturno = data.hasOwnProperty('nocturnos');
         this.treemap = this.interfasesService.formatoResumen(data);
@@ -379,7 +456,8 @@ export class InterfasesComponent implements OnInit, OnDestroy {
       });
     }
     catch (err) {
-      console.log(err);
+      this.mensajeError = 'Ocurrió un error: ' + err.message;
+      this.openModal();
       this.spinner.hide();
     }
   }
@@ -388,11 +466,16 @@ export class InterfasesComponent implements OnInit, OnDestroy {
     try {
       this.interfasesService.getProblemas(filtro).then(data => {
         this.listadoProblemas = data;
+        if (data.hasOwnProperty('message')) {
+          this.mensajeError = 'Ocurrió un error: ' + data.message;
+          this.openModal();
+        }
         this.spinner.hide();
       });
     }
     catch (err) {
-      console.log(err);
+      this.mensajeError = 'Ocurrió un error: ' + err.message;
+      this.openModal();
       this.spinner.hide();
     }
   }

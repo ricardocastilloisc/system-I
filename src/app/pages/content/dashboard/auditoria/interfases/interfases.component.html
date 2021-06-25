@@ -30,8 +30,7 @@
             </div>
         </div>
     </div>
-    <!-- <div class="container">
-        
+    <div class="container" *ngIf="botonActivado('PROBLEMAS')">        
             <div class="row">
             <div class="col-4 justify-content-center">
                 <ng-multiselect-dropdown style="width: 100%; padding-left: 10px" [placeholder]="'Tipo'" id="filtroTipo"
@@ -56,7 +55,6 @@
             </div>
         </div>    
     </div>
--->
     <div class="container">
         <div class="row">
             <div class="col-4 justify-content-center">
@@ -412,12 +410,7 @@
             </div>
             <div class="col-12 row">
                 <div class="col-12 descripcionConfirmacionEjecucionProceso">
-                    Es necesario introducir ambas fechas para poder filtrar las ejecuciones.
-                </div>
-            </div>
-            <div class="col-12 row">
-                <div class="col-12 descripcionConfirmacionEjecucionProceso">
-                    El campo fecha <b>Del</b>, debe ser igual o menor a la fecha <b>Al</b>.
+                    {{ mensajeError }} 
                 </div>
             </div>
             <div class="col-12 row justify-content-center align-items-center" style="height:120px;">
