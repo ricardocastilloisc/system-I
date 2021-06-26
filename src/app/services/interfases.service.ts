@@ -63,8 +63,9 @@ export class InterfasesService {
       };
       const res = await fetch(url, requestOptions);
       // console.log(res.ok);
-      const data = await res.json();
+      let data = await res.json();
       // console.log('getProblemas data', data);
+      data = data.sort(function (a, b) { return new Date(b.fecha).getTime() - new Date(a.fecha).getTime()});
       return data;
     } catch (e) {
       console.error(e);
