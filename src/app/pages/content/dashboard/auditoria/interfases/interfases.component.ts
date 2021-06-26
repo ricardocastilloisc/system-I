@@ -415,15 +415,14 @@ export class InterfasesComponent implements OnInit, OnDestroy {
         filtro.fecha_inicio = fechaInicio + 'T00:00:00';
         filtro.fecha_fin = fechaFin + 'T24:00:00';
       }
-      if (pantalla.includes('INTERFACES')) {
-        if (fechaInicio === null) {
-          this.mensajeError = 'Debe introducir un rango de fechas para la búsqueda';
-          this.openModal();
-          this.spinner.hide();
-        } else {
-          this.aplicarFiltroInterfaces(filtro);
-        }
-      } else if (pantalla.includes('PROBLEMAS')) {
+      if (fechaInicio === null) {
+        this.mensajeError = 'Debe introducir un rango de fechas para la búsqueda';
+        this.openModal();
+        this.spinner.hide();
+      } else if (pantalla.includes('INTERFACES')) {
+        this.aplicarFiltroInterfaces(filtro);
+      }
+      else if (pantalla.includes('PROBLEMAS')) {
         if (this.interfasesService.isObjEmpty(filtro)) {
           this.mensajeError = 'Debe introducir al menos un parámetro de la búsqueda';
           this.openModal();
