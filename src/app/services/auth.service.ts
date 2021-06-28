@@ -14,7 +14,6 @@ import { Router } from '@angular/router';
 import { EArea, ERole } from '../validators/roles';
 import { setUserArea } from '../ReduxStore/actions/usuario.actions';
 
-
 try {
   Amplify.configure(environment.amplifyConfig);
 } catch (e) {
@@ -25,9 +24,8 @@ try {
   providedIn: 'root',
 })
 export class AuthService {
-
   codeChallenge: string;
-  constructor(private store: Store<AppState>, private router: Router) { }
+  constructor(private store: Store<AppState>, private router: Router) {}
 
   initAuthData = () => {
     Auth.currentAuthenticatedUser()
@@ -36,7 +34,6 @@ export class AuthService {
         //console.log('Usser result: ',JSON.stringify(result));
         if (result.getSignInUserSession().isValid()) {
           const user = Usuario.fromAmplify(new User(result));
-
 
           localStorage.setItem(
             'access',
@@ -70,18 +67,11 @@ export class AuthService {
             user.attributes.given_name = user.name + ' - Guest';
           }
 
-          localStorage.setItem(
-            'area',
-            areasStore.toString()
-          );
+          localStorage.setItem('area', areasStore.toString());
 
           // console.log('negocio', user.attributes['custom:negocio']);
 
-          localStorage.setItem(
-            'negocio',
-            user.attributes['custom:negocio']
-          );
-
+          localStorage.setItem('negocio', user.attributes['custom:negocio']);
 
           this.store.dispatch(authActions.setUser({ user }));
           let area = this.obtenerArea();
@@ -102,20 +92,15 @@ export class AuthService {
     window.location.assign(environment.urlExternalLogin);
   };
 
-
   userHeaders() {
     return new HttpHeaders({
-      'authorization': 'Bearer ' + this.getToken(),
-      'content-type': 'application/json'
+      authorization: 'Bearer ' + this.getToken(),
+      'content-type': 'application/json',
     });
   }
 
-
-
   refreshToken = async () => {
-
-
-    this.initAuthData()
+    this.initAuthData();
     // try {
     //   const cognitoUser = await Auth.currentAuthenticatedUser({bypassCache: true});
     //   console.log(cognitoUser)
@@ -130,8 +115,7 @@ export class AuthService {
     //   console.log('Unable to refresh Token', e);
     // }
     // console.log((await Auth.currentSession()).getRefreshToken())
-
-  }
+  };
 
   isAuth = () => {
     return fromPromise(this.userPromise()).pipe(map((user) => user != null));
@@ -233,13 +217,15 @@ export class AuthService {
       EArea.Soporte,
     ];
     this.store
-      .select(({ usuario }) => usuario.user.groups)
+      .select(({ usuario }) => usuario.user)
       .subscribe((res) => {
-        res.forEach((item) => {
-          if (areas.includes(item)) {
-            arrayTempArea.push(item);
-          }
-        });
+        if (res) {
+          res.groups.forEach((item) => {
+            if (areas.includes(item)) {
+              arrayTempArea.push(item);
+            }
+          });
+        }
       });
     area = arrayTempArea.join(', ');
     return area;

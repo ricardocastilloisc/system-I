@@ -39,7 +39,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   DataUser$: Observable<Usuario>;
 
   subscription: Subscription;
-  
+
   Administrador = ERole.Administrador;
   Monitor = ERole.Monitor;
   Soporte = ERole.Soporte;
@@ -247,41 +247,49 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   };
 
   ngOnInit(): void {
-
     const source = interval(1800000);
-    this.subscription = source.subscribe(val => this.authService.refreshToken());
-    
+    this.subscription = source.subscribe((val) =>
+      this.authService.refreshToken()
+    );
+
     this.DataUser$ = this.store.select(({ usuario }) => usuario.user);
     this.NotificacionesSub$ = this.store
       .select(({ notificaciones }) => notificaciones.notificaciones)
-      .pipe(map((e) => e.filter((fl) => fl.LEIDO === false)))
+      .pipe(
+        map((e) => {
+          if (e) {
+            return e.filter((fl) => fl.LEIDO === false);
+          }
+        })
+      )
       .subscribe((res) => {
         this.Notificaciones = res;
-
-        if (this.Notificaciones.length > 0) {
-          new Promise((resolve) => {
-            const intervalo = setInterval(() => {
-              if (this.ValidadoresDeInterfaces) {
-                resolve('ok');
-                clearInterval(intervalo);
-              }
-            }, 100);
-          }).then(() => {
-            let NotificacionFinal = [];
-            this.ValidadoresDeInterfaces.forEach((e) => {
-              let array = this.Notificaciones.filter(
-                (f) => f['INTERFAZ'] === e['FLUJO']
+        if (this.Notificaciones) {
+          if (this.Notificaciones.length > 0) {
+            new Promise((resolve) => {
+              const intervalo = setInterval(() => {
+                if (this.ValidadoresDeInterfaces) {
+                  resolve('ok');
+                  clearInterval(intervalo);
+                }
+              }, 100);
+            }).then(() => {
+              let NotificacionFinal = [];
+              this.ValidadoresDeInterfaces.forEach((e) => {
+                let array = this.Notificaciones.filter(
+                  (f) => f['INTERFAZ'] === e['FLUJO']
+                );
+                if (array.length > 0) {
+                  NotificacionFinal = [...NotificacionFinal, ...array];
+                }
+              });
+              localStorage.setItem(
+                'Notificaciones',
+                JSON.stringify(NotificacionFinal)
               );
-              if (array.length > 0) {
-                NotificacionFinal = [...NotificacionFinal, ...array];
-              }
+              this.Notificaciones = NotificacionFinal;
             });
-            localStorage.setItem(
-              'Notificaciones',
-              JSON.stringify(NotificacionFinal)
-            );
-            this.Notificaciones = NotificacionFinal;
-          });
+          }
         }
       });
 

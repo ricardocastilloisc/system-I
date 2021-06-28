@@ -498,22 +498,27 @@ export class UsuariosService {
     let flagValidate = false;
     this.store
       .select(({ usuario }) => usuario.user)
-      .subscribe(({ attributes }: any) => {
+      .subscribe((res: any) => {
         // console.log(attributes);
-        if (!attributes.hasOwnProperty('custom:rol')) {
-          return flagValidate;
-        } else {
-          if (this.Roles.includes(attributes['custom:rol'])) {
-            flagValidate = true;
+        if(res){
+          const { attributes } = res;
+          if (!attributes.hasOwnProperty('custom:rol')) {
+            return flagValidate;
+          } else {
+            if (this.Roles.includes(attributes['custom:rol'])) {
+              flagValidate = true;
+            }
           }
+
         }
       });
     return flagValidate;
   }
 
   callbackAws = (err, data) => {
+    /*
     if (err) console.log(err, err.stack);
-    else console.log(JSON.stringify(data));
+    else console.log(JSON.stringify(data));*/
   };
 
   callbackAwsDetalle = (err, data) => {
