@@ -281,3 +281,60 @@ mutation DeleteSiaGenAudEstadoProcesosDev(
     ORIGEN_ERROR
   }
 }
+mutation CreateSiaGenAdmDiccionarioCatalogosDev(
+  $input: CreateSiaGenAdmDiccionarioCatalogosDevInput!
+) {
+  createSiaGenAdmDiccionarioCatalogosDev(input: $input) {
+    AREA
+    ARN
+    DESCRIPCION
+    INTERFAZ
+    NEGOCIO
+    NOMBRE
+    NOMBRE_NEGOCIO
+    PRIV_CONTABILIDAD
+    PRIV_CUSTODIA
+    PRIV_RIESGOS
+    PRIV_SOPORTE
+    PRIV_TESORERIA
+    STATUS
+  }
+}
+mutation UpdateSiaGenAdmDiccionarioCatalogosDev(
+  $input: UpdateSiaGenAdmDiccionarioCatalogosDevInput!
+) {
+  updateSiaGenAdmDiccionarioCatalogosDev(input: $input) {
+    AREA
+    ARN
+    DESCRIPCION
+    INTERFAZ
+    NEGOCIO
+    NOMBRE
+    NOMBRE_NEGOCIO
+    PRIV_CONTABILIDAD
+    PRIV_CUSTODIA
+    PRIV_RIESGOS
+    PRIV_SOPORTE
+    PRIV_TESORERIA
+    STATUS
+  }
+}
+mutation DeleteSiaGenAdmDiccionarioCatalogosDev(
+  $input: DeleteSiaGenAdmDiccionarioCatalogosDevInput!
+) {
+  deleteSiaGenAdmDiccionarioCatalogosDev(input: $input) {
+    AREA
+    ARN
+    DESCRIPCION
+    INTERFAZ
+    NEGOCIO
+    NOMBRE
+    NOMBRE_NEGOCIO
+    PRIV_CONTABILIDAD
+    PRIV_CUSTODIA
+    PRIV_RIESGOS
+    PRIV_SOPORTE
+    PRIV_TESORERIA
+    STATUS
+  }
+}

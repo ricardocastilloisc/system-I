@@ -25,9 +25,9 @@ export type AUDGENPROCESOS = {
   MENSAJE_NEGOCIO?: string | null;
   MENSAJE_SOPORTE?: string | null;
   NEGOCIO?: string | null;
-  PROCESO?: PROCESO;
+  PROCESO?: PROCESO | null;
   SERVICIOAWS?: string | null;
-  USUARIO?: USUARIO;
+  USUARIO?: USUARIO | null;
   TIPO?: string | null;
   NIVEL?: string | null;
   STEP?: string | null;
@@ -60,7 +60,7 @@ export type CreateCATPROCESOSInput = {
 
 export type CATPROCESOS = {
   __typename: "CATPROCESOS";
-  PROCESO?: string;
+  PROCESO: string;
   ARRANQUE?: string | null;
   DESCRIPCION?: string | null;
   NEGOCIO?: string | null;
@@ -81,14 +81,14 @@ export type CreateCATPERMISOSInput = {
 
 export type CATPERMISOS = {
   __typename: "CATPERMISOS";
-  ID?: string;
+  ID: string;
   AREA?: string | null;
-  AUDITORIA?: AUDITORIA;
-  CATALOGOS?: CATALOGOS;
+  AUDITORIA?: AUDITORIA | null;
+  CATALOGOS?: CATALOGOS | null;
   FLUJO?: string | null;
-  PROCESOS?: PROCESOS;
+  PROCESOS?: PROCESOS | null;
   ROL?: string | null;
-  USUARIOS?: USUARIOS;
+  USUARIOS?: USUARIOS | null;
   NEGOCIO?: string | null;
 };
 
@@ -170,7 +170,7 @@ export type SiaGenAudEstadoProcesosDev = {
   FECHA_ACTUALIZACION?: string | null;
   FECHA_CREADO?: string | null;
   FECHA_FINALIZADO?: string | null;
-  ID_PROCESO?: string;
+  ID_PROCESO: string;
   INSUMO?: string | null;
   INTERFAZ?: string | null;
   TIPO_PROCESO?: string | null;
@@ -207,18 +207,71 @@ export type DeleteSiaGenAudEstadoProcesosDevInput = {
   ID_PROCESO: string;
 };
 
+export type CreateSiaGenAdmDiccionarioCatalogosDevInput = {
+  AREA?: string | null;
+  ARN?: string | null;
+  DESCRIPCION?: string | null;
+  INTERFAZ?: string | null;
+  NEGOCIO?: string | null;
+  NOMBRE: string;
+  NOMBRE_NEGOCIO: string;
+  PRIV_CONTABILIDAD?: string | null;
+  PRIV_CUSTODIA?: string | null;
+  PRIV_RIESGOS?: string | null;
+  PRIV_SOPORTE?: string | null;
+  PRIV_TESORERIA?: string | null;
+  STATUS?: string | null;
+};
+
+export type SiaGenAdmDiccionarioCatalogosDev = {
+  __typename: "SiaGenAdmDiccionarioCatalogosDev";
+  AREA?: string | null;
+  ARN?: string | null;
+  DESCRIPCION?: string | null;
+  INTERFAZ?: string | null;
+  NEGOCIO?: string | null;
+  NOMBRE?: string | null;
+  NOMBRE_NEGOCIO?: string | null;
+  PRIV_CONTABILIDAD?: string | null;
+  PRIV_CUSTODIA?: string | null;
+  PRIV_RIESGOS?: string | null;
+  PRIV_SOPORTE?: string | null;
+  PRIV_TESORERIA?: string | null;
+  STATUS?: string | null;
+};
+
+export type UpdateSiaGenAdmDiccionarioCatalogosDevInput = {
+  AREA?: string | null;
+  ARN?: string | null;
+  DESCRIPCION?: string | null;
+  INTERFAZ?: string | null;
+  NEGOCIO?: string | null;
+  NOMBRE: string;
+  NOMBRE_NEGOCIO: string;
+  PRIV_CONTABILIDAD?: string | null;
+  PRIV_CUSTODIA?: string | null;
+  PRIV_RIESGOS?: string | null;
+  PRIV_SOPORTE?: string | null;
+  STATUS?: string | null;
+};
+
+export type DeleteSiaGenAdmDiccionarioCatalogosDevInput = {
+  NOMBRE: string;
+  NOMBRE_NEGOCIO: string;
+};
+
 export type AUDGENUSUARIOS = {
   __typename: "AUDGENUSUARIOS";
-  ID?: string;
+  ID: string;
   FECHA?: string | null;
   CORREO?: string | null;
   AREA_NEGOCIO?: string | null;
   MODULO?: string | null;
   ROL?: string | null;
-  USUARIO?: AUD_USER;
-  SECCION?: AUD_SECCION;
-  PROCESOS?: AUD_PROCESOS;
-  CATALOGOS?: AUD_CATALOGOS;
+  USUARIO?: AUD_USER | null;
+  SECCION?: AUD_SECCION | null;
+  PROCESOS?: AUD_PROCESOS | null;
+  CATALOGOS?: AUD_CATALOGOS | null;
   PERMISOS_USUARIOS?: Array<AUD_PERMISOS | null> | null;
 };
 
@@ -321,6 +374,27 @@ export type CATPERMISOSConnection = {
 export type SiaGenAudEstadoProcesosDevConnection = {
   __typename: "SiaGenAudEstadoProcesosDevConnection";
   items?: Array<SiaGenAudEstadoProcesosDev | null> | null;
+  nextToken?: string | null;
+};
+
+export type TableSiaGenAdmDiccionarioCatalogosDevFilterInput = {
+  AREA?: TableStringFilterInput | null;
+  ARN?: TableStringFilterInput | null;
+  DESCRIPCION?: TableStringFilterInput | null;
+  INTERFAZ?: TableStringFilterInput | null;
+  NEGOCIO?: TableStringFilterInput | null;
+  NOMBRE?: TableStringFilterInput | null;
+  NOMBRE_NEGOCIO?: TableStringFilterInput | null;
+  PRIV_CONTABILIDAD?: TableStringFilterInput | null;
+  PRIV_CUSTODIA?: TableStringFilterInput | null;
+  PRIV_RIESGOS?: TableStringFilterInput | null;
+  PRIV_SOPORTE?: TableStringFilterInput | null;
+  STATUS?: TableStringFilterInput | null;
+};
+
+export type SiaGenAdmDiccionarioCatalogosDevConnection = {
+  __typename: "SiaGenAdmDiccionarioCatalogosDevConnection";
+  items?: Array<SiaGenAdmDiccionarioCatalogosDev | null> | null;
   nextToken?: string | null;
 };
 
@@ -616,6 +690,57 @@ export type DeleteSiaGenAudEstadoProcesosDevMutation = {
   TIPO_PROCESO?: string | null;
   RESPONSABLE_ERROR?: string | null;
   ORIGEN_ERROR?: string | null;
+};
+
+export type CreateSiaGenAdmDiccionarioCatalogosDevMutation = {
+  __typename: "SiaGenAdmDiccionarioCatalogosDev";
+  AREA?: string | null;
+  ARN?: string | null;
+  DESCRIPCION?: string | null;
+  INTERFAZ?: string | null;
+  NEGOCIO?: string | null;
+  NOMBRE?: string | null;
+  NOMBRE_NEGOCIO?: string | null;
+  PRIV_CONTABILIDAD?: string | null;
+  PRIV_CUSTODIA?: string | null;
+  PRIV_RIESGOS?: string | null;
+  PRIV_SOPORTE?: string | null;
+  PRIV_TESORERIA?: string | null;
+  STATUS?: string | null;
+};
+
+export type UpdateSiaGenAdmDiccionarioCatalogosDevMutation = {
+  __typename: "SiaGenAdmDiccionarioCatalogosDev";
+  AREA?: string | null;
+  ARN?: string | null;
+  DESCRIPCION?: string | null;
+  INTERFAZ?: string | null;
+  NEGOCIO?: string | null;
+  NOMBRE?: string | null;
+  NOMBRE_NEGOCIO?: string | null;
+  PRIV_CONTABILIDAD?: string | null;
+  PRIV_CUSTODIA?: string | null;
+  PRIV_RIESGOS?: string | null;
+  PRIV_SOPORTE?: string | null;
+  PRIV_TESORERIA?: string | null;
+  STATUS?: string | null;
+};
+
+export type DeleteSiaGenAdmDiccionarioCatalogosDevMutation = {
+  __typename: "SiaGenAdmDiccionarioCatalogosDev";
+  AREA?: string | null;
+  ARN?: string | null;
+  DESCRIPCION?: string | null;
+  INTERFAZ?: string | null;
+  NEGOCIO?: string | null;
+  NOMBRE?: string | null;
+  NOMBRE_NEGOCIO?: string | null;
+  PRIV_CONTABILIDAD?: string | null;
+  PRIV_CUSTODIA?: string | null;
+  PRIV_RIESGOS?: string | null;
+  PRIV_SOPORTE?: string | null;
+  PRIV_TESORERIA?: string | null;
+  STATUS?: string | null;
 };
 
 export type GetAUDGENUSUARIOSQuery = {
@@ -1014,6 +1139,65 @@ export type ListSiaGenAudEstadoProcesosDevsPorFechaQuery = {
   nextToken?: string | null;
 };
 
+export type GetSiaGenAdmDiccionarioCatalogosDevQuery = {
+  __typename: "SiaGenAdmDiccionarioCatalogosDev";
+  AREA?: string | null;
+  ARN?: string | null;
+  DESCRIPCION?: string | null;
+  INTERFAZ?: string | null;
+  NEGOCIO?: string | null;
+  NOMBRE?: string | null;
+  NOMBRE_NEGOCIO?: string | null;
+  PRIV_CONTABILIDAD?: string | null;
+  PRIV_CUSTODIA?: string | null;
+  PRIV_RIESGOS?: string | null;
+  PRIV_SOPORTE?: string | null;
+  PRIV_TESORERIA?: string | null;
+  STATUS?: string | null;
+};
+
+export type ListSiaGenAdmDiccionarioCatalogosDevsQuery = {
+  __typename: "SiaGenAdmDiccionarioCatalogosDevConnection";
+  items?: Array<{
+    __typename: "SiaGenAdmDiccionarioCatalogosDev";
+    AREA?: string | null;
+    ARN?: string | null;
+    DESCRIPCION?: string | null;
+    INTERFAZ?: string | null;
+    NEGOCIO?: string | null;
+    NOMBRE?: string | null;
+    NOMBRE_NEGOCIO?: string | null;
+    PRIV_CONTABILIDAD?: string | null;
+    PRIV_CUSTODIA?: string | null;
+    PRIV_RIESGOS?: string | null;
+    PRIV_SOPORTE?: string | null;
+    PRIV_TESORERIA?: string | null;
+    STATUS?: string | null;
+  } | null> | null;
+  nextToken?: string | null;
+};
+
+export type QuerySiaGenAdmDiccionarioCatalogosDevsByNOMBREAREAIndexQuery = {
+  __typename: "SiaGenAdmDiccionarioCatalogosDevConnection";
+  items?: Array<{
+    __typename: "SiaGenAdmDiccionarioCatalogosDev";
+    AREA?: string | null;
+    ARN?: string | null;
+    DESCRIPCION?: string | null;
+    INTERFAZ?: string | null;
+    NEGOCIO?: string | null;
+    NOMBRE?: string | null;
+    NOMBRE_NEGOCIO?: string | null;
+    PRIV_CONTABILIDAD?: string | null;
+    PRIV_CUSTODIA?: string | null;
+    PRIV_RIESGOS?: string | null;
+    PRIV_SOPORTE?: string | null;
+    PRIV_TESORERIA?: string | null;
+    STATUS?: string | null;
+  } | null> | null;
+  nextToken?: string | null;
+};
+
 export type OnCreateAUDGENPROCESOSSubscription = {
   __typename: "AUDGENPROCESOS";
   DESTINO?: string | null;
@@ -1306,6 +1490,57 @@ export type OnDeleteSiaGenAudEstadoProcesosDevSubscription = {
   TIPO_PROCESO?: string | null;
   RESPONSABLE_ERROR?: string | null;
   ORIGEN_ERROR?: string | null;
+};
+
+export type OnCreateSiaGenAdmDiccionarioCatalogosDevSubscription = {
+  __typename: "SiaGenAdmDiccionarioCatalogosDev";
+  AREA?: string | null;
+  ARN?: string | null;
+  DESCRIPCION?: string | null;
+  INTERFAZ?: string | null;
+  NEGOCIO?: string | null;
+  NOMBRE?: string | null;
+  NOMBRE_NEGOCIO?: string | null;
+  PRIV_CONTABILIDAD?: string | null;
+  PRIV_CUSTODIA?: string | null;
+  PRIV_RIESGOS?: string | null;
+  PRIV_SOPORTE?: string | null;
+  PRIV_TESORERIA?: string | null;
+  STATUS?: string | null;
+};
+
+export type OnUpdateSiaGenAdmDiccionarioCatalogosDevSubscription = {
+  __typename: "SiaGenAdmDiccionarioCatalogosDev";
+  AREA?: string | null;
+  ARN?: string | null;
+  DESCRIPCION?: string | null;
+  INTERFAZ?: string | null;
+  NEGOCIO?: string | null;
+  NOMBRE?: string | null;
+  NOMBRE_NEGOCIO?: string | null;
+  PRIV_CONTABILIDAD?: string | null;
+  PRIV_CUSTODIA?: string | null;
+  PRIV_RIESGOS?: string | null;
+  PRIV_SOPORTE?: string | null;
+  PRIV_TESORERIA?: string | null;
+  STATUS?: string | null;
+};
+
+export type OnDeleteSiaGenAdmDiccionarioCatalogosDevSubscription = {
+  __typename: "SiaGenAdmDiccionarioCatalogosDev";
+  AREA?: string | null;
+  ARN?: string | null;
+  DESCRIPCION?: string | null;
+  INTERFAZ?: string | null;
+  NEGOCIO?: string | null;
+  NOMBRE?: string | null;
+  NOMBRE_NEGOCIO?: string | null;
+  PRIV_CONTABILIDAD?: string | null;
+  PRIV_CUSTODIA?: string | null;
+  PRIV_RIESGOS?: string | null;
+  PRIV_SOPORTE?: string | null;
+  PRIV_TESORERIA?: string | null;
+  STATUS?: string | null;
 };
 
 @Injectable({
@@ -1754,6 +1989,99 @@ export class APIService {
     )) as any;
     return <DeleteSiaGenAudEstadoProcesosDevMutation>(
       response.data.deleteSiaGenAudEstadoProcesosDev
+    );
+  }
+  async CreateSiaGenAdmDiccionarioCatalogosDev(
+    input: CreateSiaGenAdmDiccionarioCatalogosDevInput
+  ): Promise<CreateSiaGenAdmDiccionarioCatalogosDevMutation> {
+    const statement = `mutation CreateSiaGenAdmDiccionarioCatalogosDev($input: CreateSiaGenAdmDiccionarioCatalogosDevInput!) {
+        createSiaGenAdmDiccionarioCatalogosDev(input: $input) {
+          __typename
+          AREA
+          ARN
+          DESCRIPCION
+          INTERFAZ
+          NEGOCIO
+          NOMBRE
+          NOMBRE_NEGOCIO
+          PRIV_CONTABILIDAD
+          PRIV_CUSTODIA
+          PRIV_RIESGOS
+          PRIV_SOPORTE
+          PRIV_TESORERIA
+          STATUS
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {
+      input
+    };
+    const response = (await API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    )) as any;
+    return <CreateSiaGenAdmDiccionarioCatalogosDevMutation>(
+      response.data.createSiaGenAdmDiccionarioCatalogosDev
+    );
+  }
+  async UpdateSiaGenAdmDiccionarioCatalogosDev(
+    input: UpdateSiaGenAdmDiccionarioCatalogosDevInput
+  ): Promise<UpdateSiaGenAdmDiccionarioCatalogosDevMutation> {
+    const statement = `mutation UpdateSiaGenAdmDiccionarioCatalogosDev($input: UpdateSiaGenAdmDiccionarioCatalogosDevInput!) {
+        updateSiaGenAdmDiccionarioCatalogosDev(input: $input) {
+          __typename
+          AREA
+          ARN
+          DESCRIPCION
+          INTERFAZ
+          NEGOCIO
+          NOMBRE
+          NOMBRE_NEGOCIO
+          PRIV_CONTABILIDAD
+          PRIV_CUSTODIA
+          PRIV_RIESGOS
+          PRIV_SOPORTE
+          PRIV_TESORERIA
+          STATUS
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {
+      input
+    };
+    const response = (await API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    )) as any;
+    return <UpdateSiaGenAdmDiccionarioCatalogosDevMutation>(
+      response.data.updateSiaGenAdmDiccionarioCatalogosDev
+    );
+  }
+  async DeleteSiaGenAdmDiccionarioCatalogosDev(
+    input: DeleteSiaGenAdmDiccionarioCatalogosDevInput
+  ): Promise<DeleteSiaGenAdmDiccionarioCatalogosDevMutation> {
+    const statement = `mutation DeleteSiaGenAdmDiccionarioCatalogosDev($input: DeleteSiaGenAdmDiccionarioCatalogosDevInput!) {
+        deleteSiaGenAdmDiccionarioCatalogosDev(input: $input) {
+          __typename
+          AREA
+          ARN
+          DESCRIPCION
+          INTERFAZ
+          NEGOCIO
+          NOMBRE
+          NOMBRE_NEGOCIO
+          PRIV_CONTABILIDAD
+          PRIV_CUSTODIA
+          PRIV_RIESGOS
+          PRIV_SOPORTE
+          PRIV_TESORERIA
+          STATUS
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {
+      input
+    };
+    const response = (await API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    )) as any;
+    return <DeleteSiaGenAdmDiccionarioCatalogosDevMutation>(
+      response.data.deleteSiaGenAdmDiccionarioCatalogosDev
     );
   }
   async GetAUDGENUSUARIOS(ID: string): Promise<GetAUDGENUSUARIOSQuery> {
@@ -2340,6 +2668,126 @@ export class APIService {
       response.data.listSiaGenAudEstadoProcesosDevsPorFecha
     );
   }
+  async GetSiaGenAdmDiccionarioCatalogosDev(
+    NOMBRE: string,
+    NOMBRE_NEGOCIO: string
+  ): Promise<GetSiaGenAdmDiccionarioCatalogosDevQuery> {
+    const statement = `query GetSiaGenAdmDiccionarioCatalogosDev($NOMBRE: String!, $NOMBRE_NEGOCIO: String!) {
+        getSiaGenAdmDiccionarioCatalogosDev(NOMBRE: $NOMBRE, NOMBRE_NEGOCIO: $NOMBRE_NEGOCIO) {
+          __typename
+          AREA
+          ARN
+          DESCRIPCION
+          INTERFAZ
+          NEGOCIO
+          NOMBRE
+          NOMBRE_NEGOCIO
+          PRIV_CONTABILIDAD
+          PRIV_CUSTODIA
+          PRIV_RIESGOS
+          PRIV_SOPORTE
+          PRIV_TESORERIA
+          STATUS
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {
+      NOMBRE,
+      NOMBRE_NEGOCIO
+    };
+    const response = (await API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    )) as any;
+    return <GetSiaGenAdmDiccionarioCatalogosDevQuery>(
+      response.data.getSiaGenAdmDiccionarioCatalogosDev
+    );
+  }
+  async ListSiaGenAdmDiccionarioCatalogosDevs(
+    filter?: TableSiaGenAdmDiccionarioCatalogosDevFilterInput,
+    limit?: number,
+    nextToken?: string
+  ): Promise<ListSiaGenAdmDiccionarioCatalogosDevsQuery> {
+    const statement = `query ListSiaGenAdmDiccionarioCatalogosDevs($filter: TableSiaGenAdmDiccionarioCatalogosDevFilterInput, $limit: Int, $nextToken: String) {
+        listSiaGenAdmDiccionarioCatalogosDevs(filter: $filter, limit: $limit, nextToken: $nextToken) {
+          __typename
+          items {
+            __typename
+            AREA
+            ARN
+            DESCRIPCION
+            INTERFAZ
+            NEGOCIO
+            NOMBRE
+            NOMBRE_NEGOCIO
+            PRIV_CONTABILIDAD
+            PRIV_CUSTODIA
+            PRIV_RIESGOS
+            PRIV_SOPORTE
+            PRIV_TESORERIA
+            STATUS
+          }
+          nextToken
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {};
+    if (filter) {
+      gqlAPIServiceArguments.filter = filter;
+    }
+    if (limit) {
+      gqlAPIServiceArguments.limit = limit;
+    }
+    if (nextToken) {
+      gqlAPIServiceArguments.nextToken = nextToken;
+    }
+    const response = (await API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    )) as any;
+    return <ListSiaGenAdmDiccionarioCatalogosDevsQuery>(
+      response.data.listSiaGenAdmDiccionarioCatalogosDevs
+    );
+  }
+  async QuerySiaGenAdmDiccionarioCatalogosDevsByNOMBREAREAIndex(
+    NOMBRE: string,
+    first?: number,
+    after?: string
+  ): Promise<QuerySiaGenAdmDiccionarioCatalogosDevsByNOMBREAREAIndexQuery> {
+    const statement = `query QuerySiaGenAdmDiccionarioCatalogosDevsByNOMBREAREAIndex($NOMBRE: String!, $first: Int, $after: String) {
+        querySiaGenAdmDiccionarioCatalogosDevsByNOMBREAREAIndex(NOMBRE: $NOMBRE, first: $first, after: $after) {
+          __typename
+          items {
+            __typename
+            AREA
+            ARN
+            DESCRIPCION
+            INTERFAZ
+            NEGOCIO
+            NOMBRE
+            NOMBRE_NEGOCIO
+            PRIV_CONTABILIDAD
+            PRIV_CUSTODIA
+            PRIV_RIESGOS
+            PRIV_SOPORTE
+            PRIV_TESORERIA
+            STATUS
+          }
+          nextToken
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {
+      NOMBRE
+    };
+    if (first) {
+      gqlAPIServiceArguments.first = first;
+    }
+    if (after) {
+      gqlAPIServiceArguments.after = after;
+    }
+    const response = (await API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    )) as any;
+    return <QuerySiaGenAdmDiccionarioCatalogosDevsByNOMBREAREAIndexQuery>(
+      response.data.querySiaGenAdmDiccionarioCatalogosDevsByNOMBREAREAIndex
+    );
+  }
   OnCreateAUDGENPROCESOSListener(
     ID_REGISTRO?: string
   ): Observable<SubscriptionResponse<OnCreateAUDGENPROCESOSSubscription>> {
@@ -2780,4 +3228,154 @@ export class APIService {
   ) as Observable<
     SubscriptionResponse<OnDeleteSiaGenAudEstadoProcesosDevSubscription>
   >;
+
+  OnCreateSiaGenAdmDiccionarioCatalogosDevListener(
+    AREA?: string,
+    ARN?: string,
+    DESCRIPCION?: string,
+    INTERFAZ?: string,
+    NEGOCIO?: string
+  ): Observable<
+    SubscriptionResponse<OnCreateSiaGenAdmDiccionarioCatalogosDevSubscription>
+  > {
+    const statement = `subscription OnCreateSiaGenAdmDiccionarioCatalogosDev($AREA: String, $ARN: String, $DESCRIPCION: String, $INTERFAZ: String, $NEGOCIO: String) {
+        onCreateSiaGenAdmDiccionarioCatalogosDev(AREA: $AREA, ARN: $ARN, DESCRIPCION: $DESCRIPCION, INTERFAZ: $INTERFAZ, NEGOCIO: $NEGOCIO) {
+          __typename
+          AREA
+          ARN
+          DESCRIPCION
+          INTERFAZ
+          NEGOCIO
+          NOMBRE
+          NOMBRE_NEGOCIO
+          PRIV_CONTABILIDAD
+          PRIV_CUSTODIA
+          PRIV_RIESGOS
+          PRIV_SOPORTE
+          PRIV_TESORERIA
+          STATUS
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {};
+    if (AREA) {
+      gqlAPIServiceArguments.AREA = AREA;
+    }
+    if (ARN) {
+      gqlAPIServiceArguments.ARN = ARN;
+    }
+    if (DESCRIPCION) {
+      gqlAPIServiceArguments.DESCRIPCION = DESCRIPCION;
+    }
+    if (INTERFAZ) {
+      gqlAPIServiceArguments.INTERFAZ = INTERFAZ;
+    }
+    if (NEGOCIO) {
+      gqlAPIServiceArguments.NEGOCIO = NEGOCIO;
+    }
+    return API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    ) as Observable<
+      SubscriptionResponse<OnCreateSiaGenAdmDiccionarioCatalogosDevSubscription>
+    >;
+  }
+
+  OnUpdateSiaGenAdmDiccionarioCatalogosDevListener(
+    AREA?: string,
+    ARN?: string,
+    DESCRIPCION?: string,
+    INTERFAZ?: string,
+    NEGOCIO?: string
+  ): Observable<
+    SubscriptionResponse<OnUpdateSiaGenAdmDiccionarioCatalogosDevSubscription>
+  > {
+    const statement = `subscription OnUpdateSiaGenAdmDiccionarioCatalogosDev($AREA: String, $ARN: String, $DESCRIPCION: String, $INTERFAZ: String, $NEGOCIO: String) {
+        onUpdateSiaGenAdmDiccionarioCatalogosDev(AREA: $AREA, ARN: $ARN, DESCRIPCION: $DESCRIPCION, INTERFAZ: $INTERFAZ, NEGOCIO: $NEGOCIO) {
+          __typename
+          AREA
+          ARN
+          DESCRIPCION
+          INTERFAZ
+          NEGOCIO
+          NOMBRE
+          NOMBRE_NEGOCIO
+          PRIV_CONTABILIDAD
+          PRIV_CUSTODIA
+          PRIV_RIESGOS
+          PRIV_SOPORTE
+          PRIV_TESORERIA
+          STATUS
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {};
+    if (AREA) {
+      gqlAPIServiceArguments.AREA = AREA;
+    }
+    if (ARN) {
+      gqlAPIServiceArguments.ARN = ARN;
+    }
+    if (DESCRIPCION) {
+      gqlAPIServiceArguments.DESCRIPCION = DESCRIPCION;
+    }
+    if (INTERFAZ) {
+      gqlAPIServiceArguments.INTERFAZ = INTERFAZ;
+    }
+    if (NEGOCIO) {
+      gqlAPIServiceArguments.NEGOCIO = NEGOCIO;
+    }
+    return API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    ) as Observable<
+      SubscriptionResponse<OnUpdateSiaGenAdmDiccionarioCatalogosDevSubscription>
+    >;
+  }
+
+  OnDeleteSiaGenAdmDiccionarioCatalogosDevListener(
+    AREA?: string,
+    ARN?: string,
+    DESCRIPCION?: string,
+    INTERFAZ?: string,
+    NEGOCIO?: string
+  ): Observable<
+    SubscriptionResponse<OnDeleteSiaGenAdmDiccionarioCatalogosDevSubscription>
+  > {
+    const statement = `subscription OnDeleteSiaGenAdmDiccionarioCatalogosDev($AREA: String, $ARN: String, $DESCRIPCION: String, $INTERFAZ: String, $NEGOCIO: String) {
+        onDeleteSiaGenAdmDiccionarioCatalogosDev(AREA: $AREA, ARN: $ARN, DESCRIPCION: $DESCRIPCION, INTERFAZ: $INTERFAZ, NEGOCIO: $NEGOCIO) {
+          __typename
+          AREA
+          ARN
+          DESCRIPCION
+          INTERFAZ
+          NEGOCIO
+          NOMBRE
+          NOMBRE_NEGOCIO
+          PRIV_CONTABILIDAD
+          PRIV_CUSTODIA
+          PRIV_RIESGOS
+          PRIV_SOPORTE
+          PRIV_TESORERIA
+          STATUS
+        }
+      }`;
+    const gqlAPIServiceArguments: any = {};
+    if (AREA) {
+      gqlAPIServiceArguments.AREA = AREA;
+    }
+    if (ARN) {
+      gqlAPIServiceArguments.ARN = ARN;
+    }
+    if (DESCRIPCION) {
+      gqlAPIServiceArguments.DESCRIPCION = DESCRIPCION;
+    }
+    if (INTERFAZ) {
+      gqlAPIServiceArguments.INTERFAZ = INTERFAZ;
+    }
+    if (NEGOCIO) {
+      gqlAPIServiceArguments.NEGOCIO = NEGOCIO;
+    }
+    return API.graphql(
+      graphqlOperation(statement, gqlAPIServiceArguments)
+    ) as Observable<
+      SubscriptionResponse<OnDeleteSiaGenAdmDiccionarioCatalogosDevSubscription>
+    >;
+  }
 }

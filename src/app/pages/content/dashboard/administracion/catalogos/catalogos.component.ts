@@ -30,7 +30,6 @@ export class CatalogosComponent implements OnInit, OnDestroy {
   goDetailCat = (negocioCat, nameCat) => {
     localStorage.setItem('nameCat', nameCat);
     localStorage.setItem('negocioCat', negocioCat);
-    this.catalogosSvc.getPermisos(nameCat);
     this.router.navigate(['/' + window.location.pathname + '/' + negocioCat]);
   };
 

@@ -384,3 +384,82 @@ query ListSiaGenAudEstadoProcesosDevsPorFecha($FECHA: String) {
     nextToken
   }
 }
+query GetSiaGenAdmDiccionarioCatalogosDev(
+  $NOMBRE: String!
+  $NOMBRE_NEGOCIO: String!
+) {
+  getSiaGenAdmDiccionarioCatalogosDev(
+    NOMBRE: $NOMBRE
+    NOMBRE_NEGOCIO: $NOMBRE_NEGOCIO
+  ) {
+    AREA
+    ARN
+    DESCRIPCION
+    INTERFAZ
+    NEGOCIO
+    NOMBRE
+    NOMBRE_NEGOCIO
+    PRIV_CONTABILIDAD
+    PRIV_CUSTODIA
+    PRIV_RIESGOS
+    PRIV_SOPORTE
+    PRIV_TESORERIA
+    STATUS
+  }
+}
+query ListSiaGenAdmDiccionarioCatalogosDevs(
+  $filter: TableSiaGenAdmDiccionarioCatalogosDevFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listSiaGenAdmDiccionarioCatalogosDevs(
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      AREA
+      ARN
+      DESCRIPCION
+      INTERFAZ
+      NEGOCIO
+      NOMBRE
+      NOMBRE_NEGOCIO
+      PRIV_CONTABILIDAD
+      PRIV_CUSTODIA
+      PRIV_RIESGOS
+      PRIV_SOPORTE
+      PRIV_TESORERIA
+      STATUS
+    }
+    nextToken
+  }
+}
+query QuerySiaGenAdmDiccionarioCatalogosDevsByNOMBREAREAIndex(
+  $NOMBRE: String!
+  $first: Int
+  $after: String
+) {
+  querySiaGenAdmDiccionarioCatalogosDevsByNOMBREAREAIndex(
+    NOMBRE: $NOMBRE
+    first: $first
+    after: $after
+  ) {
+    items {
+      AREA
+      ARN
+      DESCRIPCION
+      INTERFAZ
+      NEGOCIO
+      NOMBRE
+      NOMBRE_NEGOCIO
+      PRIV_CONTABILIDAD
+      PRIV_CUSTODIA
+      PRIV_RIESGOS
+      PRIV_SOPORTE
+      PRIV_TESORERIA
+      STATUS
+    }
+    nextToken
+  }
+}

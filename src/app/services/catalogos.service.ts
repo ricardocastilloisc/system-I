@@ -7,15 +7,6 @@ import { AuditoriaService } from './auditoria.service';
 import { AppState } from '../ReduxStore/app.reducers';
 import { Store } from '@ngrx/store';
 import { AuthService } from './auth.service';
-import * as AWS from 'aws-sdk';
-
-AWS.config.update({
-  accessKeyId: environment.SESConfig.accessKeyId,
-  secretAccessKey: environment.SESConfig.secretAccessKey,
-  region: environment.SESConfig.region
-});
-
-const docClient = new AWS.DynamoDB();
 
 @Injectable({
   providedIn: 'root',
@@ -23,19 +14,19 @@ const docClient = new AWS.DynamoDB();
 export class CatalogosService {
 
 
-  UrlCatalogos = environment.API.endpoints.find((el) => el.name === 'catalogos')['endpoint']
+  UrlCatalogos = environment.API.endpoints.find((el) => el.name === 'catalogos')['endpoint'];
 
   constructor(
     private httpClient: HttpClient,
     private store: Store<AppState>,
     private auditoria: AuditoriaService,
-    private AuthService: AuthService
+    private authServcie: AuthService
   ) { }
   getCatalogos = () => {
-    let area = localStorage.getItem('area');
+    const area = localStorage.getItem('area');
     /*if (area.split(',').includes(EArea.Soporte)) {
           return this.httpClient.get(this.UrlCatalogos + 'catalogos', {
-            headers: this.AuthService.userHeaders(),
+            headers: this.authServcie.userHeaders(),
           });
         }*/
     let QueryParams = new HttpParams();
@@ -46,20 +37,20 @@ export class CatalogosService {
     QueryParams = QueryParams.append('area', localStorage.getItem('area'));
     return this.httpClient.get(this.UrlCatalogos + 'catalogos', {
       params: QueryParams,
-      headers: this.AuthService.userHeaders(),
+      headers: this.authServcie.userHeaders(),
     });
-  };
+  }
 
   structureCat = () => {
     let array = null;
 
     this.httpClient
       .get(this.UrlCatalogos + 'catalogos/' + localStorage.getItem('nameCat'), {
-        headers: this.AuthService.userHeaders(),
+        headers: this.authServcie.userHeaders(),
       })
       .toPromise()
       .then((res: any) => {
-        let arrayTemp: STRUCTURE_CAT[] = [];
+        const arrayTemp: STRUCTURE_CAT[] = [];
 
         res
           .filter((e) => e.llavePrimaria === true)
@@ -79,7 +70,7 @@ export class CatalogosService {
         }
       }, 100);
     });
-  };
+  }
 
   getDetailsCat = () => {
     let nextTokenValidator = 'next';
@@ -93,7 +84,7 @@ export class CatalogosService {
         localStorage.getItem('nameCat') +
         '/registros',
         {
-          headers: this.AuthService.userHeaders(),
+          headers: this.authServcie.userHeaders(),
         }
       )
       .toPromise()
@@ -120,7 +111,7 @@ export class CatalogosService {
                 '/registros',
                 {
                   params: QueryParams,
-                  headers: this.AuthService.userHeaders(),
+                  headers: this.authServcie.userHeaders(),
                 }
               )
               .toPromise()
@@ -139,7 +130,7 @@ export class CatalogosService {
         }
       }, 1000);
     });
-  };
+  }
 
   updateDetailsCat = (object) => {
     return this.httpClient
@@ -150,11 +141,11 @@ export class CatalogosService {
         '/registros',
         object,
         {
-          headers: this.AuthService.userHeaders(),
+          headers: this.authServcie.userHeaders(),
         }
       )
       .toPromise();
-  };
+  }
 
   addDetailsCat = (object) => {
     return this.httpClient
@@ -165,11 +156,11 @@ export class CatalogosService {
         '/registros',
         object,
         {
-          headers: this.AuthService.userHeaders(),
+          headers: this.authServcie.userHeaders(),
         }
       )
       .toPromise();
-  };
+  }
 
   deleteDetailsCat = (registro) => {
     let stringCode = '';
@@ -186,11 +177,11 @@ export class CatalogosService {
         '/registros/' +
         window.btoa(unescape(encodeURIComponent(registro))),
         {
-          headers: this.AuthService.userHeaders(),
+          headers: this.authServcie.userHeaders(),
         }
       )
       .toPromise();
-  };
+  }
 
   generarAuditoria(estado: string): void {
     const catalogo = localStorage.getItem('nameCat');
@@ -198,15 +189,12 @@ export class CatalogosService {
     const newRegister = localStorage.getItem('ObjectNewRegister');
     const oldRegister = localStorage.getItem('ObjectOldRegister');
     const accion = localStorage.getItem('RegisterAction');
-
     const today = new Date().toISOString();
-
     let area: String = '';
     let rol = '';
     let correo = '';
     let apellidoPaterno = '';
     let nombre = '';
-
     this.store
       .select(({ usuario }) => usuario.user)
       .subscribe((res) => {
@@ -218,11 +206,9 @@ export class CatalogosService {
     this.store
       .select(({ usuario }) => usuario.area)
       .subscribe((res) => {
-        //console.log(res)
         area = res;
       });
-
-    let payload = {
+    const payload = {
       areaNegocio: area,
       rol: rol,
       correo: correo,
@@ -245,42 +231,11 @@ export class CatalogosService {
         ],
       },
     };
-
-    //console.log("payload", payload);
-
     const payloadString = JSON.stringify(payload);
-
     this.auditoria.enviarBitacoraUsuarios(payloadString);
-
     localStorage.removeItem('RegisterAction');
     localStorage.removeItem('ObjectNewRegister');
     localStorage.removeItem('ObjectOldRegister');
-  }
-
-  getPermisos(catalogo: string): any {
-    console.log('getPermisos', catalogo);
-    const params = {
-      ExpressionAttributeValues: {
-        ':a': {
-          S: catalogo
-        }
-      },
-      FilterExpression: 'NOMBRE = :a',
-      TableName: environment.diccionarioPermisos
-    };
-    docClient.scan(params, (err, data) => {
-      if (err) {
-        const response = {
-          Count: 0,
-        };
-        // console.log('err', err);
-        return response;
-      }
-      else {
-        // console.log('data', data);
-        return data;
-      }
-    });
   }
 
 }

@@ -275,3 +275,90 @@ subscription OnDeleteSiaGenAudEstadoProcesosDev {
     ORIGEN_ERROR
   }
 }
+subscription OnCreateSiaGenAdmDiccionarioCatalogosDev(
+  $AREA: String
+  $ARN: String
+  $DESCRIPCION: String
+  $INTERFAZ: String
+  $NEGOCIO: String
+) {
+  onCreateSiaGenAdmDiccionarioCatalogosDev(
+    AREA: $AREA
+    ARN: $ARN
+    DESCRIPCION: $DESCRIPCION
+    INTERFAZ: $INTERFAZ
+    NEGOCIO: $NEGOCIO
+  ) {
+    AREA
+    ARN
+    DESCRIPCION
+    INTERFAZ
+    NEGOCIO
+    NOMBRE
+    NOMBRE_NEGOCIO
+    PRIV_CONTABILIDAD
+    PRIV_CUSTODIA
+    PRIV_RIESGOS
+    PRIV_SOPORTE
+    PRIV_TESORERIA
+    STATUS
+  }
+}
+subscription OnUpdateSiaGenAdmDiccionarioCatalogosDev(
+  $AREA: String
+  $ARN: String
+  $DESCRIPCION: String
+  $INTERFAZ: String
+  $NEGOCIO: String
+) {
+  onUpdateSiaGenAdmDiccionarioCatalogosDev(
+    AREA: $AREA
+    ARN: $ARN
+    DESCRIPCION: $DESCRIPCION
+    INTERFAZ: $INTERFAZ
+    NEGOCIO: $NEGOCIO
+  ) {
+    AREA
+    ARN
+    DESCRIPCION
+    INTERFAZ
+    NEGOCIO
+    NOMBRE
+    NOMBRE_NEGOCIO
+    PRIV_CONTABILIDAD
+    PRIV_CUSTODIA
+    PRIV_RIESGOS
+    PRIV_SOPORTE
+    PRIV_TESORERIA
+    STATUS
+  }
+}
+subscription OnDeleteSiaGenAdmDiccionarioCatalogosDev(
+  $AREA: String
+  $ARN: String
+  $DESCRIPCION: String
+  $INTERFAZ: String
+  $NEGOCIO: String
+) {
+  onDeleteSiaGenAdmDiccionarioCatalogosDev(
+    AREA: $AREA
+    ARN: $ARN
+    DESCRIPCION: $DESCRIPCION
+    INTERFAZ: $INTERFAZ
+    NEGOCIO: $NEGOCIO
+  ) {
+    AREA
+    ARN
+    DESCRIPCION
+    INTERFAZ
+    NEGOCIO
+    NOMBRE
+    NOMBRE_NEGOCIO
+    PRIV_CONTABILIDAD
+    PRIV_CUSTODIA
+    PRIV_RIESGOS
+    PRIV_SOPORTE
+    PRIV_TESORERIA
+    STATUS
+  }
+}
