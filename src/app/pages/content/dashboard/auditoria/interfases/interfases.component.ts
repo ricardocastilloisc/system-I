@@ -326,20 +326,26 @@ export class InterfasesComponent implements OnInit, OnDestroy {
       };
       this.interfasesService.getDatos(filtro).then(data => {
         this.dataOriginal = data;
-        this.flagDatos = this.interfasesService.isObjEmpty(data);
-        if (data.hasOwnProperty('message')) {
-          this.mensajeError = 'Ocurrió un error: ' + data.message;
+        if (data === undefined) {
+          this.mensajeError = 'Ocurrió un error, contacte con soporte.';
           this.openModal();
+          this.spinner.hide();
+        } else {
+          this.flagDatos = this.interfasesService.isObjEmpty(data);
+          if (data.hasOwnProperty('message')) {
+            this.mensajeError = 'Ocurrió un error: ' + data.message;
+            this.openModal();
+          }
+          this.datosDiurno = data.hasOwnProperty('diurnos');
+          this.datosNocturno = data.hasOwnProperty('nocturnos');
+          this.treemap = this.interfasesService.formatoResumen(data);
+          if (this.treemap.length > 0) {
+            this.treeMapNotEmpty = true;
+            this.treemapProcess(this.treemap);
+            this.treemapSelect(this.item);
+          }
+          this.spinner.hide();
         }
-        this.datosDiurno = data.hasOwnProperty('diurnos');
-        this.datosNocturno = data.hasOwnProperty('nocturnos');
-        this.treemap = this.interfasesService.formatoResumen(data);
-        if (this.treemap.length > 0) {
-          this.treeMapNotEmpty = true;
-          this.treemapProcess(this.treemap);
-          this.treemapSelect(this.item);
-        }
-        this.spinner.hide();
       });
     }
     catch (err) {
@@ -361,12 +367,19 @@ export class InterfasesComponent implements OnInit, OnDestroy {
         fecha_fin: fechaFin.toISOString().split('T')[0]
       };
       this.interfasesService.getProblemas(filtro).then(data => {
-        this.listadoProblemas = data;
-        if (data.hasOwnProperty('message')) {
-          this.mensajeError = 'Ocurrió un error: ' + data.message;
+        console.log('problemas data', data)
+        if (data === undefined) {
+          this.mensajeError = 'Ocurrió un error, contacte con soporte.';
           this.openModal();
+          this.spinner.hide();
+        } else {
+          this.listadoProblemas = data;
+          if (data.hasOwnProperty('message')) {
+            this.mensajeError = 'Ocurrió un error: ' + data.message;
+            this.openModal();
+          }
+          this.spinner.hide();
         }
-        this.spinner.hide();
       });
     }
     catch (err) {
@@ -439,19 +452,25 @@ export class InterfasesComponent implements OnInit, OnDestroy {
       this.interfasesService.getDatos(filtro).then(data => {
         this.dataOriginal = data;
         this.flagDatos = this.interfasesService.isObjEmpty(data);
-        if (data.hasOwnProperty('message')) {
-          this.mensajeError = 'Ocurrió un error: ' + data.message;
+        if (data === undefined) {
+          this.mensajeError = 'Ocurrió un error, contacte con soporte.';
           this.openModal();
+          this.spinner.hide();
+        } else {
+          if (data.hasOwnProperty('message')) {
+            this.mensajeError = 'Ocurrió un error: ' + data.message;
+            this.openModal();
+          }
+          this.datosDiurno = data.hasOwnProperty('diurnos');
+          this.datosNocturno = data.hasOwnProperty('nocturnos');
+          this.treemap = this.interfasesService.formatoResumen(data);
+          if (this.treemap.length > 0) {
+            this.treeMapNotEmpty = true;
+            this.treemapProcess(this.treemap);
+            this.treemapSelect(this.item);
+          }
+          this.spinner.hide();
         }
-        this.datosDiurno = data.hasOwnProperty('diurnos');
-        this.datosNocturno = data.hasOwnProperty('nocturnos');
-        this.treemap = this.interfasesService.formatoResumen(data);
-        if (this.treemap.length > 0) {
-          this.treeMapNotEmpty = true;
-          this.treemapProcess(this.treemap);
-          this.treemapSelect(this.item);
-        }
-        this.spinner.hide();
       });
     }
     catch (err) {
@@ -465,11 +484,17 @@ export class InterfasesComponent implements OnInit, OnDestroy {
     try {
       this.interfasesService.getProblemas(filtro).then(data => {
         this.listadoProblemas = data;
-        if (data.hasOwnProperty('message')) {
-          this.mensajeError = 'Ocurrió un error: ' + data.message;
+        if (data === undefined) {
+          this.mensajeError = 'Ocurrió un error, contacte con soporte.';
           this.openModal();
+          this.spinner.hide();
+        } else {
+          if (data.hasOwnProperty('message')) {
+            this.mensajeError = 'Ocurrió un error: ' + data.message;
+            this.openModal();
+          }
+          this.spinner.hide();
         }
-        this.spinner.hide();
       });
     }
     catch (err) {
