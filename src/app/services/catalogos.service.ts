@@ -91,6 +91,9 @@ export class CatalogosService {
       .then(({ nextToken, registros }: any) => {
         arrayRes = [...registros];
         nextTokenValidator = nextToken;
+      }).catch(() => {
+        arrayRes = [{error:true}]
+        nextTokenValidator = null
       });
 
     return new Promise((resolve) => {

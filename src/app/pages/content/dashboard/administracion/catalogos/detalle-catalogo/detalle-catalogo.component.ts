@@ -1,4 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ViewChild,
+  TemplateRef,
+} from '@angular/core';
 import { CatalogosService } from '../../../../../../services/catalogos.service';
 import { STRUCTURE_CAT } from '../../../../../../model/catalogos/STRUCTURE_CAT.model';
 import { Store } from '@ngrx/store';
@@ -18,6 +24,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { environment } from '../../../../../../../environments/environment';
 import { APIService } from '../../../../../../API.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-detalle-catalogo',
@@ -25,6 +32,9 @@ import { APIService } from '../../../../../../API.service';
   styleUrls: ['./detalle-catalogo.component.css'],
 })
 export class DetalleCatalogoComponent implements OnInit, OnDestroy {
+  @ViewChild('ejecucionesInexistentes')
+  templateRefEjecuciones: TemplateRef<any>;
+  filtroEjecucionesForm: FormGroup;
 
   DetailCatalogos$: Subscription;
   ColumDinamicData: STRUCTURE_CAT[] = [];
@@ -59,13 +69,17 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
   selectedItemsFiltro = [];
   placeholderFiltro = '';
 
+
+  errorBack = false;
+
   constructor(
     private catalogoService: CatalogosService,
     private store: Store<AppState>,
     private toastr: ToastrService,
     private modalService: NgbModal,
-    private api: APIService
-  ) { }
+    private api: APIService,
+    public LOC: Location
+  ) {}
 
   ngOnDestroy(): void {
     this.store.dispatch(unSetDetailCatalogos());
@@ -100,13 +114,24 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
         this.dropdownListFiltro.push(object);
       }
     });
-  }
+  };
 
   cleanFilter = () => {
     this.filter = false;
 
     this.DetailCats = this.DetailCatsStatic;
+  };
+
+  ejecucionesInexistentesModal() {
+    this.modalService.open(this.templateRefEjecuciones, {
+      ariaLabelledBy: 'modal-basic-title',
+    });
   }
+
+  cerrarModales = () => {
+    this.modalService.dismissAll();
+    this.LOC.back();
+  };
 
   filtrar = () => {
     let arrayTemp = [];
@@ -139,11 +164,11 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     this.DetailCats = arrayTemp;
     this.filter = true;
     this.modalService.dismissAll();
-  }
+  };
 
   viewUpdateIcon = () => {
     return this.ColumDinamicData.length > 1;
-  }
+  };
 
   ngOnInit(): void {
     // this.validarRoles();
@@ -152,23 +177,31 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     this.DetailCatalogos$ = this.store
       .select(({ DetailCatalogos }) => DetailCatalogos.DetailCatalogos)
       .subscribe((res) => {
-        // DetailCats
-        this.DetailCats = res;
-        this.DetailCatsStatic = res;
+        if (res) {
+          if (this.ColumDinamicData.length > 0) {
+            this.makeFormsDinamic();
+          }
 
-        if (this.ColumDinamicData.length > 0) {
-          this.makeFormsDinamic();
-        }
+          if (res.length > 0) {
+            if (res[0]?.error) {
+              this.ejecucionesInexistentesModal();
+              this.errorBack = true;
+            } else {
+              // DetailCats
+              this.DetailCats = res;
+              this.DetailCatsStatic = res;
 
-        if (this.AgregarRegistroLoading) {
-          this.abrirToass();
-          this.AgregarRegistroLoading = false;
+              if (this.AgregarRegistroLoading) {
+                this.abrirToass();
+                this.AgregarRegistroLoading = false;
+              }
+            }
+          }
         }
       });
   }
 
   openModalConfirmacionEliminar(content, object): void {
-
     localStorage.setItem('RegisterAction', 'ELIMINAR');
     localStorage.setItem('ObjectNewRegister', JSON.stringify(null));
     localStorage.setItem('ObjectOldRegister', JSON.stringify(object));
@@ -194,7 +227,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     if (value === null || value === undefined) {
       return '';
     }
-    
+
     let stringReturn = '';
     if (typeof value === 'string') {
       stringReturn = value;
@@ -211,28 +244,28 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
 
     return isDate
       ? stringReturn.substring(6, 8) +
-      '/' +
-      stringReturn.substring(4, 6) +
-      '/' +
-      stringReturn.substring(0, 4)
+          '/' +
+          stringReturn.substring(4, 6) +
+          '/' +
+          stringReturn.substring(0, 4)
       : stringReturn;
-  }
+  };
 
   helperInputs = (column: STRUCTURE_CAT) => {
     this.columnTemp = column;
-  }
+  };
 
   removeCharterSpecialSringTh = (value: string) => {
     if (value) {
       return value.split('_').join(' ');
     }
     return '';
-  }
+  };
 
   getDataCat = () => {
     this.store.dispatch(loadingDetailCatalogos());
     this.catalogoService.structureCat().then((res: STRUCTURE_CAT[]) => {
-      if(res.length >0){
+      if (res.length > 0) {
         this.primaryKeyOrder = res.filter(
           (e) => e.llavePrimaria === true
         )[0].campo;
@@ -240,11 +273,13 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
         this.ColumDinamicData = res;
 
         this.store.dispatch(cargarDetailCatalogos());
-      }else {
+      } else {
         this.store.dispatch(loadingCompleteDetailCatalogos());
+        this.ejecucionesInexistentesModal();
+        this.errorBack = true;
       }
     });
-  }
+  };
 
   makeFormsDinamic = () => {
     this.FormsDinamic = null;
@@ -270,7 +305,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
         new FormControl(valueFormControl, arraValidators)
       );
     });
-  }
+  };
 
   // tslint:disable-next-line: variable-name
   bordeError = (boolean) => {
@@ -279,7 +314,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     } else {
       return {};
     }
-  }
+  };
 
   // tslint:disable-next-line: typedef
   AJrestriccion(event) {
@@ -296,19 +331,19 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
 
   viewInputText = (colum: STRUCTURE_CAT) => {
     return (colum.tipo === 'S' || colum.tipo === 'N') && !colum.esFecha.bandera;
-  }
+  };
 
   viewInputNumber = (colum: STRUCTURE_CAT) => {
     return colum.tipo === 'N' && !colum.esFecha.bandera;
-  }
+  };
 
   viewInputDate = (colum: STRUCTURE_CAT) => {
     return colum.esFecha.bandera;
-  }
+  };
 
   viewFECHA = (value) => {
     return !value.includes('FECHA_ACTUALIZADO');
-  }
+  };
 
   viewPrimaryKey = (colum: STRUCTURE_CAT) => {
     if (colum.llavePrimaria && colum.tipo == 'S') {
@@ -316,7 +351,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     } else {
       return !colum.llavePrimaria;
     }
-  }
+  };
 
   arrayFomsInput = (colums: STRUCTURE_CAT[]) => {
     let arrayReturn: STRUCTURE_CAT[] = colums;
@@ -326,11 +361,11 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
       }
     });
     return arrayReturn;
-  }
+  };
 
   disabledInput = (colum: STRUCTURE_CAT) => {
     return colum.llavePrimaria && this.editar;
-  }
+  };
 
   mostrarCardAgregarResgistro = (editar = 0, object = null) => {
     this.mostrarEjecucionesProcesos = false;
@@ -413,10 +448,10 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
             if (!specialFormat) {
               valueTempControl = moment(
                 valueTempControl.substring(0, 4) +
-                '-' +
-                valueTempControl.substring(4, 6) +
-                '-' +
-                valueTempControl.substring(6, 8)
+                  '-' +
+                  valueTempControl.substring(4, 6) +
+                  '-' +
+                  valueTempControl.substring(6, 8)
               )
                 .format('YYYY-MM-DD')
                 .toString();
@@ -424,10 +459,10 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
           } else {
             valueTempControl = moment(
               valueTempControl.substring(0, 4) +
-              '-' +
-              valueTempControl.substring(4, 6) +
-              '-' +
-              valueTempControl.substring(6, 8)
+                '-' +
+                valueTempControl.substring(4, 6) +
+                '-' +
+                valueTempControl.substring(6, 8)
             )
               .format('YYYY-MM-DD')
               .toString();
@@ -435,15 +470,14 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
         }
 
         this.FormsDinamic.get(dataColum.campo).setValue(valueTempControl);
-
       });
     }
-  }
+  };
 
   ocultarCardAgregarResgistro = () => {
     this.mostrarEjecucionesProcesos = true;
     this.FormsDinamic.reset();
-  }
+  };
 
   abrirToass = () => {
     let mensaje =
@@ -477,7 +511,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     this.addRegister = false;
     this.removeRegister = false;
     this.updateRegister = false;
-  }
+  };
 
   abrirToassError = (err: any) => {
     let mensaje =
@@ -497,7 +531,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
       progressBar: true,
       progressAnimation: 'increasing',
     });
-  }
+  };
 
   agregarRegistroOActualizarRegistro = () => {
     let ObjectTemp = this.FormsDinamic.value;
@@ -601,7 +635,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
       );
     }
     localStorage.setItem('ObjectNewRegister', JSON.stringify(objectFinish));
-  }
+  };
 
   eliminarRegistro = () => {
     const objectReferencePk = this.ColumDinamicData.filter(
@@ -622,7 +656,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
         this.catalogoService.generarAuditoria('ERROR');
       }
     );
-  }
+  };
 
   verPaginado = () => {
     if (this.DetailCats) {
@@ -634,7 +668,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     } else {
       return false;
     }
-  }
+  };
 
   validarRoles(): boolean {
     let flag = false;
@@ -662,46 +696,48 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
       .subscribe((res) => {
         rol = res.attributes['custom:rol'];
       });
-    this.api.GetSiaGenAdmDiccionarioCatalogosDev(catalogo, catalogoNegocio).then(data => {
-      if (rol.includes(ERole.Administrador)) {
-        const permisoArea = data.AREA;
-        const permisoNegocio = data.NEGOCIO;
-        if (permisoArea.includes(area)) {
-          // tslint:disable-next-line: forin
-          // tslint:disable-next-line: prefer-const
-          for (let i in negocio) {
-            if (permisoNegocio.includes(negocio[i])) {
-              switch (area) {
-                case 'CUSTODIA':
-                  if (data.PRIV_CUSTODIA.includes('W')) {
-                    this.flagPermisos = true;
-                  }
-                  break;
-                case 'CONTABILIDAD':
-                  if (data.PRIV_CONTABILIDAD.includes('W')) {
-                    this.flagPermisos = true;
-                  }
-                  break;
-                case 'RIESGOS':
-                  if (data.PRIV_RIESGOS.includes('W')) {
-                    this.flagPermisos = true;
-                  }
-                  break;
-                case 'TESORERIA':
-                  if (data.PRIV_TESORERIA.includes('W')) {
-                    this.flagPermisos = true;
-                  }
-                  break;
-                case 'SOPORTE':
-                  if (data.PRIV_SOPORTE.includes('W')) {
-                    this.flagPermisos = true;
-                  }
-                  break;
+    this.api
+      .GetSiaGenAdmDiccionarioCatalogosDev(catalogo, catalogoNegocio)
+      .then((data) => {
+        if (rol.includes(ERole.Administrador)) {
+          const permisoArea = data.AREA;
+          const permisoNegocio = data.NEGOCIO;
+          if (permisoArea.includes(area)) {
+            // tslint:disable-next-line: forin
+            // tslint:disable-next-line: prefer-const
+            for (let i in negocio) {
+              if (permisoNegocio.includes(negocio[i])) {
+                switch (area) {
+                  case 'CUSTODIA':
+                    if (data.PRIV_CUSTODIA.includes('W')) {
+                      this.flagPermisos = true;
+                    }
+                    break;
+                  case 'CONTABILIDAD':
+                    if (data.PRIV_CONTABILIDAD.includes('W')) {
+                      this.flagPermisos = true;
+                    }
+                    break;
+                  case 'RIESGOS':
+                    if (data.PRIV_RIESGOS.includes('W')) {
+                      this.flagPermisos = true;
+                    }
+                    break;
+                  case 'TESORERIA':
+                    if (data.PRIV_TESORERIA.includes('W')) {
+                      this.flagPermisos = true;
+                    }
+                    break;
+                  case 'SOPORTE':
+                    if (data.PRIV_SOPORTE.includes('W')) {
+                      this.flagPermisos = true;
+                    }
+                    break;
+                }
               }
             }
           }
         }
-      }
-    });
+      });
   }
 }

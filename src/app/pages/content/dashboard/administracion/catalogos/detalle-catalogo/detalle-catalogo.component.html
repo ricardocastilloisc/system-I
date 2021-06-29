@@ -1,4 +1,5 @@
 <div
+*ngIf="!errorBack"
   class="row justify-content-center"
   [ngClass]="{
     'show-ejecuciones': mostrarEjecucionesProcesos == true,
@@ -365,3 +366,28 @@ justify-content-end
   </div>
 </ng-template>
 <ng-template #popTitle>{{ columnTemp.campo }}</ng-template>
+
+
+<ng-template #ejecucionesInexistentes let-modal id="ejecucionesInexistentes">
+  <div class="modal-body">
+      <div class="row justify-content-center">
+          <div class="col-12 row justify-content-center align-items-center" style="height:120px;">
+              <div class="textoConfirmacionModalUsuarios">Error</div>
+          </div>
+          <div class="col-12 row">
+              <div class="col-12 descripcionConfirmacionEjecucionProceso">Internal Server Error.
+              </div>
+          </div>
+          <div class="col-12 row justify-content-center align-items-center" style="height:120px;">
+              <div>
+                  <button class="btn bottonConfirmarEjecucionProceso" (click)="cerrarModales()">Continuar</button>
+              </div>
+          </div>
+      </div>
+  </div>
+  <!--
+        <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Save</button>
+  </div>
+  -->
+</ng-template>
