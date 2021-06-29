@@ -7,6 +7,7 @@ import {
 } from './../../actions/catalogos/catalogoDetail.actions';
 
 import { createReducer, on } from '@ngrx/store';
+import { loadingCompleteDetailCatalogos } from '../../actions/catalogos/catalogoDetail.actions';
 
 export interface DetailCatalogosState {
   DetailCatalogos: any;
@@ -38,6 +39,10 @@ const _DetailCatologosReducer = createReducer(
     ...state,
     loading: false,
     error: payload,
+  })),
+  on(loadingCompleteDetailCatalogos, (state) => ({
+    ...state,
+    loading: false,
   })),
   on(unSetDetailCatalogos, (state) => ({
     ...state,

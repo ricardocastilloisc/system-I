@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../../../../../ReduxStore/app.reducers';
 import {
   cargarDetailCatalogos,
+  loadingCompleteDetailCatalogos,
   loadingDetailCatalogos,
   unSetDetailCatalogos,
 } from '../../../../../../ReduxStore/actions/catalogos/catalogoDetail.actions';
@@ -231,13 +232,17 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
   getDataCat = () => {
     this.store.dispatch(loadingDetailCatalogos());
     this.catalogoService.structureCat().then((res: STRUCTURE_CAT[]) => {
-      this.primaryKeyOrder = res.filter(
-        (e) => e.llavePrimaria === true
-      )[0].campo;
+      if(res.length >0){
+        this.primaryKeyOrder = res.filter(
+          (e) => e.llavePrimaria === true
+        )[0].campo;
 
-      this.ColumDinamicData = res;
+        this.ColumDinamicData = res;
 
-      this.store.dispatch(cargarDetailCatalogos());
+        this.store.dispatch(cargarDetailCatalogos());
+      }else {
+        this.store.dispatch(loadingCompleteDetailCatalogos());
+      }
     });
   }
 

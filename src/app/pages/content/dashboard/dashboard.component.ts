@@ -42,7 +42,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     setInterval(() => {
       this.NotificacionesService.obtenerListadoDeNotificaciones();
     }, 50000);
-
+*/
     this.LoadingDetailCatalogos$ = this.store
       .select(({ DetailCatalogos }) => DetailCatalogos.loading)
       .subscribe((res) => {
@@ -52,7 +52,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
           this.spinner.hide();
         }
       });
-*/
+
     /*
     this.api.OnCreateSiaGenAudEstadoProcesosDevListener.subscribe({
       next: ({ value }: any) => {

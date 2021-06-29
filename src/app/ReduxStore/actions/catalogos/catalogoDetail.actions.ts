@@ -4,6 +4,8 @@ import { createAction, props } from "@ngrx/store";
 
 export const loadingDetailCatalogos = createAction('[DetailCatalogos] Loading DetailCatalogos');
 
+export const loadingCompleteDetailCatalogos = createAction('[DetailCatalogos] Loading CompleteDetailCatalogos');
+
 export const cargarDetailCatalogos = createAction('[DetailCatalogos] Cargar DetailCatalogos');
 
 export const caragarDetailCatalogosSucces = createAction(
