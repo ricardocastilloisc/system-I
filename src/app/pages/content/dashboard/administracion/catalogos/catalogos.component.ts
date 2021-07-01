@@ -77,16 +77,9 @@ export class CatalogosComponent implements OnInit, OnDestroy {
               });
             }
           });
-
-          if (this.AforesSubs.length === 0 || this.FondosSubs.length === 0) {
-            if (this.FondosSubs.length === 0) {
-              this.AforesGens = [...this.GenericosGens];
-            } else {
-              this.FondosGens = [...this.GenericosGens];
-            }
-
-            this.GenericosGens = [];
-          }
+          this.AforesGens = [...this.GenericosGens.filter(e => e.NEGOCIO === 'AFORE')]
+          this.FondosGens = [...this.GenericosGens.filter(e => e.NEGOCIO === 'FONDOS')]
+          this.GenericosGens = [...this.GenericosGens.filter(e => e.NEGOCIO === 'AFORE,FONDOS')]
         }
       });
   }
