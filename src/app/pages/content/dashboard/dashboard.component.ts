@@ -24,7 +24,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private api: APIService,
     private store: Store<AppState>,
-    private NotificacionesService: NotificacionesService,
+
     private spinner: NgxSpinnerService
   ) {}
   ngOnDestroy(): void {
@@ -37,7 +37,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit(): void {
     this.store.dispatch(cargarCatalogos());
 
-    this.NotificacionesService.obtenerListadoDeNotificaciones();
+
     /*
     setInterval(() => {
       this.NotificacionesService.obtenerListadoDeNotificaciones();

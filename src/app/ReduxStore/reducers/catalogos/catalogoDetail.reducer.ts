@@ -13,11 +13,13 @@ export interface DetailCatalogosState {
   DetailCatalogos: any;
   error: any;
   loading: boolean;
+  token: string;
 }
 export const DetailCatalogosState: DetailCatalogosState = {
   DetailCatalogos: [],
   error: null,
   loading: false,
+  token: null
 };
 
 const _DetailCatologosReducer = createReducer(
@@ -26,8 +28,9 @@ const _DetailCatologosReducer = createReducer(
     ...state,
     loading: true,
   })),
-  on(cargarDetailCatalogos, (state) => ({
+  on(cargarDetailCatalogos, (state, {token}) => ({
     ...state,
+    token: token,
   })),
   on(caragarDetailCatalogosSucces, (state, {DetailCatalogos}) => ({
     ...state,

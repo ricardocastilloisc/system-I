@@ -12,16 +12,16 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class CatalogosService {
-
-
-  UrlCatalogos = environment.API.endpoints.find((el) => el.name === 'catalogos')['endpoint'];
+  UrlCatalogos = environment.API.endpoints.find(
+    (el) => el.name === 'catalogos'
+  )['endpoint'];
 
   constructor(
     private httpClient: HttpClient,
     private store: Store<AppState>,
     private auditoria: AuditoriaService,
     private authServcie: AuthService
-  ) { }
+  ) {}
   getCatalogos = () => {
     const area = localStorage.getItem('area');
     /*if (area.split(',').includes(EArea.Soporte)) {
@@ -39,7 +39,7 @@ export class CatalogosService {
       params: QueryParams,
       headers: this.authServcie.userHeaders(),
     });
-  }
+  };
 
   structureCat = () => {
     let array = null;
@@ -70,100 +70,174 @@ export class CatalogosService {
         }
       }, 100);
     });
-  }
+  };
 
-  getDetailsCat = () => {
+  getDetailsCat = (token) => {
     let nextTokenValidator = 'next';
 
     let arrayRes = [];
 
-    this.httpClient
-      .get(
-        this.UrlCatalogos +
-        'catalogos/' +
-        localStorage.getItem('nameCat') +
-        '/registros',
-        {
-          headers: this.authServcie.userHeaders(),
-        }
-      )
-      .toPromise()
-      .then(({ nextToken, registros }: any) => {
-        arrayRes = [...registros];
-        nextTokenValidator = nextToken;
-      }).catch(() => {
-        arrayRes = [{error:true}]
-        nextTokenValidator = null
-      });
+    if (token) {
+      let QueryParams = new HttpParams();
+
+      QueryParams = QueryParams.append('nextToken', token);
+
+      this.httpClient
+        .get(
+          this.UrlCatalogos +
+            'catalogos/' +
+            localStorage.getItem('nameCat') +
+            '/registros',
+          {
+            params: QueryParams,
+            headers: this.authServcie.userHeaders(),
+          }
+        )
+        .toPromise()
+        .then(({ nextToken, registros }: any) => {
+          this.setValoresPaginado(token, nextToken);
+          arrayRes = [...registros];
+          nextTokenValidator = null;
+        })
+        .catch(() => {
+          arrayRes = [{ error: true }];
+          nextTokenValidator = null;
+        });
+    } else {
+      this.httpClient
+        .get(
+          this.UrlCatalogos +
+            'catalogos/' +
+            localStorage.getItem('nameCat') +
+            '/registros',
+          {
+            headers: this.authServcie.userHeaders(),
+          }
+        )
+        .toPromise()
+        .then(({ nextToken, registros }: any) => {
+          arrayRes = [...registros];
+          this.setValoresPaginado(token, nextToken);
+          nextTokenValidator = null;
+        })
+        .catch(() => {
+          arrayRes = [{ error: true }];
+          nextTokenValidator = null;
+        });
+    }
 
     return new Promise((resolve) => {
       const intervalo = setInterval(() => {
         if (nextTokenValidator === null) {
           resolve({ registros: arrayRes });
           clearInterval(intervalo);
-        } else {
-          if (nextTokenValidator !== 'next') {
-            let QueryParams = new HttpParams();
-            QueryParams = QueryParams.append('nextToken', nextTokenValidator);
-
-            this.httpClient
-              .get(
-                this.UrlCatalogos +
-                'catalogos/' +
-                localStorage.getItem('nameCat') +
-                '/registros',
-                {
-                  params: QueryParams,
-                  headers: this.authServcie.userHeaders(),
-                }
-              )
-              .toPromise()
-              .then(({ nextToken, registros }: any) => {
-                if (!arrayRes.includes(registros[0])) {
-                  arrayRes = [...arrayRes, ...registros];
-                }
-
-                if (nextTokenValidator !== nextToken) {
-                  if (nextTokenValidator) {
-                    nextTokenValidator = nextToken;
-                  }
-                }
-              });
-          }
         }
       }, 1000);
     });
-  }
+  };
+
+
+  setValoresPaginado = (token, nextToken) => {
+    let tokenPageActuality = localStorage.getItem('tokenPageActuality');
+    if (token !== null) {
+      if (tokenPageActuality !== token) {
+        let tokenTemp = tokenPageActuality;
+        let PageNumerPageCat = JSON.parse(
+          localStorage.getItem('izquierdaOderecha')
+        );
+        if (PageNumerPageCat === 1) {
+          localStorage.setItem('tokenPageBefore', tokenTemp);
+          localStorage.setItem('tokenPageActuality', token);
+          localStorage.setItem('tokenPageNext', nextToken);
+          localStorage.removeItem('izquierdaOderecha');
+
+          if (!localStorage.getItem('Paginas')) {
+            let array = [
+              {
+                token: 'null',
+                page: '0',
+              },
+              {
+                token: token,
+                page: JSON.parse(localStorage.getItem('PageNumerPageCat')),
+              },
+            ];
+
+            localStorage.setItem('Paginas', JSON.stringify(array));
+          } else {
+            let Paginas = JSON.parse(localStorage.getItem('Paginas'));
+
+            let arrayPaginas = Paginas.filter(
+              (e) =>
+                e.page === JSON.parse(localStorage.getItem('PageNumerPageCat'))
+            );
+
+            if (arrayPaginas.length < 1) {
+              Paginas.push({
+                token: token,
+                page: JSON.parse(localStorage.getItem('PageNumerPageCat')),
+              });
+            }
+            localStorage.setItem('Paginas', JSON.stringify(Paginas));
+          }
+
+        } else {
+          let Paginas = JSON.parse(localStorage.getItem('Paginas'));
+
+          let arrayPaginas = Paginas.filter(
+            (e) =>
+              e.page === JSON.parse(localStorage.getItem('PageNumerPageCat')) -1
+          );
+
+          let page = 0
+          if(arrayPaginas.length > 0){
+            page = arrayPaginas[0].token
+          }
+
+          let pagefinal  =  page === 0 ? 'null' : page.toLocaleString()
+
+          localStorage.setItem('tokenPageBefore', pagefinal);
+          localStorage.setItem('tokenPageActuality', token);
+          localStorage.setItem('tokenPageNext', nextToken);
+          localStorage.removeItem('izquierdaOderecha');
+        }
+      }
+    } else {
+      localStorage.setItem('tokenPageBefore', 'null');
+      localStorage.setItem('tokenPageActuality', token);
+      localStorage.setItem('tokenPageNext', nextToken);
+    }
+  };
 
   updateDetailsCat = (object) => {
     return this.httpClient
       .put(
         this.UrlCatalogos +
-        'catalogos/' +
-        localStorage.getItem('nameCat') +
-        '/registros',
+          'catalogos/' +
+          localStorage.getItem('nameCat') +
+          '/registros',
         object,
         {
           headers: this.authServcie.userHeaders(),
         }
       )
       .toPromise();
-  }
+  };
 
   addDetailsCat = (object) => {
     return this.httpClient
       .post(
         this.UrlCatalogos +
-        'catalogos/' +
-        localStorage.getItem('nameCat') +
-        '/registros',
+          'catalogos/' +
+          localStorage.getItem('nameCat') +
+          '/registros',
         object,
         {
           headers: this.authServcie.userHeaders(),
         }
       )
       .toPromise();
-  }
+  };
 
   deleteDetailsCat = (registro) => {
     let stringCode = '';
@@ -175,16 +249,16 @@ export class CatalogosService {
     return this.httpClient
       .delete(
         this.UrlCatalogos +
-        'catalogos/' +
-        localStorage.getItem('nameCat') +
-        '/registros/' +
-        window.btoa(unescape(encodeURIComponent(registro))),
+          'catalogos/' +
+          localStorage.getItem('nameCat') +
+          '/registros/' +
+          window.btoa(unescape(encodeURIComponent(registro))),
         {
           headers: this.authServcie.userHeaders(),
         }
       )
       .toPromise();
-  }
+  };
 
   generarAuditoria(estado: string): void {
     const catalogo = localStorage.getItem('nameCat');
@@ -240,5 +314,4 @@ export class CatalogosService {
     localStorage.removeItem('ObjectNewRegister');
     localStorage.removeItem('ObjectOldRegister');
   }
-
 }

@@ -96,7 +96,11 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   };
 
   ngOnDestroy(): void {
-    this.NotificacionesSubActivo$.unsubscribe();
+
+    if (this.NotificacionesSubActivo$) {
+      this.NotificacionesSubActivo$.unsubscribe();
+    }
+
     this.store.dispatch(unSetnotificaciones());
 
     if (this.NotificacionesSub$) {
@@ -301,80 +305,90 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
           this.area = this.obtenerAreaValidacion();
 
-          this.negocios = this.DataUser.attributes['custom:negocio'].split(',');
+          let prenegocios = this.DataUser.attributes['custom:negocio'];
+
+          if (prenegocios !== undefined) {
+            this.negocios =
+              this.DataUser.attributes['custom:negocio'].split(',');
+          }
 
           this.negocios = this.negocios.map((negocio) => {
             return negocio.toUpperCase();
           });
 
-          this.api
-            .ListCATPERMISOS(
-              this.negocios,
-              this.area,
-              this.DataUser.attributes['custom:rol'].toUpperCase()
-            )
-            .then(({ items }: any) => {
-              this.ValidadoresDeInterfaces = items;
-              this.NotificacionesSubActivo$ =
-                this.api.OnUpdateSiaGenAudEstadoProcesosDevListener.subscribe(
-                  ({ value }: any) => {
-                    const { data } = value;
-                    const { onUpdateSiaGenAudEstadoProcesosDev } = data;
-                    let arrayValidador = this.ValidadoresDeInterfaces.filter(
-                      (e) =>
-                        e['FLUJO'] ===
-                        onUpdateSiaGenAudEstadoProcesosDev['INTERFAZ']
-                    );
-                    //console.log('NotificacionesSubActivo', data)
-                    //console.log('arrayValidador', arrayValidador)
+          if (prenegocios !== undefined) {
 
-                    this.validarPantallaEnProcesos(data);
-                    if (arrayValidador.length > 0) {
-                      if (
-                        onUpdateSiaGenAudEstadoProcesosDev[
-                          'ESTADO_EJECUCION'
-                        ] === 'TERMINADO'
-                      ) {
-                        let tempNoticicaciones = JSON.parse(
-                          localStorage.getItem('Notificaciones')
-                        );
+            this.NotificacionesService.obtenerListadoDeNotificaciones();
+            
+            this.api
+              .ListCATPERMISOS(
+                this.negocios,
+                this.area,
+                this.DataUser.attributes['custom:rol'].toUpperCase()
+              )
+              .then(({ items }: any) => {
+                this.ValidadoresDeInterfaces = items;
+                this.NotificacionesSubActivo$ =
+                  this.api.OnUpdateSiaGenAudEstadoProcesosDevListener.subscribe(
+                    ({ value }: any) => {
+                      const { data } = value;
+                      const { onUpdateSiaGenAudEstadoProcesosDev } = data;
+                      let arrayValidador = this.ValidadoresDeInterfaces.filter(
+                        (e) =>
+                          e['FLUJO'] ===
+                          onUpdateSiaGenAudEstadoProcesosDev['INTERFAZ']
+                      );
+                      //console.log('NotificacionesSubActivo', data)
+                      //console.log('arrayValidador', arrayValidador)
+
+                      this.validarPantallaEnProcesos(data);
+                      if (arrayValidador.length > 0) {
                         if (
-                          tempNoticicaciones.filter(
-                            (e) =>
-                              e.ID_PROCESO ===
-                              onUpdateSiaGenAudEstadoProcesosDev.ID_PROCESO
-                          ).length < 1
+                          onUpdateSiaGenAudEstadoProcesosDev[
+                            'ESTADO_EJECUCION'
+                          ] === 'TERMINADO'
                         ) {
+                          let tempNoticicaciones = JSON.parse(
+                            localStorage.getItem('Notificaciones')
+                          );
                           if (
-                            this.verEstado(
-                              onUpdateSiaGenAudEstadoProcesosDev
-                            ) === 'EXITOSO'
+                            tempNoticicaciones.filter(
+                              (e) =>
+                                e.ID_PROCESO ===
+                                onUpdateSiaGenAudEstadoProcesosDev.ID_PROCESO
+                            ).length < 1
                           ) {
-                            //console.log('abrirToass')
-                            this.abrirToass(
+                            if (
                               this.verEstado(
                                 onUpdateSiaGenAudEstadoProcesosDev
-                              ),
-                              onUpdateSiaGenAudEstadoProcesosDev.INTERFAZ
-                            );
-                          } else {
-                            this.abrirToassError(
-                              this.verEstado(
-                                onUpdateSiaGenAudEstadoProcesosDev
-                              ),
-                              onUpdateSiaGenAudEstadoProcesosDev.INTERFAZ
+                              ) === 'EXITOSO'
+                            ) {
+                              //console.log('abrirToass')
+                              this.abrirToass(
+                                this.verEstado(
+                                  onUpdateSiaGenAudEstadoProcesosDev
+                                ),
+                                onUpdateSiaGenAudEstadoProcesosDev.INTERFAZ
+                              );
+                            } else {
+                              this.abrirToassError(
+                                this.verEstado(
+                                  onUpdateSiaGenAudEstadoProcesosDev
+                                ),
+                                onUpdateSiaGenAudEstadoProcesosDev.INTERFAZ
+                              );
+                            }
+
+                            this.NotificacionesService.newNotificacion(
+                              onUpdateSiaGenAudEstadoProcesosDev
                             );
                           }
-
-                          this.NotificacionesService.newNotificacion(
-                            onUpdateSiaGenAudEstadoProcesosDev
-                          );
                         }
                       }
                     }
-                  }
-                );
-            });
+                  );
+              });
+          }
         }
       });
   }

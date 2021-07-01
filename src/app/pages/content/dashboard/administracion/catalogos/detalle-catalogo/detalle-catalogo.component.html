@@ -82,8 +82,8 @@ justify-content-end
         class="ngx-pagination"
       >
         <div class="custom-pagination">
-          <div class="pagination-previous" [class.disabled]="p.isFirstPage()">
-            <span *ngIf="!p.isFirstPage()" (click)="p.previous()"> << </span>
+          <div class="pagination-previous" *ngIf="verAtras()" [class.disabled]="p.isFirstPage()">
+            <span  (click)="cargarConInicialOPaginado(-1)"> << </span>
           </div>
           <div
             class="page-number"
@@ -93,15 +93,19 @@ justify-content-end
             <span
               (click)="p.setCurrent(page.value)"
               *ngIf="p.getCurrent() !== page.value"
-              >{{ page.label }}</span
+              >{{ verLabePaginado(page.label) }}</span
             >
             <div *ngIf="p.getCurrent() === page.value">
-              <span>{{ page.label }}</span>
+              <span>{{ verLabePaginado(page.label) }}</span>
             </div>
           </div>
-          <div class="pagination-next" [class.disabled]="p.isLastPage()">
-            <span *ngIf="!p.isLastPage()" (click)="p.next()"> >> </span>
+
+
+          <div class="pagination-next" *ngIf="veraAdelante()" [class.disabled]="p.isLastPage()">
+            <span  (click)="cargarConInicialOPaginado(1)"> >> </span>
           </div>
+
+
         </div>
       </pagination-template>
     </div>

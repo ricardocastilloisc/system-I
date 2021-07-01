@@ -21,8 +21,8 @@ export class CatalogoDetailEfffects {
   cargarDetailCatalogos$ = createEffect(() =>
     this.actions$.pipe(
       ofType(cargarDetailCatalogos),
-      mergeMap(() =>
-      fromPromise(this.CatalogosService.getDetailsCat()).pipe(
+      mergeMap(({token}) =>
+      fromPromise(this.CatalogosService.getDetailsCat(token)).pipe(
           map(({ registros }: any) =>
           caragarDetailCatalogosSucces({ DetailCatalogos: registros })
           ),

@@ -69,7 +69,6 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
   selectedItemsFiltro = [];
   placeholderFiltro = '';
 
-
   errorBack = false;
 
   constructor(
@@ -82,6 +81,11 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnDestroy(): void {
+    localStorage.removeItem('tokenPageBefore');
+    localStorage.removeItem('tokenPageActuality');
+    localStorage.removeItem('tokenPageNext');
+    localStorage.removeItem('PageNumerPageCat');
+    localStorage.removeItem('Paginas');
     this.store.dispatch(unSetDetailCatalogos());
     this.DetailCatalogos$.unsubscribe();
   }
@@ -223,6 +227,14 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     });
   }
 
+  verAtras = () => {
+    return !(JSON.parse(localStorage.getItem('PageNumerPageCat')) === 0)
+  }
+
+  veraAdelante = () => {
+    return !(localStorage.getItem('tokenPageNext') === 'null')
+  }
+
   transformDateOrString = (value, isDate) => {
     if (value === null || value === undefined) {
       return '';
@@ -272,13 +284,66 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
 
         this.ColumDinamicData = res;
 
-        this.store.dispatch(cargarDetailCatalogos());
+        this.cargarConInicialOPaginado();
       } else {
         this.store.dispatch(loadingCompleteDetailCatalogos());
         this.ejecucionesInexistentesModal();
         this.errorBack = true;
       }
     });
+  };
+
+  //-1 es a la izquierda y 1 es a la derecha
+  cargarConInicialOPaginado = (izquierdaOderecha = 0) => {
+    let tokenPageActuality = null;
+
+    if (izquierdaOderecha === 0) {
+      tokenPageActuality = localStorage.getItem('tokenPageActuality');
+
+      if (tokenPageActuality === 'null') {
+        tokenPageActuality = null;
+        localStorage.setItem('PageNumerPageCat', '0');
+      }
+
+      if (!tokenPageActuality) {
+        tokenPageActuality = null;
+        localStorage.setItem('PageNumerPageCat', '0');
+      }
+    }
+
+    if (izquierdaOderecha === 1) {
+      tokenPageActuality = localStorage.getItem('tokenPageNext');
+
+      let PageNumerPageCat =
+        JSON.parse(localStorage.getItem('PageNumerPageCat')) + 1;
+
+        this.paginaDetailCats = 1;
+
+      localStorage.setItem('PageNumerPageCat', PageNumerPageCat.toString());
+      localStorage.setItem('izquierdaOderecha', izquierdaOderecha.toString());
+    }
+
+    if (izquierdaOderecha === -1) {
+      tokenPageActuality = localStorage.getItem('tokenPageBefore');
+
+      if (tokenPageActuality === 'null') {
+        tokenPageActuality = null;
+      }
+
+      let PageNumerPageCat =
+        JSON.parse(localStorage.getItem('PageNumerPageCat')) - 1;
+
+      localStorage.setItem('PageNumerPageCat', PageNumerPageCat.toString());
+      localStorage.setItem('izquierdaOderecha', izquierdaOderecha.toString());
+    }
+
+    this.store.dispatch(cargarDetailCatalogos({ token: tokenPageActuality }));
+  };
+
+  verLabePaginado = (label) => {
+    let PageNumerPageCat = JSON.parse(localStorage.getItem('PageNumerPageCat'));
+
+    return parseInt(label) + PageNumerPageCat * 5;
   };
 
   makeFormsDinamic = () => {

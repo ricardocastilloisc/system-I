@@ -6,11 +6,12 @@ export const loadingDetailCatalogos = createAction('[DetailCatalogos] Loading De
 
 export const loadingCompleteDetailCatalogos = createAction('[DetailCatalogos] Loading CompleteDetailCatalogos');
 
-export const cargarDetailCatalogos = createAction('[DetailCatalogos] Cargar DetailCatalogos');
+export const cargarDetailCatalogos = createAction('[DetailCatalogos] Cargar DetailCatalogos',
+props<{token: any}>());
 
 export const caragarDetailCatalogosSucces = createAction(
   '[DetailCatalogos] Cargar DetailCatalogos Success',
-  props<{DetailCatalogos: any}>()
+  props<{DetailCatalogos: any, }>()
 )
 
 export const caragarDetailCatalogosError = createAction(
