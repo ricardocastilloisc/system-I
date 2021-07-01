@@ -10,7 +10,6 @@ import { CatalogosService } from '../../../../../services/catalogos.service';
   templateUrl: './catalogos.component.html',
   styleUrls: ['./catalogos.component.css'],
 })
-
 export class CatalogosComponent implements OnInit, OnDestroy {
   catalogos$: Subscription;
   AforesGens = [];
@@ -19,7 +18,11 @@ export class CatalogosComponent implements OnInit, OnDestroy {
   FondosSubs = [];
   GenericosGens = [];
 
-  constructor(private store: Store<AppState>, private router: Router, private catalogosSvc: CatalogosService) { }
+  constructor(
+    private store: Store<AppState>,
+    private router: Router,
+    private catalogosSvc: CatalogosService
+  ) {}
 
   ngOnDestroy(): void {
     this.catalogos$.unsubscribe();
@@ -74,6 +77,16 @@ export class CatalogosComponent implements OnInit, OnDestroy {
               });
             }
           });
+
+          if (this.AforesSubs.length === 0 || this.FondosSubs.length === 0) {
+            if (this.FondosSubs.length === 0) {
+              this.AforesGens = [...this.GenericosGens];
+            } else {
+              this.FondosGens = [...this.GenericosGens];
+            }
+
+            this.GenericosGens = [];
+          }
         }
       });
   }

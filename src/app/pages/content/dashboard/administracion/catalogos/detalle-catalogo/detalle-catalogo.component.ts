@@ -312,6 +312,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     }
 
     if (izquierdaOderecha === 1) {
+      this.store.dispatch(loadingDetailCatalogos());
       tokenPageActuality = localStorage.getItem('tokenPageNext');
 
       let PageNumerPageCat =
@@ -324,6 +325,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     }
 
     if (izquierdaOderecha === -1) {
+      this.store.dispatch(loadingDetailCatalogos());
       tokenPageActuality = localStorage.getItem('tokenPageBefore');
 
       if (tokenPageActuality === 'null') {
