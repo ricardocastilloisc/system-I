@@ -40,7 +40,6 @@ export class ProcesosService {
     });
     var endpoint = environment.API.endpoints.find((el) => el.name === idProceso)['endpoint'];
     var config = {
-      method: 'post',
       url: endpoint,
       headers: {
         'Authorization': 'Bearer ' + this.authService.getToken(),

@@ -35,7 +35,6 @@ export class InterfasesService {
       const header = new Headers();
       header.append('Authorization', 'Bearer ' + this.authService.getToken());
       const requestOptions = {
-        method: 'GET',
         headers: header
       };
       const res = await fetch(url, requestOptions);
@@ -58,7 +57,6 @@ export class InterfasesService {
       const header = new Headers();
       header.append('Authorization', 'Bearer ' + this.authService.getToken());
       const requestOptions = {
-        method: 'GET',
         headers: header
       };
       const res = await fetch(url, requestOptions);
