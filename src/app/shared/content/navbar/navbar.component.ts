@@ -32,9 +32,6 @@ declare var $: any;
 })
 export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   @HostListener('window:resize', ['$event'])
-  onResize() {
-    this.resizeMenuContent();
-  }
 
   DataUser$: Observable<Usuario>;
 
@@ -71,6 +68,9 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     navProceso: false,
     navAudiroria: false,
   };
+  onResize() {
+    this.resizeMenuContent();
+  }
 
   constructor(
     private authService: AuthService,
@@ -81,7 +81,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     private toastr: ToastrService,
     private api: APIService,
     private ProcesosService: ProcesosService
-  ) {}
+  ) { }
 
   clickNav = ({ target }) => {
     this.navClick[target.id] = !this.navClick[target.id];
@@ -112,7 +112,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.resizeMenuContent();
-    //this.getRuta();
   }
 
   arrayRuta = () => {
@@ -137,8 +136,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
         ArrayRuta.push(ruta);
       }
     });
-
-    //console.log('ArrayRuta', ArrayRuta)
     return ArrayRuta;
   };
 
@@ -146,7 +143,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     let nombreRuta = ArrayRuta.join('/').toString();
 
     let returnColor = '';
-    //console.log(nombreRuta);
     if (nombreRuta.includes('Administración')) {
       returnColor = 'verde';
     } else if (nombreRuta.includes('Auditoría')) {
@@ -319,7 +315,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
           if (prenegocios !== undefined) {
 
             this.NotificacionesService.obtenerListadoDeNotificaciones();
-            
+
             this.api
               .ListCATPERMISOS(
                 this.negocios,
@@ -338,14 +334,12 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
                           e['FLUJO'] ===
                           onUpdateSiaGenAudEstadoProcesosDev['INTERFAZ']
                       );
-                      //console.log('NotificacionesSubActivo', data)
-                      //console.log('arrayValidador', arrayValidador)
 
                       this.validarPantallaEnProcesos(data);
                       if (arrayValidador.length > 0) {
                         if (
                           onUpdateSiaGenAudEstadoProcesosDev[
-                            'ESTADO_EJECUCION'
+                          'ESTADO_EJECUCION'
                           ] === 'TERMINADO'
                         ) {
                           let tempNoticicaciones = JSON.parse(
@@ -363,7 +357,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
                                 onUpdateSiaGenAudEstadoProcesosDev
                               ) === 'EXITOSO'
                             ) {
-                              //console.log('abrirToass')
                               this.abrirToass(
                                 this.verEstado(
                                   onUpdateSiaGenAudEstadoProcesosDev
@@ -435,7 +428,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   };
 
   irAlProceso = (data: NOTIFICACION_INTERFACE) => {
-    //console.log("irAlProceso", data)
     const url = 'procesos/diurno/' + data.INTERFAZ;
     localStorage.setItem('notProcesos', 'true');
     this.store.dispatch(notificacionSelect({ notificacionSelect: data }));
@@ -443,8 +435,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
       this.eliminarNotificacion(data.ID_PROCESO);
     });
   };
-
-  //procesos/diurno  this.router.navigate(['/' + window.location.pathname + '/' + idProceso]); this.router.navigateByUrl(url);
 
   verEstado = (data: NOTIFICACION_INTERFACE) => {
     if (data.ETAPA_FINAL_ESTADO_FINAL) {
@@ -491,7 +481,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     let mensaje =
       '<div class="row justify-content-center align-items-center textoAddUpdateregistro"><div class="col-12 tamanioFont" ><img class="successRegistro"/>PROCESO ';
 
-    //mensaje = mensaje + 'Registro' 'exitoso';
     mensaje = mensaje + estado + '</div> <div class="col-12 tamanioFont">';
 
     mensaje = mensaje + msn;
@@ -524,12 +513,10 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   obtenerArea(): any {
-    //console.log('obtenerArea');
     let area: String = '';
     this.store
       .select(({ usuario }) => usuario.area)
       .subscribe((res) => {
-        //console.log(res);
         area = res;
       });
     return area;
@@ -573,25 +560,18 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
         .subscribe((res) => {
           if (res) {
             idPantalla = res.ID_PROCESO;
-            //console.log('AUDGENEJECUCIONESPROCESO', res);
             if (data.onUpdateSiaGenAudEstadoProcesosDev.ID_PROCESO) {
               idNotificacion =
                 data.onUpdateSiaGenAudEstadoProcesosDev.ID_PROCESO;
-              //console.log('data', data);
               if (idPantalla === idNotificacion) {
-                //console.log('data', this.verEstado(data));
                 let estado = this.estadoActualizar(
                   data.onUpdateSiaGenAudEstadoProcesosDev
                 );
-                console.log('estado', estado);
-                //if (this.verEstado(data.onUpdateSiaGenAudEstadoProcesosDev) !== '') {
                 if (estado !== null) {
-                  //console.log('data', this.verEstado(data));
                   const message = {
                     idProceso: idPantalla,
                     estado: 'CONTINUAR',
                   };
-                  // send message to subscribers via observable subject
                   this.ProcesosService.sendUpdate(JSON.stringify(message));
                 }
               }

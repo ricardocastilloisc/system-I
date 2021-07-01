@@ -5,7 +5,6 @@ import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import * as d3 from 'd3';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ERole } from 'src/app/validators/roles';
 import { EArea } from './../../../../../validators/roles';
 import { Observable, of, Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
@@ -23,11 +22,6 @@ declare var $: any;
 export class InterfasesComponent implements OnInit, OnDestroy {
   @ViewChild('modalEstado') templateRef: TemplateRef<any>;
 
-  /*-- ************************************** -->
-  <!-- ************************************** -->
-  <!-- ********* F I L T R O S ************** -->
-  <!-- ************************************** -->
-  <!-- ************************************** -*/
   maxDate: Date = new Date();
   filtroForm: FormGroup;
   dropdownListFiltroTipo = [];
@@ -40,11 +34,6 @@ export class InterfasesComponent implements OnInit, OnDestroy {
   SettingsFiltroDeProceso: IDropdownSettings = {};
   selectedItemsFiltroProceso = [];
 
-  /*-- ************************************** -->
-  <!-- ************************************** -->
-  <!-- ********* D A T O S ****************** -->
-  <!-- ************************************** -->
-  <!-- ************************************** -*/
   CATPROCESOS$: Observable<CATPROCESOS_INTERFACE[]>;
   CATPROCESOS: CATPROCESOS_INTERFACE[];
   dataOriginal: any = [];
@@ -64,11 +53,6 @@ export class InterfasesComponent implements OnInit, OnDestroy {
   datosAforeFondosNocturno: any[];
   datosLanzamientoNocturno: any[];
 
-  /*-- ************************************** -->
-  <!-- ************************************** -->
-  <!-- ********* B A N D E R A S ************ -->
-  <!-- ************************************** -->
-  <!-- ************************************** -*/
   detalleDiurno = false;
   detalleNocturno = false;
   flagDatos: boolean;
@@ -86,11 +70,7 @@ export class InterfasesComponent implements OnInit, OnDestroy {
   item = {
     name: 'Ejecuciones'
   };
-  /*-- ************************************** -->
-  <!-- ************************************** -->
-  <!-- ********* G R A F I C O S************* -->
-  <!-- ************************************** -->
-  <!-- ************************************** -*/
+
   explodeSlices = false;
   gradient = false;
   showLegend = true;
@@ -134,11 +114,6 @@ export class InterfasesComponent implements OnInit, OnDestroy {
     private store: Store<AppState>) {
   }
 
-  /*-- ************************************** -->
-  <!-- ************************************** -->
-  <!-- *** A C C I O N E S _ C O M U N E S ** -->
-  <!-- ************************************** -->
-  <!-- ************************************** -*/
   initData = () => {
     this.datosAforeFondos = [];
     this.datosLanzamiento = [];
@@ -293,11 +268,6 @@ export class InterfasesComponent implements OnInit, OnDestroy {
     }, 1);
   }
 
-  /*-- ************************************** -->
-  <!-- ************************************** -->
-  <!-- ******** O N I N I T ***************** -->
-  <!-- ************************************** -->
-  <!-- ************************************** -*/
   ngOnInit(): void {
     this.spinner.show();
     this.expresion = this.expresionDias;
@@ -367,7 +337,6 @@ export class InterfasesComponent implements OnInit, OnDestroy {
         fecha_fin: fechaFin.toISOString().split('T')[0]
       };
       this.interfasesService.getProblemas(filtro).then(data => {
-        console.log('problemas data', data)
         if (data === undefined) {
           this.mensajeError = 'Ocurrió un error, contacte con soporte.';
           this.openModal();
@@ -389,11 +358,6 @@ export class InterfasesComponent implements OnInit, OnDestroy {
     }
   }
 
-  /*-- ************************************** -->
-  <!-- ************************************** -->
-  <!-- **** A C C I O N F I L T R O S ******* -->
-  <!-- ************************************** -->
-  <!-- ************************************** -*/
   aplicarFiltro(): void {
     const pantalla = localStorage.getItem('tipoPantalla');
     const filtro = Object.create({});
@@ -504,11 +468,6 @@ export class InterfasesComponent implements OnInit, OnDestroy {
     }
   }
 
-  /*-- ************************************** -->
-  <!-- ************************************** -->
-  <!-- *** M O S T R A R _ G R A F I C O S ** -->
-  <!-- ************************************** -->
-  <!-- ************************************** -*/
   accionMinimizarDiurno(): void {
     if (this.flagMinimizarDiurno === false) {
       this.datosAforeFondos = [];
@@ -559,7 +518,6 @@ export class InterfasesComponent implements OnInit, OnDestroy {
     const value =
       sumBy === 'Size' ? sumChildren(children) : countChildren(children);
     this.treemap = [children];
-    // this.treemapPath = [{ name: 'Top', children: [children], value }];
     this.treemapPath = [];
     function sumChildren(node: any): any {
       return (node.value = node.size || d3.sum(node.children, sumChildren));

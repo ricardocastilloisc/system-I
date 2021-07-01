@@ -26,7 +26,6 @@ export class InterfasesService {
   constructor(private authService: AuthService, private httpClient: HttpClient) { }
 
   getDatos = async (filtros: any) => {
-    // console.log('getDatos filtros', filtros);
     try {
       // tslint:disable-next-line: one-variable-per-declaration
       const api = environment.API.endpoints.find((el) => el.name === 'auditoria').endpoint;
@@ -38,9 +37,7 @@ export class InterfasesService {
         headers: header
       };
       const res = await fetch(url, requestOptions);
-      // console.log(res.ok);
       const data = await res.json();
-      // console.log('getData data', data);
       return data;
     } catch (e) {
       console.error(e);
@@ -48,7 +45,6 @@ export class InterfasesService {
   }
 
   getProblemas = async (filtros: any) => {
-    // console.log('getProblemas filtros', filtros);
     try {
       // tslint:disable-next-line: one-variable-per-declaration
       const api = environment.API.endpoints.find((el) => el.name === 'auditoria').endpoint + '/problemas';
@@ -60,10 +56,8 @@ export class InterfasesService {
         headers: header
       };
       const res = await fetch(url, requestOptions);
-      // console.log(res.ok);
       let data = await res.json();
-      // console.log('getProblemas data', data);
-      data = data.sort(function (a, b) { return new Date(b.fecha).getTime() - new Date(a.fecha).getTime()});
+      data = data.sort(function (a, b) { return new Date(b.fecha).getTime() - new Date(a.fecha).getTime() });
       return data;
     } catch (e) {
       console.error(e);

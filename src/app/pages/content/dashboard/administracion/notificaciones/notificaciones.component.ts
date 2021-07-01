@@ -6,7 +6,6 @@ import { PanelNotificacionesService } from '../../../../../services/panel-notifi
 import { AUDGENUSUARIO_INTERFACE } from '../../../../../model/panelNotificaciones/panelnotificaciones.model';
 import { NgxSpinnerService } from 'ngx-spinner';
 import * as moment from 'moment';
-import { filter } from 'rxjs/operators';
 
 const cronstrue = require('cronstrue/i18n');
 const cronAWS = require('aws-cron-parser');
@@ -117,7 +116,7 @@ export class NotificacionesComponent implements OnInit {
     private modalService: NgbModal,
     private spinner: NgxSpinnerService,
     private PanelNotificacionesService: PanelNotificacionesService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     let cron;
@@ -139,28 +138,15 @@ export class NotificacionesComponent implements OnInit {
     } else {
       cronFlag = 'invalido';
     }
-    console.log(
-      cronString,
-      ' es ',
-      cronFlag,
-      '. La siguiente ejecucion es ',
-      occurrence
-    );
-
     this.initValuesPanel();
   }
 
   abrirToass = () => {
     let mensaje =
       '<div class="row justify-content-center align-items-center textoAddUpdateregistro"><img class="successRegistro"/>';
-
-    //mensaje = mensaje + 'Registro' 'exitoso';
     mensaje = mensaje + 'Registro';
-
     mensaje = mensaje + ' actualizado ';
-
     mensaje = mensaje + '</div>';
-
     this.toastr.show(mensaje, null, {
       timeOut: 1500,
       toastClass:

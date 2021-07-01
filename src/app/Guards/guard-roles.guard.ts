@@ -19,35 +19,16 @@ export class GuardRolesGuard implements CanActivate {
   ): Observable<boolean> | Promise<boolean> | boolean {
     return Auth.currentAuthenticatedUser()
       .then((result: CognitoUser) => {
-
-        /*
-            let flagValidate = false;
-    if(!User.attributes.hasOwnProperty('custom:rol')){
-      return flagValidate;
-    }else {
-      if (roles.includes(User.attributes['custom:rol'])){
-        flagValidate = true;
-      }
-    }
-    return flagValidate;
-     */
         if (result.getSignInUserSession().isValid()) {
           let flagRoute = false;
           let usuario = Usuario.fromAmplify(new User(result));
-          
-          if(!usuario.attributes.hasOwnProperty('custom:rol')){
+          if (!usuario.attributes.hasOwnProperty('custom:rol')){
             flagRoute = false;
           }else {
             if (route.data.roles.includes(usuario.attributes['custom:rol'])){
               flagRoute = true;
             }
           }
-
-          /*Usuario.fromAmplify(new User(result)).groups.forEach((element) => {
-            if (route.data.roles.includes(element)) {
-              flagRoute = true;
-            }
-          });*/
           if (!flagRoute) {
             this._router.navigate(['/']);
             return false;

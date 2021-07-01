@@ -162,7 +162,6 @@ export class ProcesosComponent implements OnInit, OnDestroy {
 
     }
 
-    //console.log(this.selectedItemsFiltroAccion)
     if (this.selectedItemsFiltroAccion.length !== 0) {
       let arrayFiltroAccion = [];
       this.selectedItemsFiltroAccion.forEach((e) => {
@@ -234,21 +233,15 @@ export class ProcesosComponent implements OnInit, OnDestroy {
       this.itemsAcciones.sort();
       this.itemsCorreos.sort();
       if (res === null) {
-        //console.log("response", res)
       }
       else {
         let resp = res.slice().sort(function (a, b) { return new Date(b.FECHA).getTime() - new Date(a.FECHA).getTime() })
-        //console.log("response slice", resp)
         this.ListadoOriginal = resp;
       }
       this.ListadoPantalla = this.ListadoOriginal;
       this.initSelects();
     })
     this.store.dispatch(LoadAUDGENUSUARIOS({ consult: { MODULO: 'PROCESOS' } }));
-    /*
-    this.api.ListAUDGENUSUARIOS('PROCESOS').then(res => {
-      console.log("Response ListAUDGENUSUARIOS", res)
-    })*/
 
   }
 
@@ -257,7 +250,6 @@ export class ProcesosComponent implements OnInit, OnDestroy {
   }
 
   openModal(objetoDetalle: AUDGENUSUARIO_INTERFACE): void {
-    //console.log("objetoDetalle", objetoDetalle)
     this.detalleCambios = {
       idProceso: objetoDetalle.PROCESOS.ID_PROCESO,
       sigla: objetoDetalle.PROCESOS.SIGLA,
@@ -268,7 +260,6 @@ export class ProcesosComponent implements OnInit, OnDestroy {
       estado: objetoDetalle.PROCESOS.ESTADO,
       descripcion: objetoDetalle.PROCESOS.DESCRIPCION,
     };
-    //console.log("detalleCambios", this.detalleCambios)
     this.verModal = true;
 
   }
@@ -321,13 +312,11 @@ export class ProcesosComponent implements OnInit, OnDestroy {
     const url = 'procesos/diurno/' + detalleCambios.sigla;
     localStorage.setItem('audProcesos', JSON.stringify(detalleCambios));
     this.router.navigateByUrl(url).then(() => {
-      //console.log("navigateByUrl", detalleCambios.proceso)
-    })
+    });
 
   }
 
   valiarIdProceso(detalleCambios: any): boolean {
-    //console.log('idProceso', detalleCambios.idProceso)
     let flag = false;
     if (detalleCambios.idProceso) {
       if (detalleCambios.idProceso.length > 0) {

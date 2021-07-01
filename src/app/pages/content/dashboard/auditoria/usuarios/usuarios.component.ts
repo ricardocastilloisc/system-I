@@ -2,17 +2,15 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LoadAUDGENUSUARIOS, UnsetAUDGENUSUARIO } from './../../../../../ReduxStore/actions/usuarios/AUDGENUSUARIOS.actions';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../../ReduxStore/app.reducers';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { AUDGENUSUARIO_INTERFACE } from '../../../../../model/AUDGENUSUARIO.model';
 import { APIService } from '../../../../../API.service';
 import { map } from 'rxjs/operators';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { NgxSpinnerService } from 'ngx-spinner';
-
 import { ValorFiltrarAcciones } from 'src/app/validators/opcionesDeFiltroAccionesAuditoriaUsuariios';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
 declare var $: any;
 
 @Component({
@@ -44,11 +42,9 @@ export class UsuariosComponent implements OnInit {
   SettingsFiltroDeCorreos: IDropdownSettings = {};
   selectedItemsFiltroCorreos = [];
 
-
   dropdownListFiltroNombres = [];
   SettingsFiltroDeNombres: IDropdownSettings = {};
   selectedItemsFiltroNombres = [];
-
 
   dropdownListFiltroAccion = [];
   SettingsFiltroDeAccion: IDropdownSettings = {};
@@ -63,7 +59,6 @@ export class UsuariosComponent implements OnInit {
     private fb: FormBuilder,
     private spinner: NgxSpinnerService
   ) { }
-
 
   AUDGENUSUARIOS$: Subscription;
 
@@ -134,7 +129,6 @@ export class UsuariosComponent implements OnInit {
       searchPlaceholderText: 'Buscar Correo electrónico',
     };
 
-
   }
 
   limpiarFiltro = () => {
@@ -153,18 +147,13 @@ export class UsuariosComponent implements OnInit {
     let FiltrarCorreo = null;
     let FiltrarFecha = this.filtroAuditoriaUsuariosForm.get('filtroFecha').value;
 
-    console.log(this.selectedItemsFiltroNombres)
-
     if (this.selectedItemsFiltroNombres.length !== 0) {
       let arrayFiltroNombres = [];
       this.selectedItemsFiltroNombres.forEach((e) => {
         arrayFiltroNombres.push(e.item_id);
       });
       FiltrarNombre = arrayFiltroNombres;
-
-
     }
-
 
     if (this.selectedItemsFiltroAccion.length !== 0) {
       let arrayFiltroAccion = [];
@@ -188,18 +177,13 @@ export class UsuariosComponent implements OnInit {
       FiltrarFecha
     )
 
-
     setTimeout(() => {
       this.spinner.hide();
     }, 300);
   };
 
   ngOnInit(): void {
-
-
     this.initSelects();
-
-    //console.log('Acciones: ', this.dropdownListFiltroAccion)
     this.AUDGENUSUARIOS$ = this.store.select(
       ({ AUDGENUSUARIOS }) => AUDGENUSUARIOS.AUDGENUSUARIOS
     ).pipe(map(res => {
@@ -237,25 +221,13 @@ export class UsuariosComponent implements OnInit {
           this.dropdownListFiltroNombres = [...new Set(arrayNombres)];
         }
 
-
-
       }
 
       this.ListadoUsuariosPantalla = usuarios;
       this.listadoOriginalUsuarios = usuarios;
 
     })
-
-    // this.store.select(
-    //   ({ AUDGENUSUARIOS }) => AUDGENUSUARIOS.AUDGENUSUARIOS
-    // ).subscribe(res => { console.log(res)})
-
-
     this.store.dispatch(LoadAUDGENUSUARIOS({ consult: { MODULO: 'USUARIOS' } }));
-
-    // this.api.ListAUDGENUSUARIOS('USUARIOS').then(res => {
-    //   console.log(res)
-    // })
   }
 
   cambiarEtiquetaSeleccionadaGeneral(elemento) {
@@ -270,15 +242,11 @@ export class UsuariosComponent implements OnInit {
     return this.verModal;
   }
 
-
   ocultarModal(): void {
     this.verModal = false;
   }
 
   openModal(objetoDetalle: AUDGENUSUARIO_INTERFACE): void {
-
-    console.log(objetoDetalle)
-
     this.itemsTabla = [];
     const accion = objetoDetalle.PERMISOS_USUARIOS[0].ACCION;
     let valores = [];
@@ -295,17 +263,9 @@ export class UsuariosComponent implements OnInit {
       usuario: objetoDetalle.USUARIO.NOMBRE + ' ' + objetoDetalle.USUARIO.APELLIDO_PATERNO,
       fecha: objetoDetalle.FECHA
     };
-
-
-
     this.itemsValor = [];
     this.itemsAntes = [];
     this.itemsDespues = [];
-
-
-
-
-    //console.log("Entrando al modal", objetoDetalle)
 
     if (cambiosAntes !== null) {
       cambiosAntes = cambiosAntes.replace('{', '');
@@ -317,9 +277,7 @@ export class UsuariosComponent implements OnInit {
         resAntes.push(valor[1]);
       }
       this.itemsAntes = resAntes;
-      //console.log("cambiosAntes", arregloAntes)
     }
-
 
     if (cambiosAntes !== null) {
       cambiosAntes = cambiosAntes.replace('{', '');
@@ -343,12 +301,9 @@ export class UsuariosComponent implements OnInit {
 
     } else {
       const getValor = cambiosDespues.split(', ');
-      console.log('getValor: ', getValor)
       for (let i in getValor) {
-
         if (getValor) {
           let valor = getValor[i].toString().split('=');
-          //console.log('Valor',valor[0])          
           valores.push(valor[0]);
         }
       }
@@ -359,19 +314,9 @@ export class UsuariosComponent implements OnInit {
     }
 
     if (valores !== null) {
-      console.log('Valores: ', valores)
       for (let i in valores) {
         if (valores) {
           if (arregloAntes.length > 0) {
-
-            // if(!arregloAntes.find(e => e.includes(valores[i])).split('=')[1]){
-            //   valorAntes = ''
-            // }else
-            // console.log('Valores i: ', valores[i])
-            // console.log(arregloAntes.length)
-
-            // console.log('Que es este valor: ', arregloAntes.find(e => e.includes(valores[i])).split('='))
-
             valorAntes = arregloAntes.find(e => e.includes(valores[i])) ? arregloAntes.find(e => e.includes(valores[i])).split('=')[1] : '';
           } else {
             valorAntes = '';
@@ -393,55 +338,8 @@ export class UsuariosComponent implements OnInit {
     }
     this.itemsTabla = tabla;
 
-    console.log(this.itemsTabla)
     this.verModal = true;
-
-    console.log(this.verModal)
-
-    // if (cambiosDespues !== null) {
-    //   cambiosDespues = cambiosDespues.replace('{', '');
-    //   cambiosDespues = cambiosDespues.replace('}', '');
-    //   let arregloDespues = cambiosDespues.split(",");
-    //   let resDespues = [];
-    //   for (let i in arregloDespues) {
-    //     let valor = arregloDespues[i].toString().split("=");
-    //     resDespues.push(valor[1]);
-    //   }
-    //   this.itemsDespues = resDespues;
-    //   //console.log("cambiosDespues", arregloDespues)
-    // }
-
-    // if (cambiosAntes !== null) {
-    //   let getValor = cambiosAntes.split(",");
-    //   let resultado = [];
-    //   for (let i in getValor) {
-    //     let valor = getValor[i].toString().split("=");
-    //     resultado.push(valor[0]);
-    //   }
-    //   this.itemsValor = resultado;
-    //   //console.log("result", resultado)
-    // }
-    // else if (cambiosDespues !== null) {
-    //   let getValor = cambiosDespues.split(",");
-    //   let resultado = [];
-    //   for (let i in getValor) {
-    //     let valor = getValor[i].toString().split("=");
-    //     resultado.push(valor[0]);
-    //   }
-    //   this.itemsValor = resultado;
-    //   //console.log("result", resultado)
-    // }
-
-
-    // // console.log("itemsValor", this.itemsValor)
-    // // console.log("itemsAntes", this.itemsAntes)
-    // // console.log("itemsDespues", this.itemsDespues)
-
-    // this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
   }
-
-
-
 
   verPaginado = () => {
     if (this.ListadoUsuariosPantalla) {
@@ -468,7 +366,6 @@ export class UsuariosComponent implements OnInit {
       response = arrayTempPermiso;
     }
 
-    console.log('Filtro Acción: ', FiltrarAccion)
     if (FiltrarAccion != null) {
       let arrayTempPermiso = [];
       FiltrarAccion.forEach((FiltrarAccion) => {
@@ -490,9 +387,6 @@ export class UsuariosComponent implements OnInit {
       });
       response = arrayTempPermiso;
     }
-
-    console.log(FiltrarFecha)
-
     if (FiltrarFecha != null) {
       let arrayTempFecha = [];
       arrayTempFecha = response.filter((e) => e.FECHA.includes(FiltrarFecha))
@@ -500,9 +394,7 @@ export class UsuariosComponent implements OnInit {
     }
 
     const uniqueArr = [... new Set(response.map(data => data.ID))]
-    //console.log(uniqueArr)
     return response;
   }
-
 
 }

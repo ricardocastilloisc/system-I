@@ -13,15 +13,15 @@ import { AuditoriaService } from './auditoria.service';
 })
 
 export class ProcesosService {
-  
-  private subjectName = new Subject<any>(); //need to create a subject
 
-  sendUpdate(message: string) { //the component that wants to update something, calls this fn
-    this.subjectName.next({ text: message }); //next() will feed the value in Subject
+  private subjectName = new Subject<any>();
+
+  sendUpdate(message: string) {
+    this.subjectName.next({ text: message });
   }
 
-  getUpdate(): Observable<any> { //the receiver component calls this function 
-    return this.subjectName.asObservable(); //it returns as an observable to which the receiver funtion will subscribe
+  getUpdate(): Observable<any> {
+    return this.subjectName.asObservable();
   }
 
   constructor(
@@ -32,14 +32,13 @@ export class ProcesosService {
   iniciarProceso(idProceso: string, correoUsuario: string, rolUsuario: string): any {
     let response;
     let uuid = uuidv4();
-    var axios = require('axios');
-    var data = JSON.stringify({
-      "rol": rolUsuario,
-      "correo": correoUsuario,
-      "uuid": uuid
+    let data = JSON.stringify({
+      'rol': rolUsuario,
+      'correo': correoUsuario,
+      'uuid': uuid
     });
-    var endpoint = environment.API.endpoints.find((el) => el.name === idProceso)['endpoint'];
-    var config = {
+    let endpoint = environment.API.endpoints.find((el) => el.name === idProceso).endpoint;
+    let config = {
       url: endpoint,
       headers: {
         'Authorization': 'Bearer ' + this.authService.getToken(),
@@ -47,13 +46,12 @@ export class ProcesosService {
       },
       data: data
     };
-    var headers = {
+    let headers = {
       'Authorization': 'Bearer ' + this.authService.getToken(),
       'Content-Type': 'application/json'
-    }
+    };
 
     return this.http.post(endpoint, config.data, { headers }).toPromise().then(function (response) {
-      //console.log("Respuesta llamado proceso",response)
       return response = {
         codigo: 'EXITO',
         descripcion: 'La solicitud fue exitosa.',
@@ -66,7 +64,6 @@ export class ProcesosService {
           descripcion: error.message
         };
       });
-    ;
   }
 
   generarAuditoria(estado: string, resultado: string, idProceso?): void {
@@ -111,14 +108,12 @@ export class ProcesosService {
         sigla: proceso.sigla,
         nombre: proceso.nombre,
         descripcion: resultado,
-        accion: "INICIAR",
+        accion: 'INICIAR',
         estado: estado,
         tipo: tipo
       },
     };
-    //console.log("payload", payload);
     const payloadString = JSON.stringify(payload);
-    //console.log("payloadString", payloadString);
     this.auditoria.enviarBitacoraUsuarios(payloadString);
     localStorage.removeItem('proceso');
     localStorage.removeItem('tipoProceso');

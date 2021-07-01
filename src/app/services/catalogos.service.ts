@@ -12,9 +12,7 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class CatalogosService {
-  UrlCatalogos = environment.API.endpoints.find(
-    (el) => el.name === 'catalogos'
-  )['endpoint'];
+  UrlCatalogos = environment.API.endpoints.find((el) => el.name === 'catalogos').endpoint;
 
   constructor(
     private httpClient: HttpClient,
@@ -24,11 +22,6 @@ export class CatalogosService {
   ) {}
   getCatalogos = () => {
     const area = localStorage.getItem('area');
-    /*if (area.split(',').includes(EArea.Soporte)) {
-          return this.httpClient.get(this.UrlCatalogos + 'catalogos', {
-            headers: this.authServcie.userHeaders(),
-          });
-        }*/
     let QueryParams = new HttpParams();
     QueryParams = QueryParams.append(
       'negocio',
@@ -39,7 +32,7 @@ export class CatalogosService {
       params: QueryParams,
       headers: this.authServcie.userHeaders(),
     });
-  };
+  }
 
   structureCat = () => {
     let array = null;
@@ -135,7 +128,6 @@ export class CatalogosService {
       }, 1000);
     });
   };
-
 
   setValoresPaginado = (token, nextToken) => {
     let tokenPageActuality = localStorage.getItem('tokenPageActuality');

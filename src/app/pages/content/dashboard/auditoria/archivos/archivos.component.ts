@@ -11,17 +11,10 @@ import { IDropdownSettings } from 'ng-multiselect-dropdown';
 export class ArchivosComponent implements OnInit {
 
   maxDate: Date = new Date();
-
   filtroFecha = new FormControl(new Date(), []);
-
   SettingsProceso: IDropdownSettings = {};
-
-
   dropdownListProceso = [];
-
   selectedItemsProceso = [];
-
-
 
   constructor() { }
 
@@ -39,12 +32,6 @@ export class ArchivosComponent implements OnInit {
       itemsShowLimit: 3,
       searchPlaceholderText: 'Buscar Proceso',
     };
-  }
-
-
-  valor = () =>{
-
-    console.log(this.filtroFecha.value)
   }
 
 }

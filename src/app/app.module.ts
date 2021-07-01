@@ -35,9 +35,6 @@ import { OrdenasPkPipe } from './pipes/ordenas-pk.pipe';
 // registrar los locales con el nombre que quieras utilizar a la hora de proveer
 registerLocaleData(localeMX, 'es-MX');
 
-
-
-
 @NgModule({
   declarations: [AppComponent, LoginComponent],
   imports: [
@@ -47,7 +44,6 @@ registerLocaleData(localeMX, 'es-MX');
     CommonModule,
     AppRoutingModule,
     HttpClientModule,
-    /* configure app with AmplifyUIAngularModule */
     AmplifyUIAngularModule,
     ToastrModule.forRoot(
       {

@@ -10,18 +10,16 @@ import { CatalogosService } from '../../../../../services/catalogos.service';
   templateUrl: './catalogos.component.html',
   styleUrls: ['./catalogos.component.css'],
 })
+
 export class CatalogosComponent implements OnInit, OnDestroy {
   catalogos$: Subscription;
-
   AforesGens = [];
   AforesSubs = [];
-
   FondosGens = [];
   FondosSubs = [];
-
   GenericosGens = [];
 
-  constructor(private store: Store<AppState>, private router: Router, private catalogosSvc: CatalogosService) {}
+  constructor(private store: Store<AppState>, private router: Router, private catalogosSvc: CatalogosService) { }
 
   ngOnDestroy(): void {
     this.catalogos$.unsubscribe();
@@ -39,21 +37,14 @@ export class CatalogosComponent implements OnInit, OnDestroy {
       .subscribe((res) => {
         this.AforesGens = [];
         this.AforesSubs = [];
-
         this.FondosGens = [];
         this.FondosSubs = [];
-
         this.GenericosGens = [];
-
         if (res) {
           res.forEach((e) => {
             if (e.INTERFAZ === 'GEN') {
               this.GenericosGens.push(e);
             } else {
-
-              // console.log(e.NEGOCIO);
-
-              // console.log(e.NEGOCIO.split(','))
               e.NEGOCIO.split(',').forEach((elementd) => {
                 if (elementd === 'AFORE') {
                   let index = this.AforesSubs.findIndex(
@@ -68,7 +59,6 @@ export class CatalogosComponent implements OnInit, OnDestroy {
                     this.AforesSubs[index].SUBMENUS.push(e);
                   }
                 } else {
-                  // console.log('')
                   let index = this.FondosSubs.findIndex(
                     (x) => x.INTERFAZ === e.INTERFAZ
                   );

@@ -30,7 +30,6 @@ import { DatePipe } from '@angular/common';
 
 export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
 
-
   @ViewChild('modalEstado') templateRef: TemplateRef<any>;
 
   Areas = [
@@ -40,7 +39,6 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
     EArea.Tesoreria,
     EArea.Soporte
   ];
-
 
   public createForm: FormGroup;
 
@@ -119,18 +117,14 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
     this.actualPage = 1;
     this.DataUser$ = this.store.select(({ usuario }) => usuario.user);
 
-
     this.store.select(({ usuario }) => usuario.user).subscribe(res => { this.DataUser = res });
 
     this.area = this.obtenerArea();
-
-    //console.log("Negocios", this.DataUser.attributes["custom:negocio"].split(','))
     this.tipo = this.rutaActiva.snapshot.params.tipo;
 
-    this.negocios = this.DataUser.attributes["custom:negocio"].split(',')
+    this.negocios = this.DataUser.attributes['custom:negocio'].split(',')
 
     this.negocios = this.negocios.map(negocio => { return negocio.toUpperCase() })
-
 
     let bodyProcesos = {
       filter: { TIPO: { eq: this.tipo.toUpperCase() } },
@@ -138,33 +132,18 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
     }
 
     let bodyPermisos = {
-      NEGOCIOS: this.negocios, AREA: this.area, ROL: this.DataUser.attributes["custom:rol"].toUpperCase()
+      NEGOCIOS: this.negocios, AREA: this.area, ROL: this.DataUser.attributes['custom:rol'].toUpperCase()
     }
-
 
     this.CATPERMISOS$ = this.store.select(
       ({ CATPERMISOS }) => CATPERMISOS.CATPERMISOS
     )
 
-    // this.store.select(
-    //   ({ CATPERMISOS }) => CATPERMISOS.CATPERMISOS
-    // ).subscribe(res => this.CATPERMISOS = res)
-
-
-    //this.api.ListCATPERMISOS(this.negocios, this.area, this.DataUser.attributes["custom:rol"].toUpperCase()).then(res => console.log('resultado', res))
-
     this.store.dispatch(LoadCATPROCESOS({ consult: bodyProcesos }));
-
-
-
-    // this.store.select(
-    //   ({ CATPROCESOS }) => CATPROCESOS.CATPROCESOS
-    // ).subscribe( res => this.CATPROCESOS = res)
 
     this.CATPROCESOS$ = this.store.select(
       ({ CATPROCESOS }) => CATPROCESOS.CATPROCESOS
     )
-
 
     this.store.dispatch(LoadCATPERMISOS({ consult: bodyPermisos }));
 
@@ -173,8 +152,6 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
   obtenerProcesos(catProcesos: Array<CATPROCESOS_INTERFACE>, catPermisos: Array<CATPERMISOS_INTERFACE>) {
 
     let tempArray = new Array()
-    //console.log(catProcesos)
-    //console.log(catPermisos)
 
     catProcesos.forEach(proceso => {
 
@@ -182,11 +159,11 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
         if (permiso.FLUJO == proceso.PROCESO)
 
           tempArray.push({
-            "DESCRIPCION": proceso.DESCRIPCION,
-            "PROCESO": proceso.PROCESO,
-            "DETENER": permiso.PROCESOS.DETENER,
-            "INICIAR": permiso.PROCESOS.INICIAR,
-            "MONITOREAR": permiso.PROCESOS.MONITOREAR
+            'DESCRIPCION': proceso.DESCRIPCION,
+            'PROCESO': proceso.PROCESO,
+            'DETENER': permiso.PROCESOS.DETENER,
+            'INICIAR': permiso.PROCESOS.INICIAR,
+            'MONITOREAR': permiso.PROCESOS.MONITOREAR
           })
       }
 
@@ -195,15 +172,11 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
     }
 
     )
-    //console.log('tempArray', tempArray)
 
     this.PROCESOS = tempArray;
 
     return true
   }
-
-
-
 
   obtenerArea(): string {
     let arrayTempArea = [];
@@ -219,14 +192,12 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
     })
     if (arrayTempArea.length > 0)
       return arrayTempArea[0].toUpperCase()
-    else "N/D"
-
+    else 'N/D'
 
   }
 
   setTipo(tipo: string): void {
-    //console.log("setDiurnos", tipo);
-    localStorage.setItem("tipoProceso", tipo);
+    localStorage.setItem('tipoProceso', tipo);
   };
 
   botonActivado = (parametocomparar: string): boolean => {
@@ -245,7 +216,6 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
   }
 
   openModal(content, nombreProceso, descripcionProceso) {
-    //console.log("nombreProceso", nombreProceso, "descripcionProceso", descripcionProceso);
 
     let proceso = {
       sigla: nombreProceso,
@@ -262,22 +232,16 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
     this.modalService.open(this.templateRef, { ariaLabelledBy: 'modal-basic-title' });
   }
 
-
   async inciarProceso(correo: string, area: string) {
 
-    //console.log("inciarProceso", this.procesoEjecutar)
     let CATESTADOS;
     let todayDate = new Date()
     let fechaInicio = new Date();
     fechaInicio.setHours(0, 0, 0, 0);
     this.authService.refreshToken();
 
-    // console.log('FechaInicio: ', fechaInicio)
-    // console.log('FechaInicioUTC: ', fechaInicio.toISOString())
     let fechaFin = new Date();
     fechaFin.setHours(23, 59, 59, 999);
-
-    //console.log(this.datePipe.transform(todayDate, "dd-MM-yyyy"))
 
     this.spinner.show();
 
@@ -290,26 +254,15 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
       this.CATESTADOS = res.items.slice().sort(function (a, b) { return new Date(b.FECHA_ACTUALIZACION).getTime() - new Date(a.FECHA_ACTUALIZACION).getTime() })
 
     })
-
-
-
-    //dconsole.log('que hay aqui ', this.CATESTADOS)
-
-
-
-    //console.log(this.CATESTADOS.length)
     if (this.CATESTADOS[0]?.ESTADO_EJECUCION === 'TERMINADO' || this.CATESTADOS.length === 0) {
       let idEjecucion = uuidv4();
       this.authService.refreshToken();
-      //console.log("this.procesoEjecutar", this.procesoEjecutar, correo, area, idEjecucion)
       try {
         const response = await this.serviciosProcesos.iniciarProceso(this.procesoEjecutar, correo, area)
-        //console.log('response', response);
         if (response.codigo == 'EXITO') {
           this.spinner.hide();
-          this.modalMensaje("modalEstado", "Se inicio el proceso")
-          //console.log("Enviar Bitacora Exito");
-          this.serviciosProcesos.generarAuditoria("EXITO", "Se inició el proceso", response.idProceso);
+          this.modalMensaje('modalEstado', 'Se inicio el proceso')
+          this.serviciosProcesos.generarAuditoria('EXITO', 'Se inició el proceso', response.idProceso);
         } else if (response.descripcion.includes('401')) {
           this.spinner.hide();
           this.modalService.dismissAll();
@@ -317,22 +270,18 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
         }
         else {
           this.spinner.hide();
-          //console.log(response);
-          this.modalMensaje("modalEstado", "Error al ejecutar proceso: " + response.descripcion);
-          //console.log("Enviar Bitacora Fallo");
-          this.serviciosProcesos.generarAuditoria("FALLO", response.descripcion, null);
+          this.modalMensaje('modalEstado', 'Error al ejecutar proceso: ' + response.descripcion);
+          this.serviciosProcesos.generarAuditoria('FALLO', response.descripcion, null);
         }
       } catch (e) {
-        this.modalMensaje("modalEstado", "Error al ejecutar proceso")
-        console.log(e.message)
+        this.modalMensaje('modalEstado', 'Error al ejecutar proceso')
       }
     } else if (this.CATESTADOS[0]?.ESTADO_EJECUCION === 'INICIADO') {
-      this.modalMensaje("modalEstado", "El proceso se encuentra en ejecución");
-      this.serviciosProcesos.generarAuditoria("FALLO", "El proceso se encontraba en ejecución", null);
-    } else (
-      this.modalMensaje("modalEstado", "Error al ejecutar proceso")
-    )
-
+      this.modalMensaje('modalEstado', 'El proceso se encuentra en ejecución');
+      this.serviciosProcesos.generarAuditoria('FALLO', 'El proceso se encontraba en ejecución', null);
+    } else {
+      this.modalMensaje('modalEstado', 'Error al ejecutar proceso')
+    }
 
     setTimeout(() => {
       this.spinner.hide();
@@ -350,7 +299,6 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
   rolesValids = (User: Usuario, roles: any[]): boolean => {
     return this.authService.rolesValids(User, roles);
   };
-
 
   cerrarModales = () => {
     this.modalService.dismissAll();

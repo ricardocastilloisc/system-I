@@ -44,54 +44,31 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   ];
 
   Permisos = [ERole.Administrador, ERole.Monitor];
-
   Negocios = [ENegocio.Afore, ENegocio.Fondos];
-
   ObjectUsuarioCambiar: UsuarioListado;
-
   EstadoProceso: Subscription;
   ListadoUsuarios$: Subscription;
   Loading$: Subscription;
-
   ListadoUsuariosOriginal: UsuarioListado[] = [];
   ListadoUsuariosPantalla: UsuarioListado[] = [];
-
   insertarValores = false;
-
   grupoPertenece = '';
-
   dropdownListCambioDeNegocio = [];
-
   dropdownListFiltroCorreos = [];
-
   dropdownListFiltroPermisos = [];
-
   dropdownListFiltroAreas = [];
-
   SettingsCambioDeNegocio: IDropdownSettings = {};
-
   SettingsFiltroDeCorreos: IDropdownSettings = {};
-
   SettingsFiltroDePermisos: IDropdownSettings = {};
-
   SettingsFiltroDeArea: IDropdownSettings = {};
-
-  ///aqui va ir los inputs que se iniciaran para el modal
-
   selectedItemsFiltroAreas = [];
-
   selectedItemsFiltroCorreos = [];
-
   selectedItemsFiltroaPermisos = [];
-
   selectedItemsCambioDeNegocio = [];
   SelectCamabiarPermiso = 'Permiso';
   SelectCamabiarArea = 'Area';
-
-  paginaActualUsuarios: number = 1;
-
+  paginaActualUsuarios = 1;
   loading = true;
-
   filtroActivo = false;
 
   constructor(
@@ -107,7 +84,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     this.Loading$.unsubscribe();
   }
 
-  cambiarEtiquetaSeleccionada() {
+  cambiarEtiquetaSeleccionada(): void {
     setTimeout(() => {
       $('#correo')
         .find('.selected-item')
@@ -115,7 +92,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     }, 1);
   }
 
-  cambiarEtiquetaSeleccionadaGeneral(elemento) {
+  cambiarEtiquetaSeleccionadaGeneral(elemento): void {
     setTimeout(() => {
       $('#' + elemento)
         .find('.selected-item')
@@ -242,27 +219,6 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       itemsShowLimit: 3,
       searchPlaceholderText: 'Buscar Correo electrónico',
     };
-    /*
-    singleSelection?: boolean;
-    idField?: string;
-    textField?: string;
-    disabledField?: string;
-    enableCheckAll?: boolean;
-    selectAllText?: string;
-    unSelectAllText?: string;
-    allowSearchFilter?: boolean;
-    clearSearchFilter?: boolean;
-    maxHeight?: number;
-    itemsShowLimit?: number;
-    limitSelection?: number;
-    searchPlaceholderText?: string;
-    noDataAvailablePlaceholderText?: string;
-    closeDropDownOnSelection?: boolean;
-    showSelectedItemsAtTop?: boolean;
-    defaultOpen?: boolean;
-    allowRemoteDataSearch?: boolean;
-
-*/
     this.SettingsCambioDeNegocio = {
       singleSelection: false,
       idField: 'item_id',
@@ -287,8 +243,6 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   }
 
   openModal(content, ObjectUsuario: UsuarioListado, grupoPertenece) {
-
-    //console.log('ObjectUsuario', ObjectUsuario);
     const ObjectUsuarioString = {
       area: ObjectUsuario.GrupoQuePertenece,
       permiso: ObjectUsuario.Attributes['custom:rol'],
@@ -302,7 +256,6 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       accion: "ACTUALIZAR"
     };
 
-    //console.log('ObjectUsuarioString', ObjectUsuarioString);
     localStorage.setItem('ObjectOldUser', JSON.stringify(ObjectUsuarioString));
     localStorage.setItem('ObjectDataUser', JSON.stringify(datosUsuario));
 
@@ -407,8 +360,6 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       UserAttributes: UserAttributes,
       Username: this.ObjectUsuarioCambiar.Username,
     };
-
-    //console.log('AREA CHANGE', this.SelectCamabiarArea);
     const Grupo = {
       Grupo: this.SelectCamabiarArea,
       Username: this.ObjectUsuarioCambiar.Username,
@@ -496,11 +447,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
 
   darDeBajaUsuario = () => {
     this.UsuariosService.eliminarUsuarioPromesa(this.ObjectUsuarioCambiar.Username).then(() => {
-      console.log("Entrando a darDeBajaUsuario");
       const obj = this.ObjectUsuarioCambiar;
-
-
-      //console.log('ObjectUsuario', ObjectUsuario);
       const ObjectUsuarioString = {
         area: obj.GrupoQuePertenece,
         permiso: obj.Attributes['custom:rol'],
@@ -513,8 +460,6 @@ export class UsuariosComponent implements OnInit, OnDestroy {
         apellidoPaterno: obj.Attributes['family_name'],
         accion: "ELIMINAR"
       };
-
-      //console.log('ObjectUsuarioString', ObjectUsuarioString);
       localStorage.setItem('ObjectOldUser', JSON.stringify(ObjectUsuarioString));
       localStorage.setItem('ObjectDataUser', JSON.stringify(datosUsuario));
 

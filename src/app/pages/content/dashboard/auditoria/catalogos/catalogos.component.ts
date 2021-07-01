@@ -159,8 +159,6 @@ export class CatalogosComponent implements OnInit, OnDestroy {
       FiltrarCatalogo = arrayFiltroCatalogo;
 
     }
-
-    console.log(this.selectedItemsFiltroAccion)
     if (this.selectedItemsFiltroAccion.length !== 0) {
       let arrayFiltroAccion = [];
       this.selectedItemsFiltroAccion.forEach((e) => {
@@ -232,22 +230,15 @@ export class CatalogosComponent implements OnInit, OnDestroy {
       this.itemsAcciones.sort();
       this.itemsCorreos.sort();
       if (res === null) {
-        //console.log("response", res)
       }
       else {
         let resp = res.slice().sort(function (a, b) { return new Date(b.FECHA).getTime() - new Date(a.FECHA).getTime() })
-        //console.log("response slice", resp)
         this.ListadoOriginal = resp;
       }
       this.ListadoPantalla = this.ListadoOriginal;
       this.initSelects();
     })
     this.store.dispatch(LoadAUDGENUSUARIOS({ consult: { MODULO: 'CATALOGOS' } }));
-    /*
-    this.api.ListAUDGENUSUARIOS('CATALOGOS').then(res => {
-      //console.log("Response ListAUDGENUSUARIOS", res)
-    })
-    */
   }
 
   ocultarModal(): void {
@@ -375,7 +366,6 @@ export class CatalogosComponent implements OnInit, OnDestroy {
     }
 
     const uniqueArr = [... new Set(response.map(data => data.ID))]
-    //console.log(uniqueArr)
     return response;
   }
 

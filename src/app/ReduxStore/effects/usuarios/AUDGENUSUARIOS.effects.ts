@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { mergeMap, map, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
-
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import * as AUDGENUSUARIOActions from '../../actions/usuarios/AUDGENUSUARIOS.actions';
 
@@ -15,7 +14,6 @@ export class AUDGENUSUARIOSEfffects {
     this.actions$.pipe(
       ofType(AUDGENUSUARIOActions.LoadAUDGENUSUARIOS),
       mergeMap(({ consult }) => {
-        //console.log("AudGenUsuarios Effect - Modulo", consult)
         if (consult) {
           return fromPromise(this.api.ListAUDGENUSUARIOS(consult.MODULO)).pipe(
             map(({ items }: any) =>

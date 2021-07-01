@@ -4,7 +4,6 @@ import * as AWS from 'aws-sdk';
 import { environment } from '../../environments/environment';
 import { AppState } from '../ReduxStore/app.reducers';
 import { Store } from '@ngrx/store';
-import { setUserRol, setUserArea } from '../ReduxStore/actions/usuario.actions';
 import { ERole, ENegocio, EArea } from '../validators/roles';
 import { ConsultaUsuario } from '../ReduxStore/reducers';
 import { ValorFiltrarGrupo } from '../validators/opcionesDeFiltroUsuarioAdmininistracion';
@@ -14,10 +13,9 @@ import { AuditoriaService } from './auditoria.service';
 import { HttpHeaders } from '@angular/common/http';
 
 AWS.config.update(environment.SESConfig);
-var cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider();
-
-var result = [];
-var objFiltrado = [];
+const cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider();
+let result = [];
+let objFiltrado = [];
 
 @Injectable({
   providedIn: 'root',
@@ -132,12 +130,12 @@ export class UsuariosService {
       UserPoolId: environment.amplifyConfig.Auth.userPoolId,
     };
     return cognitoidentityserviceprovider.listUsersInGroup(params);
-  };
+  }
 
   consultarUsuarios = () => {
     // metodo para consultar todos los usuarios del user pool
     return cognitoidentityserviceprovider.listUsers(this.paramsGroups);
-  };
+  }
 
   consultaSinFiltroYConFiltro = (consulta: ConsultaUsuario | null) => {
     let promesa = this.consultarUsuarios();
@@ -148,10 +146,7 @@ export class UsuariosService {
       }
     }
     return promesa.promise();
-  };
-
-
-
+  }
 
   consultaUsuariosMultipleFactor = (parametro) => {
     return new Promise((resolve) => {
@@ -163,8 +158,6 @@ export class UsuariosService {
             ObjectUsers.push(Users[i]);
           }
         }
-        //ObjectUsers = [...Users];
-        //console.log("TST ...Users", ObjectUsers)
         if (ObjectUsers.length === 0) {
           resolve(ObjectUsers);
         }
@@ -209,7 +202,7 @@ export class UsuariosService {
         });
       });
     });
-  };
+  }
 
   obtenerDetalleUsuario(): void {
     // metodo para obtener el los datos a detalle del usuario
@@ -300,7 +293,7 @@ export class UsuariosService {
     }).then(() => {
       this.agregarUsuarioGrupoCallback(Grupo, Username);
     });
-  };
+  }
 
   agregarUsuarioGrupoCallback(grupo, usuario) {
     const params = {
@@ -342,10 +335,8 @@ export class UsuariosService {
       (err, data) => {
         if (err) {
           terminado = 1;
-          // console.log('err', err, 'data', data);
         } else {
           terminado = 1;
-          // console.log('err', err, 'data', data);
         }
       }
     );
@@ -359,7 +350,7 @@ export class UsuariosService {
     }).then(() => {
       this.numeroDeProcesos++;
     });
-  };
+  }
 
   validacionDeProcesosInsertar = (Attributos, paramGrupo) => {
 
@@ -387,7 +378,7 @@ export class UsuariosService {
 
     let usuario = '';
     this.store.select(({ usuario }) => usuario.user.email).subscribe(res => {
-      //console.log(res);
+
       usuario = res;
     });
 
@@ -397,15 +388,13 @@ export class UsuariosService {
       negocio: Attributos.UserAttributes.find(el => el.Name === 'custom:negocio')['Value']
     };
 
-    //console.log('ObjectUsuarioString', ObjectUsuarioString);
     localStorage.setItem('ObjectNewUser', JSON.stringify(ObjectUsuarioString));
 
     this.generarAuditoria();
 
-  };
+  }
 
   generarAuditoria(): void {
-    //console.log("generar auditoria");
 
     const userOld = localStorage.getItem('ObjectOldUser');
     const userNew = localStorage.getItem('ObjectNewUser');
@@ -420,14 +409,12 @@ export class UsuariosService {
     let nombre = '';
 
     this.store.select(({ usuario }) => usuario.user).subscribe(res => {
-      //console.log(res);
       rol = res.attributes['custom:rol'];
       correo = res.email;
       nombre = res.attributes.given_name;
       apellidoPaterno = res.attributes.family_name;
     });
     this.store.select(({ usuario }) => usuario.area).subscribe(res => {
-      //console.log(res)
       area = res;
     });
 
@@ -474,7 +461,7 @@ export class UsuariosService {
     return cognitoidentityserviceprovider
       .adminUpdateUserAttributes(paramsAtributos)
       .promise();
-  };
+  }
 
   obtenerGrupoUsuarioPromise = (usuario) => {
     let params = {
@@ -484,7 +471,7 @@ export class UsuariosService {
     return cognitoidentityserviceprovider
       .adminListGroupsForUser(params)
       .promise();
-  };
+  }
 
   obtenerGruposUsuario(): void {
     // metodo para consultar los grupos a los que pertenece un usuario del user pool
@@ -499,8 +486,7 @@ export class UsuariosService {
     this.store
       .select(({ usuario }) => usuario.user)
       .subscribe((res: any) => {
-        // console.log(attributes);
-        if(res){
+        if (res) {
           const { attributes } = res;
           if (!attributes.hasOwnProperty('custom:rol')) {
             return flagValidate;
@@ -516,24 +502,10 @@ export class UsuariosService {
   }
 
   callbackAws = (err, data) => {
-    /*
-    if (err) console.log(err, err.stack);
-    else console.log(JSON.stringify(data));*/
-  };
+  }
 
   callbackAwsDetalle = (err, data) => {
-    if (err) console.log(err, err.stack);
-    else console.log(JSON.stringify(data));
-  };
-
-  /*
-ayuda de atibutos: {Name: "sub", Value: "42ae1b55-8029-4a09-8c81-8c805c650aaf"}
-1: {Name: "identities", Value: "[{"userId":"PY5dp6qYCyodowdB_EBAmPy3aF9cV6iO1-k6Ue…null,"primary":true,"dateCreated":1618943540138}]"}
-2: {Name: "email_verified", Value: "false"}
-3: {Name: "given_name", Value: "Diego"}
-4: {Name: "family_name", Value: "Garcia"}
-5: {Name: "email", Value: "garcia.diego@principal.com"}
-*/
+  }
 
   reformatearArrayDeUsuarios = (objectUser) => {
     let object = {
@@ -551,7 +523,7 @@ ayuda de atibutos: {Name: "sub", Value: "42ae1b55-8029-4a09-8c81-8c805c650aaf"}
       object.Attributes[attribute.Name] = attribute.Value;
     });
     return object;
-  };
+  }
 
   filtrarUsuariosConAtributos = (
     usuarios: UsuarioListado[],
@@ -602,12 +574,10 @@ ayuda de atibutos: {Name: "sub", Value: "42ae1b55-8029-4a09-8c81-8c805c650aaf"}
     }
 
     return Usuarios;
-  };
+  }
 
   filtrarUsuarios(usuarios, permiso, negocio, correo): any[] {
-    // filtrado por permiso
 
-    console.log(usuarios);
     if (permiso != null) {
       for (var i = 0; i < usuarios.Users.length; i++) {
         if (
@@ -624,7 +594,6 @@ ayuda de atibutos: {Name: "sub", Value: "42ae1b55-8029-4a09-8c81-8c805c650aaf"}
         }
       }
     }
-    // filtrado por negocio
     if (negocio != null) {
       for (var i = 0; i < usuarios.Users.length; i++) {
         if (
@@ -641,7 +610,6 @@ ayuda de atibutos: {Name: "sub", Value: "42ae1b55-8029-4a09-8c81-8c805c650aaf"}
         }
       }
     }
-    // filtrado por correo
     if (correo != null) {
       for (var i = 0; i < usuarios.Users.length; i++) {
         if (
@@ -658,7 +626,6 @@ ayuda de atibutos: {Name: "sub", Value: "42ae1b55-8029-4a09-8c81-8c805c650aaf"}
         }
       }
     }
-    // distinct array result
     const map = new Map();
     for (const item of result) {
       if (!map.has(item.Username)) {
@@ -666,15 +633,7 @@ ayuda de atibutos: {Name: "sub", Value: "42ae1b55-8029-4a09-8c81-8c805c650aaf"}
         objFiltrado.push(item);
       }
     }
-    console.log(JSON.stringify(objFiltrado));
     return objFiltrado;
   }
-  /*
-  obtenerDepartamento ():void{
-    var area = 'AREA-DEPARTAMENTO';
-    this.store.dispatch(setUserArea({
-      area:area
-    }))
-    this.store.select(({ usuario }) => usuario.area).subscribe(res => {console.log(res)});
-  }*/
+
 }
