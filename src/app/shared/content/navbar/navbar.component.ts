@@ -34,28 +34,32 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   @HostListener('window:resize', ['$event'])
 
   DataUser$: Observable<Usuario>;
-
   subscription: Subscription;
-
   Administrador = ERole.Administrador;
   Monitor = ERole.Monitor;
   Soporte = ERole.Soporte;
   Notificaciones$: Observable<NOTIFICACION_INTERFACE[]>;
-
   Notificaciones: NOTIFICACION_INTERFACE[] = [];
   NotificacionesEstaticos: NOTIFICACION_INTERFACE[] = [];
   NotificacionesSub$: Subscription;
   NotificacionesSubActivo$;
-
   DataUser: Usuario;
-
   DataUserValidartor;
-
   negocios = [];
   area: string;
-
   ValidadoresDeInterfaces;
-
+  flagAdministracion = false;
+  flagAdminCatalogos = false;
+  flagAdminUsuarios = false;
+  flagAdminNotificaciones = false;
+  flagProcesos = false;
+  flagProcesosDiurnos = false;
+  flagProcesosNocturnos = false;
+  flagAuditoria = false;
+  flagAuditoriaInterfaces = false;
+  flagAuditoriaCatalogos = false;
+  flagAuditoriaProcesos = false;
+  flagAuditoriaUsuarios = false;
   Areas = [
     EArea.Contabilidad,
     EArea.Custodia,
@@ -247,6 +251,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   };
 
   ngOnInit(): void {
+    this.validarPermisosPerfil();
     const source = interval(1800000);
     this.subscription = source.subscribe((val) =>
       this.authService.refreshToken()
@@ -578,6 +583,100 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
             }
           }
         });
+    }
+  }
+
+  ocultarFuncionalidad(): void {
+    this.flagAdministracion = false;
+    this.flagAdminCatalogos = false;
+    this.flagAdminUsuarios = false;
+    this.flagAdminNotificaciones = false;
+    this.flagProcesos = false;
+    this.flagProcesosDiurnos = false;
+    this.flagProcesosNocturnos = false;
+    this.flagAuditoria = false;
+    this.flagAuditoriaInterfaces = false;
+    this.flagAuditoriaCatalogos = false;
+    this.flagAuditoriaProcesos = false;
+    this.flagAuditoriaUsuarios = false;
+  }
+
+  obtenerBanderaPermiso(item: any): boolean {
+    let flag = false;
+    if (item !== undefined && item !== null) {
+      if (Object.keys(item).length !== 0) {
+        flag = true;
+      }
+    }
+    return flag;
+  }
+
+  asignarBanderaPadre(): void {
+    if (this.flagAdminCatalogos === true || this.flagAdminUsuarios === true || this.flagAdminNotificaciones === true) {
+      this.flagAdministracion = true;
+    }
+    if (this.flagProcesosDiurnos === true || this.flagProcesosNocturnos === true) {
+      this.flagProcesos = true;
+    }
+    // tslint:disable-next-line: max-line-length
+    if (this.flagAuditoriaInterfaces === true || this.flagAuditoriaCatalogos === true || this.flagAuditoriaProcesos === true || this.flagAuditoriaUsuarios === true) {
+      this.flagAuditoria = true;
+    }
+  }
+
+  validarPermisosPerfil(): void {
+    const autenticado = this.usuario.validarRolUsuario();
+    if (autenticado) {
+      this.store
+        .select(({ usuario }) => usuario.user)
+        .subscribe((user) => {
+          if (user) {
+            this.DataUser = user;
+            const areas = [
+              EArea.Tesoreria,
+              EArea.Inversiones_Riesgos,
+              EArea.Contabilidad,
+              EArea.Custodia,
+              EArea.Soporte,
+            ];
+            const areasStore = [];
+            user.attributes['cognito:groups'].forEach((e) => {
+              if (areas.includes(e)) {
+                areasStore.push(e.toUpperCase());
+              }
+            });
+            const area = areasStore[0];
+            const negocios = this.DataUser.attributes['custom:negocio'].toUpperCase().split(',');
+            const rol = this.DataUser.attributes['custom:rol'].toUpperCase();
+            this.api.ListCATPERMISOS(negocios, area, rol).then(({ items }: any) => {
+              if (Object.keys(items).length !== 0) {
+                const catalogos = items.find(ai => ai.CATALOGOS.CONSULTAR === true);
+                const usuarios = items.find(ai => ai.USUARIOS.CONSULTAR === true);
+                const notificaciones = items.find(ai => ai.CATALOGOS.CONSULTAR === true);
+                const diurnos = items.find(ai => ai.PROCESOS.MONITOREAR === true);
+                const nocturnos = items.find(ai => ai.PROCESOS.MONITOREAR === true);
+                const interfaces = items.find(ai => ai.AUDITORIA.ARCHIVOS === true);
+                const audCatalogos = items.find(ai => ai.AUDITORIA.CATALOGOS === true);
+                const audUsuarios = items.find(ai => ai.USUARIOS.CONSULTAR === true);
+                const audProcesos = items.find(ai => ai.PROCESOS.MONITOREAR === true);
+                this.flagAdminCatalogos = this.obtenerBanderaPermiso(catalogos);
+                this.flagAdminUsuarios = this.obtenerBanderaPermiso(usuarios);
+                this.flagAdminNotificaciones = this.obtenerBanderaPermiso(notificaciones);
+                this.flagProcesosDiurnos = this.obtenerBanderaPermiso(diurnos);
+                this.flagProcesosNocturnos = this.obtenerBanderaPermiso(nocturnos);
+                this.flagAuditoriaInterfaces = this.obtenerBanderaPermiso(interfaces);
+                this.flagAuditoriaCatalogos = this.obtenerBanderaPermiso(audCatalogos);
+                this.flagAuditoriaProcesos = this.obtenerBanderaPermiso(audProcesos);
+                this.flagAuditoriaUsuarios = this.obtenerBanderaPermiso(audUsuarios);
+                this.asignarBanderaPadre();
+              } else {
+                this.ocultarFuncionalidad();
+              }
+            });
+          }
+        });
+    } else {
+      this.ocultarFuncionalidad();
     }
   }
 }

@@ -21,7 +21,7 @@
   <div class="container-fluid" *ngIf="usuario.validarRolUsuario()">
     <div class="d-flex" style="height: 75vh; width: 100%">
       <div class="row contentCards">
-        <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12" *ngIf="perfilValido(DataUser, [Administrador, Monitor, Soporte])">
+        <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12" *ngIf="flagAdministracion">
           <div class="card">
             <div class="aling-items-center text-center headerCardsMenu" style="background-color: #0a8299">
               <img src="assets/imgs/icons/inicio/administracion.svg" class="rounded-circle ImgsMenuHome" />
@@ -33,7 +33,7 @@
             <div class="card-body">
               <div class="d-flex flex-column align-items-center justify-content-center">
                 <div>
-                  <div *ngIf="perfilValido(DataUser, [Administrador, Monitor, Soporte])"
+                  <div *ngIf="flagAdminCatalogos"
                     class="elementsMenus d-flex flex-column justify-content-center">
                     <div>
                       <a routerLinkActive="active" routerLink="/administracion/catalogos">
@@ -41,7 +41,7 @@
                         Catálogos</a>
                     </div>
                   </div>
-                  <div *ngIf="perfilValido(DataUser, [Soporte])"
+                  <div *ngIf="flagAdminUsuarios"
                     class="elementsMenus d-flex flex-column justify-content-center">
                     <div>
                       <a routerLinkActive="active" routerLink="/administracion/usuarios">
@@ -49,7 +49,7 @@
                         Usuarios</a>
                     </div>
                   </div>
-                  <div *ngIf="perfilValido(DataUser, [Administrador, Soporte])"
+                  <div *ngIf="flagAdminNotificaciones"
                     class="elementsMenus d-flex flex-column justify-content-center">
                     <div>
                       <a routerLinkActive="active" routerLink="/administracion/notificaciones">
@@ -63,7 +63,7 @@
           </div>
         </div>
         <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12 marginResponsibe">
-          <div class="card">
+          <div class="card" *ngIf="flagProcesos">
             <div class="aling-items-center text-center headerCardsMenu" style="background-color: #464e7e">
               <img src="assets/imgs/icons/inicio/proceso.svg" class="rounded-circle ImgsMenuHome" />
               <div class="d-flex flex-column align-items-center justify-content-center heightTitleCardsMenu">
@@ -74,14 +74,14 @@
             <div class="card-body">
               <div class="d-flex flex-column align-items-center justify-content-center">
                 <div>
-                  <div class="elementsMenus d-flex flex-column justify-content-center">
+                  <div class="elementsMenus d-flex flex-column justify-content-center" *ngIf="flagProcesosDiurnos">
                     <div>
                       <a routerLinkActive="active" routerLink="/procesos/diurno">
                         <img src="assets/imgs/icons/inicio/items/feather-sun.png" class="itemsTextoImagenCentro" />
                         Diurnos</a>
                     </div>
                   </div>
-                  <div class="elementsMenus d-flex flex-column justify-content-center">
+                  <div class="elementsMenus d-flex flex-column justify-content-center" *ngIf="flagProcesosNocturnos">
                     <div>
                       <a routerLinkActive="active" routerLink="/procesos/nocturno">
                         <img src="assets/imgs/icons/inicio/items/feather-moon.png" class="itemsTextoImagenCentro" />
@@ -93,7 +93,7 @@
             </div>
           </div>
         </div>
-        <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12 marginResponsibe" *ngIf="perfilValido(DataUser, [Administrador, Soporte])">
+        <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12 marginResponsibe" *ngIf="flagAuditoria">
           <div class="card">
             <div class="aling-items-center text-center headerCardsMenu" style="background-color: #035fa4">
               <img src="assets/imgs/icons/inicio/auditoria.svg" class="rounded-circle ImgsMenuHome" />
@@ -105,21 +105,21 @@
             <div class="card-body">
               <div class="d-flex flex-column align-items-center justify-content-center">
                 <div>
-                  <div class="elementsMenus d-flex flex-column justify-content-center">
+                  <div class="elementsMenus d-flex flex-column justify-content-center" *ngIf="flagAuditoriaInterfaces">
                     <div>
                       <a routerLinkActive="active" routerLink="/auditoria/interfaces">
                         <img src="assets/icons/icono-interfase.svg" class="itemsTextoImagenCentro" />
                         Interfaces</a>
                     </div>
                   </div>
-                  <div class="elementsMenus d-flex flex-column justify-content-center">
+                  <div class="elementsMenus d-flex flex-column justify-content-center" *ngIf="flagAuditoriaCatalogos">
                     <div>
                       <a routerLinkActive="active" routerLink="/auditoria/catalogos">
                         <img src="assets/imgs/icons/inicio/items/catalogo.png" class="itemsTextoImagenCentro" />
                         Catálogos</a>
                     </div>
                   </div>
-                  <div class="elementsMenus d-flex flex-column justify-content-center">
+                  <div class="elementsMenus d-flex flex-column justify-content-center" *ngIf="flagAuditoriaProcesos">
                     <div>
                       <a routerLinkActive="active" routerLink="/auditoria/procesos">
                         <img src="assets/imgs/icons/inicio/items/procesos.png" class="itemsTextoImagenCentro" />
@@ -127,7 +127,7 @@
                         Procesos</a>
                     </div>
                   </div>
-                  <div class="elementsMenus d-flex flex-column justify-content-center">
+                  <div class="elementsMenus d-flex flex-column justify-content-center" *ngIf="flagAuditoriaUsuarios">
                     <div>
                       <a routerLinkActive="active" routerLink="/auditoria/usuarios">
                         <img src="assets/imgs/icons/inicio/items/usuarios.png" class="itemsTextoImagenCentro" />

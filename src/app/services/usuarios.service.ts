@@ -487,15 +487,16 @@ export class UsuariosService {
       .select(({ usuario }) => usuario.user)
       .subscribe((res: any) => {
         if (res) {
-          const { attributes } = res;
-          if (!attributes.hasOwnProperty('custom:rol')) {
-            return flagValidate;
-          } else {
-            if (this.Roles.includes(attributes['custom:rol'])) {
-              flagValidate = true;
+          if (res.hasOwnProperty('groups')) {
+            if (this.Areas.some( ai => res.groups.includes(ai) )) {
+              const { attributes } = res;
+              if (attributes.hasOwnProperty('custom:rol') && attributes.hasOwnProperty('custom:negocio')) {
+                if (this.Roles.includes(attributes['custom:rol']) && this.Negocios.some( ai => attributes['custom:negocio'].includes(ai))) {
+                  flagValidate = true;
+                }
+              }
             }
           }
-
         }
       });
     return flagValidate;

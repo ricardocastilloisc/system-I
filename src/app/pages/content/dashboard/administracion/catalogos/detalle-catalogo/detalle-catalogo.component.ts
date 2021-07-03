@@ -19,10 +19,12 @@ import { Subscription } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
-import { ERole } from '../../../../../../validators/roles';
+import { ERole, EArea } from '../../../../../../validators/roles';
+import { Usuario } from 'src/app/model/usuario.model';
+import { UsuariosService } from '../../../../../../services/usuarios.service';
+import { Observable } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
-import { environment } from '../../../../../../../environments/environment';
 import { APIService } from '../../../../../../API.service';
 import { Location } from '@angular/common';
 
@@ -52,6 +54,8 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
   columnTemp: STRUCTURE_CAT;
   primaryKeyOrder = '';
   DetailCatsStatic = [];
+  DataUser$: Observable<Usuario>;
+  DataUser: Usuario;
   filter = false;
   flagPermisos = false;
   dropdownListFiltro = [];
@@ -68,7 +72,10 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
   };
   selectedItemsFiltro = [];
   placeholderFiltro = '';
-
+  flagConsultar = false;
+  flagAgregar = false;
+  flagEditar = false;
+  flagEliminar = false;
   errorBack = false;
 
   constructor(
@@ -77,8 +84,9 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     private toastr: ToastrService,
     private modalService: NgbModal,
     private api: APIService,
+    private usuario: UsuariosService,
     public LOC: Location
-  ) {}
+  ) { }
 
   ngOnDestroy(): void {
     localStorage.removeItem('tokenPageBefore');
@@ -171,11 +179,16 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
   };
 
   viewUpdateIcon = () => {
-    return this.ColumDinamicData.length > 1;
-  };
+    let flag = false;
+    if (this.ColumDinamicData.length > 1) {
+      if (this.flagEditar === true) {
+        flag = true;
+      }
+    }
+    return flag;
+  }
 
   ngOnInit(): void {
-    // this.validarRoles();
     this.validarPermisos();
     this.getDataCat();
     this.DetailCatalogos$ = this.store
@@ -256,10 +269,10 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
 
     return isDate
       ? stringReturn.substring(6, 8) +
-          '/' +
-          stringReturn.substring(4, 6) +
-          '/' +
-          stringReturn.substring(0, 4)
+      '/' +
+      stringReturn.substring(4, 6) +
+      '/' +
+      stringReturn.substring(0, 4)
       : stringReturn;
   };
 
@@ -318,7 +331,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
       let PageNumerPageCat =
         JSON.parse(localStorage.getItem('PageNumerPageCat')) + 1;
 
-        this.paginaDetailCats = 1;
+      this.paginaDetailCats = 1;
 
       localStorage.setItem('PageNumerPageCat', PageNumerPageCat.toString());
       localStorage.setItem('izquierdaOderecha', izquierdaOderecha.toString());
@@ -515,10 +528,10 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
             if (!specialFormat) {
               valueTempControl = moment(
                 valueTempControl.substring(0, 4) +
-                  '-' +
-                  valueTempControl.substring(4, 6) +
-                  '-' +
-                  valueTempControl.substring(6, 8)
+                '-' +
+                valueTempControl.substring(4, 6) +
+                '-' +
+                valueTempControl.substring(6, 8)
               )
                 .format('YYYY-MM-DD')
                 .toString();
@@ -526,10 +539,10 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
           } else {
             valueTempControl = moment(
               valueTempControl.substring(0, 4) +
-                '-' +
-                valueTempControl.substring(4, 6) +
-                '-' +
-                valueTempControl.substring(6, 8)
+              '-' +
+              valueTempControl.substring(4, 6) +
+              '-' +
+              valueTempControl.substring(6, 8)
             )
               .format('YYYY-MM-DD')
               .toString();
@@ -735,76 +748,112 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     } else {
       return false;
     }
-  };
+  }
 
-  validarRoles(): boolean {
+  obtenerBanderaPermiso(item: any): boolean {
     let flag = false;
-    this.store
-      .select(({ usuario }) => usuario.user)
-      .subscribe((res) => {
-        const rol = res.attributes['custom:rol'];
-        if (rol === ERole.Administrador) {
-          flag = true;
-        }
-      });
-    this.flagPermisos = flag;
+    if (item !== undefined && item !== null) {
+      if (Object.keys(item).length !== 0) {
+        flag = true;
+      }
+    }
     return flag;
   }
 
   validarPermisos(): void {
+    this.flagPermisos = false;
     const catalogo = localStorage.getItem('nameCat');
     const catalogoNegocio = localStorage.getItem('negocioCat');
-    this.flagPermisos = false;
-    let rol: string;
-    const negocio = localStorage.getItem('negocio').toUpperCase().split(',');
-    const area = localStorage.getItem('area').toUpperCase();
-    this.store
-      .select(({ usuario }) => usuario.user)
-      .subscribe((res) => {
-        rol = res.attributes['custom:rol'];
-      });
-    this.api
-      .GetSiaGenAdmDiccionarioCatalogosDev(catalogo, catalogoNegocio)
-      .then((data) => {
-        if (rol.includes(ERole.Administrador)) {
-          const permisoArea = data.AREA;
-          const permisoNegocio = data.NEGOCIO;
-          if (permisoArea.includes(area)) {
-            // tslint:disable-next-line: forin
-            // tslint:disable-next-line: prefer-const
-            for (let i in negocio) {
-              if (permisoNegocio.includes(negocio[i])) {
-                switch (area) {
-                  case 'CUSTODIA':
-                    if (data.PRIV_CUSTODIA.includes('W')) {
-                      this.flagPermisos = true;
-                    }
-                    break;
-                  case 'CONTABILIDAD':
-                    if (data.PRIV_CONTABILIDAD.includes('W')) {
-                      this.flagPermisos = true;
-                    }
-                    break;
-                  case 'RIESGOS':
-                    if (data.PRIV_RIESGOS.includes('W')) {
-                      this.flagPermisos = true;
-                    }
-                    break;
-                  case 'TESORERIA':
-                    if (data.PRIV_TESORERIA.includes('W')) {
-                      this.flagPermisos = true;
-                    }
-                    break;
-                  case 'SOPORTE':
-                    if (data.PRIV_SOPORTE.includes('W')) {
-                      this.flagPermisos = true;
-                    }
-                    break;
+    const autenticado = this.usuario.validarRolUsuario();
+    if (autenticado) {
+      this.store
+        .select(({ usuario }) => usuario.user)
+        .subscribe((user) => {
+          if (user) {
+            this.DataUser = user;
+            const areas = [
+              EArea.Tesoreria,
+              EArea.Inversiones_Riesgos,
+              EArea.Contabilidad,
+              EArea.Custodia,
+              EArea.Soporte,
+            ];
+            const areasStore = [];
+            user.attributes['cognito:groups'].forEach((e) => {
+              if (areas.includes(e)) {
+                areasStore.push(e.toUpperCase());
+              }
+            });
+            const area = areasStore[0];
+            let negocio = this.DataUser.attributes['custom:negocio'].toUpperCase().split(',');
+            if (area.includes('SOPORTE')) {
+              negocio = 'SOPORTE';
+            }
+            const rol = this.DataUser.attributes['custom:rol'].toUpperCase();
+            this.api.ListCATPERMISOS(negocio, area, rol).then(({ items }: any) => {
+              if (Object.keys(items).length !== 0) {
+                const consultar = items.find(ai => ai.CATALOGOS.CONSULTAR === true);
+                const agregar = items.find(ai => ai.CATALOGOS.CREAR === true);
+                const editar = items.find(ai => ai.CATALOGOS.ACTUALIZAR === true);
+                const eliminar = items.find(ai => ai.CATALOGOS.BORRAR === true);
+                this.flagConsultar = this.obtenerBanderaPermiso(consultar);
+                this.flagAgregar = this.obtenerBanderaPermiso(agregar);
+                this.flagEditar = this.obtenerBanderaPermiso(editar);
+                this.flagEliminar = this.obtenerBanderaPermiso(eliminar);
+                if (this.flagAgregar === true || this.flagEditar === true || this.flagEliminar === true) {
+                  this.api
+                    .GetSiaGenAdmDiccionarioCatalogosDev(catalogo, catalogoNegocio)
+                    .then((data) => {
+                      const permisoArea = data.AREA;
+                      const permisoNegocio = data.NEGOCIO.split(',');
+                      if (permisoArea.includes(area)) {
+                        if (permisoNegocio.some(ai => negocio.includes(ai))) {
+                          if (area.includes('CUSTODIA')) {
+                            if (!data.PRIV_CUSTODIA.includes('W')) {
+                              this.flagAgregar = false;
+                              this.flagEditar = false;
+                              this.flagEliminar = false;
+                            }
+                          }
+                          if (area.includes('CONTABILIDAD')) {
+                            if (!data.PRIV_CONTABILIDAD.includes('W')) {
+                              this.flagAgregar = false;
+                              this.flagEditar = false;
+                              this.flagEliminar = false;
+                            }
+                          }
+                          if (area.includes('RIESGOS')) {
+                            if (!data.PRIV_RIESGOS.includes('W')) {
+                              this.flagAgregar = false;
+                              this.flagEditar = false;
+                              this.flagEliminar = false;
+                            }
+                          }
+                          if (area.includes('TESORERIA')) {
+                            if (!data.PRIV_TESORERIA.includes('W')) {
+                              this.flagAgregar = false;
+                              this.flagEditar = false;
+                              this.flagEliminar = false;
+                            }
+                          }
+                        } else if (negocio.includes('SOPORTE')) {
+                          if (!data.PRIV_SOPORTE.includes('W')) {
+                            this.flagAgregar = false;
+                            this.flagEditar = false;
+                            this.flagEliminar = false;
+                          }
+                        }
+                      }
+                      if (this.flagEditar === true || this.flagEliminar === true) {
+                        this.flagPermisos = true;
+                      }
+                    });
                 }
               }
-            }
+            });
           }
-        }
-      });
+        });
+    }
   }
+
 }

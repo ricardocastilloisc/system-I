@@ -60,7 +60,6 @@ table.listado-design-general th {
   background-color: #0a8299;
   font: bold 18px FS Elliot Pro;
   height: 40px;
-  height: 40px;
   font: bold 18px FS Elliot Pro;
 }
 
@@ -121,7 +120,5 @@ section {
 }
 
 .modal-content{
-  background-color: red !important;  
+  background-color: red !important;
 }
-
-

@@ -1,41 +1,33 @@
-<div
-*ngIf="!errorBack"
-  class="row justify-content-center"
-  [ngClass]="{
+<div *ngIf="!errorBack" class="row justify-content-center" [ngClass]="{
     'show-ejecuciones': mostrarEjecucionesProcesos == true,
     'hide-ejecuciones': mostrarEjecucionesProcesos == false
-  }"
->
-<div *ngIf="filter" class="
+  }">
+  <div *ngIf="filter" class="
 d-flex
 col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12
 justify-content-end
 ">
-  <a (click)="cleanFilter()" class="limpiarFiltroRed clickable" style="margin-top: 30px; margin-right: 30px;">Eliminar Filtro
+    <a (click)="cleanFilter()" class="limpiarFiltroRed clickable" style="margin-top: 30px; margin-right: 30px;">Eliminar
+      Filtro
       <img src="assets/icons/Eliminar.svg" class="tamanioFiltroIcono" /></a>
-</div>
+  </div>
 
-  <div
-    class="
+  <div class="
       d-flex
       col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12
       justify-content-center
-    "
-  >
+    ">
     <div class="card-lista-design-general" style="overflow-x: auto">
       <table class="table listado-design-general">
         <tr>
-          <th
-          scope="col" *ngFor="let colum of ColumDinamicData"
-          style="cursor: pointer" (click)="openModalFilter(colum, filtro)"
-          >
+          <th scope="col" *ngFor="let colum of ColumDinamicData" style="cursor: pointer"
+            (click)="openModalFilter(colum, filtro)">
             {{ removeCharterSpecialSringTh(colum.campo) }}
 
           </th>
           <th scope="col" *ngIf="flagPermisos">Acciones</th>
         </tr>
-        <tr
-          *ngFor="
+        <tr *ngFor="
             let DetailCat of DetailCats
               | paginate
                 : {
@@ -44,28 +36,20 @@ justify-content-end
                     currentPage: paginaDetailCats
                   }
               | ordenasPk: primaryKeyOrder
-          "
-        >
+          ">
           <td *ngFor="let colum of ColumDinamicData">
             {{
-              transformDateOrString(
-                DetailCat[colum.campo],
-                colum.esFecha.bandera
-              )
+            transformDateOrString(
+            DetailCat[colum.campo],
+            colum.esFecha.bandera
+            )
             }}
           </td>
           <td *ngIf="flagPermisos">
-            <img
-              *ngIf="viewUpdateIcon()"
-              style="cursor: pointer"
-              (click)="mostrarCardAgregarResgistro(1, DetailCat)"
-              class="editar-icon-catalog"
-            />
-            <img
-              style="cursor: pointer"
-              (click)="openModalConfirmacionEliminar(confrimacion, DetailCat)"
-              class="eliminar-icon"
-            />
+            <img *ngIf="viewUpdateIcon()" style="cursor: pointer" (click)="mostrarCardAgregarResgistro(1, DetailCat)"
+              class="editar-icon-catalog" />
+            <img *ngIf="flagEliminar" style="cursor: pointer"
+              (click)="openModalConfirmacionEliminar(confrimacion, DetailCat)" class="eliminar-icon" />
           </td>
         </tr>
       </table>
@@ -74,27 +58,16 @@ justify-content-end
 
   <div class="row col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12">
     <div class="col-md-8 col-lg-8 col-sm-12 col-xs-12">
-      <pagination-template
-        id="DetailCats"
-        #p="paginationApi"
-        *ngIf="verPaginado()"
-        (pageChange)="paginaDetailCats = $event"
-        class="ngx-pagination"
-      >
+      <pagination-template id="DetailCats" #p="paginationApi" *ngIf="verPaginado()"
+        (pageChange)="paginaDetailCats = $event" class="ngx-pagination">
         <div class="custom-pagination">
           <div class="pagination-previous" *ngIf="verAtras()" [class.disabled]="p.isFirstPage()">
-            <span  (click)="cargarConInicialOPaginado(-1)"> << </span>
+            <span (click)="cargarConInicialOPaginado(-1)">
+              << </span>
           </div>
-          <div
-            class="page-number"
-            *ngFor="let page of p.pages"
-            [class.current]="p.getCurrent() === page.value"
-          >
-            <span
-              (click)="p.setCurrent(page.value)"
-              *ngIf="p.getCurrent() !== page.value"
-              >{{ verLabePaginado(page.label) }}</span
-            >
+          <div class="page-number" *ngFor="let page of p.pages" [class.current]="p.getCurrent() === page.value">
+            <span (click)="p.setCurrent(page.value)" *ngIf="p.getCurrent() !== page.value">{{
+              verLabePaginado(page.label) }}</span>
             <div *ngIf="p.getCurrent() === page.value">
               <span>{{ verLabePaginado(page.label) }}</span>
             </div>
@@ -102,48 +75,36 @@ justify-content-end
 
 
           <div class="pagination-next" *ngIf="veraAdelante()" [class.disabled]="p.isLastPage()">
-            <span  (click)="cargarConInicialOPaginado(1)">&nbsp; >> </span>
+            <span (click)="cargarConInicialOPaginado(1)">&nbsp; >> </span>
           </div>
 
 
         </div>
       </pagination-template>
     </div>
-    <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12" *ngIf="flagPermisos">
+    <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12" *ngIf="flagAgregar">
       <div class="row justify-content-end">
-        <button
-          (click)="mostrarCardAgregarResgistro()"
-          class="btn agregarRegistro"
-        >
+        <button (click)="mostrarCardAgregarResgistro()" class="btn agregarRegistro">
           Agregar Registro
         </button>
       </div>
     </div>
   </div>
 </div>
-<div
-  class="row justify-content-center"
-  [ngClass]="{
+<div class="row justify-content-center" [ngClass]="{
     'show-ejecuciones': mostrarEjecucionesProcesos == false,
     'hide-ejecuciones': mostrarEjecucionesProcesos == true
-  }"
-  *ngIf="FormsDinamic"
->
+  }" *ngIf="FormsDinamic">
   <div class="col-12">
     <div class="card agregarRegistroCard">
-      <div
-        class="aling-items-center text-center"
-        style="margin-top: 20px; margin-bottom: 30px"
-      >
-        <div
-          class="
+      <div class="aling-items-center text-center" style="margin-top: 20px; margin-bottom: 30px">
+        <div class="
             d-flex
             flex-column
             align-items-center
             justify-content-center
             texto-agregarRegistroCardTitle
-          "
-        >
+          ">
           {{ editar ? "Actualizar" : "Agregar" }} Registro
         </div>
       </div>
@@ -151,37 +112,19 @@ justify-content-end
       <div class="card-body" style="padding-left: 127px; padding-right: 127px">
         <div [formGroup]="FormsDinamic">
           <div class="form-row">
-            <div
-              class="form-group col-md-6"
-              *ngFor="let colum of arrayFomsInput(ColumDinamicData)"
-            >
-              <label class="labelFormAgregarRegistro" [for]="colum.campo"
-                >{{ colum.campo }}
-                <i
-                  class="far fa-question-circle"
-                  (mouseenter)="helperInputs(colum)"
-                  triggers="mouseenter:mouseleave"
-                  [ngbPopover]="popContent"
-                  [popoverTitle]="popTitle"
-                ></i>
+            <div class="form-group col-md-6" *ngFor="let colum of arrayFomsInput(ColumDinamicData)">
+              <label class="labelFormAgregarRegistro" [for]="colum.campo">{{ colum.campo }}
+                <i class="far fa-question-circle" (mouseenter)="helperInputs(colum)" triggers="mouseenter:mouseleave"
+                  [ngbPopover]="popContent" [popoverTitle]="popTitle"></i>
               </label>
-              <input
-                *ngIf="viewInputText(colum)"
-                [formControlName]="colum.campo"
-                type="text"
-                class="form-control"
-                [id]="colum.campo"
-                [placeholder]="colum.ejemplo"
-                [disabled]="disabledInput(colum)"
-                (keypress)="AJrestriccion($event)"
-                [attr.disabled]="disabledInput(colum) ? true : null"
-                [ngStyle]="
+              <input *ngIf="viewInputText(colum)" [formControlName]="colum.campo" type="text" class="form-control"
+                [id]="colum.campo" [placeholder]="colum.ejemplo" [disabled]="disabledInput(colum)"
+                (keypress)="AJrestriccion($event)" [attr.disabled]="disabledInput(colum) ? true : null" [ngStyle]="
                   bordeError(
                     FormsDinamic.controls[colum.campo].touched &&
                       FormsDinamic.controls[colum.campo].invalid
                   )
-                "
-              />
+                " />
               <!---
               <input
                 *ngIf="viewInputNumber(colum)"
@@ -193,41 +136,26 @@ justify-content-end
                 [ngStyle]="bordeError(FormsDinamic.controls[colum.campo].touched &&
                 FormsDinamic.controls[colum.campo].invalid)"
               />-->
-              <input
-                *ngIf="viewInputDate(colum)"
-                [formControlName]="colum.campo"
-                type="date"
-                class="form-control"
-                [id]="colum.campo"
-                [placeholder]="colum.ejemplo"
-                [disabled]="disabledInput(colum)"
-                [attr.disabled]="disabledInput(colum) ? true : null"
-                [ngStyle]="
+              <input *ngIf="viewInputDate(colum)" [formControlName]="colum.campo" type="date" class="form-control"
+                [id]="colum.campo" [placeholder]="colum.ejemplo" [disabled]="disabledInput(colum)"
+                [attr.disabled]="disabledInput(colum) ? true : null" [ngStyle]="
                   bordeError(
                     FormsDinamic.controls[colum.campo].touched &&
                       FormsDinamic.controls[colum.campo].invalid
                   )
-                "
-              />
+                " />
 
-              <div
-                *ngIf="
+              <div *ngIf="
                   FormsDinamic.controls[colum.campo].touched &&
                   FormsDinamic.controls[colum.campo].invalid
-                "
-                class="errors"
-              >
+                " class="errors">
                 <div *ngIf="FormsDinamic.controls[colum.campo].errors.required">
                   El valor es requerido
                 </div>
-                <div
-                  *ngIf="FormsDinamic.controls[colum.campo].errors.minlength"
-                >
+                <div *ngIf="FormsDinamic.controls[colum.campo].errors.minlength">
                   El mínimo de caracteres es {{ colum.minCaracteres }}
                 </div>
-                <div
-                  *ngIf="FormsDinamic.controls[colum.campo].errors.maxlength"
-                >
+                <div *ngIf="FormsDinamic.controls[colum.campo].errors.maxlength">
                   El máximo de caracteres es {{ colum.maxCaracteres }}
                 </div>
                 <div *ngIf="FormsDinamic.controls[colum.campo].errors.pattern">
@@ -239,16 +167,10 @@ justify-content-end
         </div>
       </div>
 
-      <div
-        class="row aling-items-center text-center"
-        style="margin-top: 20px; margin-bottom: 30px"
-      >
+      <div class="row aling-items-center text-center" style="margin-top: 20px; margin-bottom: 30px">
         <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
           <div class="row justify-content-center">
-            <button
-              class="btn btnAgregarCancelarRegistro"
-              (click)="ocultarCardAgregarResgistro()"
-            >
+            <button class="btn btnAgregarCancelarRegistro" (click)="ocultarCardAgregarResgistro()">
               Cancelar
             </button>
           </div>
@@ -256,11 +178,8 @@ justify-content-end
 
         <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
           <div class="row justify-content-center">
-            <button
-              [disabled]="FormsDinamic.invalid"
-              class="btn btnAgregarRegistro"
-              (click)="agregarRegistroOActualizarRegistro()"
-            >
+            <button [disabled]="FormsDinamic.invalid" class="btn btnAgregarRegistro"
+              (click)="agregarRegistroOActualizarRegistro()">
               {{ editar ? "Actualizar" : "Agregar" }}
             </button>
           </div>
@@ -273,10 +192,7 @@ justify-content-end
 <ng-template #confrimacion let-modal id="confirmacion">
   <div class="modal-body">
     <div class="row justify-content-center">
-      <div
-        class="col-12 row justify-content-center align-items-center"
-        style="height: 120px"
-      >
+      <div class="col-12 row justify-content-center align-items-center" style="height: 120px">
         <div class="textoConfirmacionModalUsuarios">Cofirmar eliminación</div>
       </div>
       <div class="col-12 row">
@@ -288,15 +204,9 @@ justify-content-end
           del catálogo
         </div>
       </div>
-      <div
-        class="col-12 row justify-content-center align-items-center"
-        style="height: 120px"
-      >
+      <div class="col-12 row justify-content-center align-items-center" style="height: 120px">
         <div>
-          <button
-            class="btn bottonCancelarModalUsuario"
-            (click)="modal.close()"
-          >
+          <button class="btn bottonCancelarModalUsuario" (click)="modal.close()">
             Cancelar
           </button>
           <button class="btn bottonConfirmar" (click)="eliminarRegistro()">
@@ -311,10 +221,7 @@ justify-content-end
 <ng-template #filtro let-modal id="filtro">
   <div class="modal-body">
     <div class="row justify-content-center">
-      <div
-        class="col-12 row justify-content-center align-items-center"
-        style="height: 120px"
-      >
+      <div class="col-12 row justify-content-center align-items-center" style="height: 120px">
         <div class="textoConfirmacionModalUsuarios">{{placeholderFiltro}}</div>
       </div>
       <div class="col-12 row">
@@ -323,32 +230,18 @@ justify-content-end
         </div>
 
         <div class="col-12 descripcionConfirmacionModalUsuarios">
-          <ng-multiselect-dropdown
-          style="width: 100%"
-          [placeholder]="placeholderFiltro"
-          [settings]="SettingsFiltro"
-          [data]="dropdownListFiltro"
-          [(ngModel)]="selectedItemsFiltro"
-          >
-        </ng-multiselect-dropdown>
+          <ng-multiselect-dropdown style="width: 100%" [placeholder]="placeholderFiltro" [settings]="SettingsFiltro"
+            [data]="dropdownListFiltro" [(ngModel)]="selectedItemsFiltro">
+          </ng-multiselect-dropdown>
         </div>
       </div>
-      <div
-        class="col-12 row justify-content-center align-items-center"
-        style="height: 120px"
-      >
+      <div class="col-12 row justify-content-center align-items-center" style="height: 120px">
         <div>
-          <button
-            class="btn bottonCancelarModalUsuario"
-            (click)="modal.close()"
-          >
+          <button class="btn bottonCancelarModalUsuario" (click)="modal.close()">
             Cancelar
           </button>
-          <button class="btn bottonConfirmar"
-          [disabled]="selectedItemsFiltro.length === 0"
-          [attr.disabled]="selectedItemsFiltro.length === 0 ? true : null"
-          (click)="filtrar()"
-          >
+          <button class="btn bottonConfirmar" [disabled]="selectedItemsFiltro.length === 0"
+            [attr.disabled]="selectedItemsFiltro.length === 0 ? true : null" (click)="filtrar()">
             Filtrar
           </button>
         </div>
@@ -374,20 +267,21 @@ justify-content-end
 
 <ng-template #ejecucionesInexistentes let-modal id="ejecucionesInexistentes">
   <div class="modal-body">
-      <div class="row justify-content-center">
-          <div class="col-12 row justify-content-center align-items-center" style="height:120px;">
-              <div class="textoConfirmacionModalUsuarios">Error</div>
-          </div>
-          <div class="col-12 row">
-              <div class="col-12 descripcionConfirmacionEjecucionProceso">Error al cargar el catálogo, contacte con Soporte para revisar la configuración del catálogo.
-              </div>
-          </div>
-          <div class="col-12 row justify-content-center align-items-center" style="height:120px;">
-              <div>
-                  <button class="btn bottonConfirmarEjecucionProceso" (click)="cerrarModales()">Continuar</button>
-              </div>
-          </div>
+    <div class="row justify-content-center">
+      <div class="col-12 row justify-content-center align-items-center" style="height:120px;">
+        <div class="textoConfirmacionModalUsuarios">Error</div>
       </div>
+      <div class="col-12 row">
+        <div class="col-12 descripcionConfirmacionEjecucionProceso">Error al cargar el catálogo, contacte con Soporte
+          para revisar la configuración del catálogo.
+        </div>
+      </div>
+      <div class="col-12 row justify-content-center align-items-center" style="height:120px;">
+        <div>
+          <button class="btn bottonConfirmarEjecucionProceso" (click)="cerrarModales()">Continuar</button>
+        </div>
+      </div>
+    </div>
   </div>
   <!--
         <div class="modal-footer">

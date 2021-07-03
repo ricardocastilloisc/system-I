@@ -1,26 +1,3 @@
-<!--
-<section *ngIf="enProceso()">
-    <div class="container-fluid">
-        <div class="row justify-content-center" style="height: 60vh; width: 100%">
-            <div class=" align-self-center">
-                <div class="d-flex flex-column" style="width: 504px;">
-                    <div class="descripcionPrimerLogin" style="margin-top:34px">
-                        <div class="row">
-                            <div class="col-10">
-                                <img src="assets/icons/ico-residencial.png" width="30%" class="center">
-                                <p>Esta página se encuentra en construcción.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
--->
-
-
-
 <section *ngIf="!mostrarDetalle()">
     <ngx-spinner bdColor="rgba(0,0,0,0.5)" size="default" color="#fff" type="ball-scale-ripple" [fullScreen]="true">
         <p style="color: white"> Cargando... </p>
@@ -145,8 +122,6 @@
     </div>
 </section>
 
-
-
 <section *ngIf="mostrarDetalle()">
     <div class="d-flex col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12 justify-content-center">
         <div class="card-lista-design-general" style="overflow-x: auto">
@@ -155,7 +130,8 @@
                     <p class="titulo-modal">Detalle de cambios sobre {{detalleCambios.catalogo}}</p>
                 </div>
                 <div class="row justify-content-center">
-                    <p class="texto-modal"> Realizados por {{detalleCambios.usuario}} el {{detalleCambios.fecha | date :'dd/MM/yyyy'}} a las 
+                    <p class="texto-modal"> Realizados por {{detalleCambios.usuario}} el {{detalleCambios.fecha | date
+                        :'dd/MM/yyyy'}} a las
                         {{detalleCambios.fecha | date:'mediumTime'}} hrs.</p>
                 </div>
             </div>
@@ -193,47 +169,3 @@
         </div>
     </div>
 </section>
-
-
-
-<!--
-<ng-template #content let-modal>
-    <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">
-            <div>Detalle de los cambios</div>
-        </h4>
-        <button type="button" aria-label="Close" (click)="modal.dismiss()">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <div class="modal-body">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm">
-                    <p class="titulo">Campo</p>
-                    <div *ngFor="let item of itemsValor">
-                        {{item}}
-                    </div>
-                </div>
-                <div class="col-sm">
-                    <p class="titulo">Antes</p>
-                    <div *ngFor="let item of itemsAntes">
-                        {{item}}
-                    </div>
-                </div>
-                <div class="col-sm">
-                    <p class="titulo">Después</p>
-                    <div *ngFor="let item of itemsDespues">
-                        {{item}}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn bottonCerrarModal" data-dismiss="modal" (click)="modal.close()">
-            Cerrar
-        </button>
-    </div>
-</ng-template>
--->
