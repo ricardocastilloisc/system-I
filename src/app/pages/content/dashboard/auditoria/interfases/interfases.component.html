@@ -11,11 +11,6 @@
         Problemas Identificados
     </button>
 </div>
-<!-- ************************************** -->
-<!-- ************************************** -->
-<!-- **********  F I L T R O S ************ -->
-<!-- ************************************** -->
-<!-- ************************************** -->
 <div class="card-busqueda" [formGroup]="filtroForm">
     <div class="container">
         <div class="row">
@@ -30,8 +25,8 @@
             </div>
         </div>
     </div>
-    <div class="container" *ngIf="botonActivado('PROBLEMAS')">        
-            <div class="row">
+    <div class="container" *ngIf="botonActivado('PROBLEMAS')">
+        <div class="row">
             <div class="col-4 justify-content-center">
                 <ng-multiselect-dropdown style="width: 100%; padding-left: 10px" [placeholder]="'Tipo'" id="filtroTipo"
                     [settings]="SettingsFiltroDeTipo" [data]="dropdownListFiltroTipo"
@@ -53,7 +48,7 @@
                     (onSelect)="cambiarEtiquetaSeleccionadaGeneral('filtroProceso')">
                 </ng-multiselect-dropdown>
             </div>
-        </div>    
+        </div>
     </div>
     <div class="container">
         <div class="row">
@@ -83,14 +78,7 @@
         </div>
     </div>
 </div>
-
 <section name="interfases" *ngIf="botonActivado('INTERFACES')">
-
-    <!-- ************************************** -->
-    <!-- ************************************** -->
-    <!-- **********  R E S U M E N ************ -->
-    <!-- ************************************** -->
-    <!-- ************************************** -->
     <div class="d-flex col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12 justify-content-center">
         <div class="row justify-content-center" *ngIf="flagDatos">
             <div class=" align-self-center">
@@ -129,12 +117,6 @@
             </div>
         </div>
     </div>
-
-    <!-- ************************************** -->
-    <!-- ************************************** -->
-    <!-- **********  D I U R N O S ************ -->
-    <!-- ************************************** -->
-    <!-- ************************************** -->
     <div class="card-busqueda" *ngIf="datosDiurno">
         <div class="row col-12 alert alert-primary justify-content-center">
             <div class="row">
@@ -217,12 +199,6 @@
             </div>
         </div>
     </div>
-
-    <!-- ************************************** -->
-    <!-- ************************************** -->
-    <!-- ********* N O C T U R N O S ********** -->
-    <!-- ************************************** -->
-    <!-- ************************************** -->
     <div class="card-busqueda" *ngIf="datosNocturno">
         <div class="row col-12 alert alert-primary justify-content-center">
             <div class="row">
@@ -306,13 +282,6 @@
         </div>
     </div>
 </section>
-
-
-<!-- ************************************** -->
-<!-- ************************************** -->
-<!-- ********* P R O B L E M A S ********** -->
-<!-- ************************************** -->
-<!-- ************************************** -->
 <section name="interfases" *ngIf="botonActivado('PROBLEMAS')">
     <div class="d-flex col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12 justify-content-center"
         *ngIf="listadoProblemas">
@@ -359,7 +328,7 @@
             </table>
             <div class="paginator align-items-left"></div>
             <pagination-template id="auditoria" #p="paginationApi" (pageChange)="paginaActual = $event"
-                class="ngx-pagination"  *ngIf="listadoProblemas.length > 10">
+                class="ngx-pagination" *ngIf="listadoProblemas.length > 10">
                 <div class="custom-pagination">
                     <div class="pagination-previous" [class.disabled]="p.isFirstPage()">
                         <span *ngIf="!p.isFirstPage()" (click)="p.previous()">
@@ -381,27 +350,10 @@
         </div>
     </div>
 </section>
-
-<!--
-<div class="row card-base-grafico">
-    <div class="col-sm-6 col-md-5 col-lg-6">
-        <div class="card-grafico">
-            Resumen de interfases
-        </div>
-    </div>
-    <div class="col-sm-6 col-md-5 offset-md-2 col-lg-6 offset-lg-0">
-        <div class="card-grafico">
-            Resumen de lanzamientos
-        </div>
-    </div>
-</div>
--->
-
 <ng-template #popContent>
     <div class="texto-help" style="width: 100%"> {{ helpBody }}</div>
 </ng-template>
 <ng-template #popTitle> {{ helpTitulo }} </ng-template>
-
 <ng-template #modalEstado let-modal id="modalFiltro">
     <div class="modal-body">
         <div class="row justify-content-center">
@@ -410,7 +362,7 @@
             </div>
             <div class="col-12 row">
                 <div class="col-12 descripcionConfirmacionEjecucionProceso">
-                    {{ mensajeError }} 
+                    {{ mensajeError }}
                 </div>
             </div>
             <div class="col-12 row justify-content-center align-items-center" style="height:120px;">

@@ -11,7 +11,6 @@ justify-content-end
       Filtro
       <img src="assets/icons/Eliminar.svg" class="tamanioFiltroIcono" /></a>
   </div>
-
   <div class="
       d-flex
       col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12
@@ -23,7 +22,6 @@ justify-content-end
           <th scope="col" *ngFor="let colum of ColumDinamicData" style="cursor: pointer"
             (click)="openModalFilter(colum, filtro)">
             {{ removeCharterSpecialSringTh(colum.campo) }}
-
           </th>
           <th scope="col" *ngIf="flagPermisos">Acciones</th>
         </tr>
@@ -55,7 +53,6 @@ justify-content-end
       </table>
     </div>
   </div>
-
   <div class="row col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12">
     <div class="col-md-8 col-lg-8 col-sm-12 col-xs-12">
       <pagination-template id="DetailCats" #p="paginationApi" *ngIf="verPaginado()"
@@ -72,13 +69,9 @@ justify-content-end
               <span>{{ verLabePaginado(page.label) }}</span>
             </div>
           </div>
-
-
           <div class="pagination-next" *ngIf="veraAdelante()" [class.disabled]="p.isLastPage()">
             <span (click)="cargarConInicialOPaginado(1)">&nbsp; >> </span>
           </div>
-
-
         </div>
       </pagination-template>
     </div>
@@ -108,7 +101,6 @@ justify-content-end
           {{ editar ? "Actualizar" : "Agregar" }} Registro
         </div>
       </div>
-
       <div class="card-body" style="padding-left: 127px; padding-right: 127px">
         <div [formGroup]="FormsDinamic">
           <div class="form-row">
@@ -125,17 +117,6 @@ justify-content-end
                       FormsDinamic.controls[colum.campo].invalid
                   )
                 " />
-              <!---
-              <input
-                *ngIf="viewInputNumber(colum)"
-                [formControlName]="colum.campo"
-                type="number"
-                class="form-control"
-                [id]="colum.campo"
-                [placeholder]="colum.campo"
-                [ngStyle]="bordeError(FormsDinamic.controls[colum.campo].touched &&
-                FormsDinamic.controls[colum.campo].invalid)"
-              />-->
               <input *ngIf="viewInputDate(colum)" [formControlName]="colum.campo" type="date" class="form-control"
                 [id]="colum.campo" [placeholder]="colum.ejemplo" [disabled]="disabledInput(colum)"
                 [attr.disabled]="disabledInput(colum) ? true : null" [ngStyle]="
@@ -144,7 +125,6 @@ justify-content-end
                       FormsDinamic.controls[colum.campo].invalid
                   )
                 " />
-
               <div *ngIf="
                   FormsDinamic.controls[colum.campo].touched &&
                   FormsDinamic.controls[colum.campo].invalid
@@ -166,7 +146,6 @@ justify-content-end
           </div>
         </div>
       </div>
-
       <div class="row aling-items-center text-center" style="margin-top: 20px; margin-bottom: 30px">
         <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
           <div class="row justify-content-center">
@@ -175,7 +154,6 @@ justify-content-end
             </button>
           </div>
         </div>
-
         <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
           <div class="row justify-content-center">
             <button [disabled]="FormsDinamic.invalid" class="btn btnAgregarRegistro"
@@ -188,7 +166,6 @@ justify-content-end
     </div>
   </div>
 </div>
-
 <ng-template #confrimacion let-modal id="confirmacion">
   <div class="modal-body">
     <div class="row justify-content-center">
@@ -217,7 +194,6 @@ justify-content-end
     </div>
   </div>
 </ng-template>
-
 <ng-template #filtro let-modal id="filtro">
   <div class="modal-body">
     <div class="row justify-content-center">
@@ -228,7 +204,6 @@ justify-content-end
         <div class="col-12 descripcionConfirmacionModalUsuarios" style="margin-bottom: 15px;">
           Filtrar:
         </div>
-
         <div class="col-12 descripcionConfirmacionModalUsuarios">
           <ng-multiselect-dropdown style="width: 100%" [placeholder]="placeholderFiltro" [settings]="SettingsFiltro"
             [data]="dropdownListFiltro" [(ngModel)]="selectedItemsFiltro">
@@ -249,7 +224,6 @@ justify-content-end
     </div>
   </div>
 </ng-template>
-
 <ng-template #popContent>
   <div style="width: 100%">El valor es requerido</div>
   <div *ngIf="!columnTemp.esFecha.bandera" style="width: 100%">
@@ -263,8 +237,6 @@ justify-content-end
   </div>
 </ng-template>
 <ng-template #popTitle>{{ columnTemp.campo }}</ng-template>
-
-
 <ng-template #ejecucionesInexistentes let-modal id="ejecucionesInexistentes">
   <div class="modal-body">
     <div class="row justify-content-center">
@@ -283,9 +255,4 @@ justify-content-end
       </div>
     </div>
   </div>
-  <!--
-        <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Save</button>
-  </div>
-  -->
 </ng-template>
