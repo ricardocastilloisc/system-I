@@ -75,7 +75,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   constructor(
     private store: Store<AppState>,
     private modalService: NgbModal,
-    private UsuariosService: UsuariosService,
+    private usuarioService: UsuariosService,
     private spinner: NgxSpinnerService
   ) { }
   ngOnDestroy(): void {
@@ -94,7 +94,6 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   }
 
   cambiarEtiquetaSeleccionadaGeneral(elemento): void {
-    console.log(elemento);
     setTimeout(() => {
       $('#' + elemento)
         .find('.selected-item')
@@ -119,8 +118,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       .select(({ ListaUsuarios }) => ListaUsuarios.ListaUsuarios)
       .subscribe((ListadoDeUsuarios) => {
         this.ListadoUsuariosOriginal = ListadoDeUsuarios;
-
-        let arrayCorreos = [];
+        const arrayCorreos = [];
         if (this.ListadoUsuariosOriginal) {
           this.ListadoUsuariosOriginal.forEach((e) => {
             if (
@@ -228,7 +226,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     };
   }
 
-  openModalConfirmacionBaja(content, ObjectUsuario: UsuarioListado, grupoPertenece) {
+  openModalConfirmacionBaja(content, ObjectUsuario: UsuarioListado, grupoPertenece): void {
     this.ObjectUsuarioCambiar = ObjectUsuario;
     this.grupoPertenece = grupoPertenece;
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', windowClass: 'confirmacionUsuariosModal' });
@@ -241,7 +239,8 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title', windowClass: 'confirmacionUsuariosModal' });
   }
 
-  openModal(content, ObjectUsuario: UsuarioListado, grupoPertenece) {
+  openModal(content, ObjectUsuario: UsuarioListado, grupoPertenece): void {
+    this.validarContraSoporte(ObjectUsuario.GrupoQuePertenece);
     const ObjectUsuarioString = {
       area: ObjectUsuario.GrupoQuePertenece,
       permiso: ObjectUsuario.Attributes['custom:rol'],
@@ -250,9 +249,9 @@ export class UsuariosComponent implements OnInit, OnDestroy {
 
     const datosUsuario = {
       usuario: ObjectUsuario.Attributes.email,
-      nombre: ObjectUsuario.Attributes['given_name'],
-      apellidoPaterno: ObjectUsuario.Attributes['family_name'],
-      accion: "ACTUALIZAR"
+      nombre: ObjectUsuario.Attributes.given_name,
+      apellidoPaterno: ObjectUsuario.Attributes.family_name,
+      accion: 'ACTUALIZAR'
     };
 
     localStorage.setItem('ObjectOldUser', JSON.stringify(ObjectUsuarioString));
@@ -283,8 +282,8 @@ export class UsuariosComponent implements OnInit, OnDestroy {
           {},
           { negocio: ObjectUsuario.Attributes['custom:negocio'] }
         );
-        let { negocio } = newObject;
-        let tempSelect = [];
+        const { negocio } = newObject;
+        const tempSelect = [];
         negocio.split(',').forEach((e) => {
           tempSelect.push({
             item_id: e,
@@ -317,6 +316,15 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     } else {
       this.esSoporte = false;
     }
+  }
+
+  validarContraSoporte(SelectCamabiarArea): boolean {
+    let flag = false;
+    if (SelectCamabiarArea.includes('Soporte')) {
+      this.onChange('Soporte');
+      flag = true;
+    }
+    return flag;
   }
 
   limpirarFiltro = () => {
@@ -366,7 +374,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     ];
 
     const Attributos = {
-      UserAttributes: UserAttributes,
+      UserAttributes,
       Username: this.ObjectUsuarioCambiar.Username,
     };
     const Grupo = {
@@ -375,7 +383,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       GrupoOriginal: this.grupoPertenece,
     };
 
-    this.UsuariosService.validacionDeProcesosInsertar(Attributos, Grupo);
+    this.usuarioService.validacionDeProcesosInsertar(Attributos, Grupo);
   }
 
   salirYRestablecer = () => {
@@ -396,7 +404,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       if (this.ListadoUsuariosPantalla.length > 10) {
         return true;
       } else {
-        false;
+        return false;
       }
     } else {
       return false;
@@ -414,7 +422,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     let FiltrarArea = null;
 
     if (this.selectedItemsFiltroaPermisos.length !== 0) {
-      let arrayFiltroRol = [];
+      const arrayFiltroRol = [];
       this.selectedItemsFiltroaPermisos.forEach((e) => {
         arrayFiltroRol.push(e.item_id);
       });
@@ -423,7 +431,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     }
 
     if (this.selectedItemsFiltroAreas.length !== 0) {
-      let arrayFiltroArea = [];
+      const arrayFiltroArea = [];
       this.selectedItemsFiltroAreas.forEach((e) => {
         arrayFiltroArea.push(e.item_id);
       });
@@ -434,7 +442,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     let FiltrarCorreo = null;
 
     if (this.selectedItemsFiltroCorreos.length !== 0) {
-      let arrayFiltroCorreo = [];
+      const arrayFiltroCorreo = [];
       this.selectedItemsFiltroCorreos.forEach((e) => {
         arrayFiltroCorreo.push(e.item_id);
       });
@@ -442,7 +450,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       FiltrarCorreo = arrayFiltroCorreo;
     }
 
-    this.ListadoUsuariosPantalla = this.UsuariosService.filtrarUsuariosConAtributos(
+    this.ListadoUsuariosPantalla = this.usuarioService.filtrarUsuariosConAtributos(
       this.ListadoUsuariosOriginal,
       FiltrarRol,
       FiltrarArea,
@@ -454,7 +462,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   }
 
   darDeBajaUsuario = () => {
-    this.UsuariosService.eliminarUsuarioPromesa(this.ObjectUsuarioCambiar.Username).then(() => {
+    this.usuarioService.eliminarUsuarioPromesa(this.ObjectUsuarioCambiar.Username).then(() => {
       const obj = this.ObjectUsuarioCambiar;
       const ObjectUsuarioString = {
         area: obj.GrupoQuePertenece,
@@ -464,14 +472,14 @@ export class UsuariosComponent implements OnInit, OnDestroy {
 
       const datosUsuario = {
         usuario: obj.Attributes.email,
-        nombre: obj.Attributes['given_name'],
-        apellidoPaterno: obj.Attributes['family_name'],
-        accion: "ELIMINAR"
+        nombre: obj.Attributes.given_name,
+        apellidoPaterno: obj.Attributes.family_name,
+        accion: 'ELIMINAR'
       };
       localStorage.setItem('ObjectOldUser', JSON.stringify(ObjectUsuarioString));
       localStorage.setItem('ObjectDataUser', JSON.stringify(datosUsuario));
 
-      this.UsuariosService.generarAuditoria();
+      this.usuarioService.generarAuditoria();
 
       this.cerrarModales();
       this.store.dispatch(LoadListaUsuarios({ consulta: null }));

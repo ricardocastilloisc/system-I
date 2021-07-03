@@ -12,7 +12,6 @@
           <img src="assets/icons/Eliminar.svg" class="tamanioFiltroIcono" /></a>
       </div>
     </div>
-
     <div>
       <section class="mt-3">
         <div class="col2-row2">
@@ -28,7 +27,7 @@
           </ng-multiselect-dropdown>
         </div>
         <div class="col2-row2">
-          <ng-multiselect-dropdown style="width: 100%" [placeholder]="'Area'" [settings]="SettingsFiltroDeArea"
+          <ng-multiselect-dropdown style="width: 100%" [placeholder]="'Área'" [settings]="SettingsFiltroDeArea"
             [data]="dropdownListFiltroAreas" [(ngModel)]="selectedItemsFiltroAreas" id="filtroArea"
             (onSelect)="cambiarEtiquetaSeleccionadaGeneral('filtroArea')">
           </ng-multiselect-dropdown>
@@ -57,7 +56,6 @@
       <ngx-spinner bdColor="rgba(0,0,0,0.5)" size="default" color="#fff" type="ball-scale-ripple" [fullScreen]="true">
         <p style="color: white"> Cargando... </p>
       </ngx-spinner>
-
       <table class="table listado-design-general" *ngIf="ListadoUsuariosPantalla as ListadoUsuarios">
         <tr>
           <th style="padding-left: 10px; max-width: 250px">Nombre</th>
@@ -129,10 +127,7 @@
       </pagination-template>
     </div>
   </div>
-
 </section>
-
-
 <ng-template #content let-modal>
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">
@@ -174,7 +169,6 @@
       </div>
     </div>
   </div>
-
   <div class="modal-footer">
     <button type="button" class="btn bottonCancelarModalUsuario" data-dismiss="modal" (click)="modal.close()">
       Cerrar
@@ -183,10 +177,8 @@
       (click)="openModalConfirmacionEdicion(confrimacionEditar)">
       Guardar cambio
     </button>
-
   </div>
 </ng-template>
-
 <ng-template #confrimacion let-modal id="confirmacion">
   <div class="modal-body">
     <div class="row justify-content-center">
@@ -197,12 +189,10 @@
         <div class="col-12 descripcionConfirmacionModalUsuarios">Se eliminará el usuario:</div>
         <div class="col-12 descripcionConfirmacionModalUsuarios">
           {{ObjectUsuarioCambiar.Attributes.given_name}} {{ObjectUsuarioCambiar.Attributes.family_name}}
-
         </div>
       </div>
       <div class="col-12 row justify-content-center align-items-center" style="height:120px;">
         <div>
-
           <button class="btn bottonCancelarModalUsuario" (click)="modal.close()">Cancelar</button>
           <button class="btn bottonConfirmar" (click)="darDeBajaUsuario()">Continuar</button>
         </div>
