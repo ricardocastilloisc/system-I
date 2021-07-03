@@ -67,6 +67,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   selectedItemsCambioDeNegocio = [];
   SelectCamabiarPermiso = 'Permiso';
   SelectCamabiarArea = 'Area';
+  esSoporte = false;
   paginaActualUsuarios = 1;
   loading = true;
   filtroActivo = false;
@@ -93,14 +94,13 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   }
 
   cambiarEtiquetaSeleccionadaGeneral(elemento): void {
+    console.log(elemento);
     setTimeout(() => {
       $('#' + elemento)
         .find('.selected-item')
         .attr('class', 'etiquetasUsuarios');
     }, 1);
   }
-
-
 
   ngOnInit(): void {
     this.initicializarLosSelects();
@@ -146,7 +146,6 @@ export class UsuariosComponent implements OnInit, OnDestroy {
           this.filtrar();
         }
       });
-
 
     this.store.dispatch(LoadListaUsuarios({ consulta: null }));
 
@@ -227,7 +226,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       enableCheckAll: false,
       maxHeight: 150,
     };
-  };
+  }
 
   openModalConfirmacionBaja(content, ObjectUsuario: UsuarioListado, grupoPertenece) {
     this.ObjectUsuarioCambiar = ObjectUsuario;
@@ -305,25 +304,33 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
   }
 
+  onChange(event: any): void {
+    if (event.includes('Soporte')) {
+      this.esSoporte = true;
+      this.SelectCamabiarPermiso = 'Administrador';
+      this.selectedItemsCambioDeNegocio = [{
+        item_id: 'Afore'
+      },
+      {
+        item_id: 'Fondos'
+      }];
+    } else {
+      this.esSoporte = false;
+    }
+  }
+
   limpirarFiltro = () => {
-
     this.spinner.show();
-
     this.filtroActivo = false;
     this.ListadoUsuariosPantalla = this.ListadoUsuariosOriginal;
-
     this.selectedItemsFiltroAreas = [];
-
     this.selectedItemsFiltroCorreos = [];
-
     this.selectedItemsFiltroaPermisos = [];
-
     this.selectedItemsCambioDeNegocio = [];
-
     setTimeout(() => {
       this.spinner.hide();
     }, 300);
-  };
+  }
 
   guardarCambioPermisoUsuario = () => {
 
@@ -344,7 +351,9 @@ export class UsuariosComponent implements OnInit, OnDestroy {
 
     if (this.SelectCamabiarArea === 'Soporte') {
       this.SelectCamabiarPermiso = 'Administrador';
+      arraySeleccionados = ['Afore', 'Fondos'];
     }
+
     const UserAttributes = [
       {
         Name: 'custom:negocio',
@@ -367,12 +376,12 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     };
 
     this.UsuariosService.validacionDeProcesosInsertar(Attributos, Grupo);
-  };
+  }
 
   salirYRestablecer = () => {
     this.store.dispatch(LoadListaUsuarios({ consulta: null }));
     this.modalService.dismissAll();
-  };
+  }
 
   cerrarModales = () => {
     this.modalService.dismissAll();
@@ -380,7 +389,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
 
   retornarStringSiexiste = (object, attribute) => {
     return retornarStringSiexiste(object, attribute);
-  };
+  }
 
   verPaginado = () => {
     if (this.ListadoUsuariosPantalla) {
@@ -392,12 +401,12 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     } else {
       return false;
     }
-  };
+  }
 
   filtrar = () => {
     this.spinner.show();
 
-    this.paginaActualUsuarios = 1
+    this.paginaActualUsuarios = 1;
 
     this.filtroActivo = true;
     let FiltrarRol = null;
@@ -442,8 +451,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.spinner.hide();
     }, 300);
-  };
-
+  }
 
   darDeBajaUsuario = () => {
     this.UsuariosService.eliminarUsuarioPromesa(this.ObjectUsuarioCambiar.Username).then(() => {
@@ -467,6 +475,6 @@ export class UsuariosComponent implements OnInit, OnDestroy {
 
       this.cerrarModales();
       this.store.dispatch(LoadListaUsuarios({ consulta: null }));
-    })
+    });
   }
 }

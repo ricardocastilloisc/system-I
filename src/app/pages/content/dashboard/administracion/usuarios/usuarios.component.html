@@ -146,7 +146,7 @@
     <div class="form-group">
       <label for="dateOfBirth">Área</label>
       <div class="input-group">
-        <select class="form-control" [(ngModel)]="SelectCamabiarArea">
+        <select class="form-control" [(ngModel)]="SelectCamabiarArea" (change)="onChange($event.target.value)">
           <option disabled selected value="Area">Área</option>
           <option *ngFor="let Area of Areas" [value]="Area">
             {{ Area }}
@@ -154,7 +154,7 @@
         </select>
       </div>
     </div>
-    <div class="form-group">
+    <div class="form-group" *ngIf="!esSoporte">
       <label for="dateOfBirth">Permiso</label>
       <div class="input-group">
         <select class="form-control" [(ngModel)]="SelectCamabiarPermiso">
@@ -164,7 +164,7 @@
         </select>
       </div>
     </div>
-    <div class="form-group">
+    <div class="form-group" *ngIf="!esSoporte">
       <label for="dateOfBirth">Negocio</label>
       <div class="input-group">
         <ng-multiselect-dropdown style="width: 100%" [placeholder]="'Negocio'" [settings]="SettingsCambioDeNegocio"
