@@ -9,20 +9,21 @@
     "amplify/backend/awscloudformation": true
   },
   "workbench.colorCustomizations": {
-    "activityBar.activeBackground": "#1d612d",
-    "activityBar.activeBorder": "#22164a",
-    "activityBar.background": "#1d612d",
+    "activityBar.activeBackground": "#890237",
+    "activityBar.activeBorder": "#000000",
+    "activityBar.background": "#890237",
     "activityBar.foreground": "#e7e7e7",
     "activityBar.inactiveForeground": "#e7e7e799",
-    "activityBarBadge.background": "#22164a",
+    "activityBarBadge.background": "#000000",
     "activityBarBadge.foreground": "#e7e7e7",
-    "statusBar.background": "#113a1b",
+    "statusBar.background": "#570123",
     "statusBar.foreground": "#e7e7e7",
-    "statusBarItem.hoverBackground": "#1d612d",
-    "titleBar.activeBackground": "#113a1b",
+    "statusBarItem.hoverBackground": "#890237",
+    "titleBar.activeBackground": "#570123",
     "titleBar.activeForeground": "#e7e7e7",
-    "titleBar.inactiveBackground": "#113a1b99",
+    "titleBar.inactiveBackground": "#57012399",
     "titleBar.inactiveForeground": "#e7e7e799"
   },
-  "peacock.color": "#113A1B"
+  "peacock.color": "#570123",
+  "angular.enable-strict-mode-prompt": false
 }

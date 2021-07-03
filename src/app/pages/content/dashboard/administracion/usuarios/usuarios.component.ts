@@ -308,10 +308,12 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       this.esSoporte = true;
       this.SelectCamabiarPermiso = 'Administrador';
       this.selectedItemsCambioDeNegocio = [{
-        item_id: 'Afore'
+        item_id: 'Afore',
+        item_text: 'Afore'
       },
       {
-        item_id: 'Fondos'
+        item_id: 'Fondos',
+        item_text: 'Fondos'
       }];
     } else {
       this.esSoporte = false;
