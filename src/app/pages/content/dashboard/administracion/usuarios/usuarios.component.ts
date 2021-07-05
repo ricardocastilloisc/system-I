@@ -34,7 +34,6 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       value: ERole.Monitor,
     }
   ];
-
   Areas = [
     EArea.Contabilidad,
     EArea.Custodia,
@@ -42,7 +41,6 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     EArea.Tesoreria,
     EArea.Soporte,
   ];
-
   Permisos = [ERole.Administrador, ERole.Monitor];
   Negocios = [ENegocio.Afore, ENegocio.Fondos];
   ObjectUsuarioCambiar: UsuarioListado;
@@ -78,6 +76,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     private usuarioService: UsuariosService,
     private spinner: NgxSpinnerService
   ) { }
+
   ngOnDestroy(): void {
     this.store.dispatch(UnsetListaUsuarios());
     this.ListadoUsuarios$.unsubscribe();
@@ -103,7 +102,6 @@ export class UsuariosComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.initicializarLosSelects();
-
     this.Loading$ = this.store
       .select(({ ListaUsuarios }) => ListaUsuarios.loading)
       .subscribe((res) => {
@@ -135,18 +133,13 @@ export class UsuariosComponent implements OnInit, OnDestroy {
           if (this.dropdownListFiltroCorreos.length === 0) {
             this.dropdownListFiltroCorreos = arrayCorreos;
           }
-
         }
-
         this.ListadoUsuariosPantalla = ListadoDeUsuarios;
-
         if (this.filtroActivo && this.ListadoUsuariosPantalla.length > 0) {
           this.filtrar();
         }
       });
-
     this.store.dispatch(LoadListaUsuarios({ consulta: null }));
-
     this.EstadoProceso = this.store
       .select(({ ProcesoCambios }) => ProcesoCambios.terminado)
       .subscribe((estado) => {
@@ -166,7 +159,6 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       { item_id: ERole.Administrador, item_text: ERole.Administrador },
       { item_id: ERole.Monitor, item_text: ERole.Monitor }
     ];
-
     this.dropdownListFiltroAreas = [
       { item_id: EArea.Contabilidad, item_text: EArea.Contabilidad },
       { item_id: EArea.Custodia, item_text: EArea.Custodia },
@@ -183,7 +175,6 @@ export class UsuariosComponent implements OnInit, OnDestroy {
         item_text: EArea.Soporte,
       },
     ];
-
     this.SettingsFiltroDePermisos = {
       singleSelection: false,
       idField: 'item_id',
@@ -194,7 +185,6 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       maxHeight: 200,
       itemsShowLimit: 3,
     };
-
     this.SettingsFiltroDeArea = {
       singleSelection: false,
       idField: 'item_id',
@@ -204,7 +194,6 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       enableCheckAll: false,
       maxHeight: 200,
     };
-
     this.SettingsFiltroDeCorreos = {
       singleSelection: false,
       idField: 'item_id',
@@ -235,6 +224,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   cerrarModal = (modal) => {
     modal.close();
   }
+
   openModalConfirmacionEdicion = (modal) => {
     this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title', windowClass: 'confirmacionUsuariosModal' });
   }
@@ -246,22 +236,17 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       permiso: ObjectUsuario.Attributes['custom:rol'],
       negocio: ObjectUsuario.Attributes['custom:negocio'],
     };
-
     const datosUsuario = {
       usuario: ObjectUsuario.Attributes.email,
       nombre: ObjectUsuario.Attributes.given_name,
       apellidoPaterno: ObjectUsuario.Attributes.family_name,
       accion: 'ACTUALIZAR'
     };
-
     localStorage.setItem('ObjectOldUser', JSON.stringify(ObjectUsuarioString));
     localStorage.setItem('ObjectDataUser', JSON.stringify(datosUsuario));
-
     this.ObjectUsuarioCambiar = ObjectUsuario;
     this.grupoPertenece = grupoPertenece;
-
     this.cambiarEtiquetaSeleccionadaGeneral('cambiarnegocio');
-
     if (!retornarStringSiexiste(ObjectUsuario.Attributes, 'custom:rol')) {
       this.SelectCamabiarPermiso = 'Permiso';
     } else {
@@ -271,7 +256,6 @@ export class UsuariosComponent implements OnInit, OnDestroy {
         this.SelectCamabiarPermiso = ObjectUsuario.Attributes['custom:rol'];
       }
     }
-
     if (!retornarStringSiexiste(ObjectUsuario.Attributes, 'custom:negocio')) {
       this.selectedItemsCambioDeNegocio = [];
     } else {
@@ -290,7 +274,6 @@ export class UsuariosComponent implements OnInit, OnDestroy {
             item_text: e,
           });
         });
-
         this.selectedItemsCambioDeNegocio = tempSelect;
       }
     }
@@ -299,7 +282,6 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     } else {
       this.SelectCamabiarArea = this.grupoPertenece;
     }
-
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
   }
 
@@ -315,8 +297,10 @@ export class UsuariosComponent implements OnInit, OnDestroy {
         item_id: 'Fondos',
         item_text: 'Fondos'
       }];
+      this.cambiarEtiquetaSeleccionadaGeneral('cambiarnegocio');
     } else {
       this.esSoporte = false;
+      this.cambiarEtiquetaSeleccionadaGeneral('cambiarnegocio');
     }
   }
 
@@ -343,27 +327,21 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   }
 
   guardarCambioPermisoUsuario = () => {
-
     if (
       this.SelectCamabiarPermiso === 'Permiso' &&
       this.selectedItemsCambioDeNegocio.length === 0 &&
       this.SelectCamabiarArea === 'Area'
-
     ) {
       return;
     }
-
     let arraySeleccionados = [];
-
     this.selectedItemsCambioDeNegocio.forEach((e) => {
       arraySeleccionados.push(e.item_id);
     });
-
     if (this.SelectCamabiarArea === 'Soporte') {
       this.SelectCamabiarPermiso = 'Administrador';
       arraySeleccionados = ['Afore', 'Fondos'];
     }
-
     const UserAttributes = [
       {
         Name: 'custom:negocio',
@@ -374,7 +352,6 @@ export class UsuariosComponent implements OnInit, OnDestroy {
         Value: this.SelectCamabiarPermiso,
       },
     ];
-
     const Attributos = {
       UserAttributes,
       Username: this.ObjectUsuarioCambiar.Username,
@@ -384,7 +361,6 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       Username: this.ObjectUsuarioCambiar.Username,
       GrupoOriginal: this.grupoPertenece,
     };
-
     this.usuarioService.validacionDeProcesosInsertar(Attributos, Grupo);
   }
 
@@ -415,43 +391,32 @@ export class UsuariosComponent implements OnInit, OnDestroy {
 
   filtrar = () => {
     this.spinner.show();
-
     this.paginaActualUsuarios = 1;
-
     this.filtroActivo = true;
     let FiltrarRol = null;
-
     let FiltrarArea = null;
-
     if (this.selectedItemsFiltroaPermisos.length !== 0) {
       const arrayFiltroRol = [];
       this.selectedItemsFiltroaPermisos.forEach((e) => {
         arrayFiltroRol.push(e.item_id);
       });
-
       FiltrarRol = arrayFiltroRol;
     }
-
     if (this.selectedItemsFiltroAreas.length !== 0) {
       const arrayFiltroArea = [];
       this.selectedItemsFiltroAreas.forEach((e) => {
         arrayFiltroArea.push(e.item_id);
       });
-
       FiltrarArea = arrayFiltroArea;
     }
-
     let FiltrarCorreo = null;
-
     if (this.selectedItemsFiltroCorreos.length !== 0) {
       const arrayFiltroCorreo = [];
       this.selectedItemsFiltroCorreos.forEach((e) => {
         arrayFiltroCorreo.push(e.item_id);
       });
-
       FiltrarCorreo = arrayFiltroCorreo;
     }
-
     this.ListadoUsuariosPantalla = this.usuarioService.filtrarUsuariosConAtributos(
       this.ListadoUsuariosOriginal,
       FiltrarRol,
@@ -471,7 +436,6 @@ export class UsuariosComponent implements OnInit, OnDestroy {
         permiso: obj.Attributes['custom:rol'],
         negocio: obj.Attributes['custom:negocio'],
       };
-
       const datosUsuario = {
         usuario: obj.Attributes.email,
         nombre: obj.Attributes.given_name,
@@ -480,9 +444,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       };
       localStorage.setItem('ObjectOldUser', JSON.stringify(ObjectUsuarioString));
       localStorage.setItem('ObjectDataUser', JSON.stringify(datosUsuario));
-
       this.usuarioService.generarAuditoria();
-
       this.cerrarModales();
       this.store.dispatch(LoadListaUsuarios({ consulta: null }));
     });

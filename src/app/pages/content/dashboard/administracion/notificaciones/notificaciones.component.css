@@ -63,7 +63,7 @@
   }
 
   table.listado-design-general th {
-    background-color: #035FA4;
+    background-color: #0a8299;
     font: bold 18px FS Elliot Pro;
     height: 40px;
     height: 40px;
@@ -130,7 +130,6 @@
     background-color: red !important;
   }
 
-
   .detalle-icon {
     background: transparent url("../../../../../../assets/icons/icono-detalle.svg") 0% 0% no-repeat
       padding-box;
@@ -141,14 +140,10 @@
     padding: 15px;
   }
 
-
   .card {
     border: 1px solid black !important;
     box-shadow: none !important;
   }
-
-
-
 
 .show-ejecuciones{
   visibility: visible;
@@ -156,7 +151,6 @@
   opacity: 1;
   transition: visibility 0.3s, opacity 0.3s, max-height 0.5s linear;
 }
-
 
 .hide-ejecuciones{
   visibility: hidden;

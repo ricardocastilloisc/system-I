@@ -21,28 +21,21 @@ declare var $: any;
 export class CatalogosComponent implements OnInit, OnDestroy {
 
   filtroAuditoriaCatalogosForm: FormGroup;
-
   maxDate: Date;
-
   itemsCorreos = [];
   itemsCatalogos = [];
   itemsAcciones = [];
-
   itemsTabla = [];
   detalleCambios: any;
-
   dropdownListFiltroCatalogo = [];
   SettingsFiltroDeCatalogo: IDropdownSettings = {};
   selectedItemsFiltroCatalogo = [];
-
   dropdownListFiltroAccion = [];
   SettingsFiltroDeAccion: IDropdownSettings = {};
   selectedItemsFiltroAccion = [];
-
   dropdownListFiltroCorreo = [];
   SettingsFiltroDeCorreo: IDropdownSettings = {};
   selectedItemsFiltroCorreo = [];
-
   paginaActual: number = 1;
   verModal = false;
 
@@ -72,9 +65,7 @@ export class CatalogosComponent implements OnInit, OnDestroy {
   }
 
   initSelects = () => {
-
     this.maxDate = new Date();
-
     this.filtroAuditoriaCatalogosForm = this.fb.group({
       filtroFecha: []
     })
@@ -92,7 +83,6 @@ export class CatalogosComponent implements OnInit, OnDestroy {
       }
       this.dropdownListFiltroAccion = arregloAcciones;
     }
-
     if (this.itemsCorreos.length > 0) {
       let arregloCorreos = [];
       for (let i in this.itemsCorreos) {
@@ -101,7 +91,6 @@ export class CatalogosComponent implements OnInit, OnDestroy {
 
       this.dropdownListFiltroCorreo = arregloCorreos;
     }
-
     this.SettingsFiltroDeCatalogo = {
       singleSelection: false,
       idField: 'item_id',
@@ -112,7 +101,6 @@ export class CatalogosComponent implements OnInit, OnDestroy {
       maxHeight: 200,
       itemsShowLimit: 3,
     };
-
     this.SettingsFiltroDeAccion = {
       singleSelection: false,
       idField: 'item_id',
@@ -123,7 +111,6 @@ export class CatalogosComponent implements OnInit, OnDestroy {
       maxHeight: 200,
       itemsShowLimit: 3,
     };
-
     this.SettingsFiltroDeCorreo = {
       singleSelection: false,
       idField: 'item_id',
@@ -150,14 +137,12 @@ export class CatalogosComponent implements OnInit, OnDestroy {
     let FiltrarAccion = null;
     let FiltrarCorreo = null;
     let FiltrarFecha = this.filtroAuditoriaCatalogosForm.get('filtroFecha').value; //yyyy-mm-dd
-
     if (this.selectedItemsFiltroCatalogo.length !== 0) {
       let arrayFiltroCatalogo = [];
       this.selectedItemsFiltroCatalogo.forEach((e) => {
         arrayFiltroCatalogo.push(e.item_id);
       });
       FiltrarCatalogo = arrayFiltroCatalogo;
-
     }
     if (this.selectedItemsFiltroAccion.length !== 0) {
       let arrayFiltroAccion = [];
@@ -194,6 +179,7 @@ export class CatalogosComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.spinner.show();
     this.AUDGENUSUARIOS$ = this.store.select(
       ({ AUDGENUSUARIOS }) => AUDGENUSUARIOS.AUDGENUSUARIOS
     ).pipe(map(res => {
@@ -204,28 +190,21 @@ export class CatalogosComponent implements OnInit, OnDestroy {
     this.store.select(
       ({ AUDGENUSUARIOS }) => AUDGENUSUARIOS.AUDGENUSUARIOS
     ).subscribe(res => {
-
       for (let i in res) {
-
         if (!this.itemsCorreos.includes(res[i].CORREO)) {
           this.itemsCorreos.push(res[i].CORREO);
         }
       }
-
       for (let i in res) {
-
         if (!this.itemsCatalogos.includes(res[i].CATALOGOS.DESCRIPCION)) {
           this.itemsCatalogos.push(res[i].CATALOGOS.DESCRIPCION);
         }
       }
-
       for (let i in res) {
-
         if (!this.itemsAcciones.includes(res[i].CATALOGOS.ACCION)) {
           this.itemsAcciones.push(res[i].CATALOGOS.ACCION);
         }
       }
-
       this.itemsCatalogos.sort();
       this.itemsAcciones.sort();
       this.itemsCorreos.sort();
@@ -239,6 +218,7 @@ export class CatalogosComponent implements OnInit, OnDestroy {
       this.initSelects();
     })
     this.store.dispatch(LoadAUDGENUSUARIOS({ consult: { MODULO: 'CATALOGOS' } }));
+    this.spinner.hide();
   }
 
   ocultarModal(): void {
@@ -322,7 +302,6 @@ export class CatalogosComponent implements OnInit, OnDestroy {
     this.verModal = true;
 
   }
-
 
   filtrarCatalogosConAtributos(ListadoOriginal: AUDGENUSUARIO_INTERFACE[], FiltrarCatalogo, FiltrarAccion, FiltrarCorreo, FiltrarFecha): any {
     let response = ListadoOriginal;

@@ -13,9 +13,8 @@
 div.container-selector-proceso {
   width: auto;
   height: 45px;
-
-  margin-bottom: 50px;
-  margin-top: 50px;
+  margin-bottom: 0px;
+  margin-top: 0px;
 }
 
 .selector-proceso {
@@ -23,8 +22,8 @@ div.container-selector-proceso {
   height: 45px;
   border-radius: 25px;
   min-width: 328px;
-  margin-bottom: 50px;
-  margin-top: 50px;
+  margin-bottom: 15px;
+  margin-top: 15px;
 }
 
 .selector-proceso > button {
@@ -66,11 +65,9 @@ div.container-selector-proceso {
   width: 95%;
 }
 
-
-
 div.card-lista-proceso {
   width: auto;
-  
+
   min-width: 477px;
   flex: auto;
   display: flex;
