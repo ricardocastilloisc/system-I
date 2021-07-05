@@ -196,14 +196,20 @@ export class CatalogosComponent implements OnInit, OnDestroy {
         }
       }
       for (let i in res) {
-        if (!this.itemsCatalogos.includes(res[i].CATALOGOS.DESCRIPCION)) {
-          this.itemsCatalogos.push(res[i].CATALOGOS.DESCRIPCION);
+        if(res[i].CATALOGOS?.DESCRIPCION){
+          if (!this.itemsCatalogos.includes(res[i].CATALOGOS.DESCRIPCION)) {
+            this.itemsCatalogos.push(res[i].CATALOGOS.DESCRIPCION);
+          }
         }
+
       }
       for (let i in res) {
-        if (!this.itemsAcciones.includes(res[i].CATALOGOS.ACCION)) {
-          this.itemsAcciones.push(res[i].CATALOGOS.ACCION);
+        if(res[i].CATALOGOS?.ACCION){
+          if (!this.itemsAcciones.includes(res[i].CATALOGOS.ACCION)) {
+            this.itemsAcciones.push(res[i].CATALOGOS.ACCION);
+          }
         }
+
       }
       this.itemsCatalogos.sort();
       this.itemsAcciones.sort();
