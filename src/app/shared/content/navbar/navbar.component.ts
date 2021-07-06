@@ -31,8 +31,6 @@ declare var $: any;
   styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
-  @HostListener('window:resize', ['$event'])
-
   DataUser$: Observable<Usuario>;
   subscription: Subscription;
   Administrador = ERole.Administrador;
@@ -72,9 +70,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     navProceso: false,
     navAudiroria: false,
   };
-  onResize() {
-    this.resizeMenuContent();
-  }
+
 
   constructor(
     private authService: AuthService,
@@ -411,25 +407,32 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   };
 
   resizeMenuContent = () => {
-    if (window.innerWidth < 769) {
-      if ($('#sidebar').hasClass('active')) {
-        $('#content').css('margin-left', '253px');
-        $('#headernav').css('width', window.innerWidth + 'px');
+
+
+    $( window ).resize(()  =>{
+      if (window.innerWidth < 769) {
+        if ($('#sidebar').hasClass('active')) {
+          $('#content').css('margin-left', '253px');
+          $('#headernav').css('width', window.innerWidth + 'px');
+        } else {
+          $('#content').css('margin-left', '0px');
+          $('#headernav').css('width', '100%');
+        }
       } else {
-        $('#content').css('margin-left', '0px');
-        $('#headernav').css('width', '100%');
+        if ($('#sidebar').hasClass('active')) {
+          $('#content').css('margin-left', '0px');
+          $('#content').css('width', '100%');
+          $('#headernav').css('width', '100%');
+        } else {
+          $('#content').css('margin-left', '253px');
+          $('#content').css('width', '85%');
+          $('#headernav').css('width', window.innerWidth - 253 + 'px');
+        }
       }
-    } else {
-      if ($('#sidebar').hasClass('active')) {
-        $('#content').css('margin-left', '0px');
-        $('#content').css('width', '100%');
-        $('#headernav').css('width', '100%');
-      } else {
-        $('#content').css('margin-left', '253px');
-        $('#content').css('width', '85%');
-        $('#headernav').css('width', window.innerWidth - 253 + 'px');
-      }
-    }
+    });
+
+
+
   };
 
   irAlProceso = (data: NOTIFICACION_INTERFACE) => {
