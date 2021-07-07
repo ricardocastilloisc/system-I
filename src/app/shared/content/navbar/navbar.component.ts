@@ -283,7 +283,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
                   NotificacionFinal = [...NotificacionFinal, ...array];
                 }
               });
-              console.log('NotificacionFinal', NotificacionFinal);
               localStorage.setItem(
                 'Notificaciones',
                 JSON.stringify(NotificacionFinal)
@@ -320,7 +319,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.DataUser.attributes['custom:rol'].toUpperCase()
               )
               .then(({ items }: any) => {
-                console.log('ListCATPERMISOS', items);
                 this.ValidadoresDeInterfaces = items;
                 this.NotificacionesSubActivo$ =
                   this.api.OnUpdateSiaGenAudEstadoProcesosDevListener.subscribe(
