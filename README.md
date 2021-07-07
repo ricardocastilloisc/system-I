@@ -1,27 +1,67 @@
-# SystemI
+# Sistema Integral Automatizado
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.6.
+Es una plataforma que permite tener control, visibilidad y auditorías sobre los procesos de negocio tanto para Fondos de Inversión y Afore.
 
-## Development server
+Facilita la integración de las plataformas legadas y sistemas de terceros (Blackrock, PIP), brinda independencia en la administración de catálogos y seguimiento de procesos por cada área de negocio (Fondos y Afore). Impulsando así la transformación digital a través de servicios en la nube e intercambio de información entre aplicaciones.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-## Code scaffolding
+Ver documentación asociada al proyecto en Confluence [clic aquí](https://docs.principal.com/display/PPC/Manual+de+Usuario):
+- `Manual de Usuario`
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+# Detalles de la aplicación
 
-## Build
+**Tecnologias:**
+- Angular [Angular CLI](https://github.com/angular/angular-cli) version 11.2.6.
+- AWS Amplify [Amplify CLI](https://docs.amplify.aws/cli) version 4.48.0.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+**Versión:** 1.0
 
-## Running unit tests
+**Dependencias:**
+- Azure Active Directory (AD) 
+- AWS Appsync
+- AWS DynamoBD
+- AWS Cognito
+- API Catalogos
+- API Estadisticas Interfaces
+- API CRD
+- API MD
+- API MO
+- API AIMS Y EXCEDENTES
+- API INT CASH
+- API MANDATOS
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+**Desarrolladores:** Team SPS [[Brenda Galicia - bgalicia@spsolutions.com.mx](mailto:bgalicia@spsolutions.com.mx)] [[Victor Hernández - vhernandez@spsolutions.com.mx](mailto:vhernandez@spsolutions.com.mx)] [[Ricardo Castillo - rcastillo@spsolutions.com.mx](mailto:rcastillo@spsolutions.com.mx)] 
 
-## Running end-to-end tests
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+## Pasos para replicar la ejecución 
 
-## Further help
+- Para ejecutar la aplicación en un ambiente local, es necesdario tener el CLI de AWS Amplify instalado [Amplify CLI](https://docs.amplify.aws/cli).
+- Acceder a la consola de amplify, seleccionar la aplicacion y el backend correspondientes y realizar un pull desde el CLI de AWS Amplify, en la carpeta de la applicacion web con el `comando amplify pull --appId XXXXXXX --envName XXXXXXX`.
+- Una vez que se tienen los ultimos cambios descargados, a traves del CLI de Angular, ejecutar `ng serve`, navega a `http://localhost:4200/` y la aplicacion estara corriendo en tu ambiente local.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+**NOTA:** En la consola de Amplify, te mostrara el comando del pull con el appId y environment correspondiete. 
+
+# Despliegue de la aplicación
+
+Cómo desarrollador el despliegue se realiza a traves del CLI de Amplify forma manual o empleando la estrategia de CI/CD establecida para el proyecto. La recomentación es utilizar la segunda opción una vez se han realizado los ajustes correspondientes mencionados. 
+
+## Despliegue Manual
+
+Para realizar el desplegue manual,  una vez que se tengan los cambios necesarios y el ambiente configurado, se deberan seguir los siguientes pasos:
+
+Si se realizaron cambios al backend:
+
+- Hacer un push de los cambios a Amplify con el comando  `amplify push`
+
+Si solo se realizaron cambios en el front end sin afectar al backend:
+
+- Hacer el commit del respectivo cambio, hacer un push al repositorio de git.
+- Publicar la aplicación en AMplify con el comando `amplify publish`
+
+## Despliegue automatizado
+
+Para realizar un depsliegue automatizado, es necesario hacer un pull request hacia la rama correspondiente con el commit que se quiera desplegar, una vez que el pull request sea aceptado, la estrategia planteada se encargara de realizar el despligue, tanto para backend como para front end.
+
+**NOTA:** Debera tener acceso a la Wiki Monex de gitea, en caso de no ser así solicitar el acceso con el administrador correspondiente. Para siguientes ambientes a desarrollo se deberá hacer uso de la estrategia de CI/CD.
+
+## Consideraciones
