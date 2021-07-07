@@ -122,9 +122,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
     this.area = this.obtenerArea();
     this.tipo = this.rutaActiva.snapshot.params.tipo;
 
-    this.negocios = this.DataUser.attributes['custom:negocio'].split(',')
-
-    this.negocios = this.negocios.map(negocio => { return negocio.toUpperCase() })
+    this.negocios = this.DataUser.attributes['custom:negocio'].toUpperCase();
 
     let bodyProcesos = {
       filter: { TIPO: { eq: this.tipo.toUpperCase() } },
@@ -132,9 +130,8 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
     }
 
     let bodyPermisos = {
-      NEGOCIOS: this.negocios, AREA: this.area, ROL: this.DataUser.attributes['custom:rol'].toUpperCase()
+      NEGOCIOS: [this.negocios], AREA: this.area, ROL: this.DataUser.attributes['custom:rol'].toUpperCase()
     }
-
     this.CATPERMISOS$ = this.store.select(
       ({ CATPERMISOS }) => CATPERMISOS.CATPERMISOS
     )
@@ -146,7 +143,6 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
     )
 
     this.store.dispatch(LoadCATPERMISOS({ consult: bodyPermisos }));
-
   }
 
   obtenerProcesos(catProcesos: Array<CATPROCESOS_INTERFACE>, catPermisos: Array<CATPERMISOS_INTERFACE>) {

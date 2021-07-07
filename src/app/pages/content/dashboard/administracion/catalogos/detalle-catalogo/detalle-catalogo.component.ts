@@ -785,12 +785,12 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
               }
             });
             const area = areasStore[0];
-            let negocio = this.DataUser.attributes['custom:negocio'].toUpperCase().split(',');
+            let negocio = this.DataUser.attributes['custom:negocio'].toUpperCase();
             if (area.includes('SOPORTE')) {
               negocio = 'SOPORTE';
             }
             const rol = this.DataUser.attributes['custom:rol'].toUpperCase();
-            this.api.ListCATPERMISOS(negocio, area, rol).then(({ items }: any) => {
+            this.api.ListCATPERMISOS([negocio], area, rol).then(({ items }: any) => {
               if (Object.keys(items).length !== 0) {
                 const consultar = items.find(ai => ai.CATALOGOS.CONSULTAR === true);
                 const agregar = items.find(ai => ai.CATALOGOS.CREAR === true);

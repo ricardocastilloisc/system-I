@@ -71,7 +71,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     navAudiroria: false,
   };
 
-
   constructor(
     private authService: AuthService,
     private store: Store<AppState>,
@@ -284,6 +283,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
                   NotificacionFinal = [...NotificacionFinal, ...array];
                 }
               });
+              console.log('NotificacionFinal', NotificacionFinal);
               localStorage.setItem(
                 'Notificaciones',
                 JSON.stringify(NotificacionFinal)
@@ -306,12 +306,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
           if (prenegocios !== undefined) {
             this.negocios =
-              this.DataUser.attributes['custom:negocio'].split(',');
+              this.DataUser.attributes['custom:negocio'].toUpperCase();
           }
-
-          this.negocios = this.negocios.map((negocio) => {
-            return negocio.toUpperCase();
-          });
 
           if (prenegocios !== undefined) {
 
@@ -324,6 +320,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.DataUser.attributes['custom:rol'].toUpperCase()
               )
               .then(({ items }: any) => {
+                console.log('ListCATPERMISOS', items);
                 this.ValidadoresDeInterfaces = items;
                 this.NotificacionesSubActivo$ =
                   this.api.OnUpdateSiaGenAudEstadoProcesosDevListener.subscribe(
@@ -408,7 +405,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   resizeMenuContent = () => {
 
-
     $( window ).resize(()  =>{
       if (window.innerWidth < 769) {
         if ($('#sidebar').hasClass('active')) {
@@ -430,8 +426,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       }
     });
-
-
 
   };
 
@@ -649,9 +643,9 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
               }
             });
             const area = areasStore[0];
-            const negocios = this.DataUser.attributes['custom:negocio'].toUpperCase().split(',');
+            const negocios = this.DataUser.attributes['custom:negocio'].toUpperCase();
             const rol = this.DataUser.attributes['custom:rol'].toUpperCase();
-            this.api.ListCATPERMISOS(negocios, area, rol).then(({ items }: any) => {
+            this.api.ListCATPERMISOS([negocios], area, rol).then(({ items }: any) => {
               if (Object.keys(items).length !== 0) {
                 const catalogos = items.find(ai => ai.CATALOGOS.CONSULTAR === true);
                 const usuarios = items.find(ai => ai.USUARIOS.CONSULTAR === true);
