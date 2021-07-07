@@ -13,13 +13,11 @@ export class NotificacionesService {
   constructor(private api: APIService, private store: Store<AppState>) {}
 
   obtenerListadoDeNotificaciones = () => {
-    console.log('obtenerListadoDeNotificaciones');
     this.api
       .ListSiaGenAudEstadoProcesosDevsPorFecha(
         moment('7:59', 'HH:mm').format().toString()
       )
       .then(({ items }) => {
-        console.log('obtenerListadoDeNotificaciones', items);
         let ArrayItems = [
           ...items.filter((e) => e.ESTADO_EJECUCION === 'TERMINADO'),
         ];

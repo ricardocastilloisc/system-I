@@ -111,9 +111,9 @@ export class HomeComponent implements OnInit {
               }
             });
             const area = areasStore[0];
-            const negocios = this.DataUser.attributes['custom:negocio'].toUpperCase();
+            const negocios = this.DataUser.attributes['custom:negocio'].toUpperCase().split(',');
             const rol = this.DataUser.attributes['custom:rol'].toUpperCase();
-            this.api.ListCATPERMISOS([negocios], area, rol).then(({ items }: any) => {
+            this.api.ListCATPERMISOS(negocios, area, rol).then(({ items }: any) => {
               if (Object.keys(items).length !== 0) {
                 const catalogos = items.find(ai => ai.CATALOGOS.CONSULTAR === true);
                 const usuarios = items.find(ai => ai.USUARIOS.CONSULTAR === true);
