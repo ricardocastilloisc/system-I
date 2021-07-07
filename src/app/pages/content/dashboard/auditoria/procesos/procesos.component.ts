@@ -197,13 +197,19 @@ export class ProcesosComponent implements OnInit, OnDestroy {
         }
       }
       for (let i in res) {
-        if (!this.itemsCatalogos.includes(res[i].PROCESOS.NOMBRE)) {
-          this.itemsCatalogos.push(res[i].PROCESOS.NOMBRE);
+
+        if(res[i].PROCESOS?.NOMBRE){
+          if (!this.itemsCatalogos.includes(res[i].PROCESOS.NOMBRE)) {
+            this.itemsCatalogos.push(res[i].PROCESOS.NOMBRE);
+          }
         }
+
       }
       for (let i in res) {
-        if (!this.itemsAcciones.includes(res[i].PROCESOS.ACCION)) {
-          this.itemsAcciones.push(res[i].PROCESOS.ACCION);
+        if(res[i].PROCESOS?.ACCION){
+          if (!this.itemsAcciones.includes(res[i].PROCESOS.ACCION)) {
+            this.itemsAcciones.push(res[i].PROCESOS.ACCION);
+          }
         }
       }
       this.itemsCatalogos.sort();
