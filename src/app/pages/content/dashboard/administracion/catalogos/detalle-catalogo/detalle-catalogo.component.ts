@@ -470,7 +470,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
 
             if (arrayNumbers.length > 0) {
               valueFormControl =
-                arrayNumbers.sort((a, b) => a - b)[arrayNumbers.length - 1] + 1;
+                Date.now()
             } else {
               valueFormControl = 1;
             }
@@ -479,6 +479,8 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
           if (dataColum.esFecha.bandera) {
             valueFormControl = moment().format('YYYY-MM-DD').toString();
           }
+
+
           this.FormsDinamic.get(dataColum.campo).setValue(valueFormControl);
         }
       });
