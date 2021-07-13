@@ -32,6 +32,7 @@ import { DatePipe } from '@angular/common';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ProcesosService } from 'src/app/services/procesos.service';
+import { UsuariosService } from '../../../../../services/usuarios.service';
 import { LogeoService } from '../../../../../services/logeo.service';
 
 @Component({
@@ -88,6 +89,7 @@ export class ProcesoComponent implements OnInit, OnDestroy {
     private datepipe: DatePipe,
     private spinner: NgxSpinnerService,
     private ProcesosService: ProcesosService,
+    private usuario: UsuariosService,
     private logeo: LogeoService
   ) {
     this.Loading$ = this.store

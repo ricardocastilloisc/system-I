@@ -93,7 +93,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       }
     });
-  };
+  }
 
   ngOnDestroy(): void {
 
@@ -137,7 +137,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
     return ArrayRuta;
-  };
+  }
 
   retornarColor = (ArrayRuta) => {
     let nombreRuta = ArrayRuta.join('/').toString();
@@ -153,7 +153,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
       returnColor = 'verde';
     }
     return returnColor;
-  };
+  }
 
   retornarClaseCorrecta = () => {
     if (this.retornarColor(this.arrayRuta()) === 'verde') {
@@ -167,7 +167,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.retornarColor(this.arrayRuta()) === 'azul') {
       return 'alineadoTextoIzquierdaAzul';
     }
-  };
+  }
 
   retornarClaseCorrectaDrecha = () => {
     if (this.retornarColor(this.arrayRuta()) === 'verde') {
@@ -181,7 +181,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.retornarColor(this.arrayRuta()) === 'azul') {
       return 'alineadoTextoDerechaAzul';
     }
-  };
+  }
 
   retornarClaseCorrectaLinea = () => {
     if (this.retornarColor(this.arrayRuta()) === 'verde') {
@@ -195,7 +195,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.retornarColor(this.arrayRuta()) === 'azul') {
       return 'linea-azul';
     }
-  };
+  }
 
   retornarIconoCorrecto = () => {
     if (this.retornarColor(this.arrayRuta()) === 'verde') {
@@ -209,7 +209,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.retornarColor(this.arrayRuta()) === 'azul') {
       return 'assets/icons/nav/auditoria.svg';
     }
-  };
+  }
 
   colorCamppanaCorrecto = () => {
     if (this.retornarColor(this.arrayRuta()) === 'verde') {
@@ -223,7 +223,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.retornarColor(this.arrayRuta()) === 'azul') {
       return '#0091da';
     }
-  };
+  }
   irRutaDeStringRuta = (index) => {
     const ArrayUrl = window.location.pathname.split('/');
 
@@ -239,12 +239,12 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
     this.router.navigateByUrl(url);
-  };
+  }
 
   eliminarNotificacion = (ID_PROCESO: string) => {
     this.NotificacionesService.eliminarNoticiaciones(ID_PROCESO);
     $('#dLabel').click();
-  };
+  }
 
   ngOnInit(): void {
     this.validarPermisosPerfil();
@@ -391,20 +391,20 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     localStorage.setItem('SIA', 'false');
     this.authService.signOut();
     this.usuario.logout();
-  };
+  }
 
   rolesValids = (User: Usuario, roles: any[]): boolean => {
     return this.authService.rolesValids(User, roles);
-  };
+  }
 
   perfilValido = (User: Usuario, roles: any[]): boolean => {
     return this.authService.perfilValido(User, roles);
-  };
+  }
 
   toggle = () => {
     $('#sidebar').toggleClass('active');
     this.resizeMenuContent();
-  };
+  }
 
   resizeMenuContent = () => {
 
@@ -433,7 +433,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
 
-  };
+  }
 
   irAlProceso = (data: NOTIFICACION_INTERFACE) => {
     const url = 'procesos/diurno/' + data.INTERFAZ;
@@ -442,7 +442,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     this.router.navigateByUrl(url).then(() => {
       this.eliminarNotificacion(data.ID_PROCESO);
     });
-  };
+  }
 
   verEstado = (data: NOTIFICACION_INTERFACE) => {
     if (data.ETAPA_FINAL_ESTADO_FINAL) {
@@ -458,11 +458,11 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     return '';
-  };
+  }
 
   replazarCaracterEspecial = (value) => {
     return new Date(value + 'Z').toString();
-  };
+  }
 
   abrirToassError = (estado, err) => {
     let mensaje =
@@ -481,7 +481,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
       progressBar: true,
       progressAnimation: 'increasing',
     });
-  };
+  }
 
   abrirToass = (estado, msn) => {
     this.arrayRuta();
@@ -504,7 +504,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
       progressBar: true,
       progressAnimation: 'increasing',
     });
-  };
+  }
 
   obtenerAreaValidacion(): string {
     let arrayTempArea = [];
@@ -553,7 +553,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     return null;
-  };
+  }
 
   validarPantallaEnProcesos(data: any): void {
     const ruta = this.arrayRuta()[0];
