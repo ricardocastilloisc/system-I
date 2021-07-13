@@ -36,6 +36,15 @@ export class PanelNotificacionesService {
       .toPromise();
   };
   updateNotificacionSettings = (ID, DataValues) => {
+
+    if (typeof DataValues.enabled === 'string') {
+      if(DataValues.enabled === 'false'){
+        DataValues.enabled = false
+      }else{
+        DataValues.enabled = true
+      }
+    }
+
     return this.http
       .post(this.url + 'cloudwatchrules/' + ID, DataValues, {
         headers: this.AuthService.userHeaders(),
