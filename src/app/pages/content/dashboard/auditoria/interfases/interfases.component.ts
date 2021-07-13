@@ -34,7 +34,6 @@ export class InterfasesComponent implements OnInit, OnDestroy {
   dropdownListFiltroProceso = [];
   SettingsFiltroDeProceso: IDropdownSettings = {};
   selectedItemsFiltroProceso = [];
-
   CATPROCESOS$: Observable<CATPROCESOS_INTERFACE[]>;
   CATPROCESOS: CATPROCESOS_INTERFACE[];
   dataOriginal: any = [];
@@ -53,7 +52,6 @@ export class InterfasesComponent implements OnInit, OnDestroy {
   datosLanzamiento: any[];
   datosAforeFondosNocturno: any[];
   datosLanzamientoNocturno: any[];
-
   detalleDiurno = false;
   detalleNocturno = false;
   flagDatos: boolean;
@@ -71,7 +69,6 @@ export class InterfasesComponent implements OnInit, OnDestroy {
   item = {
     name: 'Ejecuciones'
   };
-
   explodeSlices = false;
   gradient = false;
   showLegend = true;
@@ -117,17 +114,21 @@ export class InterfasesComponent implements OnInit, OnDestroy {
   }
 
   initData = () => {
-    this.datosAforeFondos = [];
-    this.datosLanzamiento = [];
-    this.datosDiurnoAfore = [];
-    this.datosDiurnoFondos = [];
-    this.datosNocturnoAfore = [];
-    this.datosNocturnoFondos = [];
-    this.datosDetalleDiurno = [];
-    this.datosDetalleNocturno = [];
-    this.dataOriginal = [];
-    this.listadoProblemas = [];
-    localStorage.setItem('tipoPantalla', 'INTERFACES');
+    try {
+      this.datosAforeFondos = [];
+      this.datosLanzamiento = [];
+      this.datosDiurnoAfore = [];
+      this.datosDiurnoFondos = [];
+      this.datosNocturnoAfore = [];
+      this.datosNocturnoFondos = [];
+      this.datosDetalleDiurno = [];
+      this.datosDetalleNocturno = [];
+      this.dataOriginal = [];
+      this.listadoProblemas = [];
+      localStorage.setItem('tipoPantalla', 'INTERFACES');
+    } catch (err) {
+      this.logeo.registrarLog('AUDITORIA INTERFACES', 'INICIALIZAR DATOS', JSON.stringify(err));
+    }
   }
 
   initSelects = () => {
@@ -271,13 +272,17 @@ export class InterfasesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.spinner.show();
-    this.expresion = this.expresionDias;
-    this.flagSoporte = this.validarRolMensaje();
-    this.initData();
-    this.initDatosInterfaces();
-    this.initProcesos(this.initTipo);
-    this.initSelects();
+    try {
+      this.spinner.show();
+      this.expresion = this.expresionDias;
+      this.flagSoporte = this.validarRolMensaje();
+      this.initData();
+      this.initDatosInterfaces();
+      this.initProcesos(this.initTipo);
+      this.initSelects();
+    } catch (err) {
+      this.logeo.registrarLog('AUDITORIA INTERFACES', 'CARGAR PANTALLA', JSON.stringify(err));
+    }
   }
 
   ngOnDestroy(): void {
@@ -322,6 +327,7 @@ export class InterfasesComponent implements OnInit, OnDestroy {
     }
     catch (err) {
       this.mensajeError = 'Ocurrió un error: ' + err.message;
+      this.logeo.registrarLog('AUDITORIA INTERFACES', 'INICIALIZAR DATOS INTERFACES', JSON.stringify(err));
       this.openModal();
       this.spinner.hide();
     }
@@ -355,6 +361,7 @@ export class InterfasesComponent implements OnInit, OnDestroy {
     }
     catch (err) {
       this.mensajeError = 'Ocurrió un error: ' + err.message;
+      this.logeo.registrarLog('AUDITORIA INTERFACES', 'INICIALIZAR DATOS PROBLEMAS IDENTIFICADOS', JSON.stringify(err));
       this.openModal();
       this.spinner.hide();
     }
@@ -441,6 +448,7 @@ export class InterfasesComponent implements OnInit, OnDestroy {
     }
     catch (err) {
       this.mensajeError = 'Ocurrió un error: ' + err.message;
+      this.logeo.registrarLog('AUDITORIA INTERFACES', 'FILTRADO INTERFACES', JSON.stringify(err));
       this.openModal();
       this.spinner.hide();
     }
@@ -465,6 +473,7 @@ export class InterfasesComponent implements OnInit, OnDestroy {
     }
     catch (err) {
       this.mensajeError = 'Ocurrió un error: ' + err.message;
+      this.logeo.registrarLog('AUDITORIA INTERFACES', 'FILTRADO PROBLEMAS IDENTIFICADOS', JSON.stringify(err));
       this.openModal();
       this.spinner.hide();
     }

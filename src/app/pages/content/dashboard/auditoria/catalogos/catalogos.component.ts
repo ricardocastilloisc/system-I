@@ -64,9 +64,10 @@ export class CatalogosComponent implements OnInit, OnDestroy {
     this.maxDate = new Date();
     this.filtroAuditoriaCatalogosForm = this.fb.group({
       filtroFecha: []
-    })
+    });
     if (this.itemsCatalogos.length > 0) {
       let arregloCatalogos = [];
+      // tslint:disable-next-line: forin
       for (let i in this.itemsCatalogos) {
         arregloCatalogos.push({ item_id: this.itemsCatalogos[i], item_text: this.itemsCatalogos[i] });
       }
@@ -74,6 +75,7 @@ export class CatalogosComponent implements OnInit, OnDestroy {
     }
     if (this.itemsAcciones.length > 0) {
       let arregloAcciones = [];
+      // tslint:disable-next-line: forin
       for (let i in this.itemsAcciones) {
         arregloAcciones.push({ item_id: this.itemsAcciones[i], item_text: this.itemsAcciones[i] });
       }
@@ -81,10 +83,10 @@ export class CatalogosComponent implements OnInit, OnDestroy {
     }
     if (this.itemsCorreos.length > 0) {
       let arregloCorreos = [];
+      // tslint:disable-next-line: forin
       for (let i in this.itemsCorreos) {
         arregloCorreos.push({ item_id: this.itemsCorreos[i], item_text: this.itemsCorreos[i] });
       }
-
       this.dropdownListFiltroCorreo = arregloCorreos;
     }
     this.SettingsFiltroDeCatalogo = {
@@ -128,45 +130,49 @@ export class CatalogosComponent implements OnInit, OnDestroy {
   }
 
   filtrar = () => {
-    this.spinner.show();
-    let FiltrarCatalogo = null;
-    let FiltrarAccion = null;
-    let FiltrarCorreo = null;
-    let FiltrarFecha = this.filtroAuditoriaCatalogosForm.get('filtroFecha').value; //yyyy-mm-dd
-    if (this.selectedItemsFiltroCatalogo.length !== 0) {
-      let arrayFiltroCatalogo = [];
-      this.selectedItemsFiltroCatalogo.forEach((e) => {
-        arrayFiltroCatalogo.push(e.item_id);
-      });
-      FiltrarCatalogo = arrayFiltroCatalogo;
+    try {
+      this.spinner.show();
+      let FiltrarCatalogo = null;
+      let FiltrarAccion = null;
+      let FiltrarCorreo = null;
+      let FiltrarFecha = this.filtroAuditoriaCatalogosForm.get('filtroFecha').value; //yyyy-mm-dd
+      if (this.selectedItemsFiltroCatalogo.length !== 0) {
+        let arrayFiltroCatalogo = [];
+        this.selectedItemsFiltroCatalogo.forEach((e) => {
+          arrayFiltroCatalogo.push(e.item_id);
+        });
+        FiltrarCatalogo = arrayFiltroCatalogo;
+      }
+      if (this.selectedItemsFiltroAccion.length !== 0) {
+        let arrayFiltroAccion = [];
+        this.selectedItemsFiltroAccion.forEach((e) => {
+          arrayFiltroAccion.push(e.item_id);
+        });
+        FiltrarAccion = arrayFiltroAccion;
+      }
+      if (this.selectedItemsFiltroCorreo.length !== 0) {
+        let arrayFiltroCorreo = [];
+        this.selectedItemsFiltroCorreo.forEach((e) => {
+          arrayFiltroCorreo.push(e.item_id);
+        });
+        FiltrarCorreo = arrayFiltroCorreo;
+      }
+      this.ListadoPantalla = this.filtrarCatalogosConAtributos(
+        this.ListadoOriginal,
+        FiltrarCatalogo,
+        FiltrarAccion,
+        FiltrarCorreo,
+        FiltrarFecha
+      );
+      setTimeout(() => {
+        this.spinner.hide();
+      }, 300);
+    } catch (err) {
+      this.logeo.registrarLog('AUDITORIA CATALOGOS', 'FILTRADO', JSON.stringify(err));
     }
-    if (this.selectedItemsFiltroAccion.length !== 0) {
-      let arrayFiltroAccion = [];
-      this.selectedItemsFiltroAccion.forEach((e) => {
-        arrayFiltroAccion.push(e.item_id);
-      });
-      FiltrarAccion = arrayFiltroAccion;
-    }
-    if (this.selectedItemsFiltroCorreo.length !== 0) {
-      let arrayFiltroCorreo = [];
-      this.selectedItemsFiltroCorreo.forEach((e) => {
-        arrayFiltroCorreo.push(e.item_id);
-      });
-      FiltrarCorreo = arrayFiltroCorreo;
-    }
-    this.ListadoPantalla = this.filtrarCatalogosConAtributos(
-      this.ListadoOriginal,
-      FiltrarCatalogo,
-      FiltrarAccion,
-      FiltrarCorreo,
-      FiltrarFecha
-    );
-    setTimeout(() => {
-      this.spinner.hide();
-    }, 300);
   }
 
-  cambiarEtiquetaSeleccionadaGeneral(elemento) {
+  cambiarEtiquetaSeleccionadaGeneral(elemento): void {
     setTimeout(() => {
       $('#' + elemento)
         .find('.selected-item')
@@ -175,52 +181,54 @@ export class CatalogosComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.spinner.show();
-    this.AUDGENUSUARIOS$ = this.store.select(
-      ({ AUDGENUSUARIOS }) => AUDGENUSUARIOS.AUDGENUSUARIOS
-    ).pipe(map(res => {
-      if (res === null) return res
-      else return res.slice().sort(function (a, b) { return new Date(b.FECHA).getTime() - new Date(a.FECHA).getTime() })
+    try {
+      this.spinner.show();
+      this.AUDGENUSUARIOS$ = this.store.select(
+        ({ AUDGENUSUARIOS }) => AUDGENUSUARIOS.AUDGENUSUARIOS
+      ).pipe(map(res => {
+        if (res === null) { return res; }
+        else { return res.slice().sort(function (a, b) { return new Date(b.FECHA).getTime() - new Date(a.FECHA).getTime(); }); }
+      }
+      ));
+      this.store.select(
+        ({ AUDGENUSUARIOS }) => AUDGENUSUARIOS.AUDGENUSUARIOS
+      ).subscribe(res => {
+        for (let i in res) {
+          if (!this.itemsCorreos.includes(res[i].CORREO)) {
+            this.itemsCorreos.push(res[i].CORREO);
+          }
+        }
+        for (let i in res) {
+          if (res[i].CATALOGOS?.DESCRIPCION) {
+            if (!this.itemsCatalogos.includes(res[i].CATALOGOS.DESCRIPCION)) {
+              this.itemsCatalogos.push(res[i].CATALOGOS.DESCRIPCION);
+            }
+          }
+        }
+        for (let i in res) {
+          if (res[i].CATALOGOS?.ACCION) {
+            if (!this.itemsAcciones.includes(res[i].CATALOGOS.ACCION)) {
+              this.itemsAcciones.push(res[i].CATALOGOS.ACCION);
+            }
+          }
+        }
+        this.itemsCatalogos.sort();
+        this.itemsAcciones.sort();
+        this.itemsCorreos.sort();
+        if (res === null) {
+        }
+        else {
+          let resp = res.slice().sort(function (a, b) { return new Date(b.FECHA).getTime() - new Date(a.FECHA).getTime(); });
+          this.ListadoOriginal = resp;
+        }
+        this.ListadoPantalla = this.ListadoOriginal;
+        this.initSelects();
+      });
+      this.store.dispatch(LoadAUDGENUSUARIOS({ consult: { MODULO: 'CATALOGOS' } }));
+      this.spinner.hide();
+    } catch (err) {
+      this.logeo.registrarLog('AUDITORIA CATALOGOS', 'CARGAR PANTALLA', JSON.stringify(err));
     }
-    ))
-    this.store.select(
-      ({ AUDGENUSUARIOS }) => AUDGENUSUARIOS.AUDGENUSUARIOS
-    ).subscribe(res => {
-      for (let i in res) {
-        if (!this.itemsCorreos.includes(res[i].CORREO)) {
-          this.itemsCorreos.push(res[i].CORREO);
-        }
-      }
-      for (let i in res) {
-        if(res[i].CATALOGOS?.DESCRIPCION){
-          if (!this.itemsCatalogos.includes(res[i].CATALOGOS.DESCRIPCION)) {
-            this.itemsCatalogos.push(res[i].CATALOGOS.DESCRIPCION);
-          }
-        }
-
-      }
-      for (let i in res) {
-        if(res[i].CATALOGOS?.ACCION){
-          if (!this.itemsAcciones.includes(res[i].CATALOGOS.ACCION)) {
-            this.itemsAcciones.push(res[i].CATALOGOS.ACCION);
-          }
-        }
-
-      }
-      this.itemsCatalogos.sort();
-      this.itemsAcciones.sort();
-      this.itemsCorreos.sort();
-      if (res === null) {
-      }
-      else {
-        let resp = res.slice().sort(function (a, b) { return new Date(b.FECHA).getTime() - new Date(a.FECHA).getTime() })
-        this.ListadoOriginal = resp;
-      }
-      this.ListadoPantalla = this.ListadoOriginal;
-      this.initSelects();
-    })
-    this.store.dispatch(LoadAUDGENUSUARIOS({ consult: { MODULO: 'CATALOGOS' } }));
-    this.spinner.hide();
   }
 
   ocultarModal(): void {
@@ -228,81 +236,79 @@ export class CatalogosComponent implements OnInit, OnDestroy {
   }
 
   openModal(objetoDetalle: AUDGENUSUARIO_INTERFACE): void {
-
-    this.itemsTabla = [];
-    let accion = objetoDetalle.CATALOGOS.ACCION;
-    let valores = [];
-    let tabla = [];
-    let arregloAntes = [];
-    let arregloDespues = [];
-    let cambiosAntes = objetoDetalle.CATALOGOS.DETALLE_MODIFICACIONES[0].valorAnterior;
-    let cambiosDespues = objetoDetalle.CATALOGOS.DETALLE_MODIFICACIONES[0].valorNuevo;
-    let valorAntes;
-    let valorDespues;
-    let banderaCambio = false;
-    this.detalleCambios = {
-      catalogo: objetoDetalle.CATALOGOS.DESCRIPCION,
-      usuario: objetoDetalle.USUARIO.NOMBRE + ' ' + objetoDetalle.USUARIO.APELLIDO_PATERNO,
-      fecha: objetoDetalle.FECHA
-    };
-
-    if (cambiosAntes !== null) {
-      cambiosAntes = cambiosAntes.replace('{', '');
-      cambiosAntes = cambiosAntes.replace('}', '');
-    }
-
-    if (cambiosDespues !== null) {
-      cambiosDespues = cambiosDespues.replace('{', '');
-      cambiosDespues = cambiosDespues.replace('}', '');
-    }
-
-    if (accion === 'ELIMINAR') {
-      let getValor = cambiosAntes.split(',');
-      for (let i in getValor) {
-        if (getValor) {
-          let valor = getValor[i].toString().split('=');
-          valores.push(valor[0]);
-        }
-      }
-      arregloAntes = cambiosAntes.split(',');
-    } else {
-      let getValor = cambiosDespues.split(',');
-      for (let i in getValor) {
-        if (getValor) {
-          let valor = getValor[i].toString().split('=');
-          valores.push(valor[0]);
-        }
-      }
+    try {
+      this.itemsTabla = [];
+      let accion = objetoDetalle.CATALOGOS.ACCION;
+      let valores = [];
+      let tabla = [];
+      let arregloAntes = [];
+      let arregloDespues = [];
+      let cambiosAntes = objetoDetalle.CATALOGOS.DETALLE_MODIFICACIONES[0].valorAnterior;
+      let cambiosDespues = objetoDetalle.CATALOGOS.DETALLE_MODIFICACIONES[0].valorNuevo;
+      let valorAntes;
+      let valorDespues;
+      let banderaCambio = false;
+      this.detalleCambios = {
+        catalogo: objetoDetalle.CATALOGOS.DESCRIPCION,
+        usuario: objetoDetalle.USUARIO.NOMBRE + ' ' + objetoDetalle.USUARIO.APELLIDO_PATERNO,
+        fecha: objetoDetalle.FECHA
+      };
       if (cambiosAntes !== null) {
-        arregloAntes = cambiosAntes.split(',');
-        arregloDespues = cambiosDespues.split(',');
-      } else {
-        arregloDespues = cambiosDespues.split(',');
+        cambiosAntes = cambiosAntes.replace('{', '');
+        cambiosAntes = cambiosAntes.replace('}', '');
       }
-    }
-
-    if (valores !== null) {
-      for (let i in valores) {
-        if (valores) {
-          if (arregloAntes.length > 0) {
-            valorAntes = arregloAntes.find(e => e.includes(valores[i])).split('=')[1];
-          } else {
-            valorAntes = '';
+      if (cambiosDespues !== null) {
+        cambiosDespues = cambiosDespues.replace('{', '');
+        cambiosDespues = cambiosDespues.replace('}', '');
+      }
+      if (accion === 'ELIMINAR') {
+        let getValor = cambiosAntes.split(',');
+        for (let i in getValor) {
+          if (getValor) {
+            let valor = getValor[i].toString().split('=');
+            valores.push(valor[0]);
           }
-          if (arregloDespues.length > 0) {
-            valorDespues = arregloDespues.find(e => e.includes(valores[i])).split('=')[1];
-          } else {
-            valorDespues = '';
+        }
+        arregloAntes = cambiosAntes.split(',');
+      } else {
+        let getValor = cambiosDespues.split(',');
+        for (let i in getValor) {
+          if (getValor) {
+            let valor = getValor[i].toString().split('=');
+            valores.push(valor[0]);
           }
-          if (valorAntes === valorDespues) { banderaCambio = false; }
-          else { banderaCambio = true; }
-          tabla.push({ valor: valores[i], antes: valorAntes, despues: valorDespues, cambio: banderaCambio })
+        }
+        if (cambiosAntes !== null) {
+          arregloAntes = cambiosAntes.split(',');
+          arregloDespues = cambiosDespues.split(',');
+        } else {
+          arregloDespues = cambiosDespues.split(',');
         }
       }
+      if (valores !== null) {
+        for (let i in valores) {
+          if (valores) {
+            if (arregloAntes.length > 0) {
+              valorAntes = arregloAntes.find(e => e.includes(valores[i])).split('=')[1];
+            } else {
+              valorAntes = '';
+            }
+            if (arregloDespues.length > 0) {
+              valorDespues = arregloDespues.find(e => e.includes(valores[i])).split('=')[1];
+            } else {
+              valorDespues = '';
+            }
+            if (valorAntes === valorDespues) { banderaCambio = false; }
+            else { banderaCambio = true; }
+            tabla.push({ valor: valores[i], antes: valorAntes, despues: valorDespues, cambio: banderaCambio });
+          }
+        }
+      }
+      this.itemsTabla = tabla;
+      this.verModal = true;
+    } catch (err) {
+      this.logeo.registrarLog('AUDITORIA CATALOGOS', 'OBTENER DETALLE', JSON.stringify(err));
     }
-    this.itemsTabla = tabla;
-    this.verModal = true;
-
   }
 
   filtrarCatalogosConAtributos(ListadoOriginal: AUDGENUSUARIO_INTERFACE[], FiltrarCatalogo, FiltrarAccion, FiltrarCorreo, FiltrarFecha): any {
@@ -317,7 +323,6 @@ export class CatalogosComponent implements OnInit, OnDestroy {
       });
       response = arrayTempPermiso;
     }
-
     if (FiltrarAccion != null) {
       let arrayTempPermiso = [];
       FiltrarAccion.forEach((FiltrarAccion) => {
@@ -328,7 +333,6 @@ export class CatalogosComponent implements OnInit, OnDestroy {
       });
       response = arrayTempPermiso;
     }
-
     if (FiltrarCorreo != null) {
       let arrayTempPermiso = [];
       FiltrarCorreo.forEach((FiltrarCorreo) => {
@@ -339,14 +343,12 @@ export class CatalogosComponent implements OnInit, OnDestroy {
       });
       response = arrayTempPermiso;
     }
-
     if (FiltrarFecha != null) {
       let arrayTempFecha = [];
-      arrayTempFecha = response.filter((e) => e.FECHA.includes(FiltrarFecha))
+      arrayTempFecha = response.filter((e) => e.FECHA.includes(FiltrarFecha));
       response = arrayTempFecha;
     }
-
-    const uniqueArr = [... new Set(response.map(data => data.ID))]
+    const uniqueArr = [... new Set(response.map(data => data.ID))];
     return response;
   }
 

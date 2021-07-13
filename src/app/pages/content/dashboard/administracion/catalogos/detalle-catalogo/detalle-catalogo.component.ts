@@ -36,9 +36,9 @@ import { Location } from '@angular/common';
 })
 export class DetalleCatalogoComponent implements OnInit, OnDestroy {
   @ViewChild('ejecucionesInexistentes')
+
   templateRefEjecuciones: TemplateRef<any>;
   filtroEjecucionesForm: FormGroup;
-
   DetailCatalogos$: Subscription;
   ColumDinamicData: STRUCTURE_CAT[] = [];
   DetailCats: any = [];
@@ -105,13 +105,9 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
       ariaLabelledBy: 'modal-basic-title',
       windowClass: 'confirmacionUsuariosModal',
     });
-
     this.dropdownListFiltro = [];
-
     this.selectedItemsFiltro = [];
-
     this.placeholderFiltro = column.campo;
-
     this.DetailCats.forEach((e) => {
       const object = {
         item_id: e[column.campo],
@@ -120,7 +116,6 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
           column.esFecha.bandera
         ),
       };
-
       if (
         this.dropdownListFiltro.filter((e) => e.item_id === object.item_id)
           .length === 0
@@ -132,7 +127,6 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
 
   cleanFilter = () => {
     this.filter = false;
-
     this.DetailCats = this.DetailCatsStatic;
   }
 
@@ -148,36 +142,40 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
   }
 
   filtrar = () => {
-    let arrayTemp = [];
-    this.selectedItemsFiltro.forEach((e) => {
-      arrayTemp = [
-        ...arrayTemp,
-        ...this.DetailCats.filter(
-          (f) =>
-            window.btoa(
-              unescape(
-                encodeURIComponent(
-                  typeof f[this.placeholderFiltro] === 'string'
-                    ? f[this.placeholderFiltro]
-                    : f[this.placeholderFiltro].toString()
+    try {
+      let arrayTemp = [];
+      this.selectedItemsFiltro.forEach((e) => {
+        arrayTemp = [
+          ...arrayTemp,
+          ...this.DetailCats.filter(
+            (f) =>
+              window.btoa(
+                unescape(
+                  encodeURIComponent(
+                    typeof f[this.placeholderFiltro] === 'string'
+                      ? f[this.placeholderFiltro]
+                      : f[this.placeholderFiltro].toString()
+                  )
+                )
+              ) ===
+              window.btoa(
+                unescape(
+                  encodeURIComponent(
+                    typeof e.item_id === 'string'
+                      ? e.item_id
+                      : e.item_id.toString()
+                  )
                 )
               )
-            ) ===
-            window.btoa(
-              unescape(
-                encodeURIComponent(
-                  typeof e.item_id === 'string'
-                    ? e.item_id
-                    : e.item_id.toString()
-                )
-              )
-            )
-        ),
-      ];
-    });
-    this.DetailCats = arrayTemp;
-    this.filter = true;
-    this.modalService.dismissAll();
+          ),
+        ];
+      });
+      this.DetailCats = arrayTemp;
+      this.filter = true;
+      this.modalService.dismissAll();
+    } catch (err) {
+      this.logeo.registrarLog('CATALOGOS', 'FILTRADO', JSON.stringify(err));
+    }
   }
 
   viewUpdateIcon = () => {
@@ -191,51 +189,47 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.validarPermisos();
-    this.getDataCat();
-    this.DetailCatalogos$ = this.store
-      .select(({ DetailCatalogos }) => DetailCatalogos.DetailCatalogos)
-      .subscribe((res) => {
-        if (res) {
-          if (this.ColumDinamicData.length > 0) {
-            this.makeFormsDinamic();
-          }
-
-          if (res.length > 0) {
-            if (res[0]?.error) {
-              this.ejecucionesInexistentesModal();
-              this.errorBack = true;
-            } else {
-              // DetailCats
-              this.DetailCats = res;
-              this.DetailCatsStatic = res;
-
-              if (this.AgregarRegistroLoading) {
-                this.abrirToass();
-                this.AgregarRegistroLoading = false;
+    try {
+      this.validarPermisos();
+      this.getDataCat();
+      this.DetailCatalogos$ = this.store
+        .select(({ DetailCatalogos }) => DetailCatalogos.DetailCatalogos)
+        .subscribe((res) => {
+          if (res) {
+            if (this.ColumDinamicData.length > 0) {
+              this.makeFormsDinamic();
+            }
+            if (res.length > 0) {
+              if (res[0]?.error) {
+                this.ejecucionesInexistentesModal();
+                this.errorBack = true;
+              } else {
+                this.DetailCats = res;
+                this.DetailCatsStatic = res;
+                if (this.AgregarRegistroLoading) {
+                  this.abrirToass();
+                  this.AgregarRegistroLoading = false;
+                }
               }
             }
           }
-        }
-      });
+        });
+    } catch (err) {
+      this.logeo.registrarLog('CATALOGOS', 'CARGAR PANTALLA', JSON.stringify(err));
+    }
   }
 
   openModalConfirmacionEliminar(content, object): void {
     localStorage.setItem('RegisterAction', 'ELIMINAR');
     localStorage.setItem('ObjectNewRegister', JSON.stringify(null));
     localStorage.setItem('ObjectOldRegister', JSON.stringify(object));
-
     this.elementoEliminar = object;
-
     const objectReferencePk = this.ColumDinamicData.filter(
       (e) => e.llavePrimaria === true
     )[0];
-
     const registro = object[objectReferencePk.campo];
-
     this.idetentificadorDelObjectoAEliminar =
       objectReferencePk.campo + ': ' + registro;
-
     this.modalService.open(content, {
       ariaLabelledBy: 'modal-basic-title',
       windowClass: 'confirmacionUsuariosModal',
@@ -254,21 +248,18 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     if (value === null || value === undefined) {
       return '';
     }
-
     let stringReturn = '';
     if (typeof value === 'string') {
       stringReturn = value;
     } else {
       stringReturn = value.toString();
     }
-
     if (isDate && stringReturn.includes('-')) {
       stringReturn = stringReturn.split('-').join('');
     }
     if (isDate && stringReturn.includes('/')) {
       stringReturn = stringReturn.split('/').join('');
     }
-
     return isDate
       ? stringReturn.substring(6, 8) +
       '/' +
@@ -296,9 +287,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
         this.primaryKeyOrder = res.filter(
           (e) => e.llavePrimaria === true
         )[0].campo;
-
         this.ColumDinamicData = res;
-
         this.cargarConInicialOPaginado();
       } else {
         this.store.dispatch(loadingCompleteDetailCatalogos());
@@ -311,55 +300,42 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
   // -1 es a la izquierda y 1 es a la derecha
   cargarConInicialOPaginado = (izquierdaOderecha = 0) => {
     let tokenPageActuality = null;
-
     if (izquierdaOderecha === 0) {
       tokenPageActuality = localStorage.getItem('tokenPageActuality');
-
       if (tokenPageActuality === 'null') {
         tokenPageActuality = null;
         localStorage.setItem('PageNumerPageCat', '0');
       }
-
       if (!tokenPageActuality) {
         tokenPageActuality = null;
         localStorage.setItem('PageNumerPageCat', '0');
       }
     }
-
     if (izquierdaOderecha === 1) {
       this.store.dispatch(loadingDetailCatalogos());
       tokenPageActuality = localStorage.getItem('tokenPageNext');
-
       const PageNumerPageCat =
         JSON.parse(localStorage.getItem('PageNumerPageCat')) + 1;
-
       this.paginaDetailCats = 1;
-
       localStorage.setItem('PageNumerPageCat', PageNumerPageCat.toString());
       localStorage.setItem('izquierdaOderecha', izquierdaOderecha.toString());
     }
-
     if (izquierdaOderecha === -1) {
       this.store.dispatch(loadingDetailCatalogos());
       tokenPageActuality = localStorage.getItem('tokenPageBefore');
-
       if (tokenPageActuality === 'null') {
         tokenPageActuality = null;
       }
-
       const PageNumerPageCat =
         JSON.parse(localStorage.getItem('PageNumerPageCat')) - 1;
-
       localStorage.setItem('PageNumerPageCat', PageNumerPageCat.toString());
       localStorage.setItem('izquierdaOderecha', izquierdaOderecha.toString());
     }
-
     this.store.dispatch(cargarDetailCatalogos({ token: tokenPageActuality }));
   }
 
   verLabePaginado = (label) => {
     const PageNumerPageCat = JSON.parse(localStorage.getItem('PageNumerPageCat'));
-
     return parseInt(label) + PageNumerPageCat * 5;
   }
 
@@ -370,7 +346,6 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
       // tslint:disable-next-line: prefer-const
       let valueFormControl = null;
       let arraValidators = [];
-
       if (!dataColum.esFecha.bandera) {
         arraValidators = [
           Validators.required,
@@ -381,7 +356,6 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
       } else {
         arraValidators = [Validators.required];
       }
-
       this.FormsDinamic.addControl(
         dataColum.campo,
         new FormControl(valueFormControl, arraValidators)
@@ -457,7 +431,6 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
       localStorage.setItem('ObjectOldRegister', JSON.stringify(null));
       this.ColumDinamicData.forEach((dataColum) => {
         let valueFormControl = null;
-
         if (editar === 0) {
           if (dataColum.llavePrimaria && dataColum.tipo === 'N') {
             // tslint:disable-next-line: prefer-const
@@ -469,7 +442,6 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
                 arrayNumbers.push(e[dataColum.campo]);
               }
             });
-
             if (arrayNumbers.length > 0) {
               valueFormControl =
                 Date.now();
@@ -477,11 +449,9 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
               valueFormControl = 1;
             }
           }
-
           if (dataColum.esFecha.bandera) {
             valueFormControl = moment().format('YYYY-MM-DD').toString();
           }
-
           this.FormsDinamic.get(dataColum.campo).setValue(valueFormControl);
         }
       });
@@ -491,43 +461,33 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
       localStorage.setItem('ObjectOldRegister', JSON.stringify(object));
       this.ColumDinamicData.forEach((dataColum) => {
         let valueTempControl = null;
-
         valueTempControl = object[dataColum.campo];
-
         if (typeof valueTempControl === 'string') {
           valueTempControl = valueTempControl;
         } else {
           valueTempControl = valueTempControl.toString();
         }
-
         if (dataColum.esFecha.bandera) {
           if (this.DetailCats.length > 0) {
             let valueTempDate = this.DetailCats[0][dataColum.campo];
-
             let specialFormat = false;
-
             if (typeof valueTempDate === 'string') {
               valueTempDate = valueTempDate;
             } else {
               valueTempDate = valueTempDate.toString();
             }
-
             if (valueTempDate.includes('-')) {
               valueTempControl = moment(object[dataColum.campo])
                 .format('YYYY-MM-DD')
                 .toString();
-
               specialFormat = true;
             }
-
             if (valueTempDate.includes('/')) {
               valueTempControl = moment(valueTempDate.split('/').join('-'))
                 .format('YYYY-MM-DD')
                 .toString();
-
               specialFormat = true;
             }
-
             if (!specialFormat) {
               valueTempControl = moment(
                 valueTempControl.substring(0, 4) +
@@ -551,7 +511,6 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
               .toString();
           }
         }
-
         this.FormsDinamic.get(dataColum.campo).setValue(valueTempControl);
       });
     }
@@ -565,10 +524,8 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
   abrirToass = () => {
     let mensaje =
       '<div class="row justify-content-center align-items-center textoAddUpdateregistro"><img class="successRegistro"/>';
-
     // mensaje = mensaje + 'Registro' 'exitoso';
     mensaje = mensaje + 'Registro';
-
     if (this.addRegister) {
       mensaje = mensaje + ' añadido ';
     }
@@ -578,9 +535,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     if (this.updateRegister) {
       mensaje = mensaje + ' actualizado ';
     }
-
     mensaje = mensaje + '</div>';
-
     this.toastr.show(mensaje, null, {
       timeOut: 1500,
       toastClass:
@@ -590,7 +545,6 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
       progressBar: true,
       progressAnimation: 'increasing',
     });
-
     this.addRegister = false;
     this.removeRegister = false;
     this.updateRegister = false;
@@ -599,13 +553,10 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
   abrirToassError = (err: any) => {
     let mensaje =
       '<div class="row justify-content-center align-items-center textoAddUpdateregistro"><div><img class="iconErrorRegistro"/>';
-
     mensaje = mensaje + 'Se ha producido un error';
-
     mensaje = mensaje + '</div><div class="descipcionError">';
     mensaje = mensaje + err.error.descripcion;
     mensaje = mensaje + '</div></div>';
-
     this.toastr.show(mensaje, null, {
       timeOut: 3500,
       toastClass: 'etiquetaErrorRegistro row justify-content-center',
@@ -617,128 +568,121 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
   }
 
   agregarRegistroOActualizarRegistro = () => {
-    const ObjectTemp = this.FormsDinamic.value;
-    const objectFinish = {};
-    this.ColumDinamicData.forEach((dataColum) => {
-      let finishTempControl = null;
-
-      let valueTempControl = ObjectTemp[dataColum.campo];
-
-      if (dataColum.esFecha.bandera) {
-        if (this.DetailCats.length > 0) {
-          let valueTempDate = this.DetailCats[0][dataColum.campo];
-
-          let specialFormat = false;
-
-          if (typeof valueTempDate === 'string') {
-            valueTempDate = valueTempDate;
+    try {
+      const ObjectTemp = this.FormsDinamic.value;
+      const objectFinish = {};
+      this.ColumDinamicData.forEach((dataColum) => {
+        let finishTempControl = null;
+        let valueTempControl = ObjectTemp[dataColum.campo];
+        if (dataColum.esFecha.bandera) {
+          if (this.DetailCats.length > 0) {
+            let valueTempDate = this.DetailCats[0][dataColum.campo];
+            let specialFormat = false;
+            if (typeof valueTempDate === 'string') {
+              valueTempDate = valueTempDate;
+            } else {
+              valueTempDate = valueTempDate.toString();
+            }
+            if (valueTempDate.includes('-')) {
+              valueTempControl = valueTempControl.toString();
+              specialFormat = true;
+            }
+            if (valueTempDate.includes('/')) {
+              valueTempControl = valueTempControl.split('-').join('/').toString();
+              specialFormat = true;
+            }
+            if (!specialFormat) {
+              valueTempControl = valueTempControl.split('-').join('').toString();
+            }
           } else {
-            valueTempDate = valueTempDate.toString();
-          }
-
-          if (valueTempDate.includes('-')) {
-            valueTempControl = valueTempControl.toString();
-
-            specialFormat = true;
-          }
-
-          if (valueTempDate.includes('/')) {
-            valueTempControl = valueTempControl.split('-').join('/').toString();
-
-            specialFormat = true;
-          }
-
-          if (!specialFormat) {
             valueTempControl = valueTempControl.split('-').join('').toString();
           }
+        }
+        if (typeof valueTempControl === 'string') {
+          valueTempControl = valueTempControl;
         } else {
-          valueTempControl = valueTempControl.split('-').join('').toString();
+          valueTempControl = valueTempControl.toString();
         }
-      }
-
-      if (typeof valueTempControl === 'string') {
-        valueTempControl = valueTempControl;
+        if (dataColum.tipo === 'N') {
+          finishTempControl = Number(valueTempControl);
+        }
+        if (dataColum.tipo === 'S') {
+          finishTempControl = valueTempControl;
+        }
+        objectFinish[dataColum.campo] = finishTempControl;
+      });
+      if (this.editar) {
+        this.catalogoService.updateDetailsCat(objectFinish).then(
+          () => {
+            this.updateRegister = true;
+            this.AgregarRegistroLoading = true;
+            this.ocultarCardAgregarResgistro();
+            this.getDataCat();
+            this.catalogoService.generarAuditoria('EXITO');
+          },
+          (err) => {
+            this.abrirToassError(err);
+            this.catalogoService.generarAuditoria('ERROR');
+          }
+        );
       } else {
-        valueTempControl = valueTempControl.toString();
-      }
-
-      if (dataColum.tipo === 'N') {
-        finishTempControl = Number(valueTempControl);
-      }
-
-      if (dataColum.tipo === 'S') {
-        finishTempControl = valueTempControl;
-      }
-
-      objectFinish[dataColum.campo] = finishTempControl;
-    });
-
-    if (this.editar) {
-      this.catalogoService.updateDetailsCat(objectFinish).then(
-        () => {
-          this.updateRegister = true;
-          this.AgregarRegistroLoading = true;
-          this.ocultarCardAgregarResgistro();
-          this.getDataCat();
-          this.catalogoService.generarAuditoria('EXITO');
-        },
-        (err) => {
-          this.abrirToassError(err);
-          this.catalogoService.generarAuditoria('ERROR');
-        }
-      );
-    } else {
-      this.catalogoService.addDetailsCat(objectFinish).then(
-        () => {
-          this.addRegister = true;
-          this.AgregarRegistroLoading = true;
-          this.ocultarCardAgregarResgistro();
-
-          new Promise((resolve) => {
-            const intervalo = setInterval(() => {
-              if (!this.AgregarRegistroLoading) {
-                resolve('ok');
-                clearInterval(intervalo);
+        this.catalogoService.addDetailsCat(objectFinish).then(
+          () => {
+            this.addRegister = true;
+            this.AgregarRegistroLoading = true;
+            this.ocultarCardAgregarResgistro();
+            new Promise((resolve) => {
+              const intervalo = setInterval(() => {
+                if (!this.AgregarRegistroLoading) {
+                  resolve('ok');
+                  clearInterval(intervalo);
+                }
+              }, 100);
+            }).then(() => {
+              if (this.DetailCats.length % 10 !== 0) {
+                this.paginaDetailCats =
+                  // tslint:disable-next-line: radix
+                  parseInt((this.DetailCats.length / 10).toLocaleString()) + 1;
               }
-            }, 100);
-          }).then(() => {
-            if (this.DetailCats.length % 10 !== 0) {
-              this.paginaDetailCats =
-                // tslint:disable-next-line: radix
-                parseInt((this.DetailCats.length / 10).toLocaleString()) + 1;
-            }
-          });
-          this.getDataCat();
-          this.catalogoService.generarAuditoria('EXITO');
-        },
-        (err) => {
-          this.abrirToassError(err);
-          this.catalogoService.generarAuditoria('ERROR');
-        }
-      );
+            });
+            this.getDataCat();
+            this.catalogoService.generarAuditoria('EXITO');
+          },
+          (err) => {
+            this.abrirToassError(err);
+            this.catalogoService.generarAuditoria('ERROR');
+          }
+        );
+      }
+      localStorage.setItem('ObjectNewRegister', JSON.stringify(objectFinish));
+    } catch (err) {
+      this.logeo.registrarLog('CATALOGOS', 'ACTUALIZAR', JSON.stringify(err));
     }
-    localStorage.setItem('ObjectNewRegister', JSON.stringify(objectFinish));
   }
 
   eliminarRegistro = () => {
-    const objectReferencePk = this.ColumDinamicData.filter(
-      (e) => e.llavePrimaria === true
-    )[0];
-    const registro = this.elementoEliminar[objectReferencePk.campo];
-    this.catalogoService.deleteDetailsCat(registro).then(
-      () => {
-        this.removeRegister = true;
-        this.AgregarRegistroLoading = true;
-        this.paginaDetailCats = 1;
-        this.modalService.dismissAll();
-        this.getDataCat();
-        this.catalogoService.generarAuditoria('EXITO');
-      },
-      (err) => {
-        this.abrirToassError(err);
-        this.catalogoService.generarAuditoria('ERROR');
-      }
-    );
+    try {
+      const objectReferencePk = this.ColumDinamicData.filter(
+        (e) => e.llavePrimaria === true
+      )[0];
+      const registro = this.elementoEliminar[objectReferencePk.campo];
+      this.catalogoService.deleteDetailsCat(registro).then(
+        () => {
+          this.removeRegister = true;
+          this.AgregarRegistroLoading = true;
+          this.paginaDetailCats = 1;
+          this.modalService.dismissAll();
+          this.getDataCat();
+          this.catalogoService.generarAuditoria('EXITO');
+        },
+        (err) => {
+          this.abrirToassError(err);
+          this.catalogoService.generarAuditoria('ERROR');
+        }
+      );
+    } catch (err) {
+      this.logeo.registrarLog('CATALOGOS', 'ELIMINAR', JSON.stringify(err));
+    }
   }
 
   verPaginado = () => {
@@ -764,98 +708,103 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
   }
 
   validarPermisos(): void {
-    this.flagPermisos = false;
-    const catalogo = localStorage.getItem('nameCat');
-    const catalogoNegocio = localStorage.getItem('negocioCat');
-    const autenticado = this.usuario.validarRolUsuario();
-    if (autenticado) {
-      this.store
-        .select(({ usuario }) => usuario.user)
-        .subscribe((user) => {
-          if (user) {
-            this.DataUser = user;
-            const areas = [
-              EArea.Tesoreria,
-              EArea.Inversiones_Riesgos,
-              EArea.Contabilidad,
-              EArea.Custodia,
-              EArea.Soporte,
-            ];
-            const areasStore = [];
-            user.attributes['cognito:groups'].forEach((e) => {
-              if (areas.includes(e)) {
-                areasStore.push(e.toUpperCase());
+    try {
+
+      this.flagPermisos = false;
+      const catalogo = localStorage.getItem('nameCat');
+      const catalogoNegocio = localStorage.getItem('negocioCat');
+      const autenticado = this.usuario.validarRolUsuario();
+      if (autenticado) {
+        this.store
+          .select(({ usuario }) => usuario.user)
+          .subscribe((user) => {
+            if (user) {
+              this.DataUser = user;
+              const areas = [
+                EArea.Tesoreria,
+                EArea.Inversiones_Riesgos,
+                EArea.Contabilidad,
+                EArea.Custodia,
+                EArea.Soporte,
+              ];
+              const areasStore = [];
+              user.attributes['cognito:groups'].forEach((e) => {
+                if (areas.includes(e)) {
+                  areasStore.push(e.toUpperCase());
+                }
+              });
+              const area = areasStore[0];
+              let negocio = this.DataUser.attributes['custom:negocio'].toUpperCase().split(',');
+              if (area.includes('SOPORTE')) {
+                negocio = 'SOPORTE';
               }
-            });
-            const area = areasStore[0];
-            let negocio = this.DataUser.attributes['custom:negocio'].toUpperCase().split(',');
-            if (area.includes('SOPORTE')) {
-              negocio = 'SOPORTE';
-            }
-            const rol = this.DataUser.attributes['custom:rol'].toUpperCase();
-            this.api.ListCATPERMISOS(negocio, area, rol).then(({ items }: any) => {
-              if (Object.keys(items).length !== 0) {
-                const consultar = items.find(ai => ai.CATALOGOS.CONSULTAR === true);
-                const agregar = items.find(ai => ai.CATALOGOS.CREAR === true);
-                const editar = items.find(ai => ai.CATALOGOS.ACTUALIZAR === true);
-                const eliminar = items.find(ai => ai.CATALOGOS.BORRAR === true);
-                this.flagConsultar = this.obtenerBanderaPermiso(consultar);
-                this.flagAgregar = this.obtenerBanderaPermiso(agregar);
-                this.flagEditar = this.obtenerBanderaPermiso(editar);
-                this.flagEliminar = this.obtenerBanderaPermiso(eliminar);
-                if (this.flagAgregar === true || this.flagEditar === true || this.flagEliminar === true) {
-                  this.api
-                    .GetSiaGenAdmDiccionarioCatalogosDev(catalogo, catalogoNegocio)
-                    .then((data) => {
-                      const permisoArea = data.AREA;
-                      const permisoNegocio = data.NEGOCIO.split(',');
-                      if (permisoArea.includes(area)) {
-                        if (permisoNegocio.some(ai => negocio.includes(ai))) {
-                          if (area.includes('CUSTODIA')) {
-                            if (!data.PRIV_CUSTODIA.includes('W')) {
+              const rol = this.DataUser.attributes['custom:rol'].toUpperCase();
+              this.api.ListCATPERMISOS(negocio, area, rol).then(({ items }: any) => {
+                if (Object.keys(items).length !== 0) {
+                  const consultar = items.find(ai => ai.CATALOGOS.CONSULTAR === true);
+                  const agregar = items.find(ai => ai.CATALOGOS.CREAR === true);
+                  const editar = items.find(ai => ai.CATALOGOS.ACTUALIZAR === true);
+                  const eliminar = items.find(ai => ai.CATALOGOS.BORRAR === true);
+                  this.flagConsultar = this.obtenerBanderaPermiso(consultar);
+                  this.flagAgregar = this.obtenerBanderaPermiso(agregar);
+                  this.flagEditar = this.obtenerBanderaPermiso(editar);
+                  this.flagEliminar = this.obtenerBanderaPermiso(eliminar);
+                  if (this.flagAgregar === true || this.flagEditar === true || this.flagEliminar === true) {
+                    this.api
+                      .GetSiaGenAdmDiccionarioCatalogosDev(catalogo, catalogoNegocio)
+                      .then((data) => {
+                        const permisoArea = data.AREA;
+                        const permisoNegocio = data.NEGOCIO.split(',');
+                        if (permisoArea.includes(area)) {
+                          if (permisoNegocio.some(ai => negocio.includes(ai))) {
+                            if (area.includes('CUSTODIA')) {
+                              if (!data.PRIV_CUSTODIA.includes('W')) {
+                                this.flagAgregar = false;
+                                this.flagEditar = false;
+                                this.flagEliminar = false;
+                              }
+                            }
+                            if (area.includes('CONTABILIDAD')) {
+                              if (!data.PRIV_CONTABILIDAD.includes('W')) {
+                                this.flagAgregar = false;
+                                this.flagEditar = false;
+                                this.flagEliminar = false;
+                              }
+                            }
+                            if (area.includes('RIESGOS')) {
+                              if (!data.PRIV_RIESGOS.includes('W')) {
+                                this.flagAgregar = false;
+                                this.flagEditar = false;
+                                this.flagEliminar = false;
+                              }
+                            }
+                            if (area.includes('TESORERIA')) {
+                              if (!data.PRIV_TESORERIA.includes('W')) {
+                                this.flagAgregar = false;
+                                this.flagEditar = false;
+                                this.flagEliminar = false;
+                              }
+                            }
+                          } else if (negocio.includes('SOPORTE')) {
+                            if (!data.PRIV_SOPORTE.includes('W')) {
                               this.flagAgregar = false;
                               this.flagEditar = false;
                               this.flagEliminar = false;
                             }
-                          }
-                          if (area.includes('CONTABILIDAD')) {
-                            if (!data.PRIV_CONTABILIDAD.includes('W')) {
-                              this.flagAgregar = false;
-                              this.flagEditar = false;
-                              this.flagEliminar = false;
-                            }
-                          }
-                          if (area.includes('RIESGOS')) {
-                            if (!data.PRIV_RIESGOS.includes('W')) {
-                              this.flagAgregar = false;
-                              this.flagEditar = false;
-                              this.flagEliminar = false;
-                            }
-                          }
-                          if (area.includes('TESORERIA')) {
-                            if (!data.PRIV_TESORERIA.includes('W')) {
-                              this.flagAgregar = false;
-                              this.flagEditar = false;
-                              this.flagEliminar = false;
-                            }
-                          }
-                        } else if (negocio.includes('SOPORTE')) {
-                          if (!data.PRIV_SOPORTE.includes('W')) {
-                            this.flagAgregar = false;
-                            this.flagEditar = false;
-                            this.flagEliminar = false;
                           }
                         }
-                      }
-                      if (this.flagEditar === true || this.flagEliminar === true) {
-                        this.flagPermisos = true;
-                      }
-                    });
+                        if (this.flagEditar === true || this.flagEliminar === true) {
+                          this.flagPermisos = true;
+                        }
+                      });
+                  }
                 }
-              }
-            });
-          }
-        });
+              });
+            }
+          });
+      }
+    } catch (err) {
+      this.logeo.registrarLog('CATALOGOS', 'VALIDAR PERMISOS', JSON.stringify(err));
     }
   }
 

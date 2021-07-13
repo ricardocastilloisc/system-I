@@ -36,52 +36,56 @@ export class CatalogosComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.catalogos$ = this.store
-      .select(({ catalogos }) => catalogos.catalogos)
-      .subscribe((res) => {
-        this.AforesGens = [];
-        this.AforesSubs = [];
-        this.FondosGens = [];
-        this.FondosSubs = [];
-        this.GenericosGens = [];
-        if (res) {
-          res.forEach((e) => {
-            if (e.INTERFAZ === 'GEN') {
-              this.GenericosGens.push(e);
-            } else {
-              e.NEGOCIO.split(',').forEach((elementd) => {
-                if (elementd === 'AFORE') {
-                  let index = this.AforesSubs.findIndex(
-                    (x) => x.INTERFAZ === e.INTERFAZ
-                  );
-                  if (index === -1) {
-                    this.AforesSubs.push({
-                      INTERFAZ: e.INTERFAZ,
-                      SUBMENUS: [e],
-                    });
+    try {
+      this.catalogos$ = this.store
+        .select(({ catalogos }) => catalogos.catalogos)
+        .subscribe((res) => {
+          this.AforesGens = [];
+          this.AforesSubs = [];
+          this.FondosGens = [];
+          this.FondosSubs = [];
+          this.GenericosGens = [];
+          if (res) {
+            res.forEach((e) => {
+              if (e.INTERFAZ === 'GEN') {
+                this.GenericosGens.push(e);
+              } else {
+                e.NEGOCIO.split(',').forEach((elementd) => {
+                  if (elementd === 'AFORE') {
+                    let index = this.AforesSubs.findIndex(
+                      (x) => x.INTERFAZ === e.INTERFAZ
+                    );
+                    if (index === -1) {
+                      this.AforesSubs.push({
+                        INTERFAZ: e.INTERFAZ,
+                        SUBMENUS: [e],
+                      });
+                    } else {
+                      this.AforesSubs[index].SUBMENUS.push(e);
+                    }
                   } else {
-                    this.AforesSubs[index].SUBMENUS.push(e);
+                    let index = this.FondosSubs.findIndex(
+                      (x) => x.INTERFAZ === e.INTERFAZ
+                    );
+                    if (index === -1) {
+                      this.FondosSubs.push({
+                        INTERFAZ: e.INTERFAZ,
+                        SUBMENUS: [e],
+                      });
+                    } else {
+                      this.FondosSubs[index].SUBMENUS.push(e);
+                    }
                   }
-                } else {
-                  let index = this.FondosSubs.findIndex(
-                    (x) => x.INTERFAZ === e.INTERFAZ
-                  );
-                  if (index === -1) {
-                    this.FondosSubs.push({
-                      INTERFAZ: e.INTERFAZ,
-                      SUBMENUS: [e],
-                    });
-                  } else {
-                    this.FondosSubs[index].SUBMENUS.push(e);
-                  }
-                }
-              });
-            }
-          });
-          this.AforesGens = [...this.GenericosGens.filter(e => e.NEGOCIO === 'AFORE')];
-          this.FondosGens = [...this.GenericosGens.filter(e => e.NEGOCIO === 'FONDOS')];
-          this.GenericosGens = [...this.GenericosGens.filter(e => e.NEGOCIO === 'AFORE,FONDOS')];
-        }
-      });
+                });
+              }
+            });
+            this.AforesGens = [...this.GenericosGens.filter(e => e.NEGOCIO === 'AFORE')];
+            this.FondosGens = [...this.GenericosGens.filter(e => e.NEGOCIO === 'FONDOS')];
+            this.GenericosGens = [...this.GenericosGens.filter(e => e.NEGOCIO === 'AFORE,FONDOS')];
+          }
+        });
+    } catch (err) {
+    this.logeo.registrarLog('CATALOGOS', 'CARGAR PANTALLA', JSON.stringify(err));
+    }
   }
 }

@@ -103,53 +103,57 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.initicializarLosSelects();
-    this.Loading$ = this.store
-      .select(({ ListaUsuarios }) => ListaUsuarios.loading)
-      .subscribe((res) => {
-        this.loading = res;
-        if (res) {
-          this.spinner.show();
-        } else {
-          this.spinner.hide();
-        }
-      });
-    this.ListadoUsuarios$ = this.store
-      .select(({ ListaUsuarios }) => ListaUsuarios.ListaUsuarios)
-      .subscribe((ListadoDeUsuarios) => {
-        this.ListadoUsuariosOriginal = ListadoDeUsuarios;
-        const arrayCorreos = [];
-        if (this.ListadoUsuariosOriginal) {
-          this.ListadoUsuariosOriginal.forEach((e) => {
-            if (
-              this.dropdownListFiltroCorreos.filter(
-                (f) => f.item_id === e.Attributes.email
-              ).length === 0
-            ) {
-              arrayCorreos.push({
-                item_id: e.Attributes.email,
-                item_text: e.Attributes.email,
-              });
-            }
-          });
-          if (this.dropdownListFiltroCorreos.length === 0) {
-            this.dropdownListFiltroCorreos = arrayCorreos;
+    try {
+      this.initicializarLosSelects();
+      this.Loading$ = this.store
+        .select(({ ListaUsuarios }) => ListaUsuarios.loading)
+        .subscribe((res) => {
+          this.loading = res;
+          if (res) {
+            this.spinner.show();
+          } else {
+            this.spinner.hide();
           }
-        }
-        this.ListadoUsuariosPantalla = ListadoDeUsuarios;
-        if (this.filtroActivo && this.ListadoUsuariosPantalla.length > 0) {
-          this.filtrar();
-        }
-      });
-    this.store.dispatch(LoadListaUsuarios({ consulta: null }));
-    this.EstadoProceso = this.store
-      .select(({ ProcesoCambios }) => ProcesoCambios.terminado)
-      .subscribe((estado) => {
-        if (estado) {
-          this.salirYRestablecer();
-          this.store.dispatch(ProcesoLimpiar());
-        }
-      });
+        });
+      this.ListadoUsuarios$ = this.store
+        .select(({ ListaUsuarios }) => ListaUsuarios.ListaUsuarios)
+        .subscribe((ListadoDeUsuarios) => {
+          this.ListadoUsuariosOriginal = ListadoDeUsuarios;
+          const arrayCorreos = [];
+          if (this.ListadoUsuariosOriginal) {
+            this.ListadoUsuariosOriginal.forEach((e) => {
+              if (
+                this.dropdownListFiltroCorreos.filter(
+                  (f) => f.item_id === e.Attributes.email
+                ).length === 0
+              ) {
+                arrayCorreos.push({
+                  item_id: e.Attributes.email,
+                  item_text: e.Attributes.email,
+                });
+              }
+            });
+            if (this.dropdownListFiltroCorreos.length === 0) {
+              this.dropdownListFiltroCorreos = arrayCorreos;
+            }
+          }
+          this.ListadoUsuariosPantalla = ListadoDeUsuarios;
+          if (this.filtroActivo && this.ListadoUsuariosPantalla.length > 0) {
+            this.filtrar();
+          }
+        });
+      this.store.dispatch(LoadListaUsuarios({ consulta: null }));
+      this.EstadoProceso = this.store
+        .select(({ ProcesoCambios }) => ProcesoCambios.terminado)
+        .subscribe((estado) => {
+          if (estado) {
+            this.salirYRestablecer();
+            this.store.dispatch(ProcesoLimpiar());
+          }
+        });
+    } catch (err) {
+      this.logeo.registrarLog('AUDITORIA USUARIOS', 'CARGAR PANTALLA', JSON.stringify(err));
+    }
   }
 
   initicializarLosSelects = () => {
@@ -329,41 +333,45 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   }
 
   guardarCambioPermisoUsuario = () => {
-    if (
-      this.SelectCamabiarPermiso === 'Permiso' &&
-      this.selectedItemsCambioDeNegocio.length === 0 &&
-      this.SelectCamabiarArea === 'Area'
-    ) {
-      return;
+    try {
+      if (
+        this.SelectCamabiarPermiso === 'Permiso' &&
+        this.selectedItemsCambioDeNegocio.length === 0 &&
+        this.SelectCamabiarArea === 'Area'
+      ) {
+        return;
+      }
+      let arraySeleccionados = [];
+      this.selectedItemsCambioDeNegocio.forEach((e) => {
+        arraySeleccionados.push(e.item_id);
+      });
+      if (this.SelectCamabiarArea === 'Soporte') {
+        this.SelectCamabiarPermiso = 'Administrador';
+        arraySeleccionados = ['Afore', 'Fondos'];
+      }
+      const UserAttributes = [
+        {
+          Name: 'custom:negocio',
+          Value: arraySeleccionados.toString(),
+        },
+        {
+          Name: 'custom:rol',
+          Value: this.SelectCamabiarPermiso,
+        },
+      ];
+      const Attributos = {
+        UserAttributes,
+        Username: this.ObjectUsuarioCambiar.Username,
+      };
+      const Grupo = {
+        Grupo: this.SelectCamabiarArea,
+        Username: this.ObjectUsuarioCambiar.Username,
+        GrupoOriginal: this.grupoPertenece,
+      };
+      this.usuarioService.validacionDeProcesosInsertar(Attributos, Grupo);
+    } catch (err) {
+      this.logeo.registrarLog('USUARIOS', 'ACTUALIZAR', JSON.stringify(err));
     }
-    let arraySeleccionados = [];
-    this.selectedItemsCambioDeNegocio.forEach((e) => {
-      arraySeleccionados.push(e.item_id);
-    });
-    if (this.SelectCamabiarArea === 'Soporte') {
-      this.SelectCamabiarPermiso = 'Administrador';
-      arraySeleccionados = ['Afore', 'Fondos'];
-    }
-    const UserAttributes = [
-      {
-        Name: 'custom:negocio',
-        Value: arraySeleccionados.toString(),
-      },
-      {
-        Name: 'custom:rol',
-        Value: this.SelectCamabiarPermiso,
-      },
-    ];
-    const Attributos = {
-      UserAttributes,
-      Username: this.ObjectUsuarioCambiar.Username,
-    };
-    const Grupo = {
-      Grupo: this.SelectCamabiarArea,
-      Username: this.ObjectUsuarioCambiar.Username,
-      GrupoOriginal: this.grupoPertenece,
-    };
-    this.usuarioService.validacionDeProcesosInsertar(Attributos, Grupo);
   }
 
   salirYRestablecer = () => {
@@ -392,63 +400,71 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   }
 
   filtrar = () => {
-    this.spinner.show();
-    this.paginaActualUsuarios = 1;
-    this.filtroActivo = true;
-    let FiltrarRol = null;
-    let FiltrarArea = null;
-    if (this.selectedItemsFiltroaPermisos.length !== 0) {
-      const arrayFiltroRol = [];
-      this.selectedItemsFiltroaPermisos.forEach((e) => {
-        arrayFiltroRol.push(e.item_id);
-      });
-      FiltrarRol = arrayFiltroRol;
+    try {
+      this.spinner.show();
+      this.paginaActualUsuarios = 1;
+      this.filtroActivo = true;
+      let FiltrarRol = null;
+      let FiltrarArea = null;
+      if (this.selectedItemsFiltroaPermisos.length !== 0) {
+        const arrayFiltroRol = [];
+        this.selectedItemsFiltroaPermisos.forEach((e) => {
+          arrayFiltroRol.push(e.item_id);
+        });
+        FiltrarRol = arrayFiltroRol;
+      }
+      if (this.selectedItemsFiltroAreas.length !== 0) {
+        const arrayFiltroArea = [];
+        this.selectedItemsFiltroAreas.forEach((e) => {
+          arrayFiltroArea.push(e.item_id);
+        });
+        FiltrarArea = arrayFiltroArea;
+      }
+      let FiltrarCorreo = null;
+      if (this.selectedItemsFiltroCorreos.length !== 0) {
+        const arrayFiltroCorreo = [];
+        this.selectedItemsFiltroCorreos.forEach((e) => {
+          arrayFiltroCorreo.push(e.item_id);
+        });
+        FiltrarCorreo = arrayFiltroCorreo;
+      }
+      this.ListadoUsuariosPantalla = this.usuarioService.filtrarUsuariosConAtributos(
+        this.ListadoUsuariosOriginal,
+        FiltrarRol,
+        FiltrarArea,
+        FiltrarCorreo
+      );
+      setTimeout(() => {
+        this.spinner.hide();
+      }, 300);
+    } catch (err) {
+      this.logeo.registrarLog('USUARIOS', 'FILTRADO', JSON.stringify(err));
     }
-    if (this.selectedItemsFiltroAreas.length !== 0) {
-      const arrayFiltroArea = [];
-      this.selectedItemsFiltroAreas.forEach((e) => {
-        arrayFiltroArea.push(e.item_id);
-      });
-      FiltrarArea = arrayFiltroArea;
-    }
-    let FiltrarCorreo = null;
-    if (this.selectedItemsFiltroCorreos.length !== 0) {
-      const arrayFiltroCorreo = [];
-      this.selectedItemsFiltroCorreos.forEach((e) => {
-        arrayFiltroCorreo.push(e.item_id);
-      });
-      FiltrarCorreo = arrayFiltroCorreo;
-    }
-    this.ListadoUsuariosPantalla = this.usuarioService.filtrarUsuariosConAtributos(
-      this.ListadoUsuariosOriginal,
-      FiltrarRol,
-      FiltrarArea,
-      FiltrarCorreo
-    );
-    setTimeout(() => {
-      this.spinner.hide();
-    }, 300);
   }
 
   darDeBajaUsuario = () => {
-    this.usuarioService.eliminarUsuarioPromesa(this.ObjectUsuarioCambiar.Username).then(() => {
-      const obj = this.ObjectUsuarioCambiar;
-      const ObjectUsuarioString = {
-        area: obj.GrupoQuePertenece,
-        permiso: obj.Attributes['custom:rol'],
-        negocio: obj.Attributes['custom:negocio'],
-      };
-      const datosUsuario = {
-        usuario: obj.Attributes.email,
-        nombre: obj.Attributes.given_name,
-        apellidoPaterno: obj.Attributes.family_name,
-        accion: 'ELIMINAR'
-      };
-      localStorage.setItem('ObjectOldUser', JSON.stringify(ObjectUsuarioString));
-      localStorage.setItem('ObjectDataUser', JSON.stringify(datosUsuario));
-      this.usuarioService.generarAuditoria();
-      this.cerrarModales();
-      this.store.dispatch(LoadListaUsuarios({ consulta: null }));
-    });
+    try {
+      this.usuarioService.eliminarUsuarioPromesa(this.ObjectUsuarioCambiar.Username).then(() => {
+        const obj = this.ObjectUsuarioCambiar;
+        const ObjectUsuarioString = {
+          area: obj.GrupoQuePertenece,
+          permiso: obj.Attributes['custom:rol'],
+          negocio: obj.Attributes['custom:negocio'],
+        };
+        const datosUsuario = {
+          usuario: obj.Attributes.email,
+          nombre: obj.Attributes.given_name,
+          apellidoPaterno: obj.Attributes.family_name,
+          accion: 'ELIMINAR'
+        };
+        localStorage.setItem('ObjectOldUser', JSON.stringify(ObjectUsuarioString));
+        localStorage.setItem('ObjectDataUser', JSON.stringify(datosUsuario));
+        this.usuarioService.generarAuditoria();
+        this.cerrarModales();
+        this.store.dispatch(LoadListaUsuarios({ consulta: null }));
+      });
+    } catch (err) {
+      this.logeo.registrarLog('USUARIOS', 'ELIMINAR', JSON.stringify(err));
+    }
   }
 }
