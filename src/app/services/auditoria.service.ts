@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import * as AWS from 'aws-sdk';
 import { environment } from '../../environments/environment';
 import { v4 as uuidv4 } from 'uuid';
-
+import { LogeoService } from '../services/logeo.service';
+import { json } from 'd3';
 AWS.config.update({
   accessKeyId: environment.SESConfig.accessKeyId,
   secretAccessKey: environment.SESConfig.secretAccessKey,
@@ -17,7 +18,7 @@ const sqs = new AWS.SQS();
 
 export class AuditoriaService {
 
-  constructor() { }
+  constructor(private logeo: LogeoService) { }
 
   enviarBitacoraUsuarios(objetoBitacora): void {
 
@@ -29,6 +30,9 @@ export class AuditoriaService {
     };
 
     sqs.sendMessage(params, function (err, data) {
+      if (err) {
+        this.logeo.registrarLog('AUDITORIA', 'EVIAR SQS', JSON.stringify(err));
+      }
     });
   }
 

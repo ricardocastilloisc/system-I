@@ -10,8 +10,7 @@ import { ValorFiltrarGrupo } from '../validators/opcionesDeFiltroUsuarioAdminini
 import { UsuarioListado } from '../model/usuarioLitsa.model';
 import { AuthService } from './auth.service';
 import { AuditoriaService } from './auditoria.service';
-import { HttpHeaders } from '@angular/common/http';
-
+import { LogeoService } from '../services/logeo.service';
 AWS.config.update(environment.SESConfig);
 const cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider();
 let result = [];
@@ -22,7 +21,6 @@ let objFiltrado = [];
 })
 export class UsuariosService {
   Roles = [ERole.Administrador, ERole.Monitor];
-
   Areas = [
     EArea.Contabilidad,
     EArea.Custodia,
@@ -30,66 +28,62 @@ export class UsuariosService {
     EArea.Tesoreria,
     EArea.Soporte,
   ];
-
   Negocios = [
     ENegocio.Afore,
     ENegocio.Fondos,
   ];
-
   params = {
     GroupName:
-      'Tesoreria' /* es un dato de entrada de la pantalla (grupo al que se agrega o remueve el usuario) */,
+      'Tesoreria',
     UserPoolId: environment.amplifyConfig.Auth.userPoolId,
     Username:
-      'azure_rwayeowx9nsigogmrb6adqmpgrl2hohoivn5bgsobja' /* identificador del usuario en al user pool */,
+      'azure_rwayeowx9nsigogmrb6adqmpgrl2hohoivn5bgsobja',
   };
-
   paramsUser = {
     UserPoolId: environment.amplifyConfig.Auth.userPoolId,
     Username:
-      'azure_rwayeowx9nsigogmrb6adqmpgrl2hohoivn5bgsobja' /* identificador del usuario en al user pool */,
+      'azure_rwayeowx9nsigogmrb6adqmpgrl2hohoivn5bgsobja'
   };
-
   paramsGroups = {
     UserPoolId: environment.amplifyConfig.Auth.userPoolId,
   };
-
   paramsUserGroups = {
-    GroupName: 'Tesoreria' /* es un dato de entrada de la pantalla */,
+    GroupName: 'Tesoreria',
     Limit: environment.amplifyConfig.Auth.limit,
     UserPoolId: environment.amplifyConfig.Auth.userPoolId,
   };
-
   paramsAtributos = {
     UserAttributes: [
       {
         Name: 'custom:negocio',
-        Value: 'Afore' /* campo de entrada identificado como negocio */,
+        Value: 'Afore',
       },
       {
         Name: 'custom:rol',
-        Value: 'Soporte' /* campo de entrada identificado como permiso */,
+        Value: 'Soporte',
       },
     ],
     Username:
-      'azure_rwayeowx9nsigogmrb6adqmpgrl2hohoivn5bgsobja' /* identificador del usuario en el user pool */,
+      'azure_rwayeowx9nsigogmrb6adqmpgrl2hohoivn5bgsobja',
     UserPoolId: environment.amplifyConfig.Auth.userPoolId,
   };
-
   paramsGrupoUsuario = {
     Username:
-      'azure_rwayeowx9nsigogmrb6adqmpgrl2hohoivn5bgsobja' /* identificador del usuario en el user pool */,
+      'azure_rwayeowx9nsigogmrb6adqmpgrl2hohoivn5bgsobja',
     UserPoolId: environment.amplifyConfig.Auth.userPoolId,
   };
-
   paramsDeleteUser = {
     Username:
-      'azure_hgjelpfjjwxffms6_5oti6ydqcjh7jhjdxn9706cxf0' /* identificador del usuario en el user pool */,
+      'azure_hgjelpfjjwxffms6_5oti6ydqcjh7jhjdxn9706cxf0',
     UserPoolId: environment.amplifyConfig.Auth.userPoolId,
   };
   numeroDeProcesos = 0;
 
-  constructor(private store: Store<AppState>, private authService: AuthService, private auditoria: AuditoriaService) { }
+  constructor(
+    private store: Store<AppState>,
+    private authService: AuthService,
+    private auditoria: AuditoriaService,
+    private logeo: LogeoService) { }
 
   paramSignOut = {
     Username: this.authService.getToken() as string,
@@ -228,9 +222,7 @@ export class UsuariosService {
       UserPoolId: environment.amplifyConfig.Auth.userPoolId,
       Username: usuario,
     };
-
     let terminado = null;
-
     if (grupo.trim().length === 0) {
       terminado = 1;
     } else {
@@ -245,7 +237,6 @@ export class UsuariosService {
         }
       );
     }
-
     new Promise((resolve) => {
       const intervalo = setInterval(() => {
         if (terminado) {
@@ -259,15 +250,12 @@ export class UsuariosService {
   }
 
   eliminarYAgregarGrupo = (Grupo, Username, GrupoOriginal) => {
-
     const params = {
       GroupName: GrupoOriginal,
       UserPoolId: environment.amplifyConfig.Auth.userPoolId,
       Username: Username,
     };
-
     let terminado = null;
-
     if (GrupoOriginal.trim().length === 0) {
       terminado = 1;
     } else {
@@ -282,7 +270,6 @@ export class UsuariosService {
         }
       );
     }
-
     new Promise((resolve) => {
       const intervalo = setInterval(() => {
         if (terminado) {
@@ -301,7 +288,6 @@ export class UsuariosService {
       UserPoolId: environment.amplifyConfig.Auth.userPoolId,
       Username: usuario,
     };
-
     let terminado = null;
     cognitoidentityserviceprovider.adminAddUserToGroup(params, (err, data) => {
       if (err) {
@@ -323,7 +309,6 @@ export class UsuariosService {
   }
 
   actualizarAtributosUsuarioCallback = (UserAttributes, Username) => {
-
     const paramsAtributos = {
       UserAttributes: UserAttributes,
       Username: Username /* identificador del usuario en el user pool */,
@@ -353,17 +338,11 @@ export class UsuariosService {
   }
 
   validacionDeProcesosInsertar = (Attributos, paramGrupo) => {
-
     let numeroProcesosComparar = 2;
-
     const { Grupo, Username, GrupoOriginal } = paramGrupo;
-
     const { UserAttributes } = Attributos;
-
     this.eliminarYAgregarGrupo(Grupo, Username, GrupoOriginal);
-
     this.actualizarAtributosUsuarioCallback(UserAttributes, Username);
-
     new Promise((resolve) => {
       const intervalo = setInterval(() => {
         if (numeroProcesosComparar === this.numeroDeProcesos) {
@@ -375,39 +354,29 @@ export class UsuariosService {
       this.numeroDeProcesos = 0;
       this.store.dispatch(ProcesoTerminado());
     });
-
     let usuario = '';
     this.store.select(({ usuario }) => usuario.user.email).subscribe(res => {
-
       usuario = res;
     });
-
     const ObjectUsuarioString = {
       area: paramGrupo.Grupo,
       permiso: Attributos.UserAttributes.find(el => el.Name === 'custom:rol')['Value'],
       negocio: Attributos.UserAttributes.find(el => el.Name === 'custom:negocio')['Value']
     };
-
     localStorage.setItem('ObjectNewUser', JSON.stringify(ObjectUsuarioString));
-
     this.generarAuditoria();
-
   }
 
   generarAuditoria(): void {
-
     const userOld = localStorage.getItem('ObjectOldUser');
     const userNew = localStorage.getItem('ObjectNewUser');
-
     const dataUsuario = JSON.parse(localStorage.getItem('ObjectDataUser'));
     const today = new Date().toISOString();
-
     let area: String = '';
     let rol = '';
     let correo = '';
     let apellidoPaterno = '';
     let nombre = '';
-
     this.store.select(({ usuario }) => usuario.user).subscribe(res => {
       rol = res.attributes['custom:rol'];
       correo = res.email;
@@ -417,7 +386,6 @@ export class UsuariosService {
     this.store.select(({ usuario }) => usuario.area).subscribe(res => {
       area = res;
     });
-
     let payload = {
       areaNegocio: area,
       rol: rol,
@@ -440,11 +408,8 @@ export class UsuariosService {
         }]
       }]
     };
-
     const payloadString = JSON.stringify(payload);
-
     this.auditoria.enviarBitacoraUsuarios(payloadString);
-
     localStorage.removeItem('ObjectOldUser');
     localStorage.removeItem('ObjectNewUser');
     localStorage.removeItem('ObjectDataUser');
@@ -452,7 +417,6 @@ export class UsuariosService {
 
   actualizarAtributosUsuario = (UserAttributes, Username) => {
     // metodo para actualizar los valores de los atributos del usuario en el user pool
-
     const paramsAtributos = {
       UserAttributes: UserAttributes,
       Username: Username /* identificador del usuario en el user pool */,
@@ -488,10 +452,10 @@ export class UsuariosService {
       .subscribe((res: any) => {
         if (res) {
           if (res.hasOwnProperty('groups')) {
-            if (this.Areas.some( ai => res.groups.includes(ai) )) {
+            if (this.Areas.some(ai => res.groups.includes(ai))) {
               const { attributes } = res;
               if (attributes.hasOwnProperty('custom:rol') && attributes.hasOwnProperty('custom:negocio')) {
-                if (this.Roles.includes(attributes['custom:rol']) && this.Negocios.some( ai => attributes['custom:negocio'].includes(ai))) {
+                if (this.Roles.includes(attributes['custom:rol']) && this.Negocios.some(ai => attributes['custom:negocio'].includes(ai))) {
                   flagValidate = true;
                 }
               }
@@ -503,9 +467,15 @@ export class UsuariosService {
   }
 
   callbackAws = (err, data) => {
+    if (err) {
+      this.logeo.registrarLog('USUARIOS', 'ACTUALIZACION', JSON.stringify(err));
+    }
   }
 
   callbackAwsDetalle = (err, data) => {
+    if (err) {
+      this.logeo.registrarLog('USUARIOS', 'ACTUALIZACION', JSON.stringify(err));
+    }
   }
 
   reformatearArrayDeUsuarios = (objectUser) => {
@@ -533,7 +503,6 @@ export class UsuariosService {
     Correo
   ) => {
     let Usuarios = [...usuarios];
-
     if (Correo != null) {
       let arrayTempCorreo = [];
       Correo.forEach((Correo) => {
@@ -544,7 +513,6 @@ export class UsuariosService {
       });
       Usuarios = arrayTempCorreo;
     }
-
     if (permiso != null) {
       let arrayTempPermiso = [];
       permiso.forEach((permiso) => {
@@ -557,28 +525,23 @@ export class UsuariosService {
     }
     if (areas != null) {
       let arrayTempArea = [];
-
       areas.forEach((area) => {
         Usuarios.forEach((usuario) => {
           let areaArrayAtributoTemp =
             usuario.GrupoQuePertenece.trim().length === 0
               ? []
               : usuario.GrupoQuePertenece.split(',');
-
           if (areaArrayAtributoTemp.includes(area)) {
             arrayTempArea = [...arrayTempArea, usuario];
           }
         });
       });
-
       Usuarios = arrayTempArea;
     }
-
     return Usuarios;
   }
 
   filtrarUsuarios(usuarios, permiso, negocio, correo): any[] {
-
     if (permiso != null) {
       for (var i = 0; i < usuarios.Users.length; i++) {
         if (
