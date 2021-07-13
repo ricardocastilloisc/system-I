@@ -4,6 +4,7 @@ import { AppState } from '../../../../../ReduxStore/app.reducers';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { CatalogosService } from '../../../../../services/catalogos.service';
+import { LogeoService } from '../../../../../services/logeo.service';
 
 @Component({
   selector: 'app-catalogos',
@@ -21,7 +22,7 @@ export class CatalogosComponent implements OnInit, OnDestroy {
   constructor(
     private store: Store<AppState>,
     private router: Router,
-    private catalogosSvc: CatalogosService
+    private logeo: LogeoService
   ) {}
 
   ngOnDestroy(): void {
@@ -32,7 +33,7 @@ export class CatalogosComponent implements OnInit, OnDestroy {
     localStorage.setItem('nameCat', nameCat);
     localStorage.setItem('negocioCat', negocioCat);
     this.router.navigate(['/' + window.location.pathname + '/' + negocioCat]);
-  };
+  }
 
   ngOnInit(): void {
     this.catalogos$ = this.store
@@ -77,9 +78,9 @@ export class CatalogosComponent implements OnInit, OnDestroy {
               });
             }
           });
-          this.AforesGens = [...this.GenericosGens.filter(e => e.NEGOCIO === 'AFORE')]
-          this.FondosGens = [...this.GenericosGens.filter(e => e.NEGOCIO === 'FONDOS')]
-          this.GenericosGens = [...this.GenericosGens.filter(e => e.NEGOCIO === 'AFORE,FONDOS')]
+          this.AforesGens = [...this.GenericosGens.filter(e => e.NEGOCIO === 'AFORE')];
+          this.FondosGens = [...this.GenericosGens.filter(e => e.NEGOCIO === 'FONDOS')];
+          this.GenericosGens = [...this.GenericosGens.filter(e => e.NEGOCIO === 'AFORE,FONDOS')];
         }
       });
   }

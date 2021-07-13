@@ -1,5 +1,6 @@
 export const environment = {
   production: false,
+  logGroup: 'sia/frontend/dev',
 
   SESConfig: {
     accessKeyId: 'AKIAU4J45SEJH3NKEMHX',

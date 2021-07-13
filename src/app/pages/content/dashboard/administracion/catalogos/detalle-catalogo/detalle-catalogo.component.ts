@@ -5,6 +5,7 @@ import {
   ViewChild,
   TemplateRef,
 } from '@angular/core';
+import { LogeoService } from '../../../../../../services/logeo.service';
 import { CatalogosService } from '../../../../../../services/catalogos.service';
 import { STRUCTURE_CAT } from '../../../../../../model/catalogos/STRUCTURE_CAT.model';
 import { Store } from '@ngrx/store';
@@ -85,7 +86,8 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     private modalService: NgbModal,
     private api: APIService,
     private usuario: UsuariosService,
-    public LOC: Location
+    public LOC: Location,
+    private logeo: LogeoService
   ) { }
 
   ngOnDestroy(): void {
@@ -126,15 +128,15 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
         this.dropdownListFiltro.push(object);
       }
     });
-  };
+  }
 
   cleanFilter = () => {
     this.filter = false;
 
     this.DetailCats = this.DetailCatsStatic;
-  };
+  }
 
-  ejecucionesInexistentesModal() {
+  ejecucionesInexistentesModal(): void {
     this.modalService.open(this.templateRefEjecuciones, {
       ariaLabelledBy: 'modal-basic-title',
     });
@@ -143,7 +145,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
   cerrarModales = () => {
     this.modalService.dismissAll();
     this.LOC.back();
-  };
+  }
 
   filtrar = () => {
     let arrayTemp = [];
@@ -176,7 +178,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     this.DetailCats = arrayTemp;
     this.filter = true;
     this.modalService.dismissAll();
-  };
+  }
 
   viewUpdateIcon = () => {
     let flag = false;
@@ -241,11 +243,11 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
   }
 
   verAtras = () => {
-    return !(JSON.parse(localStorage.getItem('PageNumerPageCat')) === 0)
+    return !(JSON.parse(localStorage.getItem('PageNumerPageCat')) === 0);
   }
 
   veraAdelante = () => {
-    return !(localStorage.getItem('tokenPageNext') === 'null')
+    return !(localStorage.getItem('tokenPageNext') === 'null');
   }
 
   transformDateOrString = (value, isDate) => {
@@ -274,18 +276,18 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
       '/' +
       stringReturn.substring(0, 4)
       : stringReturn;
-  };
+  }
 
   helperInputs = (column: STRUCTURE_CAT) => {
     this.columnTemp = column;
-  };
+  }
 
   removeCharterSpecialSringTh = (value: string) => {
     if (value) {
       return value.split('_').join(' ');
     }
     return '';
-  };
+  }
 
   getDataCat = () => {
     this.store.dispatch(loadingDetailCatalogos());
@@ -304,9 +306,9 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
         this.errorBack = true;
       }
     });
-  };
+  }
 
-  //-1 es a la izquierda y 1 es a la derecha
+  // -1 es a la izquierda y 1 es a la derecha
   cargarConInicialOPaginado = (izquierdaOderecha = 0) => {
     let tokenPageActuality = null;
 
@@ -328,7 +330,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
       this.store.dispatch(loadingDetailCatalogos());
       tokenPageActuality = localStorage.getItem('tokenPageNext');
 
-      let PageNumerPageCat =
+      const PageNumerPageCat =
         JSON.parse(localStorage.getItem('PageNumerPageCat')) + 1;
 
       this.paginaDetailCats = 1;
@@ -345,7 +347,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
         tokenPageActuality = null;
       }
 
-      let PageNumerPageCat =
+      const PageNumerPageCat =
         JSON.parse(localStorage.getItem('PageNumerPageCat')) - 1;
 
       localStorage.setItem('PageNumerPageCat', PageNumerPageCat.toString());
@@ -353,13 +355,13 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     }
 
     this.store.dispatch(cargarDetailCatalogos({ token: tokenPageActuality }));
-  };
+  }
 
   verLabePaginado = (label) => {
-    let PageNumerPageCat = JSON.parse(localStorage.getItem('PageNumerPageCat'));
+    const PageNumerPageCat = JSON.parse(localStorage.getItem('PageNumerPageCat'));
 
     return parseInt(label) + PageNumerPageCat * 5;
-  };
+  }
 
   makeFormsDinamic = () => {
     this.FormsDinamic = null;
@@ -385,7 +387,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
         new FormControl(valueFormControl, arraValidators)
       );
     });
-  };
+  }
 
   // tslint:disable-next-line: variable-name
   bordeError = (boolean) => {
@@ -394,7 +396,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     } else {
       return {};
     }
-  };
+  }
 
   // tslint:disable-next-line: typedef
   AJrestriccion(event) {
@@ -411,19 +413,19 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
 
   viewInputText = (colum: STRUCTURE_CAT) => {
     return (colum.tipo === 'S' || colum.tipo === 'N') && !colum.esFecha.bandera;
-  };
+  }
 
   viewInputNumber = (colum: STRUCTURE_CAT) => {
     return colum.tipo === 'N' && !colum.esFecha.bandera;
-  };
+  }
 
   viewInputDate = (colum: STRUCTURE_CAT) => {
     return colum.esFecha.bandera;
-  };
+  }
 
   viewFECHA = (value) => {
     return !value.includes('FECHA_ACTUALIZADO');
-  };
+  }
 
   viewPrimaryKey = (colum: STRUCTURE_CAT) => {
     if (colum.llavePrimaria && colum.tipo == 'S') {
@@ -431,7 +433,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     } else {
       return !colum.llavePrimaria;
     }
-  };
+  }
 
   arrayFomsInput = (colums: STRUCTURE_CAT[]) => {
     let arrayReturn: STRUCTURE_CAT[] = colums;
@@ -441,11 +443,11 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
       }
     });
     return arrayReturn;
-  };
+  }
 
   disabledInput = (colum: STRUCTURE_CAT) => {
     return colum.llavePrimaria && this.editar;
-  };
+  }
 
   mostrarCardAgregarResgistro = (editar = 0, object = null) => {
     this.mostrarEjecucionesProcesos = false;
@@ -470,7 +472,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
 
             if (arrayNumbers.length > 0) {
               valueFormControl =
-                Date.now()
+                Date.now();
             } else {
               valueFormControl = 1;
             }
@@ -479,7 +481,6 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
           if (dataColum.esFecha.bandera) {
             valueFormControl = moment().format('YYYY-MM-DD').toString();
           }
-
 
           this.FormsDinamic.get(dataColum.campo).setValue(valueFormControl);
         }
@@ -554,12 +555,12 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
         this.FormsDinamic.get(dataColum.campo).setValue(valueTempControl);
       });
     }
-  };
+  }
 
   ocultarCardAgregarResgistro = () => {
     this.mostrarEjecucionesProcesos = true;
     this.FormsDinamic.reset();
-  };
+  }
 
   abrirToass = () => {
     let mensaje =
@@ -593,7 +594,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     this.addRegister = false;
     this.removeRegister = false;
     this.updateRegister = false;
-  };
+  }
 
   abrirToassError = (err: any) => {
     let mensaje =
@@ -613,11 +614,11 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
       progressBar: true,
       progressAnimation: 'increasing',
     });
-  };
+  }
 
   agregarRegistroOActualizarRegistro = () => {
-    let ObjectTemp = this.FormsDinamic.value;
-    let objectFinish = {};
+    const ObjectTemp = this.FormsDinamic.value;
+    const objectFinish = {};
     this.ColumDinamicData.forEach((dataColum) => {
       let finishTempControl = null;
 
@@ -717,7 +718,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
       );
     }
     localStorage.setItem('ObjectNewRegister', JSON.stringify(objectFinish));
-  };
+  }
 
   eliminarRegistro = () => {
     const objectReferencePk = this.ColumDinamicData.filter(
@@ -738,7 +739,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
         this.catalogoService.generarAuditoria('ERROR');
       }
     );
-  };
+  }
 
   verPaginado = () => {
     if (this.DetailCats) {

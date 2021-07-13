@@ -11,6 +11,7 @@ import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ValorFiltrarAcciones } from 'src/app/validators/opcionesDeFiltroAccionesAuditoriaUsuariios';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { LogeoService } from '../../../../../services/logeo.service';
 declare var $: any;
 
 @Component({
@@ -54,10 +55,9 @@ export class UsuariosComponent implements OnInit {
 
   constructor(
     private store: Store<AppState>,
-    private api: APIService,
-    private modalService: NgbModal,
     private fb: FormBuilder,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private logeo: LogeoService
   ) { }
 
   AUDGENUSUARIOS$: Subscription;

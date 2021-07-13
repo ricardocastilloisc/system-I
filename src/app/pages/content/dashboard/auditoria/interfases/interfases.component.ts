@@ -11,6 +11,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../../../../ReduxStore/app.reducers';
 import { CATPROCESOS_INTERFACE } from '../../../../../model/CATPROCESOS.model';
 import { LoadCATPROCESOS, UnsetCATPROCESO } from 'src/app/ReduxStore/actions';
+import { LogeoService } from '../../../../../services/logeo.service';
 declare var $: any;
 
 @Component({
@@ -111,7 +112,8 @@ export class InterfasesComponent implements OnInit, OnDestroy {
     private interfasesService: InterfasesService,
     private fb: FormBuilder,
     private modalService: NgbModal,
-    private store: Store<AppState>) {
+    private store: Store<AppState>,
+    private logeo: LogeoService) {
   }
 
   initData = () => {

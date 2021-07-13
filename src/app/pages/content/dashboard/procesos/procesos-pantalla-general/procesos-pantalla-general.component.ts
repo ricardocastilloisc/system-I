@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { formatDate } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../../ReduxStore/app.reducers';
@@ -9,18 +9,16 @@ import { AUDGENPROCESO_INERFACE } from '../../../../../model/AUDGENPROCESO.model
 import { CATPROCESOS_INTERFACE } from '../../../../../model/CATPROCESOS.model';
 import { APIService } from '../../../../../API.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { distinct, filter, first, map, tap } from 'rxjs/operators';
 import { AUDGENESTADOPROCESO_INTERFACE } from 'src/app/model/AUDGENESTADOPROCESO.model';
-import { CATPERMISOS_INTERFACE } from 'src/app/model/CATPERMISOS.model'
+import { CATPERMISOS_INTERFACE } from 'src/app/model/CATPERMISOS.model';
 import { LoadCATPROCESOS, UnsetCATPROCESO, LoadCATPERMISOS, UnsetCATPERMISO, LoadAUDGENESTADOPROCESOS } from 'src/app/ReduxStore/actions';
 import { Usuario } from '../../../../../model/usuario.model';
-import { ProcesosService } from '../../../../../services/procesos.service'
+import { ProcesosService } from '../../../../../services/procesos.service';
 import { v4 as uuidv4 } from 'uuid';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { EArea, ERole } from './../../../../../validators/roles';
-import { UsuariosService } from 'src/app/services/usuarios.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { DatePipe } from '@angular/common';
+import { LogeoService } from '../../../../../services/logeo.service';
 
 @Component({
   selector: 'app-procesos-pantalla-general',
@@ -80,9 +78,8 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
     private serviciosProcesos: ProcesosService,
     private spinner: NgxSpinnerService,
     private authService: AuthService,
-    private usuario: UsuariosService,
     private modalService: NgbModal,
-    private datePipe: DatePipe
+    private logeo: LogeoService
   ) {
 
     this.Loading$ = this.store.select(

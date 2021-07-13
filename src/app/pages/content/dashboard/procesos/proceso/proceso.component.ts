@@ -33,6 +33,7 @@ import { DatePipe } from '@angular/common';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ProcesosService } from 'src/app/services/procesos.service';
+import { LogeoService } from '../../../../../services/logeo.service';
 
 @Component({
   selector: 'app-proceso',
@@ -87,12 +88,12 @@ export class ProcesoComponent implements OnInit, OnDestroy {
     private rutaActiva: ActivatedRoute,
     private authService: AuthService,
     private api: APIService,
-    private usuario: UsuariosService,
     private fb: FormBuilder,
     private modalService: NgbModal,
     private datepipe: DatePipe,
     private spinner: NgxSpinnerService,
-    private ProcesosService: ProcesosService
+    private ProcesosService: ProcesosService,
+    private logeo: LogeoService
   ) {
 
     this.Loading$ = this.store

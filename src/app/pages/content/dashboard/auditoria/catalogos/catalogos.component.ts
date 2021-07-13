@@ -4,13 +4,11 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../../../../ReduxStore/app.reducers';
 import { Observable } from 'rxjs';
 import { AUDGENUSUARIO_INTERFACE } from '../../../../../model/AUDGENUSUARIO.model';
-import { APIService } from '../../../../../API.service';
 import { map } from 'rxjs/operators';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { AuthService } from 'src/app/services/auth.service';
+import { LogeoService } from '../../../../../services/logeo.service';
 declare var $: any;
 
 @Component({
@@ -41,11 +39,9 @@ export class CatalogosComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: Store<AppState>,
-    private api: APIService,
-    private modalService: NgbModal,
     private spinner: NgxSpinnerService,
     private fb: FormBuilder,
-    private authService: AuthService
+    private logeo: LogeoService
   ) { }
 
   AUDGENUSUARIOS$: Observable<AUDGENUSUARIO_INTERFACE[]>;

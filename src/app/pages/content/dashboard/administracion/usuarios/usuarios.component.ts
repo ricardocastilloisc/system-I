@@ -16,6 +16,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UsuariosService } from '../../../../../services/usuarios.service';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { LogeoService } from '../../../../../services/logeo.service';
 declare var $: any;
 
 @Component({
@@ -74,7 +75,8 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     private store: Store<AppState>,
     private modalService: NgbModal,
     private usuarioService: UsuariosService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private logeo: LogeoService
   ) { }
 
   ngOnDestroy(): void {

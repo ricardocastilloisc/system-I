@@ -6,6 +6,7 @@ import { PanelNotificacionesService } from '../../../../../services/panel-notifi
 import { AUDGENUSUARIO_INTERFACE } from '../../../../../model/panelNotificaciones/panelnotificaciones.model';
 import { NgxSpinnerService } from 'ngx-spinner';
 import * as moment from 'moment';
+import { LogeoService } from '../../../../../services/logeo.service';
 
 const cronstrue = require('cronstrue/i18n');
 const cronAWS = require('aws-cron-parser');
@@ -109,13 +110,12 @@ export class NotificacionesComponent implements OnInit {
     description: '',
   };
 
-  //ayudaHora
-
   constructor(
     private toastr: ToastrService,
     private modalService: NgbModal,
     private spinner: NgxSpinnerService,
-    private PanelNotificacionesService: PanelNotificacionesService
+    private PanelNotificacionesService: PanelNotificacionesService,
+    private logeo: LogeoService
   ) { }
 
   ngOnInit(): void {
