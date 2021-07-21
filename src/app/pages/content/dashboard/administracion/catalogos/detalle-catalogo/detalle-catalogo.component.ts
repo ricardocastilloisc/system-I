@@ -709,7 +709,6 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
 
   validarPermisos(): void {
     try {
-
       this.flagPermisos = false;
       const catalogo = localStorage.getItem('nameCat');
       const catalogoNegocio = localStorage.getItem('negocioCat');
@@ -718,6 +717,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
         this.store
           .select(({ usuario }) => usuario.user)
           .subscribe((user) => {
+            console.log('1', this.flagPermisos);
             if (user) {
               this.DataUser = user;
               const areas = [
@@ -734,10 +734,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
                 }
               });
               const area = areasStore[0];
-              let negocio = this.DataUser.attributes['custom:negocio'].toUpperCase().split(',');
-              if (area.includes('SOPORTE')) {
-                negocio = 'SOPORTE';
-              }
+              const negocio = this.DataUser.attributes['custom:negocio'].toUpperCase().split(',');
               const rol = this.DataUser.attributes['custom:rol'].toUpperCase();
               this.api.ListCATPERMISOS(negocio, area, rol).then(({ items }: any) => {
                 if (Object.keys(items).length !== 0) {
