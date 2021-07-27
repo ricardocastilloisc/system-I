@@ -11,12 +11,12 @@ import * as AWS from 'aws-sdk';
 import { environment } from '../../../../../environments/environment';
 
 AWS.config.update({
-  // accessKeyId: environment.SESConfig.accessKeyId,
-  // secretAccessKey: environment.SESConfig.secretAccessKey,
+  accessKeyId: environment.SESConfig.accessKeyId,
+  secretAccessKey: environment.SESConfig.secretAccessKey,
   region: environment.SESConfig.region
 });
 
-const s3 = new AWS.S3({ apiVersion: '2006-03-01' });
+const s3 = new AWS.S3();
 
 @Component({
   selector: 'app-home',
@@ -62,15 +62,8 @@ export class HomeComponent implements OnInit {
       Key: 'sia-gen-adm-diccionario-catalogos-dev.csv', /* este dato lo devolvera el API */
       Expires: 3600,
     };
-    const promise = s3.getSignedUrlPromise('getSignedUrlPromise', params);
-    promise.then(
-      function (url) {
-        console.log('The URL is: ', url);
-      },
-      function (err) {
-        console.log('Error. ', err);
-      }
-    );
+    const url = s3.getSignedUrl('getObject', params);
+    console.log('The URL is: ', url);
   }
 
   rolesValids = (User: Usuario, roles: any[]): boolean => {
