@@ -42,7 +42,13 @@ export class DetalleArchivoComponent implements OnInit {
           licenseKey: 'non-commercial-and-evaluation',
           colHeaders: true,
           readOnly: true,
-          dropdownMenu: true,
+          dropdownMenu: [
+            'filter_by_condition',
+            'filter_operators',
+            'filter_by_condition2',
+            'filter_by_value',
+            'filter_action_bar'
+          ],
           filters: true,
           rowHeaders: true,
         });
