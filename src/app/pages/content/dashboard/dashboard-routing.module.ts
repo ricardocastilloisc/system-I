@@ -37,8 +37,13 @@ const routes: Routes = [
         path: 'auditoria',
         loadChildren: () => import('./auditoria/auditoria.module').then(m => m.AuditoriaModule)
       },
+      {
+        path: 'perfil',
+        loadChildren: () => import('./perfil/perfil.module').then(m => m.PerfilModule)
+      },
     ],
   },
+
 
 ];
 
