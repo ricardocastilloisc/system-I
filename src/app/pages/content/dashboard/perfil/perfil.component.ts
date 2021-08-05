@@ -22,4 +22,14 @@ export class PerfilComponent implements OnInit {
     this.DataUser$ = this.store.select(({ usuario }) => usuario.user);
   }
 
+  obtenerArea(): any {
+    let area: String = '';
+    this.store
+      .select(({ usuario }) => usuario.area)
+      .subscribe((res) => {
+        area = res;
+      });
+    return area;
+  }
+
 }

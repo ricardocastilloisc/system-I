@@ -47,18 +47,81 @@
                     >
                       Nombre:
                     </div>
-                    <div class="col-6 textosCatidadesArchivo">15</div>
+                    <div class="col-6 textosCatidadesArchivo">
+                      {{ DataUser.attributes.given_name }}
+                      {{ DataUser.attributes.family_name }}
+                    </div>
                   </div>
-
+                  <div
+                    class="d-flex flex-row justify-content-center"
+                    style="width: 100%"
+                  >
+                    <div
+                      class="col-6 textosCatidadesArchivo"
+                      style="text-align: right"
+                    >
+                      Email:
+                    </div>
+                    <div class="col-6 textosCatidadesArchivo">
+                      {{ DataUser.email }}
+                    </div>
+                  </div>
+                  <div
+                    class="d-flex flex-row justify-content-center"
+                    style="width: 100%"
+                  >
+                    <div
+                      class="col-6 textosCatidadesArchivo"
+                      style="text-align: right"
+                    >
+                      Área:
+                    </div>
+                    <div class="col-6 textosCatidadesArchivo">
+                      {{ obtenerArea() }}
+                    </div>
+                  </div>
+                  <div
+                    class="d-flex flex-row justify-content-center"
+                    style="width: 100%"
+                  >
+                    <div
+                      class="col-6 textosCatidadesArchivo"
+                      style="text-align: right"
+                    >
+                      Rol:
+                    </div>
+                    <div class="col-6 textosCatidadesArchivo">
+                      {{
+                        DataUser.attributes.hasOwnProperty("custom:rol")
+                          ? DataUser.attributes["custom:rol"]
+                          : ""
+                      }}
+                    </div>
+                  </div>
+                  <div
+                    class="d-flex flex-row justify-content-center"
+                    style="width: 100%"
+                  >
+                    <div
+                      class="col-6 textosCatidadesArchivo"
+                      style="text-align: right"
+                    >
+                      Negocio:
+                    </div>
+                    <div class="col-6 textosCatidadesArchivo">
+                      {{
+                        DataUser.attributes.hasOwnProperty("custom:negocio")
+                          ? DataUser.attributes["custom:negocio"]
+                          : ""
+                      }}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
       </div>
     </div>
-
-
   </div>
 </section>
