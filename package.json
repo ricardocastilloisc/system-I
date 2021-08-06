@@ -42,6 +42,7 @@
     "cron-validator": "^1.2.1",
     "cronstrue": "^1.114.0",
     "d3": "^7.0.0",
+    "jszip": "^3.7.1",
     "moment": "^2.29.1",
     "ng-multiselect-dropdown": "^0.3.4",
     "ngx-order-pipe": "^2.1.1",
@@ -50,6 +51,7 @@
     "ngx-toastr": "^13.2.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
+    "url-parse": "^1.5.3",
     "uuid": "^8.3.2",
     "zone.js": "~0.11.3"
   },
