@@ -7,16 +7,6 @@ import { AuthService } from '../../../../services/auth.service';
 import { UsuariosService } from '../../../../services/usuarios.service';
 import { APIService } from '../../../../API.service';
 import { EArea } from '../../../../validators/roles';
-import * as AWS from 'aws-sdk';
-import { environment } from '../../../../../environments/environment';
-
-AWS.config.update({
-  accessKeyId: environment.SESConfig.accessKeyId,
-  secretAccessKey: environment.SESConfig.secretAccessKey,
-  region: environment.SESConfig.region
-});
-
-const s3 = new AWS.S3();
 
 @Component({
   selector: 'app-home',
@@ -51,19 +41,6 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.DataUser$ = this.store.select(({ usuario }) => usuario.user);
     this.validarPermisosPerfil();
-    this.generarConexionS3();
-  }
-
-  generarConexionS3(): void {
-    console.log('generarConexionS3');
-    // obtener la url prefirmada para el visualizador
-    const params = {
-      Bucket: 'sia-frontend-poc-csv', /* este dato lo devolvera el API */
-      Key: 'sia-gen-adm-diccionario-catalogos-dev.csv', /* este dato lo devolvera el API */
-      Expires: 3600,
-    };
-    const url = s3.getSignedUrl('getObject', params);
-    console.log('The URL is: ', url);
   }
 
   rolesValids = (User: Usuario, roles: any[]): boolean => {

@@ -7,6 +7,11 @@ import { AUDGENUSUARIO_INTERFACE } from '../../../../../model/panelNotificacione
 import { NgxSpinnerService } from 'ngx-spinner';
 import * as moment from 'moment';
 import { LogeoService } from '../../../../../services/logeo.service';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../../../ReduxStore/app.reducers';
+import { EArea } from '../../../../../validators/roles';
+import { Usuario } from '../../../../../model/usuario.model';
+import { APIService } from '../../../../../API.service';
 
 const cronstrue = require('cronstrue/i18n');
 const cronAWS = require('aws-cron-parser');
@@ -95,13 +100,17 @@ export class NotificacionesComponent implements OnInit {
     input: '',
     description: '',
   };
+  DataUser: Usuario;
+  ArrayPermisos = [];
 
   constructor(
     private toastr: ToastrService,
     private modalService: NgbModal,
     private spinner: NgxSpinnerService,
     private PanelNotificacionesService: PanelNotificacionesService,
-    private logeo: LogeoService
+    private logeo: LogeoService,
+    private store: Store<AppState>,
+    private api: APIService
   ) { }
 
   ngOnInit(): void {
@@ -125,11 +134,46 @@ export class NotificacionesComponent implements OnInit {
       } else {
         cronFlag = 'invalido';
       }
-      this.initValuesPanel();
+      this.getPermisosDeEdicionManipulacion();
     } catch (err) {
       this.logeo.registrarLog('NOTIFICACIONES', 'CARGAR PANTALLA', JSON.stringify(err));
     }
   }
+
+  getPermisosDeEdicionManipulacion = () => {
+    this.store
+      .select(({ usuario }) => usuario.user)
+      .subscribe((user) => {
+        if (user) {
+          this.DataUser = user;
+          const areas = [
+            EArea.Tesoreria,
+            EArea.Inversiones_Riesgos,
+            EArea.Contabilidad,
+            EArea.Custodia,
+            EArea.Soporte,
+          ];
+          const areasStore = [];
+          user.attributes['cognito:groups'].forEach((e) => {
+            if (areas.includes(e)) {
+              areasStore.push(e.toUpperCase());
+            }
+          });
+          const area = areasStore[0];
+          const negocio = this.DataUser.attributes['custom:negocio']
+            .toUpperCase()
+            .split(',');
+          const rol = this.DataUser.attributes['custom:rol'].toUpperCase();
+          this.api
+            .ListCATPERMISOS(negocio, area, rol)
+            .then(({ items }: any) => {
+              this.ArrayPermisos = items;
+
+              this.initValuesPanel();
+            });
+        }
+      });
+  };
 
   abrirToass = () => {
     let mensaje =
@@ -277,6 +321,40 @@ export class NotificacionesComponent implements OnInit {
       .then(
         (res: any) => {
           this.NotificacionesSettings = res;
+                    //*transformo a un  array nuevo que me permita hacer validaciones */
+                    this.NotificacionesSettings = this.NotificacionesSettings.map(
+                      (elementoNotificacion) => {
+                        const attributosParaValidacion = this.ArrayPermisos.filter(
+                          (elementoFiltrar) =>
+                            elementoFiltrar.FLUJO ===
+                            elementoNotificacion.description
+                              .split(']')[0]
+                              .split('-')[1]
+                              .trim()
+                        );
+                        /* validar si hay algo hay aun que validar que se haga nuevo arreglo */
+                        if (attributosParaValidacion.length > 0) {
+                          elementoNotificacion.ACTUALIZAR =
+                            attributosParaValidacion[0].CATALOGOS.ACTUALIZAR;
+                          elementoNotificacion.CONSULTAR =
+                            attributosParaValidacion[0].CATALOGOS.CONSULTAR;
+                          return {
+                            ...elementoNotificacion,
+                          };
+                        } else {
+                          elementoNotificacion.CONSULTAR = false;
+                          return {
+                            ...elementoNotificacion,
+                          };
+                        }
+                      }
+                    );
+
+                    //aqui una ves tranformado el array puedo filtrar los que se van a consultar;
+                    this.NotificacionesSettings = this.NotificacionesSettings.filter(
+                      (e) => e.CONSULTAR === true
+                    );
+
           this.spinner.hide();
           if (edit) {
             this.abrirToass();

@@ -16,12 +16,6 @@ body {
   background: #e8e8e8;
 }
 
-.paginator {
-  margin-left: 5%;
-  margin-right: 5%;
-  margin-bottom: 5%;
-}
-
 .card {
   box-shadow: 4px 4px 10px #00000033;
 }
@@ -873,13 +867,6 @@ table.listado-design-general td {
   color: #0091da;
 }
 
-.descUsuarios {
-  text-align: center;
-  font: normal normal normal 20px/28px FS Elliot Pro;
-  letter-spacing: 0px;
-  color: #0a8299;
-  opacity: 1;
-}
 .descripcionNoEjecuciones {
   text-align: center;
   font: normal normal normal 20px/28px FS Elliot Pro;

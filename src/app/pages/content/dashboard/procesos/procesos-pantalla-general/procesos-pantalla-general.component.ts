@@ -86,10 +86,12 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
     });
   }
 
+  /* Función que se ejecuta para limpiar memoria al salir de la pantalla */
   ngOnDestroy(): void {
     this.store.dispatch(UnsetCATPROCESO());
   }
 
+  /* Función que se ejecuta al cargar la pantalla */
   ngOnInit(): void {
     try {
       this.authService.refreshToken();
@@ -120,6 +122,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
     }
   }
 
+  /* Función para obtener los procesos que puede ejecutar el usuario a partir de sus permisos */
   obtenerProcesos(catProcesos: Array<CATPROCESOS_INTERFACE>, catPermisos: Array<CATPERMISOS_INTERFACE>): boolean {
     try {
       const tempArray = new Array();
@@ -145,6 +148,7 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
     }
   }
 
+  /* Función para obtener el area a la que pertenece el usuario y asi ejecutar la consulta de permisos */
   obtenerArea(): string {
     try {
       const arrayTempArea = [];
@@ -164,25 +168,30 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
     }
   }
 
+  /* Función para asignar el tipo de proceso (Diurno o Nocturno) */
   setTipo(tipo: string): void {
     localStorage.setItem('tipoProceso', tipo);
   }
 
+  /* Función para activar el boton del tipo de proceso que se esta consultando (diurno o nocturno) */
   botonActivado = (parametocomparar: string): boolean => {
     return this.rutaActiva.snapshot.params.tipo === parametocomparar
       ? true
       : false;
-
   }
+
+  /* Funcion para actualizar el componente por medio de la navegacion */
   refreshComponent(): void {
     this.router.navigate([this.router.url]);
   }
 
+  /* Funcion para consultar el nombre descriptivo del proceo a partir del identificador y asignarlo en la ruta de navegacion */
   consultar(idProceso, titulo): void {
     this.guardarDescripcionProceso(titulo);
     this.router.navigate(['/' + window.location.pathname + '/' + idProceso]);
   }
 
+  /* Funcion para abrir el modal para ejecutar el proceso */
   openModal(content, nombreProceso, descripcionProceso): void {
     const proceso = {
       sigla: nombreProceso,
@@ -193,65 +202,74 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
   }
 
+  /* Funcion para abrir el mensaje de la ejecucion del proceso */
   modalMensaje(content, mensajeEjecucion): void {
     this.mensajeEjecucion = mensajeEjecucion;
     this.modalService.open(this.templateRef, { ariaLabelledBy: 'modal-basic-title' });
   }
 
+  /* Funcion que manda a iniciar el proceso seleccionado */
   async inciarProceso(correo: string, area: string) {
-    try {
-      let CATESTADOS;
-      const todayDate = new Date();
-      const fechaInicio = new Date();
-      fechaInicio.setHours(0, 0, 0, 0);
-      this.authService.refreshToken();
-      const fechaFin = new Date();
-      fechaFin.setHours(23, 59, 59, 999);
-      this.spinner.show();
-      const body = {
-        INTERFAZ: this.procesoEjecutar,
-      };
+    let CATESTADOS;
+    const todayDate = new Date();
+    const fechaInicio = new Date();
+    fechaInicio.setHours(0, 0, 0, 0);
+    this.authService.refreshToken();
+    const fechaFin = new Date();
+    fechaFin.setHours(23, 59, 59, 999);
+    this.spinner.show();
+    const body = {
+      INTERFAZ: this.procesoEjecutar,
+    };
+    // tslint:disable-next-line: max-line-length
+    /* Consulta del estado del proceso para saber si se puede mandar una nueva ejecucion */
+    await this.api.ListSiaGenAudEstadoProcesosDevs(body.INTERFAZ, fechaInicio.toISOString().replace('0Z', ''), fechaFin.toISOString().replace('9Z', '')).then(res => {
       // tslint:disable-next-line: max-line-length
-      await this.api.ListSiaGenAudEstadoProcesosDevs(body.INTERFAZ, fechaInicio.toISOString().replace('0Z', ''), fechaFin.toISOString().replace('9Z', '')).then(res => {
-        // tslint:disable-next-line: max-line-length
-        this.CATESTADOS = res.items.slice().sort(function (a, b) { return new Date(b.FECHA_ACTUALIZACION).getTime() - new Date(a.FECHA_ACTUALIZACION).getTime(); });
-      });
-      if (this.CATESTADOS[0]?.ESTADO_EJECUCION === 'TERMINADO' || this.CATESTADOS.length === 0) {
-        const idEjecucion = uuidv4();
-        this.authService.refreshToken();
-        try {
-          const response = await this.serviciosProcesos.iniciarProceso(this.procesoEjecutar, correo, area);
-          if (response.codigo == 'EXITO') {
-            this.spinner.hide();
-            this.modalMensaje('modalEstado', 'Se inicio el proceso');
-            this.serviciosProcesos.generarAuditoria('EXITO', 'Se inició el proceso', response.idProceso);
-          } else if (response.descripcion.includes('401')) {
-            this.spinner.hide();
-            this.modalService.dismissAll();
-            this.authService.refreshToken();
-          }
-          else {
-            this.spinner.hide();
-            this.modalMensaje('modalEstado', 'Error al ejecutar proceso: ' + response.descripcion);
-            this.serviciosProcesos.generarAuditoria('FALLO', response.descripcion, null);
-          }
-        } catch (e) {
-          this.modalMensaje('modalEstado', 'Error al ejecutar proceso');
+      this.CATESTADOS = res.items.slice().sort(function (a, b) { return new Date(b.FECHA_ACTUALIZACION).getTime() - new Date(a.FECHA_ACTUALIZACION).getTime(); });
+    });
+    /* Validacion del estado para mandar una nueva ejecucion */
+    if (this.CATESTADOS[0]?.ESTADO_EJECUCION === 'TERMINADO' || this.CATESTADOS.length === 0) {
+      const idEjecucion = uuidv4();
+      this.authService.refreshToken();
+      try {
+        /* Solicitud para iniciar el nuevo proceso */
+        const response = await this.serviciosProcesos.iniciarProceso(this.procesoEjecutar, correo, area);
+        if (response.codigo == 'EXITO') {
+          /* Generar mensaje de respuesta exitosa a la solicitud */
+          this.spinner.hide();
+          this.modalMensaje('modalEstado', 'Se inicio el proceso');
+          this.serviciosProcesos.generarAuditoria('EXITO', 'Se inició el proceso', response.idProceso);
+        } else if (response.descripcion.includes('401')) {
+          /* Refrescar token del usaurio si la respuesta fue un 401 */
+          this.spinner.hide();
+          this.modalService.dismissAll();
+          this.authService.refreshToken();
         }
-      } else if (this.CATESTADOS[0]?.ESTADO_EJECUCION === 'INICIADO') {
-        this.modalMensaje('modalEstado', 'El proceso se encuentra en ejecución');
-        this.serviciosProcesos.generarAuditoria('FALLO', 'El proceso se encontraba en ejecución', null);
-      } else {
-        this.modalMensaje('modalEstado', 'Error al ejecutar proceso');
+        else {
+          /* Generar mensaje con las descripcion del fallo en caso que la solicitud no fuera exitosa */
+          this.spinner.hide();
+          this.modalMensaje('modalEstado', 'Error al ejecutar proceso: ' + response.descripcion);
+          this.serviciosProcesos.generarAuditoria('FALLO', response.descripcion, null);
+        }
+      } catch (e) {
+        /* Generar mensaje con las descripcion del fallo en caso que la solicitud no fuera exitosa */
+        this.modalMensaje('modalEstado', 'No se pudo ejecutar el procesos: ' + e.message);
+        this.serviciosProcesos.generarAuditoria('FALLO', e.message, null);
       }
-      setTimeout(() => {
-        this.spinner.hide();
-      }, 300);
-    } catch (err) {
-      this.logeo.registrarLog('PROCESOS', 'INICIAR PROCESOS', JSON.stringify(err));
+    } else if (this.CATESTADOS[0]?.ESTADO_EJECUCION === 'INICIADO') {
+      /* Generar mensaje si el procesos ya se encuentra en ejecucion */
+      this.modalMensaje('modalEstado', 'El proceso se encuentra en ejecución');
+      this.serviciosProcesos.generarAuditoria('FALLO', 'El proceso se encontraba en ejecución', null);
+    } else {
+      /* Generar mensaje para identificar que la consulta de estado no tiene datos para el proceso consultado */
+      this.modalMensaje('modalEstado', 'Error al ejecutar proceso. No se tienen datos del estado actual del proceso.');
     }
+    setTimeout(() => {
+      this.spinner.hide();
+    }, 300);
   }
 
+  /* Función para guardar en memoria el nombre descriptivo del proceso */
   guardarDescripcionProceso(descripcion: string) {
     localStorage.setItem(
       'Titulo',
@@ -259,10 +277,12 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
     );
   }
 
+  /* Funcion que manda a validar los permisos del usuario en el servicio de autenticacion */
   rolesValids = (User: Usuario, roles: any[]): boolean => {
     return this.authService.rolesValids(User, roles);
   }
 
+  /* Funcion para cerrar todos los modales de la pantalla */
   cerrarModales = () => {
     this.modalService.dismissAll();
   }

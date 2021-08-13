@@ -1,32 +1,37 @@
+const ambiente = 'dev';
+const accessKey = 'AKIAU4J45SEJKYA4ITEZ';
+const secretAccess = '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';
+const region = 'us-east-1';
+const cognitoDomain = 'sia-app-up.auth.us-east-1.amazoncognito.com';
+const redirectUrl = 'localhost:4200';
+const appClient = '5cvq4jop6octili7583n597kd1';
+const cognitoGrupoUsuarios = 'us-east-1_Ftm7m3Om2';
+const sqsAcceso = 'sqs.us-east-1.amazonaws.com/335672086802/sia-utileria-encolamiento-mensajes-monitoreo-dev';
+const apiGateway = 'api.sia.dev.principal.com.mx';
+
 export const environment = {
   production: false,
-  logGroup: 'sia/frontend/dev',
+  logGroup: 'sia/frontend/' + ambiente,
 
   SESConfig: {
-    accessKeyId: 'AKIAU4J45SEJH3NKEMHX',
-    secretAccessKey: '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',
-    region: 'us-east-1',
+    accessKeyId: accessKey,
+    secretAccessKey: secretAccess,
+    region: region,
   },
 
-  //urlExternalLogin: 'https://sia-app-up.auth.us-east-1.amazoncognito.com/oauth2/authorize?identity_provider=Azure&redirect_uri=https://dev.d23mbxjbgl0msz.amplifyapp.com/&response_type=code&client_id=5cvq4jop6octili7583n597kd1&scope=phone%20email%20openid%20profile',
-  urlExternalLogin: 'https://sia-app-up.auth.us-east-1.amazoncognito.com/oauth2/authorize?identity_provider=Azure&redirect_uri=http://localhost:4200/dashboard&response_type=code&client_id=5cvq4jop6octili7583n597kd1&scope=phone%20email%20openid%20profile',
+  urlExternalLogin: 'https://'+cognitoDomain+'/oauth2/authorize?identity_provider=Azure&redirect_uri=http://'+redirectUrl+'/&response_type=code&client_id='+appClient+'&scope=phone%20email%20openid%20profile',
 
   amplifyConfig: {
     Auth: {
-      region: 'us-east-1',
-      userPoolId: 'us-east-1_Ftm7m3Om2',
-      userPoolWebClientId: '5cvq4jop6octili7583n597kd1',
+      region: region,
+      userPoolId: cognitoGrupoUsuarios,
+      userPoolWebClientId: appClient,
       limit: 50,
       oauth: {
-        domain: 'sia-app-up.auth.us-east-1.amazoncognito.com',
+        domain: cognitoDomain,
         scope: ['phone', 'email', 'openid', 'profile'],
-/*
-        redirectSignIn: 'https://dev.d23mbxjbgl0msz.amplifyapp.com/',
-        redirectSignOut: 'https://dev.d23mbxjbgl0msz.amplifyapp.com/',
-*/
-        redirectSignIn: 'http://localhost:4200/dashboard',
-        redirectSignOut: 'http://localhost:4200',
-
+        redirectSignIn: 'http://'+redirectUrl+'/',
+        redirectSignOut: 'http://'+redirectUrl+'/',
         responseType: 'code'
       },
     }
@@ -36,43 +41,43 @@ export const environment = {
     endpoints: [
       {
         name: 'sqs-auditoria',
-        endpoint: 'https://sqs.us-east-1.amazonaws.com/335672086802/sia-utileria-encolamiento-mensajes-monitoreo-dev.fifo'
+        endpoint: 'https://'+sqsAcceso+'.fifo'
       },
       {
         name: 'catalogos',
-        endpoint: 'https://ixsp0lvu2h.execute-api.us-east-1.amazonaws.com/dev/sia/utileria/'
+        endpoint: 'https://'+apiGateway+'/'+ambiente+'/sia/utileria/'
       },
       {
         name: 'auditoria',
-        endpoint: 'https://ixsp0lvu2h.execute-api.us-east-1.amazonaws.com/dev/sia/utileria/auditoria/interfaces'
+        endpoint: 'https://'+apiGateway+'/'+ambiente+'/sia/utileria/auditoria/interfaces'
       },
       {
         name: 'AIMS Y EXCEDENTES',
-        endpoint: 'https://ixsp0lvu2h.execute-api.us-east-1.amazonaws.com/dev/sia/afore/aimsexcedentes'
+        endpoint: 'https://'+apiGateway+'/'+ambiente+'/sia/afore/aimsexcedentes'
       },
       {
         name: 'MD',
-        endpoint: 'https://ixsp0lvu2h.execute-api.us-east-1.amazonaws.com/dev/sia/afore/md'
+        endpoint: 'https://'+apiGateway+'/'+ambiente+'/sia/afore/md'
       },
       {
         name: 'INT CASH',
-        endpoint: 'https://ixsp0lvu2h.execute-api.us-east-1.amazonaws.com/dev/sia/afore/intcash'
+        endpoint: 'https://'+apiGateway+'/'+ambiente+'/sia/afore/intcash'
       },
       {
         name: 'MO',
-        endpoint: 'https://ixsp0lvu2h.execute-api.us-east-1.amazonaws.com/dev/sia/afore/mo'
+        endpoint: 'https://'+apiGateway+'/'+ambiente+'/sia/afore/mo'
       },
       {
         name: 'CRD',
-        endpoint: 'https://ixsp0lvu2h.execute-api.us-east-1.amazonaws.com/dev/sia/fondos/crd'
+        endpoint: 'https://'+apiGateway+'/'+ambiente+'/sia/fondos/crd'
       },
       {
         name: 'MANDATOS',
-        endpoint: 'https://ixsp0lvu2h.execute-api.us-east-1.amazonaws.com/dev/sia/fondos/mandatos'
+        endpoint: 'https://'+apiGateway+'/'+ambiente+'/sia/fondos/mandatos'
       },
       {
         name: 'INT CASH SANTANDER',
-        endpoint: 'https://ixsp0lvu2h.execute-api.us-east-1.amazonaws.com/dev/sia/afore/intcashsantander'
+        endpoint: 'https://'+apiGateway+'/'+ambiente+'/sia/afore/intcashsantander'
       }
     ],
   },

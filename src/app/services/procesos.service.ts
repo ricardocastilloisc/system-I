@@ -29,15 +29,18 @@ export class ProcesosService {
     private http: HttpClient, private logeo: LogeoService
   ) { }
 
+  /* Funcion para mandar la solicitud al API de procesos para iniciar un flujo*/
   iniciarProceso(idProceso: string, correoUsuario: string, rolUsuario: string): any {
+    let response;
     try {
-      let response;
+      /* Generar solcitidud */
       const uuid = uuidv4();
       const data = JSON.stringify({
         rol: rolUsuario,
         correo: correoUsuario,
         uuid: uuid
       });
+      /* Generar encabezados de la solicitud */
       const endpoint = environment.API.endpoints.find((el) => el.name === idProceso).endpoint;
       const config = {
         url: endpoint,
@@ -51,6 +54,7 @@ export class ProcesosService {
         Authorization: 'Bearer ' + this.authService.getToken(),
         'Content-Type': 'application/json'
       };
+      /* Enviar la solicitud con los parametros configurados */
       return this.http.post(endpoint, config.data, { headers }).toPromise().then(function (response) {
         return response = {
           codigo: 'EXITO',
@@ -59,19 +63,27 @@ export class ProcesosService {
         };
       })
         .catch(function (error) {
-          this.logeo.registrarLog('modulo', 'accion', JSON.stringify(error));
+          /* Cachar el fallo al procesar la solicitud  */
+          this.logeo.registrarLog('PROCESOS', 'INICIAR', JSON.stringify(error));
           return response = {
             codigo: 'FALLO',
             descripcion: error.message
           };
         });
     } catch (err) {
+      /* Cachar el fallo al intentar procesar la solicitud */
       this.logeo.registrarLog('PROCESOS', 'INICIAR', JSON.stringify(err));
+      return response = {
+        codigo: 'FALLO',
+        descripcion: err.message + '. Para el proceso ' + idProceso
+      };
     }
   }
 
+  /* Funcion para generar los datos de la auditoria */
   generarAuditoria(estado: string, resultado: string, idProceso?): void {
     try {
+      /* Obtencion de los datos a mandar a la bitacora */
       const proceso = JSON.parse(localStorage.getItem('proceso'));
       const today = new Date().toISOString();
       let tipo = '';
@@ -98,6 +110,7 @@ export class ProcesosService {
         .subscribe((res) => {
           area = res;
         });
+      /* Generar el payload a mandar a la bitacora */
       const payload = {
         areaNegocio: area,
         rol,
@@ -119,10 +132,12 @@ export class ProcesosService {
         },
       };
       const payloadString = JSON.stringify(payload);
+      /* Mandar la informacion al servicio de bitacora */
       this.auditoria.enviarBitacoraUsuarios(payloadString);
       localStorage.removeItem('proceso');
       localStorage.removeItem('tipoProceso');
     } catch (err) {
+      /* Cachar el fallo al mandar la informacion a la bitacora */
       this.logeo.registrarLog('PROCESOS', 'GENERAR AUDITORIA', JSON.stringify(err));
     }
   }

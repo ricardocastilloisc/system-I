@@ -53,6 +53,24 @@ justify-content-end
   </div>
   <div class="row col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12">
     <div class="col-md-8 col-lg-8 col-sm-12 col-xs-12">
+
+
+
+
+  <!--En esta parte muestra el paginadop cuando  es el ultimo y no cumple el array para generar el paginado -->
+  <div
+  class="custom-pagination"
+  *ngIf="verPaginadoCuandoSoloHayDatosDe10aMenor()"
+>
+  <div class="pagination-previous">
+    <span (click)="cargarConInicialOPaginado(-1)"> << </span>
+  </div>
+  <div class="page-number" style="cursor: default !important">
+    <span>{{ verLabePaginado(1) }}</span>
+  </div>
+</div>
+
+
       <pagination-template id="DetailCats" #p="paginationApi" *ngIf="verPaginado()"
         (pageChange)="paginaDetailCats = $event" class="ngx-pagination">
         <div class="custom-pagination">

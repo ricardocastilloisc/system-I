@@ -5,6 +5,8 @@ import { AuthGuard } from '../../../Guards/auth.guard';
 import { ERole } from '../../../validators/roles';
 import { GuardRolesGuard } from '../../../Guards/guard-roles.guard';
 
+
+//Se define el array de rutas para que la seccion del dashboard puede navegar en los elementos con sus nombres respectivos
 const routes: Routes = [
   {
     path: '',
@@ -36,6 +38,10 @@ const routes: Routes = [
       {
         path: 'auditoria',
         loadChildren: () => import('./auditoria/auditoria.module').then(m => m.AuditoriaModule)
+      },
+      {
+        path: 'Perfil', //El path sirve para enviar al componente o vista  en el front sobre la información del usuario
+        loadChildren: () => import('./perfil/perfil.module').then(m => m.PerfilModule)
       },
     ],
   },

@@ -18,8 +18,9 @@
           <td>{{ NotificacionesSetting.description }}</td>
           <td>{{ siONo(NotificacionesSetting.enabled) }}</td>
           <td>
-            <img style="cursor: pointer" (click)="mostrarCardEditarResgistro(NotificacionesSetting)"
-              class="editar-icon-catalog" />
+                        <!--Se valida si se actuliza o no-->
+                <img *ngIf="NotificacionesSetting.ACTUALIZAR" style="cursor: pointer" (click)="mostrarCardEditarResgistro(NotificacionesSetting)"
+                class="editar-icon-catalog" />
           </td>
         </tr>
       </table>

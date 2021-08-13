@@ -17,11 +17,12 @@ Ver documentación asociada al proyecto en Confluence [clic aquí](https://docs.
 **Versión:** 1.0
 
 **Dependencias:**
-- Azure Active Directory (AD) 
+- Azure Active Directory (AD)
 - AWS Appsync
 - AWS DynamoBD
 - AWS Cognito
-- API Catalogos
+- AWS SQS
+- API Catálogos
 - API Estadisticas Interfaces
 - API CRD
 - API MD
@@ -29,21 +30,22 @@ Ver documentación asociada al proyecto en Confluence [clic aquí](https://docs.
 - API AIMS Y EXCEDENTES
 - API INT CASH
 - API MANDATOS
+- SQS Mensajes Monitoreo
 
-**Desarrolladores:** Team SPS [[Brenda Galicia - bgalicia@spsolutions.com.mx](mailto:bgalicia@spsolutions.com.mx)] [[Victor Hernández - vhernandez@spsolutions.com.mx](mailto:vhernandez@spsolutions.com.mx)] [[Ricardo Castillo - rcastillo@spsolutions.com.mx](mailto:rcastillo@spsolutions.com.mx)] 
+**Desarrolladores:** Team SPS [[Brenda Galicia - bgalicia@spsolutions.com.mx](mailto:bgalicia@spsolutions.com.mx)] [[Victor Hernández - vhernandez@spsolutions.com.mx](mailto:vhernandez@spsolutions.com.mx)] [[Ricardo Castillo - rcastillo@spsolutions.com.mx](mailto:rcastillo@spsolutions.com.mx)]
 
 
-## Pasos para replicar la ejecución 
+## Pasos para replicar la ejecución
 
 - Para ejecutar la aplicación en un ambiente local, es necesdario tener el CLI de AWS Amplify instalado [Amplify CLI](https://docs.amplify.aws/cli).
 - Acceder a la consola de amplify, seleccionar la aplicacion y el backend correspondientes y realizar un pull desde el CLI de AWS Amplify, en la carpeta de la applicacion web con el `comando amplify pull --appId XXXXXXX --envName XXXXXXX`.
 - Una vez que se tienen los ultimos cambios descargados, a traves del CLI de Angular, ejecutar `ng serve`, navega a `http://localhost:4200/` y la aplicacion estara corriendo en tu ambiente local.
 
-**NOTA:** En la consola de Amplify, te mostrara el comando del pull con el appId y environment correspondiete. 
+**NOTA:** En la consola de Amplify, te mostrara el comando del pull con el appId y environment correspondiete.
 
 # Despliegue de la aplicación
 
-Cómo desarrollador el despliegue se realiza a traves del CLI de Amplify forma manual o empleando la estrategia de CI/CD establecida para el proyecto. La recomentación es utilizar la segunda opción una vez se han realizado los ajustes correspondientes mencionados. 
+Cómo desarrollador el despliegue se realiza a traves del CLI de Amplify forma manual o empleando la estrategia de CI/CD establecida para el proyecto. La recomentación es utilizar la segunda opción una vez se han realizado los ajustes correspondientes mencionados.
 
 ## Despliegue Manual
 
@@ -65,3 +67,13 @@ Para realizar un depsliegue automatizado, es necesario hacer un pull request hac
 **NOTA:** Debera tener acceso a la Wiki Monex de gitea, en caso de no ser así solicitar el acceso con el administrador correspondiente. Para siguientes ambientes a desarrollo se deberá hacer uso de la estrategia de CI/CD.
 
 ## Consideraciones
+
+**Rewrites and redirects**
+
+- 404 (Rewrite)
+    - /index.html
+    - /<*>
+
+- 200 (Rewrite)
+    - /index.html
+    - </^[^.]+$|\.(?!(css|gif|ico|jpg|js|png|txt|svg|woff|ttf|map|json)$)([^.]+$)/>

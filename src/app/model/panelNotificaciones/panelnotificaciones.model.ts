@@ -5,4 +5,6 @@ export interface AUDGENUSUARIO_INTERFACE {
   description: string;
   enabled: boolean;
   seconds?: number;
+  ACTUALIZAR?: boolean;
+  CONSULTAR?: boolean;
 }

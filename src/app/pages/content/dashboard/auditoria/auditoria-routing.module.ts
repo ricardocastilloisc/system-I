@@ -15,11 +15,6 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'archivos',
-        loadChildren: () =>
-          import('./archivos/archivos.module').then((m) => m.ArchivosModule),
-      },
-      {
         path: 'interfaces',
         loadChildren: () =>
           import('./interfases/interfases.module').then((m) => m.InterfasesModule),

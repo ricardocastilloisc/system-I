@@ -60,11 +60,6 @@
               <img src="../assets/imgs/icons/usuarios.svg" class="alineadoTextoImagenCentro" />
               Usuarios</a>
           </li>
-          <li>
-            <a routerLinkActive="active" routerLink="/auditoria/archivos">
-              <img src="../assets/imgs/icons/catalogo.svg" class="alineadoTextoImagenCentro" />
-              Archivos</a>
-          </li>
         </ul>
       </li>
       <li class="active" *ngIf="flagProcesos">
@@ -123,8 +118,10 @@
         </div>
         <div [ngClass]="retornarClaseCorrectaDrecha()" class="col-3 align-self-end texto-responsivo-usuario">
           <div class="centrado">
+
+            <a routerLinkActive="active" routerLink="/Perfil">
             <strong><b>{{ DataUser.attributes.given_name }}
-                {{ DataUser.attributes.family_name }}</b></strong>
+                {{ DataUser.attributes.family_name }}</b></strong></a>
             <div [ngClass]="retornarClaseCorrectaLinea()"></div>
             <p *ngIf="usuario.validarRolUsuario()">
               {{ obtenerArea() }} /

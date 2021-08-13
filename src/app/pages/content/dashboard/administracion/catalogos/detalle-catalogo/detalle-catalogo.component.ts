@@ -100,6 +100,20 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
     this.DetailCatalogos$.unsubscribe();
   }
 
+  //el metodo lo que hace es un validador cuando no existe el suficiente dato para poder ver el paginado
+  verPaginadoCuandoSoloHayDatosDe10aMenor = () =>{
+    const PageNumerPageCat = JSON.parse(localStorage.getItem('PageNumerPageCat'));
+    if(this.DetailCats){
+      if(this.DetailCats.length <11 && PageNumerPageCat > 0){
+        return true;
+      }else{
+        return false;
+      }
+    }else{
+      false;
+    }
+  }
+
   openModalFilter = (column: STRUCTURE_CAT, content) => {
     this.modalService.open(content, {
       ariaLabelledBy: 'modal-basic-title',
@@ -717,7 +731,6 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
         this.store
           .select(({ usuario }) => usuario.user)
           .subscribe((user) => {
-            console.log('1', this.flagPermisos);
             if (user) {
               this.DataUser = user;
               const areas = [
@@ -734,7 +747,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
                 }
               });
               const area = areasStore[0];
-              const negocio = this.DataUser.attributes['custom:negocio'].toUpperCase().split(',');
+              let negocio = this.DataUser.attributes['custom:negocio'].toUpperCase().split(',');
               const rol = this.DataUser.attributes['custom:rol'].toUpperCase();
               this.api.ListCATPERMISOS(negocio, area, rol).then(({ items }: any) => {
                 if (Object.keys(items).length !== 0) {
@@ -782,11 +795,12 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
                                 this.flagEliminar = false;
                               }
                             }
-                          } else if (negocio.includes('SOPORTE')) {
-                            if (!data.PRIV_SOPORTE.includes('W')) {
-                              this.flagAgregar = false;
-                              this.flagEditar = false;
-                              this.flagEliminar = false;
+                            if (area.includes('SOPORTE')) {
+                              if (!data.PRIV_SOPORTE.includes('W')) {
+                                this.flagAgregar = false;
+                                this.flagEditar = false;
+                                this.flagEliminar = false;
+                              }
                             }
                           }
                         }
@@ -801,7 +815,7 @@ export class DetalleCatalogoComponent implements OnInit, OnDestroy {
           });
       }
     } catch (err) {
-      this.logeo.registrarLog('CATALOGOS', 'VALIDAR PERMISOS', JSON.stringify(err));
+      this.logeo.registrarLog('CATALOGOS', 'VALIDAR PERMISOS CATALOGOS', JSON.stringify(err));
     }
   }
 
