@@ -22,7 +22,7 @@ declare var $: any;
 
 export class InterfasesComponent implements OnInit, OnDestroy {
   @ViewChild('modalEstado') templateRef: TemplateRef<any>;
-
+  /* declaracion de variables globales */
   maxDate: Date = new Date();
   filtroForm: FormGroup;
   dropdownListFiltroTipo = [];
@@ -69,6 +69,7 @@ export class InterfasesComponent implements OnInit, OnDestroy {
   item = {
     name: 'Ejecuciones'
   };
+  /* declaracion de variables para los graficos */
   explodeSlices = false;
   gradient = false;
   showLegend = true;
@@ -113,6 +114,7 @@ export class InterfasesComponent implements OnInit, OnDestroy {
     private logeo: LogeoService) {
   }
 
+  /* inicializacion de datos */
   initData = () => {
     try {
       this.datosAforeFondos = [];
@@ -131,6 +133,7 @@ export class InterfasesComponent implements OnInit, OnDestroy {
     }
   }
 
+  /* inicializacion de los select para el filtrado */
   initSelects = () => {
     this.dropdownListFiltroTipo = [
       { item_id: 'DIURNO', item_text: 'DIURNOS' },
@@ -189,6 +192,7 @@ export class InterfasesComponent implements OnInit, OnDestroy {
     });
   }
 
+  /* inicializacion para los procesos */
   initProcesos(tipo: string): void {
     const bodyProcesos = {
       filter: { TIPO: { eq: tipo.toUpperCase() } },
@@ -197,6 +201,7 @@ export class InterfasesComponent implements OnInit, OnDestroy {
     this.store.dispatch(LoadCATPROCESOS({ consult: bodyProcesos }));
   }
 
+  /* limpieza de los campos para aplicar filtros */
   limpiarFiltro(pantalla: string): void {
     if (pantalla.length < 1) {
       pantalla = localStorage.getItem('tipoPantalla');
@@ -212,17 +217,20 @@ export class InterfasesComponent implements OnInit, OnDestroy {
     }
   }
 
+  /* asignar pantalla principal (interfaces o problemas identificados) */
   setPantalla(pantalla: string): void {
     localStorage.setItem('tipoPantalla', pantalla);
     this.limpiarFiltro(pantalla);
   }
 
+  /* activar boton de la pantalla principal (interfaces o problemas) */
   botonActivado = (pantalla: string): boolean => {
     return localStorage.getItem('tipoPantalla') === pantalla
       ? true
       : false;
   }
 
+  /* asignar el titiulo y las descripciones de las ayudas en la pantalla */
   helperQuestions = (origen: any) => {
     if (origen === 'DEL') {
       this.helpTitulo = 'Fecha desde';
@@ -245,16 +253,19 @@ export class InterfasesComponent implements OnInit, OnDestroy {
     }
   }
 
+  /* abrir modal */
   openModal(): void {
     this.modalService.open(this.templateRef, {
       ariaLabelledBy: 'modal-basic-title',
     });
   }
 
+  /* cerrar todos los modales de la pantalla */
   cerrarModales = () => {
     this.modalService.dismissAll();
   }
 
+  /* validar el rol del usuario */
   validarRolMensaje(): boolean {
     let flag = false;
     if (localStorage.getItem('area').includes(EArea.Soporte)) {
@@ -263,6 +274,7 @@ export class InterfasesComponent implements OnInit, OnDestroy {
     return flag;
   }
 
+  /* cambiar el estilo del elemento seleccionado en los filtros */
   cambiarEtiquetaSeleccionadaGeneral(elemento: any): void {
     setTimeout(() => {
       $('#' + elemento)
@@ -271,6 +283,7 @@ export class InterfasesComponent implements OnInit, OnDestroy {
     }, 1);
   }
 
+  /* funcion para iniciar componentes al entrar a la pantalla */
   ngOnInit(): void {
     try {
       this.spinner.show();
@@ -285,11 +298,13 @@ export class InterfasesComponent implements OnInit, OnDestroy {
     }
   }
 
+  /* funcion para limpiar memoria al salir de la pantalla */
   ngOnDestroy(): void {
     this.initData();
     this.store.dispatch(UnsetCATPROCESO());
   }
 
+  /* inicializar datos de las interfaces */
   initDatosInterfaces(): void {
     try {
       this.spinner.show();
@@ -297,17 +312,21 @@ export class InterfasesComponent implements OnInit, OnDestroy {
       const fechaInicio = new Date();
       const fechaFin = new Date();
       fechaInicio.setDate(fechaFin.getDate() - this.dias);
+      /* generacion del filtro inicial */
       const filtro = {
         fecha_inicio: fechaInicio.toISOString().split('T')[0],
         fecha_fin: fechaFin.toISOString().split('T')[0]
       };
+      /* llamar al servicio de consulta para obtener los datos */
       this.interfasesService.getDatos(filtro).then(data => {
         this.dataOriginal = data;
         if (data === undefined) {
+          /* validacion si no hay datos*/
           this.mensajeError = 'Ocurrió un error, contacte con soporte.';
           this.openModal();
           this.spinner.hide();
         } else {
+          /* validacion si existio un error */
           this.flagDatos = this.interfasesService.isObjEmpty(data);
           if (data.hasOwnProperty('message')) {
             this.mensajeError = 'Ocurrió un error: ' + data.message;
@@ -316,6 +335,7 @@ export class InterfasesComponent implements OnInit, OnDestroy {
           this.datosDiurno = data.hasOwnProperty('diurnos');
           this.datosNocturno = data.hasOwnProperty('nocturnos');
           this.treemap = this.interfasesService.formatoResumen(data);
+          /* generacion del grafico de resumen de las ejecuciones */
           if (this.treemap.length > 0) {
             this.treeMapNotEmpty = true;
             this.treemapProcess(this.treemap);
@@ -326,6 +346,7 @@ export class InterfasesComponent implements OnInit, OnDestroy {
       });
     }
     catch (err) {
+      /* manejo de errores en el proceso de inicializar interfaces */
       this.mensajeError = 'Ocurrió un error: ' + err.message;
       this.logeo.registrarLog('AUDITORIA INTERFACES', 'INICIALIZAR DATOS INTERFACES', JSON.stringify(err));
       this.openModal();
@@ -333,6 +354,7 @@ export class InterfasesComponent implements OnInit, OnDestroy {
     }
   }
 
+  /* inicializacion de datos para los problemas identificados */
   initDatosProblemas(): void {
     try {
       this.spinner.show();
@@ -340,18 +362,22 @@ export class InterfasesComponent implements OnInit, OnDestroy {
       const fechaInicio = new Date();
       const fechaFin = new Date();
       fechaInicio.setDate(fechaFin.getDate() - this.dias);
+      /* generacion del filtro inicial por fechas */
       const filtro = {
         fecha_inicio: fechaInicio.toISOString().split('T')[0],
         fecha_fin: fechaFin.toISOString().split('T')[0]
       };
+      /* llamado al api de consulta para obtener los datos */
       this.interfasesService.getProblemas(filtro).then(data => {
         if (data === undefined) {
+          /* validacion si existe un error por falta de datos */
           this.mensajeError = 'Ocurrió un error, contacte con soporte.';
           this.openModal();
           this.spinner.hide();
         } else {
           this.listadoProblemas = data;
           if (data.hasOwnProperty('message')) {
+            /* validacion si ocurrio un error */
             this.mensajeError = 'Ocurrió un error: ' + data.message;
             this.openModal();
           }
@@ -360,6 +386,7 @@ export class InterfasesComponent implements OnInit, OnDestroy {
       });
     }
     catch (err) {
+      /* manejo de errores en el proceso de inicializar problemas identificados */
       this.mensajeError = 'Ocurrió un error: ' + err.message;
       this.logeo.registrarLog('AUDITORIA INTERFACES', 'INICIALIZAR DATOS PROBLEMAS IDENTIFICADOS', JSON.stringify(err));
       this.openModal();
@@ -367,9 +394,11 @@ export class InterfasesComponent implements OnInit, OnDestroy {
     }
   }
 
+  /* consulta de los datos por medio de la aplicacion de filtros */
   aplicarFiltro(): void {
     const pantalla = localStorage.getItem('tipoPantalla');
     const filtro = Object.create({});
+    /* obtencion de valores  */
     this.spinner.show();
     if (this.selectedItemsFiltroProceso.length > 0) {
       filtro.proceso = this.selectedItemsFiltroProceso[0].item_id;
@@ -382,6 +411,7 @@ export class InterfasesComponent implements OnInit, OnDestroy {
     }
     const fechaInicio = this.filtroForm.get('filtroFechaInicio').value; // yyyy-mm-dd
     const fechaFin = this.filtroForm.get('filtroFechaFin').value; // yyyy-mm-dd
+    /* validacion de para los campos de fecha */
     if ((fechaInicio === null && fechaFin !== null) || (fechaInicio !== null && fechaFin === null)) {
       this.mensajeError = 'Es necesario introducir ambas fechas para poder filtrar las ejecuciones';
       this.openModal();
@@ -406,6 +436,7 @@ export class InterfasesComponent implements OnInit, OnDestroy {
         this.openModal();
         this.spinner.hide();
       } else if (pantalla.includes('INTERFACES')) {
+        /* aplicar filtro para interfaces */
         this.aplicarFiltroInterfaces(filtro);
       }
       else if (pantalla.includes('PROBLEMAS')) {
@@ -414,17 +445,21 @@ export class InterfasesComponent implements OnInit, OnDestroy {
           this.openModal();
           this.spinner.hide();
         } else {
+          /* aplicar filtro para problemas identificados */
           this.aplicarFiltroProblemas(filtro);
         }
       }
     }
   }
 
+  /* aplicacion de filtro para las interfaces */
   aplicarFiltroInterfaces(filtro: any): void {
     try {
+      /* consulta al servicio de obtencion de datos aplicando los filtros */
       this.interfasesService.getDatos(filtro).then(data => {
         this.dataOriginal = data;
         this.flagDatos = this.interfasesService.isObjEmpty(data);
+        /* validacion por si no hay datos o se presento un error */
         if (data === undefined) {
           this.mensajeError = 'Ocurrió un error, contacte con soporte.';
           this.openModal();
@@ -434,6 +469,7 @@ export class InterfasesComponent implements OnInit, OnDestroy {
             this.mensajeError = 'Ocurrió un error: ' + data.message;
             this.openModal();
           }
+          /* asignacion de datos para las graficas  */
           this.datosDiurno = data.hasOwnProperty('diurnos');
           this.datosNocturno = data.hasOwnProperty('nocturnos');
           this.treemap = this.interfasesService.formatoResumen(data);
@@ -447,6 +483,7 @@ export class InterfasesComponent implements OnInit, OnDestroy {
       });
     }
     catch (err) {
+      /* manejo de error */
       this.mensajeError = 'Ocurrió un error: ' + err.message;
       this.logeo.registrarLog('AUDITORIA INTERFACES', 'FILTRADO INTERFACES', JSON.stringify(err));
       this.openModal();
@@ -454,11 +491,14 @@ export class InterfasesComponent implements OnInit, OnDestroy {
     }
   }
 
+  /* aplicar filtros de busqueda para los problemas identificados */
   aplicarFiltroProblemas(filtro: any): void {
     try {
+      /* consulta para obtener los datos aplicando el filtro*/
       this.interfasesService.getProblemas(filtro).then(data => {
         this.listadoProblemas = data;
         if (data === undefined) {
+          /* validaciones por si no hay datos o se presento un error en la consulta */
           this.mensajeError = 'Ocurrió un error, contacte con soporte.';
           this.openModal();
           this.spinner.hide();
@@ -472,6 +512,7 @@ export class InterfasesComponent implements OnInit, OnDestroy {
       });
     }
     catch (err) {
+      /* manejo de errores en el proceso de inicializar problemas  */
       this.mensajeError = 'Ocurrió un error: ' + err.message;
       this.logeo.registrarLog('AUDITORIA INTERFACES', 'FILTRADO PROBLEMAS IDENTIFICADOS', JSON.stringify(err));
       this.openModal();
@@ -479,10 +520,12 @@ export class InterfasesComponent implements OnInit, OnDestroy {
     }
   }
 
+  /* ajuste de banderas para componentes visuales sobre Diurno */
   accionMinimizarDiurno(): void {
     if (this.flagMinimizarDiurno === false) {
       this.datosAforeFondos = [];
       this.datosLanzamiento = [];
+      /* asignacion de datos para los elementos graficos */
       this.datosAforeFondos = this.interfasesService.formatoDatosBarHorNegocio(this.dataOriginal, 'diurnos');
       this.datosLanzamiento = this.interfasesService.formatoDatosBarHorLanzamiento(this.dataOriginal, 'diurnos');
       this.datosDiurnoAfore = this.interfasesService.formatoDatosPie(this.dataOriginal, 'diurnos', 'afore');
@@ -491,10 +534,12 @@ export class InterfasesComponent implements OnInit, OnDestroy {
     this.flagMinimizarDiurno = !this.flagMinimizarDiurno;
   }
 
+  /* ajuste de banderas para componentes visuales sobre Nocturno */
   accionMinimizarNocturno(): void {
     if (this.flagMinimizarNocturno === false) {
       this.datosAforeFondos = [];
       this.datosLanzamiento = [];
+      /* asignacion de datos para los elementos graficos */
       this.datosAforeFondos = this.interfasesService.formatoDatosBarHorNegocio(this.dataOriginal, 'nocturnos');
       this.datosLanzamiento = this.interfasesService.formatoDatosBarHorLanzamiento(this.dataOriginal, 'nocturnos');
       this.datosNocturnoAfore = this.interfasesService.formatoDatosPie(this.dataOriginal, 'nocturnos', 'afore');
@@ -503,6 +548,7 @@ export class InterfasesComponent implements OnInit, OnDestroy {
     this.flagMinimizarNocturno = !this.flagMinimizarNocturno;
   }
 
+  /* mostrar el detalle del por negocio y proceso*/
   mostrarDetalleEjecuciones(data: any, tipo: string, negocio: string): void {
     tipo = this.interfasesService.capitalize(tipo);
     negocio = this.interfasesService.capitalize(negocio);
@@ -523,6 +569,7 @@ export class InterfasesComponent implements OnInit, OnDestroy {
     }
   }
 
+  /* generar el grafico didactico de resumen de todas las ejecuciones */
   treemapProcess(treemap: any, sumBy = this.sumBy): void {
     this.sumBy = sumBy;
     const children = treemap[0];
