@@ -7,11 +7,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgxSpinnerModule } from "ngx-spinner";
+import { DetalleArchivoComponent } from './detalle-archivo/detalle-archivo.component';
 
 
 @NgModule({
   declarations: [
-    ArchivosComponent
+    ArchivosComponent,
+    DetalleArchivoComponent
   ],
   imports: [
     CommonModule,

@@ -171,10 +171,7 @@
                     <div
                       class="d-flex align-items-center justify-content-center"
                     >
-                      <button
-                        (click)="valor()"
-                        class="btn bottonBuscarFiltroArchivos"
-                      >
+                      <button class="btn bottonBuscarFiltroArchivos">
                         Buscar
                       </button>
                     </div>
@@ -187,40 +184,65 @@
       </div>
     </div>
 
-    <div class="row justify-content-center">
-      <div
-        class="tituloAzulArchivos"
-        style="
-          width: 90%;
-          padding-right: 15px;
-          padding-left: 15px;
-          margin-top: 30px;
-        "
-      >
-        Archivos procesados con éxito
-      </div>
+
+  </div>
+</section>
+<section>
+
+  <div class="row justify-content-center">
+    <div
+      class="tituloAzulArchivos"
+      style="
+        width: 90%;
+        padding-right: 15px;
+        padding-left: 15px;
+        margin-top: 30px;
+      "
+    >
+      Archivos procesados con éxito
     </div>
-    <div class="row justify-content-center">
+  </div>
+  <div class="row justify-content-center">
+    <div
+      class="
+        d-flex
+        col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12
+        justify-content-center
+      "
+    >
       <div
-        class="
-          d-flex
-          col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12
-          justify-content-center
-        "
+        class="card-lista-design-general"
+        style="overflow-x: auto; width: 90%"
       >
-        <div
-          class="card-lista-design-general"
-          style="overflow-x: auto; width: 90%"
-        >
-          <table class="table listado-design-generalArchivo">
-            <tr>
-              <th>Archivo</th>
-              <th>Fecha</th>
-              <th>Descripción</th>
-            </tr>
-          </table>
-        </div>
+        <table class="table listado-design-generalArchivo">
+          <tr>
+            <th>Archivo</th>
+            <th>Fecha</th>
+            <th>Descripción</th>
+            <th></th>
+          </tr>
+          <tr
+            *ngFor="
+              let archivo of archivos"
+          >
+            <td>
+              {{archivo.Key}}
+            </td>
+            <td>
+              {{archivo.fecha}}
+            </td>
+            <td>
+              {{archivo.descripcion}}
+            </td>
+            <td>
+
+              <img (click)="irArchivo(archivo)" style="cursor: pointer"  class="detalle-icon2" />
+
+            </td>
+          </tr>
+        </table>
       </div>
     </div>
   </div>
+
 </section>

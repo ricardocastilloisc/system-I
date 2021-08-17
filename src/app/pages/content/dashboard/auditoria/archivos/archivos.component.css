@@ -4,6 +4,16 @@
     margin-right: auto;
   }
 
+  .detalle-icon2{
+    background: transparent url("../../../../../../assets/icons/icono-detalles-b.svg") 0% 0% no-repeat
+      padding-box;
+    width: 30px;
+    height: 30px;
+    opacity: 1;
+    margin: 0 15px;
+    padding: 15px;
+  }
+
 
   table.listado-design-generalArchivo th {
     background-color: #125FA4;

@@ -34,6 +34,11 @@ const routes: Routes = [
         loadChildren: () =>
           import('./usuarios/usuarios.module').then((m) => m.UsuariosModule),
       },
+      {
+        path: 'archivos',
+        loadChildren: () =>
+          import('./archivos/archivos.module').then((m) => m.ArchivosModule),
+      },
     ],
   },
 ];

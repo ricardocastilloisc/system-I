@@ -7,16 +7,6 @@ import { AppState } from '../ReduxStore/app.reducers';
 import { Store } from '@ngrx/store';
 import { AuthService } from './auth.service';
 import { LogeoService } from '../services/logeo.service';
-import { v4 as uuidv4 } from 'uuid';
-import * as AWS from 'aws-sdk';
-
-AWS.config.update({
-  accessKeyId: environment.SESConfig.accessKeyId,
-  secretAccessKey: environment.SESConfig.secretAccessKey,
-  region: environment.SESConfig.region
-});
-
-const sqs = new AWS.SQS();
 
 @Injectable({
   providedIn: 'root',
@@ -330,7 +320,6 @@ export class CatalogosService {
       };
       const payloadString = JSON.stringify(payload);
       this.auditoria.enviarBitacoraUsuarios(payloadString);
-      this.enviarNotificacion(descripcion, accion, nombre, apellidoPaterno);
       localStorage.removeItem('RegisterAction');
       localStorage.removeItem('ObjectNewRegister');
       localStorage.removeItem('ObjectOldRegister');
@@ -338,34 +327,4 @@ export class CatalogosService {
       this.logeo.registrarLog('CATALOGOS', 'GENERAR AUDITORIA', JSON.stringify(err));
     }
   }
-
-  enviarNotificacion(catalogo: string, accion: string, nombre: string, apellidoPaterno: string): void {
-    if (accion === 'AGREGAR') {
-      accion = 'Se agregó un registro al catálogo'
-    }
-    if (accion === 'ELIMINAR') {
-      accion = 'Se eliminó un registro del catálogo'
-    }
-    if (accion === 'ACTUALIZAR') {
-      accion = 'Se actualizó la información de un registro del catálogo'
-    }
-    const payload = {
-      catalogo: catalogo,
-      accion: accion,
-      usuario: nombre + ' ' + apellidoPaterno
-    };
-    const objetoBitacora = JSON.stringify(payload);
-    const params = {
-      MessageBody: objetoBitacora,
-      MessageDeduplicationId: uuidv4(),
-      MessageGroupId: uuidv4(),
-      QueueUrl: environment.API.endpoints.find((el) => el.name === 'sqs-catalogos').endpoint
-    };
-    sqs.sendMessage(params, function (err, data) {
-      if (err) {
-        this.logeo.registrarLog('CATALOGOS', 'ENVIAR SQS NOTIFICACIONES', JSON.stringify(err));
-      }
-    });
-  }
-
 }
