@@ -9,7 +9,7 @@ const awsmobile = {
     "oauth": {
         "domain": "sia-app-up.auth.us-east-1.amazoncognito.com"
     },
-    "aws_appsync_graphqlEndpoint": "https://z3z4liprmfgfjl4twtn24dambm.appsync-api.us-east-1.amazonaws.com/graphql",
+    "aws_appsync_graphqlEndpoint": "https://msg3iq6g3rf3rpdkq4ddysls2q.appsync-api.us-east-1.amazonaws.com/graphql",
     "aws_appsync_region": "us-east-1",
     "aws_appsync_authenticationType": "AMAZON_COGNITO_USER_POOLS"
 };
