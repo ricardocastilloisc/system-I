@@ -223,10 +223,15 @@ export class ProcesosPantallaGeneralComponent implements OnInit, OnDestroy {
     };
     // tslint:disable-next-line: max-line-length
     /* Consulta del estado del proceso para saber si se puede mandar una nueva ejecucion */
+
     await this.api.ListSiaGenAudEstadoProcesosDevs(body.INTERFAZ, fechaInicio.toISOString().replace('0Z', ''), fechaFin.toISOString().replace('9Z', '')).then(res => {
       // tslint:disable-next-line: max-line-length
+
       this.CATESTADOS = res.items.slice().sort(function (a, b) { return new Date(b.FECHA_ACTUALIZACION).getTime() - new Date(a.FECHA_ACTUALIZACION).getTime(); });
+      console.log(res);
+
     });
+
     /* Validacion del estado para mandar una nueva ejecucion */
     if (this.CATESTADOS[0]?.ESTADO_EJECUCION === 'TERMINADO' || this.CATESTADOS.length === 0) {
       const idEjecucion = uuidv4();

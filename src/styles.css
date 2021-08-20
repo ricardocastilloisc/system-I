@@ -1,2 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
-
+.my-custom-class{
+  height:200px;
+  overflow: auto;
+}

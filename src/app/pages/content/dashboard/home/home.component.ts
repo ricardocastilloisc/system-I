@@ -7,6 +7,7 @@ import { AuthService } from '../../../../services/auth.service';
 import { UsuariosService } from '../../../../services/usuarios.service';
 import { APIService } from '../../../../API.service';
 import { EArea } from '../../../../validators/roles';
+import { dataDiccionario } from 'src/app/shared/DiccionarioDeAyuda';
 
 @Component({
   selector: 'app-home',
@@ -30,6 +31,10 @@ export class HomeComponent implements OnInit {
   flagAuditoriaCatalogos = false;
   flagAuditoriaProcesos = false;
   flagAuditoriaUsuarios = false;
+
+
+  /* aqui  esta el dinerio de hper*/
+  diccionarioHelpers = dataDiccionario;
 
   constructor(
     private store: Store<AppState>,

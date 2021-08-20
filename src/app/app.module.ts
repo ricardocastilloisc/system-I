@@ -32,6 +32,7 @@ import { registerLocaleData } from '@angular/common';
 import localeMX from '@angular/common/locales/es-MX';
 import { ToastrModule } from 'ngx-toastr';
 import { OrdenasPkPipe } from './pipes/ordenas-pk.pipe';
+
 // registrar los locales con el nombre que quieras utilizar a la hora de proveer
 registerLocaleData(localeMX, 'es-MX');
 

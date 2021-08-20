@@ -1,0 +1,22 @@
+
+
+<button
+style="margin-left:10px; border: 0px;" 
+type="button" class="btn btn-outline-secondary"   
+placement="bottom"
+[ngbPopover]="popContent"
+[popoverTitle]="tituloDeLaAyuda"
+popoverClass="my-custom-class">
+<i
+    class="far fa-question-circle"
+>
+</i>
+</button>
+<ng-template #popContent>
+    <!--Desplegamos el contenido dependiendo el parametro que necesitamos--->
+    <div style="width: 100%" *ngFor="let contenido of ArrayDeFilasDeContenido">
+        <p>
+            {{ contenido }}
+        </p>
+    </div>
+</ng-template>
