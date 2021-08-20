@@ -1,7 +1,7 @@
 
 
 <button
-style="margin-left:10px; border: 0px;" 
+style="border: 0px;" 
 type="button" class="btn btn-outline-secondary"   
 placement="bottom"
 [ngbPopover]="popContent"
@@ -18,5 +18,11 @@ popoverClass="my-custom-class">
         <p>
             {{ contenido }}
         </p>
+    </div>
+    <div style="width: 100%" *ngFor="let hiperVinculo of hiperVinculos">
+    
+        <a [href]="hiperVinculo" style="text-decoration: underline; color:blue">{{ hiperVinculo }}
+        </a>
+            
     </div>
 </ng-template>

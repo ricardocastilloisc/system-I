@@ -12,6 +12,8 @@ export class HelpersComponent implements OnInit {
 
     ArrayDeFilasDeContenido = [];
 
+    hiperVinculos = [];
+
     tituloDeLaAyuda = ''
 
     constructor() {
@@ -30,6 +32,7 @@ export class HelpersComponent implements OnInit {
           }).then(() => {
               /*Buscamos lo que necesitamos de ayuda*/
             this.ArrayDeFilasDeContenido = dataDiccionario.filter(e =>e.id === this.catalogo)[0].filasAyuda
+            this.hiperVinculos = dataDiccionario.filter(e =>e.id === this.catalogo)[0].hiperVinculos
             this.tituloDeLaAyuda = dataDiccionario.filter(e =>e.id === this.catalogo)[0].label
           });
 

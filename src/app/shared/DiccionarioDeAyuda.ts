@@ -14,5 +14,8 @@ export const dataDiccionario = [
             "* Seleccionar el catálogo del cual se quieren consultar los registros.",
             "* Se mostrarán los registros que pertenecen a dicho catálogo.",
         ],
+        hiperVinculos:[
+            "https://docs.principal.com/pages/viewpage.action?pageId=553861811"
+        ]
     },
 ];
