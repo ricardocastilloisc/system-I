@@ -1,6 +1,8 @@
+<!-- Spinner para la espera mientras se ejecuta alguna consulta o función -->
 <ngx-spinner bdColor="rgba(0,0,0,0.5)" size="default" color="#fff" type="ball-scale-ripple" [fullScreen]="true">
     <p style="color: white"> Cargando... </p>
 </ngx-spinner>
+<!-- Tabuladores de las secciones del modulo-->
 <div class="container-fluid d-flex col-8 align-items-center selector-reporte" style="height: 40px">
     <button id="left-button" [ngClass]="botonActivado('INTERFACES') ? 'botonActivadoInterfases' : ''"
         (click)="setPantalla('INTERFACES')">
@@ -11,6 +13,7 @@
         Problemas Identificados
     </button>
 </div>
+<!-- Seccion para el filtrado de las consultas -->
 <div class="card-busqueda" [formGroup]="filtroForm">
     <div class="container">
         <div class="row">
@@ -78,6 +81,7 @@
         </div>
     </div>
 </div>
+<!-- Seccion para el detalle de la auditoria de las interfaces -->
 <section name="interfases" *ngIf="botonActivado('INTERFACES')">
     <div class="d-flex col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12 justify-content-center">
         <div class="row justify-content-center" *ngIf="flagDatos">
@@ -120,6 +124,11 @@
                         </ng-template>
                     </ngx-charts-tree-map>
                 </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <button type="button" (click)="abrirGenerarReporte()">Generar Reporte</button>
             </div>
         </div>
     </div>
@@ -291,6 +300,7 @@
         </div>
     </div>
 </section>
+<!-- Seccion para el detalle de la auditoria de los problemas identificados -->
 <section name="interfases" *ngIf="botonActivado('PROBLEMAS')">
     <div class="d-flex col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12 justify-content-center"
         *ngIf="listadoProblemas">
@@ -359,15 +369,17 @@
         </div>
     </div>
 </section>
+<!-- Template para los mensajes de ayuda -->
 <ng-template #popContent>
     <div class="texto-help" style="width: 100%"> {{ helpBody }}</div>
 </ng-template>
 <ng-template #popTitle> {{ helpTitulo }} </ng-template>
+<!-- Template para el modal de advertencia cuando se produce un error por datos o de ejecucion -->
 <ng-template #modalEstado let-modal id="modalFiltro">
     <div class="modal-body">
         <div class="row justify-content-center">
             <div class="col-12 row justify-content-center align-items-center" style="height:120px;">
-                <div class="textoConfirmacionModalUsuarios">Aplicar filtro</div>
+                <div class="textoConfirmacionModalUsuarios">Advertencia</div>
             </div>
             <div class="col-12 row">
                 <div class="col-12 descripcionConfirmacionEjecucionProceso">
@@ -378,6 +390,77 @@
                 <div>
                     <button class="button" (click)="cerrarModales()">Aceptar</button>
                 </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+<!-- Template para el modal formulario para generar los reportes -->
+<ng-template #modalReporte let-modal id="modalReporte">
+    <div class="modal-body ">
+        <div class="row justify-content-center">
+            <div class="col-12" style="padding-bottom: 15px;">
+                <div class="textoConfirmacionModalUsuarios">
+                    <i class="far fa-question-circle" (mouseenter)="helperQuestions('REPORTE')"
+                        triggers="mouseenter:mouseleave" [ngbPopover]="popContent"></i>
+                    Generar Reporte
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-12 card-modal" style="padding-bottom: 15px;">
+                <ng-multiselect-dropdown style="width: 100%;" [placeholder]="'Selecciona el mes'" id="filtroMes"
+                    [settings]="SettingsFiltroDeMes" [data]="dropdownListFiltroMes" [(ngModel)]="selectedItemsFiltroMes"
+                    [ngModelOptions]="{standalone: true}" (onSelect)="cambiarEtiquetaSeleccionadaGeneral('filtroMes')">
+                </ng-multiselect-dropdown>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-12 card-modal" style="padding-bottom: 15px;">
+                <ng-multiselect-dropdown style="width: 100%;" [placeholder]="'Selecciona el tipo'"
+                    id="filtroTipoReporte" [settings]="SettingsFiltroDeTipoReporte"
+                    [data]="dropdownListFiltroTipoReporte" [(ngModel)]="selectedItemsFiltroTipoReporte"
+                    [ngModelOptions]="{standalone: true}"
+                    (onSelect)="cambiarEtiquetaSeleccionadaGeneral('filtroTipoReporte')">
+                </ng-multiselect-dropdown>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-12" style="padding-bottom: 15px;">
+                <!-- Grafico del reporte mensual, visible solo al generar reporte habilitando la descarga -->
+                <div *ngIf="flagVisibilidadMensual">
+                    <div id="reporteMensual">
+                        <ngx-charts-bar-vertical-stacked [view]="view" scheme="air" [results]="dataGraficaMensual"
+                            [xAxis]="showXAxis" [legendTitle]="legendTitle" [yAxis]="showYAxis" [legend]="showLegend"
+                            [showXAxisLabel]="showXAxisLabel" [showDataLabel]="showDataLabel"
+                            [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="yAxisLabelNegocio"
+                            [yAxisLabel]="xAxisLabel">
+                        </ngx-charts-bar-vertical-stacked>
+                    </div>
+                </div>
+                <!-- Grafico del reporte anual, visible solo al generar el reporte habilitando la descarga -->
+                <div *ngIf="flagVisibilidadAnual">
+                    <div id="reporteAnual">
+                        <ngx-charts-line-chart [view]="view" scheme="air" [results]="dataGraficaAnual"
+                            [xAxis]="showXAxis" [legendTitle]="legendTitle" [yAxis]="showYAxis" [legend]="showLegend"
+                            [showXAxisLabel]="showXAxisLabel" [showDataLabel]="showDataLabel"
+                            [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabelTiempo" [yAxisLabel]="xAxisLabel"
+                            [timeline]="timeline">
+                        </ngx-charts-line-chart>
+                    </div>
+                </div>
+                <center>
+                    <button style="cursor: pointer" class="btn bottonCancelarModalAuditoria"
+                        (click)="cerrarModales()">Cancelar</button>
+                    <!-- Boton para generar los reportes, habilita la descarga -->
+                    <button *ngIf="visibilidadGenerar()" style="cursor: pointer" class="btn bottonModalAuditoria"
+                        (click)="generarReporte()">Generar</button>
+                    <!-- Descarga el reporte mensual en formato pdf del mes seleccionado -->
+                    <button *ngIf="flagVisibilidadMensual" style="cursor: pointer" class="btn bottonModalAuditoria"
+                        (click)="descargarReporteMensual()">Descargar</button>
+                    <!-- descarga el reporte anual en formato pdf del mes seleccionado-->
+                    <button *ngIf="flagVisibilidadAnual" style="cursor: pointer" class="btn bottonModalAuditoria"
+                        (click)="descargarReporteAnual()">Descargar</button>
+                </center>
             </div>
         </div>
     </div>
