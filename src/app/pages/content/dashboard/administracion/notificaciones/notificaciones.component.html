@@ -1,77 +1,143 @@
-<div class="row justify-content-center" [ngClass]="{
+<div
+  class="row justify-content-center"
+  [ngClass]="{
     'show-ejecuciones': mostrarEjecucionesProcesos == true,
     'hide-ejecuciones': mostrarEjecucionesProcesos == false
-  }">
-  <div class="
+  }"
+>
+  <div
+    class="
       d-flex
       col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xl-12
       justify-content-center
-    ">
+    "
+  >
     <div class="card-lista-design-general" style="overflow-x: auto">
       <table class="table listado-design-general">
         <tr>
-          <th scope="col">Descripción</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Interfaz</th>
+          <th scope="col">Negocio</th>
           <th scope="col">Activo</th>
+          <th scope="col">Tipo</th>
           <th scope="col">Acciones</th>
         </tr>
         <tr *ngFor="let NotificacionesSetting of NotificacionesSettings">
-          <td>{{ NotificacionesSetting.description }}</td>
-          <td>{{ siONo(NotificacionesSetting.enabled) }}</td>
           <td>
-                        <!--Se valida si se actuliza o no-->
-                <img *ngIf="NotificacionesSetting.ACTUALIZAR" style="cursor: pointer" (click)="mostrarCardEditarResgistro(NotificacionesSetting)"
-                class="editar-icon-catalog" />
+            {{ NotificacionesSetting.nombre }}
+
+            <i
+              class="far fa-question-circle"
+              triggers="mouseenter:mouseleave"
+              [ngbPopover]="NotificacionesSetting.ayuda"
+              [popoverTitle]="NotificacionesSetting.nombre"
+            ></i>
+          </td>
+          <td>{{ NotificacionesSetting.interfaz }}</td>
+          <td>{{ NotificacionesSetting.negocio }}</td>
+          <td>{{ siONo(NotificacionesSetting.estatus) }}</td>
+          <td>{{ NotificacionesSetting.tipo }}</td>
+          <td>
+            <!--Se valida si se actuliza o no-->
+            <img
+              *ngIf="NotificacionesSetting.ACTUALIZAR"
+              style="cursor: pointer"
+              (click)="mostrarCardEditarResgistro(NotificacionesSetting)"
+              class="editar-icon-catalog"
+            />
           </td>
         </tr>
       </table>
     </div>
   </div>
 </div>
-<div class="row justify-content-center" [ngClass]="{
+<div
+  class="row justify-content-center"
+  [ngClass]="{
     'show-ejecuciones': mostrarEjecucionesProcesos == false,
     'hide-ejecuciones': mostrarEjecucionesProcesos == true
-  }" *ngIf="Forms">
+  }"
+  *ngIf="Forms"
+>
   <div class="col-12">
     <div class="card agregarRegistroCard">
-      <div class="aling-items-center text-center" style="margin-top: 20px; margin-bottom: 5px">
-        <div class="
+      <div
+        class="aling-items-center text-center"
+        style="margin-top: 20px; margin-bottom: 5px"
+      >
+        <div
+          class="
             d-flex
             flex-column
             align-items-center
             justify-content-center
             texto-agregarRegistroCardTitle
-          ">
-          Actualizar {{NotificacionesSettingTemp?.description}}
+          "
+        >
+          Actualizar {{ NotificacionesSettingTemp?.description }}
         </div>
       </div>
-      <div class="card-body" style="padding-left: 127px; padding-right: 127px" *ngIf="initValuesPanelShow">
+      <div
+        class="card-body"
+        style="padding-left: 127px; padding-right: 127px"
+        *ngIf="initValuesPanelShow"
+      >
         <div [formGroup]="Forms">
           <div class="form-row">
             <div class="form-group col-md-6">
-              <div class="card" style="width: 18rem; height:300px">
+              <div class="card" style="width: 18rem; height: 300px">
                 <div class="card-body">
-                  <h5 class="card-title" style="text-align: center;">Hora <i class="far fa-question-circle"
-                      (mouseenter)="helperInputs('ayudaHora')" triggers="mouseenter:mouseleave"
-                      [ngbPopover]="popContent" [popoverTitle]="popTitle"></i></h5>
+                  <h5 class="card-title" style="text-align: center">
+                    Hora
+                    <i
+                      class="far fa-question-circle"
+                      (mouseenter)="helperInputs('ayudaHora')"
+                      triggers="mouseenter:mouseleave"
+                      [ngbPopover]="popContent"
+                      [popoverTitle]="popTitle"
+                    ></i>
+                  </h5>
                   <div class="form-group col-md-12">
-                    <label class="labelFormAgregarRegistro" for="arrayHoras1">Hora incio
+                    <label class="labelFormAgregarRegistro" for="arrayHoras1"
+                      >Hora incio
                     </label>
-                    <select formControlName="arrayHoras1" class="form-control" (change)="changeEvent($event)"
-                      id="arrayHoras1">
-                      <option *ngFor="let Horas1 of arrayHoras1" [value]="Horas1">
+                    <select
+                      formControlName="arrayHoras1"
+                      class="form-control"
+                      (change)="changeEvent($event)"
+                      id="arrayHoras1"
+                    >
+                      <option
+                        *ngFor="let Horas1 of arrayHoras1"
+                        [value]="Horas1"
+                      >
                         {{ Horas1 }}
                       </option>
                     </select>
                   </div>
                   <div class="form-group col-md-12">
                     <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="checkbox" (change)="changeEvent($event)" id="horafinCheck"
-                        formControlName="horafinCheck" />
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        (change)="changeEvent($event)"
+                        id="horafinCheck"
+                        formControlName="horafinCheck"
+                      />
                     </div>
-                    <label class="labelFormAgregarRegistro" for="arrayHoras2">Hora fin
+                    <label class="labelFormAgregarRegistro" for="arrayHoras2"
+                      >Hora fin
                     </label>
-                    <select *ngIf="activarHorafin" formControlName="arrayHoras2" class="form-control" id="arrayHoras2">
-                      <option *ngFor="let Horas2 of arrayHoras2" [value]="Horas2">
+                    <select
+                      *ngIf="activarHorafin"
+                      formControlName="arrayHoras2"
+                      class="form-control"
+                      id="arrayHoras2"
+                    >
+                      <option
+                        *ngFor="let Horas2 of arrayHoras2"
+                        [value]="Horas2"
+                      >
                         {{ Horas2 }}
                       </option>
                     </select>
@@ -80,22 +146,40 @@
               </div>
             </div>
             <div class="form-group col-md-6" *ngIf="activarMinutos">
-              <div class="card" style="width: 18rem; height:300px">
+              <div class="card" style="width: 18rem; height: 300px">
                 <div class="card-body">
-                  <h5 class="card-title" style="text-align: center;">
+                  <h5 class="card-title" style="text-align: center">
                     Minutos
-                    <i class="far fa-question-circle" (mouseenter)="helperInputs('ayudaMinutos')"
-                      triggers="mouseenter:mouseleave" [ngbPopover]="popContent" [popoverTitle]="popTitle"></i>
+                    <i
+                      class="far fa-question-circle"
+                      (mouseenter)="helperInputs('ayudaMinutos')"
+                      triggers="mouseenter:mouseleave"
+                      [ngbPopover]="popContent"
+                      [popoverTitle]="popTitle"
+                    ></i>
                   </h5>
                   <div class="form-group col-md-12">
                     <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="checkbox" (change)="changeEvent($event)" id="minutosCheck"
-                        formControlName="minutosCheck" />
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        (change)="changeEvent($event)"
+                        id="minutosCheck"
+                        formControlName="minutosCheck"
+                      />
                     </div>
-                    <label class="labelFormAgregarRegistro" for="minutos">Intervalo de tiempo en minuto
+                    <label class="labelFormAgregarRegistro" for="minutos"
+                      >Intervalo de tiempo en minuto
                     </label>
-                    <select formControlName="minutos" class="form-control" id="minutos">
-                      <option *ngFor="let minuto of arrayMinutos" [value]="minuto">
+                    <select
+                      formControlName="minutos"
+                      class="form-control"
+                      id="minutos"
+                    >
+                      <option
+                        *ngFor="let minuto of arrayMinutos"
+                        [value]="minuto"
+                      >
                         {{ minuto }}
                       </option>
                     </select>
@@ -104,22 +188,40 @@
               </div>
             </div>
             <div class="form-group col-md-6" *ngIf="!activarMinutos">
-              <div class="card" style="width: 18rem; height:300px">
+              <div class="card" style="width: 18rem; height: 300px">
                 <div class="card-body">
-                  <h5 class="card-title" style="text-align: center;">
+                  <h5 class="card-title" style="text-align: center">
                     Minutos
-                    <i class="far fa-question-circle" (mouseenter)="helperInputs('ayudaMinutos')"
-                      triggers="mouseenter:mouseleave" [ngbPopover]="popContent" [popoverTitle]="popTitle"></i>
+                    <i
+                      class="far fa-question-circle"
+                      (mouseenter)="helperInputs('ayudaMinutos')"
+                      triggers="mouseenter:mouseleave"
+                      [ngbPopover]="popContent"
+                      [popoverTitle]="popTitle"
+                    ></i>
                   </h5>
                   <div class="form-group col-md-12">
                     <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="checkbox" (change)="changeEvent($event)" id="minutosCheck"
-                        formControlName="minutosCheck" />
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        (change)="changeEvent($event)"
+                        id="minutosCheck"
+                        formControlName="minutosCheck"
+                      />
                     </div>
-                    <label class="labelFormAgregarRegistro" for="minutos">Intervalo de tiempo en minuto
+                    <label class="labelFormAgregarRegistro" for="minutos"
+                      >Intervalo de tiempo en minuto
                     </label>
-                    <select formControlName="minutos2" class="form-control" id="minutos2">
-                      <option *ngFor="let minuto2 of arrayMinutos2" [value]="minuto2">
+                    <select
+                      formControlName="minutos2"
+                      class="form-control"
+                      id="minutos2"
+                    >
+                      <option
+                        *ngFor="let minuto2 of arrayMinutos2"
+                        [value]="minuto2"
+                      >
                         {{ minuto2 }}
                       </option>
                     </select>
@@ -128,32 +230,59 @@
               </div>
             </div>
             <div class="form-group col-md-6">
-              <div class="card" style="width: 18rem; height:300px">
+              <div class="card" style="width: 18rem; height: 300px">
                 <div class="card-body">
-                  <h5 class="card-title" style="text-align: center;">
+                  <h5 class="card-title" style="text-align: center">
                     Día
-                    <i class="far fa-question-circle" (mouseenter)="helperInputs('ayudaDia')"
-                      triggers="mouseenter:mouseleave" [ngbPopover]="popContent" [popoverTitle]="popTitle"></i>
+                    <i
+                      class="far fa-question-circle"
+                      (mouseenter)="helperInputs('ayudaDia')"
+                      triggers="mouseenter:mouseleave"
+                      [ngbPopover]="popContent"
+                      [popoverTitle]="popTitle"
+                    ></i>
                   </h5>
                   <div class="form-group col-md-12">
-                    <label class="labelFormAgregarRegistro" for="arrayDias1">Día inicio
+                    <label class="labelFormAgregarRegistro" for="arrayDias1"
+                      >Día inicio
                     </label>
-                    <select formControlName="arrayDias1" class="form-control" id="arrayDias1"
-                      (change)="changeEvent($event)">
-                      <option *ngFor="let dia1 of arrayDias1" [value]="dia1.value">
+                    <select
+                      formControlName="arrayDias1"
+                      class="form-control"
+                      id="arrayDias1"
+                      (change)="changeEvent($event)"
+                    >
+                      <option
+                        *ngFor="let dia1 of arrayDias1"
+                        [value]="dia1.value"
+                      >
                         {{ dia1.label }}
                       </option>
                     </select>
                   </div>
                   <div class="form-group col-md-12">
                     <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="checkbox" (change)="changeEvent($event)" id="diafinCheck"
-                        formControlName="diafinCheck" />
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        (change)="changeEvent($event)"
+                        id="diafinCheck"
+                        formControlName="diafinCheck"
+                      />
                     </div>
-                    <label class="labelFormAgregarRegistro" for="arrayDias1">Día fin
+                    <label class="labelFormAgregarRegistro" for="arrayDias1"
+                      >Día fin
                     </label>
-                    <select formControlName="arrayDias2" class="form-control" id="arrayDias2" *ngIf="activarDiafin">
-                      <option *ngFor="let dia2 of arrayDias2" [value]="dia2.value">
+                    <select
+                      formControlName="arrayDias2"
+                      class="form-control"
+                      id="arrayDias2"
+                      *ngIf="activarDiafin"
+                    >
+                      <option
+                        *ngFor="let dia2 of arrayDias2"
+                        [value]="dia2.value"
+                      >
                         {{ dia2.label }}
                       </option>
                     </select>
@@ -162,16 +291,22 @@
               </div>
             </div>
             <div class="form-group col-md-6">
-              <div class="card" style="width: 18rem; height:300px">
+              <div class="card" style="width: 18rem; height: 300px">
                 <div class="card-body">
-                  <h5 class="card-title" style="text-align: center;">
-                    Activar
-                  </h5>
+                  <h5 class="card-title" style="text-align: center">Activar</h5>
                   <div class="form-group col-md-12">
-                    <label class="labelFormAgregarRegistro" for="enabled">Activo
+                    <label class="labelFormAgregarRegistro" for="enabled"
+                      >Activo
                     </label>
-                    <select formControlName="enabled" class="form-control" id="enabled">
-                      <option *ngFor="let itemEnabled of enableArray" [value]="itemEnabled.value">
+                    <select
+                      formControlName="enabled"
+                      class="form-control"
+                      id="enabled"
+                    >
+                      <option
+                        *ngFor="let itemEnabled of enableArray"
+                        [value]="itemEnabled.value"
+                      >
                         {{ siONo(itemEnabled.value) }}
                       </option>
                     </select>
@@ -182,17 +317,27 @@
           </div>
         </div>
       </div>
-      <div class="row aling-items-center text-center" style="margin-top: 20px; margin-bottom: 30px">
+      <div
+        class="row aling-items-center text-center"
+        style="margin-top: 20px; margin-bottom: 30px"
+      >
         <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
           <div class="row justify-content-center">
-            <button class="btn btnAgregarCancelarRegistro" (click)="ocultarCardAgregarResgistro()">
+            <button
+              class="btn btnAgregarCancelarRegistro"
+              (click)="ocultarCardAgregarResgistro()"
+            >
               Cancelar
             </button>
           </div>
         </div>
         <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
           <div class="row justify-content-center">
-            <button (click)="updateRegister()" [disabled]="Forms.invalid" class="btn btnAgregarRegistro">
+            <button
+              (click)="updateRegister()"
+              [disabled]="Forms.invalid"
+              class="btn btnAgregarRegistro"
+            >
               Actualizar
             </button>
           </div>
@@ -201,7 +346,13 @@
     </div>
   </div>
 </div>
-<ngx-spinner bdColor="rgba(0,0,0,0.5)" size="default" color="#fff" type="ball-scale-ripple" [fullScreen]="true">
+<ngx-spinner
+  bdColor="rgba(0,0,0,0.5)"
+  size="default"
+  color="#fff"
+  type="ball-scale-ripple"
+  [fullScreen]="true"
+>
   <p style="color: white">Cargando...</p>
 </ngx-spinner>
 <ng-template #popContent>

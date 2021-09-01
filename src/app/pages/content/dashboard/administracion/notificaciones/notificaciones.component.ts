@@ -103,6 +103,9 @@ export class NotificacionesComponent implements OnInit {
   DataUser: Usuario;
   ArrayPermisos = [];
 
+  /* temporalData */
+  temporalDatos;
+
   constructor(
     private toastr: ToastrService,
     private modalService: NgbModal,
@@ -111,7 +114,7 @@ export class NotificacionesComponent implements OnInit {
     private logeo: LogeoService,
     private store: Store<AppState>,
     private api: APIService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     try {
@@ -123,6 +126,7 @@ export class NotificacionesComponent implements OnInit {
         verbose: true,
         locale: 'es',
       });
+      /* Si existe el chequeo del cron*/
       if (cronAWS.parse(cronExpression)) {
         try {
           cron = cronAWS.parse(cronExpression);
@@ -136,7 +140,11 @@ export class NotificacionesComponent implements OnInit {
       }
       this.getPermisosDeEdicionManipulacion();
     } catch (err) {
-      this.logeo.registrarLog('NOTIFICACIONES', 'CARGAR PANTALLA', JSON.stringify(err));
+      this.logeo.registrarLog(
+        'NOTIFICACIONES',
+        'CARGAR PANTALLA',
+        JSON.stringify(err)
+      );
     }
   }
 
@@ -190,7 +198,7 @@ export class NotificacionesComponent implements OnInit {
       progressBar: true,
       progressAnimation: 'increasing',
     });
-  }
+  };
 
   changeEvent = ({ target }) => {
     switch (target.id) {
@@ -214,11 +222,11 @@ export class NotificacionesComponent implements OnInit {
         this.crearDiaFin();
         break;
     }
-  }
+  };
 
   siONo = (value) => {
     return value ? 'Si' : 'No';
-  }
+  };
 
   costruirCron = () => {
     let contruido = '';
@@ -251,7 +259,7 @@ export class NotificacionesComponent implements OnInit {
         ' *';
     }
     this.Forms.get('schedule').setValue(contruido);
-  }
+  };
 
   eliminarMinutos2 = () => {
     //minutos: new FormControl('No aplica', [Validators.required]),
@@ -270,7 +278,7 @@ export class NotificacionesComponent implements OnInit {
       this.Forms.removeControl('minutos');
       this.activarMinutos = false;
     }
-  }
+  };
 
   crearHoraFin = () => {
     if (this.Forms.get('horafinCheck').value === true) {
@@ -283,7 +291,7 @@ export class NotificacionesComponent implements OnInit {
       this.Forms.removeControl('arrayHoras2');
       this.activarHorafin = false;
     }
-  }
+  };
 
   crearDiaFin = () => {
     if (this.Forms.get('diafinCheck').value === true) {
@@ -296,7 +304,7 @@ export class NotificacionesComponent implements OnInit {
       this.Forms.removeControl('arrayDias2');
       this.activarDiafin = false;
     }
-  }
+  };
 
   tranformsHourUtc = (valueParam) => {
     let stringDate = moment().format('YYYY-MM-DD').toString() + ' ';
@@ -313,7 +321,7 @@ export class NotificacionesComponent implements OnInit {
     } else {
       return hora;
     }
-  }
+  };
 
   initValuesPanel = (edit = false) => {
     this.spinner.show();
@@ -321,39 +329,35 @@ export class NotificacionesComponent implements OnInit {
       .then(
         (res: any) => {
           this.NotificacionesSettings = res;
-                    //*transformo a un  array nuevo que me permita hacer validaciones */
-                    this.NotificacionesSettings = this.NotificacionesSettings.map(
-                      (elementoNotificacion) => {
-                        const attributosParaValidacion = this.ArrayPermisos.filter(
-                          (elementoFiltrar) =>
-                            elementoFiltrar.FLUJO ===
-                            elementoNotificacion.description
-                              .split(']')[0]
-                              .split('-')[1]
-                              .trim()
-                        );
-                        /* validar si hay algo hay aun que validar que se haga nuevo arreglo */
-                        if (attributosParaValidacion.length > 0) {
-                          elementoNotificacion.ACTUALIZAR =
-                            attributosParaValidacion[0].CATALOGOS.ACTUALIZAR;
-                          elementoNotificacion.CONSULTAR =
-                            attributosParaValidacion[0].CATALOGOS.CONSULTAR;
-                          return {
-                            ...elementoNotificacion,
-                          };
-                        } else {
-                          elementoNotificacion.CONSULTAR = false;
-                          return {
-                            ...elementoNotificacion,
-                          };
-                        }
-                      }
-                    );
+          //*transformo a un  array nuevo que me permita hacer validaciones */
+          this.NotificacionesSettings = this.NotificacionesSettings.map(
+            (elementoNotificacion) => {
+              const attributosParaValidacion = this.ArrayPermisos.filter(
+                (elementoFiltrar) =>
+                  elementoFiltrar.FLUJO === elementoNotificacion.interfaz
+              );
+              /* validar si hay algo hay aun que validar que se haga nuevo arreglo */
+              if (attributosParaValidacion.length > 0) {
+                elementoNotificacion.ACTUALIZAR =
+                  attributosParaValidacion[0].CATALOGOS.ACTUALIZAR;
+                elementoNotificacion.CONSULTAR =
+                  attributosParaValidacion[0].CATALOGOS.CONSULTAR;
+                return {
+                  ...elementoNotificacion,
+                };
+              } else {
+                elementoNotificacion.CONSULTAR = false;
+                return {
+                  ...elementoNotificacion,
+                };
+              }
+            }
+          );
 
-                    //aqui una ves tranformado el array puedo filtrar los que se van a consultar;
-                    this.NotificacionesSettings = this.NotificacionesSettings.filter(
-                      (e) => e.CONSULTAR === true
-                    );
+          //aqui una ves tranformado el array puedo filtrar los que se van a consultar;
+          this.NotificacionesSettings = this.NotificacionesSettings.filter(
+            (e) => e.CONSULTAR === true
+          );
 
           this.spinner.hide();
           if (edit) {
@@ -381,44 +385,56 @@ export class NotificacionesComponent implements OnInit {
       arrayDias2: new FormControl('NA', [Validators.required]),
       enabled: new FormControl(false, [Validators.required]),
     });
-  }
+  };
 
   updateRegister = () => {
     try {
       this.costruirCron();
       let { schedule, enabled, description } = this.Forms.value;
       let body = { schedule, enabled, description };
-      if (this.Forms.value?.seconds) {
+      /*saber si va ver minutos */
+
+      if (this.Forms.value?.minutosCheck) {
         if (this.Forms.get('minutos').value === 'No aplica') {
           body['seconds'] = this.Forms.get('seconds');
         } else {
           body['seconds'] = parseInt(this.Forms.get('minutos').value) * 60;
         }
       }
+      /* ponemos la misma estructura que quiere el back para que no tenga problemas */
+      this.temporalDatos.cron = schedule;
+      this.temporalDatos.estatus = enabled === 'false' ? false : true;
       this.PanelNotificacionesService.updateNotificacionSettings(
         this.NotificacionesSettingTemp.id,
-        body
+        this.temporalDatos
       ).then(() => {
         this.mostrarEjecucionesProcesos = true;
         this.initValuesPanel(true);
       });
     } catch (err) {
-      this.logeo.registrarLog('NOTIFICACIONES', 'ACTUALIZAR', JSON.stringify(err));
+      this.logeo.registrarLog(
+        'NOTIFICACIONES',
+        'ACTUALIZAR',
+        JSON.stringify(err)
+      );
     }
-  }
+  };
 
   mostrarCardEditarResgistro = (
     NotificacionesSetting: AUDGENUSUARIO_INTERFACE
   ) => {
+    /*ponemos la variables que nos dara la estructura para actualizar */
+    this.temporalDatos = NotificacionesSetting;
+
     this.initValuesPanelShow = true;
     this.NotificacionesSettingTemp = NotificacionesSetting;
     this.mostrarEjecucionesProcesos = false;
     this.Forms = null;
     this.Forms = new FormGroup({
-      schedule: new FormControl(NotificacionesSetting.schedule, [
+      schedule: new FormControl(NotificacionesSetting.cron, [
         Validators.required,
       ]),
-      enabled: new FormControl(NotificacionesSetting.enabled, [
+      enabled: new FormControl(NotificacionesSetting.estatus, [
         Validators.required,
       ]),
       arrayHoras1: new FormControl(0, [Validators.required]),
@@ -427,7 +443,7 @@ export class NotificacionesComponent implements OnInit {
       diafinCheck: new FormControl(false, []),
       minutosCheck: new FormControl(false, []),
     });
-    let arraySchedule = NotificacionesSetting.schedule.split(' ');
+    let arraySchedule = NotificacionesSetting.cron.split(' ');
     let arrayMinuto = arraySchedule[0].split('/');
     if (arrayMinuto.length > 1) {
       this.Forms.get('minutosCheck').setValue(true);
@@ -483,17 +499,17 @@ export class NotificacionesComponent implements OnInit {
         new FormControl(NotificacionesSetting.seconds, [])
       );
     }
-  }
+  };
 
   ocultarCardAgregarResgistro = () => {
     this.mostrarEjecucionesProcesos = true;
     this.initValuesPanelShow = false;
     this.Forms.reset();
-  }
+  };
 
   helperInputs = (input) => {
     this.ayudaSelect = this.ayudaArray.filter((e) => e.input === input)[0];
-  }
+  };
 
   openModalConfirmacionEliminar(content, object) {
     this.elementoEliminar = object;

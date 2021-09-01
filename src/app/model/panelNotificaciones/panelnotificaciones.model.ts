@@ -7,4 +7,12 @@ export interface AUDGENUSUARIO_INTERFACE {
   seconds?: number;
   ACTUALIZAR?: boolean;
   CONSULTAR?: boolean;
+
+  ayuda?: string;
+  cron?: string;
+  estatus?: boolean;
+  interfaz?: string;
+  negocio?: string;
+  nombre?: string;
+  tipo?: string;
 }

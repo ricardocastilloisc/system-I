@@ -23,7 +23,7 @@ const routes: Routes = [
         data: { roles: [ERole.Administrador] },
       },
       {
-        path: 'notificaciones',
+        path: 'Tareas_Programadas',
         loadChildren: () => import('./notificaciones/notificaciones.module').then(m => m.NotificacionesModule),
         canActivate: [GuardRolesGuard],
         data: { roles: [ERole.Administrador] },

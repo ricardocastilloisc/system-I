@@ -9,8 +9,8 @@ export const rutasConNombres =
     ValorEsp: 'Administración',
   },
   {
-    rutaAngular: 'notificaciones',
-    ValorEsp: 'Notificaciones',
+    rutaAngular: 'Tareas_Programadas',
+    ValorEsp: 'Tareas programadas',
   },
   {
     rutaAngular: 'procesos',

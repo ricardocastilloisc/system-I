@@ -802,6 +802,7 @@ table.listado-design-general td {
   margin-right: 22px;
   font: normal normal bold 20px/25px FS Elliot Pro;
 }
+
 .bottonConfirmar {
   background: #00c4d9 0% 0% no-repeat padding-box;
   border-radius: 30px;
@@ -811,6 +812,29 @@ table.listado-design-general td {
   height: 48px;
   color: #fff;
   font: normal normal bold 20px/25px FS Elliot Pro;
+}
+.bottonCancelarModalAuditoria {
+  border: 2px solid #035fa4;
+  border-radius: 30px;
+  opacity: 1;
+  width: 184px;
+  text-decoration: none;
+  height: 48px;
+  color: #035fa4;
+  margin-right: 22px;
+  font: normal normal bold 18px FS Elliot Pro;
+}
+.bottonModalAuditoria {
+  border: 2px solid #035fa4;
+  border-radius: 30px;
+  opacity: 1;
+  width: 184px;
+  text-decoration: none;
+  height: 48px;
+  background: #035fa4;
+  color: #ffffff;
+  margin-right: 22px;
+  font: normal normal bold 18px FS Elliot Pro;
 }
 .bottonCancelarEjecucionProceso {
   border: 2px solid #7c69c3;

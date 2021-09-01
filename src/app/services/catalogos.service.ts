@@ -7,6 +7,18 @@ import { AppState } from '../ReduxStore/app.reducers';
 import { Store } from '@ngrx/store';
 import { AuthService } from './auth.service';
 import { LogeoService } from '../services/logeo.service';
+import { v4 as uuidv4 } from 'uuid';
+import * as AWS from 'aws-sdk';
+
+/* Confirugracion del SDK para usar el servicios de SQS */
+/* El origden de estos datos son variables de entorno configuradas en amplify */
+AWS.config.update({
+  accessKeyId: environment.SESConfig.accessKeyId,
+  secretAccessKey: environment.SESConfig.secretAccessKey,
+  region: environment.SESConfig.region
+});
+
+const sqs = new AWS.SQS();
 
 @Injectable({
   providedIn: 'root',
@@ -269,8 +281,16 @@ export class CatalogosService {
     }
   }
 
+  /*
+  Funcion que se encarga de mandar al servicio de auditoria los datos de seguimiento para las actualizaciones
+  generadas sobre los catalogos
+  Datos de entrada:
+      estado: string
+  Datos de salida: NA
+  */
   generarAuditoria(estado: string): void {
     try {
+      /* Generacion del payload a enviar a la auditoria */
       const catalogo = localStorage.getItem('nameCat');
       const descripcion = localStorage.getItem('negocioCat');
       const newRegister = localStorage.getItem('ObjectNewRegister');
@@ -282,10 +302,12 @@ export class CatalogosService {
       let correo = '';
       let apellidoPaterno = '';
       let nombre = '';
+      let negocio = '';
       this.store
         .select(({ usuario }) => usuario.user)
         .subscribe((res) => {
           rol = res.attributes['custom:rol'];
+          negocio = res.attributes['custom:negocio'].toLowerCase();
           correo = res.email;
           nombre = res.attributes.given_name;
           apellidoPaterno = res.attributes.family_name;
@@ -319,12 +341,67 @@ export class CatalogosService {
         },
       };
       const payloadString = JSON.stringify(payload);
+      /* enviar al servicio de auditoria para registrar los datos en la bitacora */
       this.auditoria.enviarBitacoraUsuarios(payloadString);
+      /* enviar a la funcion de notificaciones para generar la notificacion correspondiente en el canal de teams */
+      this.enviarNotificacion(descripcion, accion, nombre, apellidoPaterno, negocio);
       localStorage.removeItem('RegisterAction');
       localStorage.removeItem('ObjectNewRegister');
       localStorage.removeItem('ObjectOldRegister');
     } catch (err) {
+      /* registro de error producido */
       this.logeo.registrarLog('CATALOGOS', 'GENERAR AUDITORIA', JSON.stringify(err));
     }
   }
+
+  /*
+  Funcion que se encarga de publicar en la Queue de Notificaciones de Catalogos un mensaje
+  con los datos de actualizacion para enviar a un canal de teams las notificación del cambio en el catalogo
+  Datos de entrada:
+      catalogo: string --> Ej. Monedas
+      accion: string --> Ej. AGREGAR
+      nombre: string --> Ej. Juan
+      apellidoPaterno: string --> Ej. Perez
+      negocio: string --> Ej. Afore,Fondos
+  Datos de salida: NA
+  */
+  enviarNotificacion(catalogo: string, accion: string, nombre: string, apellidoPaterno: string, negocio: string): void {
+    try {
+      /* generacion detallada del mensaje */
+      if (accion === 'AGREGAR') {
+        accion = 'Se agregó un registro al catálogo'
+      }
+      if (accion === 'ELIMINAR') {
+        accion = 'Se eliminó un registro del catálogo'
+      }
+      if (accion === 'ACTUALIZAR') {
+        accion = 'Se actualizó la información de un registro del catálogo'
+      }
+      /* generacion del payload a enviar*/
+      const payload = {
+        catalogo: catalogo,
+        accion: accion,
+        usuario: nombre + ' ' + apellidoPaterno,
+        negocio: negocio
+      };
+      const objetoBitacora = JSON.stringify(payload);
+      const params = {
+        MessageBody: objetoBitacora,
+        MessageDeduplicationId: uuidv4(),
+        MessageGroupId: uuidv4(),
+        QueueUrl: environment.API.endpoints.find((el) => el.name === 'sqs-catalogos').endpoint
+      };
+      /* publicacion en el queue de notificaciones catalogos*/
+      sqs.sendMessage(params, function (err, data) {
+        if (err) {
+          /* registro de error si no se pudo lanzar la solicitud */
+          this.logeo.registrarLog('CATALOGOS', 'ENVIAR SQS NOTIFICACIONES', JSON.stringify(err));
+        }
+      });
+    } catch (err) {
+      /* registro de error producido */
+      this.logeo.registrarLog('CATALOGOS', 'GENERAR AUDITORIA', JSON.stringify(err));
+    }
+  }
+
 }
